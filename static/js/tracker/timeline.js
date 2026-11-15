@@ -99,6 +99,7 @@ function refreshProgressUI(jobId, timeline, status) {
 }
 
 async function saveTimeline(jobId, timeline) {
+  timeline = sortTimeline(timeline);
   const res = await fetch(`/api/jobs/${jobId}/timeline`, {
     method: 'PATCH',
     headers: {'Content-Type': 'application/json'},
@@ -109,14 +110,14 @@ async function saveTimeline(jobId, timeline) {
     throw new Error(err.error || 'Request failed');
   }
   const data = await res.json();
-  const saved = data.application_timeline || [];
+  const saved = sortTimeline(data.application_timeline || []);
   if (saved.length < timeline.length) {
     throw new Error('The server did not keep every step — restart the web server and try again');
   }
-  refreshProgressUI(jobId, data.application_timeline || timeline, data.status);
+  refreshProgressUI(jobId, saved, data.status);
   if (!jobMatchesStatusFilter({
     status: data.status,
-    application_timeline: data.application_timeline || timeline,
+    application_timeline: saved,
     applied_at: data.applied_at,
   }, currentStatusFilter)) {
     removeMatchedCardSilently(document.getElementById(`card-${jobId}`));
@@ -126,8 +127,30 @@ async function saveTimeline(jobId, timeline) {
   return data;
 }
 
+function timelineAtOf(timeline, step) {
+  const ev = [...(timeline || [])].reverse().find(item => item && item.step === step && item.at);
+  return ev ? ev.at : '';
+}
+
+function initialTimeForStep(step, timeline) {
+  // Backfilled Screening / Submitted default to an earlier stamp so they
+  // land before Invite / rounds when the picker is saved as-is.
+  if (step === 'screening') {
+    return toLocalInputValue(timelineAtOf(timeline, 'applied') || nowLocalInputValue());
+  }
+  if (step === 'screening_done') {
+    return toLocalInputValue(
+      timelineAtOf(timeline, 'screening')
+      || timelineAtOf(timeline, 'applied')
+      || nowLocalInputValue()
+    );
+  }
+  return nowLocalInputValue();
+}
+
 async function addTimelineStep(jobId, step) {
   const label = TIMELINE_LABEL[step] || step;
+  const timeline = (jobTimelines[jobId] || []).slice();
   const at = await askTimelineTime({
     title: `Record: ${label}`,
     hint: step === 'applied'
@@ -135,17 +158,16 @@ async function addTimelineStep(jobId, step) {
       : step === 'reapplied'
         ? 'When did you apply again (e.g. to the repost)?'
         : step === 'screening'
-          ? 'When did they send the screening (questions, Loom, or similar)?'
+          ? 'When did they send the screening? It is placed on the track by this date.'
           : step === 'screening_done'
-            ? 'When did you send the answers / video?'
+            ? 'When did you send the answers / video? It is placed on the track by this date.'
             : step === 'interview_invite'
               ? 'When did you receive the interview invitation?'
               : `When did you get the “${label}” update?`,
-    initial: nowLocalInputValue(),
+    initial: initialTimeForStep(step, timeline),
   });
   if (!at) return;
 
-  const timeline = (jobTimelines[jobId] || []).slice();
   timeline.push({ step, at });
   try {
     await saveTimeline(jobId, timeline);

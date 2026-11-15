@@ -525,15 +525,75 @@ function formatNodeTime(at) {
   return `${m[2]}-${m[3]}<br>${m[4]}:${m[5]}`;
 }
 
+function screeningBackfillActions(timeline) {
+  // Missing Screening / Submitted stay available after Invite / rounds so a
+  // later interview does not block recording the earlier ask + homework.
+  const have = new Set((timeline || []).map(ev => ev && ev.step));
+  const actions = [];
+  if (!have.has('screening')) {
+    actions.push({ step: 'screening', label: '+ Screening', cls: 'btn-screening-step' });
+  }
+  if (!have.has('screening_done')) {
+    actions.push({ step: 'screening_done', label: '+ Submitted', cls: 'btn-screening-step' });
+  }
+  return actions;
+}
+
+function mergeTimelineActions(timeline, forward) {
+  if (!timeline.length) return forward;
+  const seen = new Set(forward.map(a => a.step));
+  const extras = screeningBackfillActions(timeline).filter(a => !seen.has(a.step));
+  return extras.concat(forward);
+}
+
+const TIMELINE_STEP_RANK = {
+  applied: 0,
+  reapplied: 1,
+  screening: 2,
+  screening_done: 3,
+  interview_invite: 4,
+  interview_1: 5,
+  interview_2: 6,
+  interview_3: 7,
+  interview_final: 8,
+  rejected: 9,
+  offer: 10,
+};
+
+function parseTimelineAt(at) {
+  if (!at) return 0;
+  const m = String(at).match(/(\d{4})-(\d{2})-(\d{2})[ T](\d{2})?:?(\d{2})?/);
+  if (!m) return 0;
+  return Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3]), Number(m[4] || 0), Number(m[5] || 0));
+}
+
+function sortTimeline(timeline) {
+  return (timeline || []).slice().sort((a, b) => {
+    const da = parseTimelineAt(a && a.at);
+    const db = parseTimelineAt(b && b.at);
+    if (da !== db) return da - db;
+    return (TIMELINE_STEP_RANK[a && a.step] ?? 99) - (TIMELINE_STEP_RANK[b && b.step] ?? 99);
+  });
+}
+
+function furthestTimelineStep(timeline) {
+  const have = new Set((timeline || []).map(ev => ev && ev.step));
+  const order = Object.keys(TIMELINE_STEP_RANK);
+  for (let i = order.length - 1; i >= 0; i--) {
+    if (have.has(order[i])) return order[i];
+  }
+  return '';
+}
+
 function nextTimelineActions(timeline) {
   if (!timeline.length) {
     return [{ step: 'applied', label: '+ Applied', cls: 'btn-apply-step' }];
   }
-  const last = timeline[timeline.length - 1].step;
+  const last = furthestTimelineStep(timeline) || timeline[timeline.length - 1].step;
   const reapply = { step: 'reapplied', label: '+ Reapplied', cls: 'btn-apply-step' };
   // Rejected / no reply → apply again (e.g. a repost); the track restarts.
-  if (last === 'rejected') return [reapply];
-  if (TERMINAL_STEPS.has(last)) return [];
+  if (last === 'rejected') return mergeTimelineActions(timeline, [reapply]);
+  if (TERMINAL_STEPS.has(last)) return mergeTimelineActions(timeline, []);
 
   const actions = [];
   if (last === 'applied' || last === 'reapplied') {
@@ -541,23 +601,23 @@ function nextTimelineActions(timeline) {
     actions.push({ step: 'interview_invite', label: '+ Invite', cls: 'btn-interview-step' });
     actions.push({ step: 'rejected', label: '+ Rejected', cls: 'btn-reject-step' });
     actions.push(reapply);
-    return actions;
+    return mergeTimelineActions(timeline, actions);
   }
   if (last === 'screening') {
     actions.push({ step: 'screening_done', label: '+ Submitted', cls: 'btn-screening-step' });
     actions.push({ step: 'interview_invite', label: '+ Invite', cls: 'btn-interview-step' });
     actions.push({ step: 'rejected', label: '+ Rejected', cls: 'btn-reject-step' });
-    return actions;
+    return mergeTimelineActions(timeline, actions);
   }
   if (last === 'screening_done') {
     actions.push({ step: 'interview_invite', label: '+ Invite', cls: 'btn-interview-step' });
     actions.push({ step: 'rejected', label: '+ Rejected', cls: 'btn-reject-step' });
-    return actions;
+    return mergeTimelineActions(timeline, actions);
   }
   if (last === 'interview_invite') {
     actions.push({ step: 'interview_1', label: '+ Round 1', cls: 'btn-interview-step' });
     actions.push({ step: 'rejected', label: '+ Rejected', cls: 'btn-reject-step' });
-    return actions;
+    return mergeTimelineActions(timeline, actions);
   }
   const idx = INTERVIEW_STEPS.indexOf(last);
   if (idx >= 0) {
@@ -568,12 +628,18 @@ function nextTimelineActions(timeline) {
     actions.push({ step: 'rejected', label: '+ Rejected', cls: 'btn-reject-step' });
     actions.push({ step: 'offer', label: '+ Offer', cls: 'btn-offer-step' });
   }
-  return actions;
+  return mergeTimelineActions(timeline, actions);
 }
 
 function statusFromTimeline(timeline) {
   if (!Array.isArray(timeline) || !timeline.length) return '';
-  const last = timeline[timeline.length - 1].step;
+  const ordered = sortTimeline(timeline);
+  let last = ordered[ordered.length - 1].step;
+  const steps = ordered.map(ev => ev.step);
+  if ((last === 'screening' || last === 'screening_done')
+      && steps.some(s => String(s).startsWith('interview_') || s === 'offer')) {
+    last = [...steps].reverse().find(s => String(s).startsWith('interview_') || s === 'offer');
+  }
   if (last === 'applied' || last === 'reapplied') return 'applied';
   if (last === 'screening' || last === 'screening_done') return 'screening';
   if (String(last).startsWith('interview_')) return 'interview';
@@ -613,8 +679,12 @@ function jobMatchesStatusFilter(job, filter) {
 
 /** Card pill: "Reapplied" while the latest progress step is a reapply. */
 function cardStatusView(status, timeline) {
-  const tl = Array.isArray(timeline) ? timeline : [];
+  const tl = sortTimeline(Array.isArray(timeline) ? timeline : []);
   const last = tl.length ? tl[tl.length - 1].step : '';
+  if (!SIDE_STATUSES.includes(status || 'pending')) {
+    const derived = statusFromTimeline(tl);
+    if (derived) status = derived;
+  }
   if (status === 'applied' && last === 'reapplied') {
     return { cls: 'reapplied', label: 'Reapplied' };
   }
@@ -633,7 +703,9 @@ function isAppliedLike(status, timeline) {
 
 function renderProgressBlock(job) {
   const id = job._id;
-  const timeline = Array.isArray(job.application_timeline) ? job.application_timeline.slice() : [];
+  const timeline = sortTimeline(
+    Array.isArray(job.application_timeline) ? job.application_timeline.slice() : []
+  );
   jobTimelines[id] = timeline;
   const status = job.status || 'pending';
   const sideVal = SIDE_STATUSES.includes(status) ? status : '';

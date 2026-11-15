@@ -12,9 +12,11 @@ from core.manual_log import (
 )
 from web.list_query import _company_key, company_match_clause
 from web.status import (
+    SIDE_STATUSES,
     TIMELINE_STEPS,
     _format_timeline_at,
     _hydrate_timeline,
+    _status_from_timeline,
     application_progress,
 )
 
@@ -206,4 +208,9 @@ def _serialize(job: dict) -> dict:
         for item in timeline
         if isinstance(item, dict) and item.get("step") in TIMELINE_STEPS
     ]
+    stored = job.get("status") or "pending"
+    if stored not in SIDE_STATUSES and job["application_timeline"]:
+        job["status"] = _status_from_timeline(
+            job["application_timeline"], fallback=stored,
+        )
     return job

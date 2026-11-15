@@ -104,8 +104,10 @@ TIMELINE_STEPS = {
     "offer":           "Offer",
 }
 
+# Same-timestamp tie-break when sorting the track by date.
 TIMELINE_STEP_ORDER = (
     "applied",
+    "reapplied",
     "screening",
     "screening_done",
     "interview_invite",
@@ -113,6 +115,8 @@ TIMELINE_STEP_ORDER = (
     "interview_2",
     "interview_3",
     "interview_final",
+    "rejected",
+    "offer",
 )
 
 
@@ -122,14 +126,30 @@ STATUS_REVERSE = {v: k for k, v in STATUS_MAP.items()}
 MATCH_THRESHOLD = float(os.getenv("MATCH_THRESHOLD", "7.0"))
 
 
+def _naive_dt(dt: datetime) -> datetime:
+    return dt.replace(tzinfo=None) if dt.tzinfo else dt
+
+
 def _parse_timeline_at(value) -> Optional[datetime]:
     """Parse a timeline timestamp from ISO / 'YYYY-MM-DD HH:MM' / datetime."""
     if value is None or value == "":
         return None
     if isinstance(value, datetime):
-        return value
-    text = str(value).strip().replace("T", " ")
-    for fmt in ("%Y-%m-%d %H:%M", "%Y-%m-%d %H:%M:%S", "%Y-%m-%d"):
+        return _naive_dt(value)
+    text = str(value).strip()
+    if not text:
+        return None
+    iso = text.replace("Z", "+00:00")
+    try:
+        return _naive_dt(datetime.fromisoformat(iso))
+    except ValueError:
+        pass
+    text = text.replace("T", " ")
+    if "." in text:
+        text = text.split(".", 1)[0]
+    if len(text) >= 6 and (text[-6] in "+-" and text[-3] == ":"):
+        text = text[:-6].rstrip()
+    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%Y-%m-%d"):
         try:
             return datetime.strptime(text, fmt)
         except ValueError:
@@ -142,11 +162,41 @@ def _format_timeline_at(value) -> str:
     return dt.strftime("%Y-%m-%d %H:%M") if dt else ""
 
 
+def _timeline_sort_key(event: dict):
+    """Date first, then canonical step order when two events share a timestamp."""
+    at = _parse_timeline_at(event.get("at")) or datetime.min
+    step = event.get("step") or ""
+    try:
+        rank = TIMELINE_STEP_ORDER.index(step)
+    except ValueError:
+        rank = 99
+    return (at, rank)
+
+
+def _sort_timeline(events: list) -> list:
+    """Place events in date order so a backfilled Screening sits before Invite."""
+    return sorted(
+        (e for e in events if isinstance(e, dict) and e.get("step")),
+        key=_timeline_sort_key,
+    )
+
+
 def _status_from_timeline(timeline: list, fallback: str = "pending") -> str:
-    """Derive matched_jobs.status from the latest timeline step."""
-    if not timeline:
+    """Derive matched_jobs.status from the latest-dated timeline step."""
+    ordered = _sort_timeline(timeline or [])
+    if not ordered:
         return fallback if fallback in (*SIDE_STATUSES, "pending") else "pending"
-    last = timeline[-1].get("step", "")
+    last = ordered[-1].get("step", "")
+    steps = [e.get("step") or "" for e in ordered]
+    # Invite / rounds win over a backfilled Screening that still sits last
+    # (unparsed "now" stamp, or not yet sorted in Mongo).
+    if last in SCREENING_TIMELINE_STEPS and any(
+        s.startswith("interview_") or s == "offer" for s in steps
+    ):
+        last = next(
+            s for s in reversed(steps)
+            if s.startswith("interview_") or s == "offer"
+        )
     if last in ("applied", "reapplied"):
         return "applied"
     if last in SCREENING_TIMELINE_STEPS:
@@ -246,12 +296,44 @@ def jobs_status_filter_query(status_filter: Optional[str]) -> dict:
         return {"status": status_filter}
 
     last_step = {"$arrayElemAt": ["$application_timeline.step", -1]}
+    has_interview_step = {
+        "$gt": [
+            {
+                "$size": {
+                    "$setIntersection": [
+                        {"$ifNull": ["$application_timeline.step", []]},
+                        list(INTERVIEW_TIMELINE_STEPS),
+                    ]
+                }
+            },
+            0,
+        ]
+    }
     if status_filter == "interview":
-        last_matches = {"$expr": {"$in": [last_step, list(INTERVIEW_TIMELINE_STEPS)]}}
+        last_matches = {
+            "$expr": {
+                "$or": [
+                    {"$in": [last_step, list(INTERVIEW_TIMELINE_STEPS)]},
+                    {
+                        "$and": [
+                            {"$in": [last_step, list(SCREENING_TIMELINE_STEPS)]},
+                            has_interview_step,
+                        ]
+                    },
+                ]
+            }
+        }
     elif status_filter == "applied":
         last_matches = {"$expr": {"$in": [last_step, ["applied", "reapplied"]]}}
     elif status_filter == "screening":
-        last_matches = {"$expr": {"$in": [last_step, list(SCREENING_TIMELINE_STEPS)]}}
+        last_matches = {
+            "$expr": {
+                "$and": [
+                    {"$in": [last_step, list(SCREENING_TIMELINE_STEPS)]},
+                    {"$not": has_interview_step},
+                ]
+            }
+        }
     else:
         last_matches = {"$expr": {"$eq": [last_step, status_filter]}}
 
@@ -306,14 +388,14 @@ def _normalize_timeline(raw) -> list:
             continue
         at = _parse_timeline_at(item.get("at")) or datetime.now()
         out.append({"step": step, "at": at})
-    return out
+    return _sort_timeline(out)
 
 
 def _hydrate_timeline(job: dict) -> list:
     """Return timeline list; seed from applied_at for older records."""
     timeline = job.get("application_timeline")
     if isinstance(timeline, list) and timeline:
-        return timeline
+        return _sort_timeline(timeline)
     status = job.get("status") or "pending"
     # Reset Not Applied means there is no application to show
     if status == "pending":
@@ -393,6 +475,7 @@ def _timeline_update_fields(job: dict, timeline: list, now: datetime) -> dict:
         new_status = prev_status
     else:
         new_status = _status_from_timeline(timeline, fallback="pending")
+    timeline = _sort_timeline(timeline)
 
     update_fields = {
         "application_timeline": timeline,

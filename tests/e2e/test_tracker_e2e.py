@@ -191,6 +191,46 @@ class TrackerE2E(unittest.TestCase):
         self.assertEqual(steps, ["applied", "interview_invite"])
         expect(progress.locator(".progress-node")).to_have_count(2)
 
+    def test_backfill_screening_after_invite(self):
+        progress = self.open_card(PENDING_ID)
+        progress.get_by_role("button", name="+ Applied").click()
+        self.confirm_modal()
+        wait_for(lambda: self.job(PENDING_ID)["status"] == "applied", "status = applied")
+
+        progress = self.page.locator(f"#progress-{PENDING_ID}")
+        progress.get_by_role("button", name="+ Invite").click()
+        self.confirm_modal()
+        wait_for(lambda: self.job(PENDING_ID)["status"] == "interview", "status = interview")
+        expect(progress.get_by_role("button", name="+ Screening")).to_be_visible()
+        expect(progress.get_by_role("button", name="+ Submitted")).to_be_visible()
+
+        progress.get_by_role("button", name="+ Screening").click()
+        self.confirm_modal()
+        wait_for(
+            lambda: "screening" in [
+                e["step"] for e in self.job(PENDING_ID)["application_timeline"]
+            ],
+            "timeline includes screening",
+        )
+        job = self.job(PENDING_ID)
+        self.assertEqual(job["status"], "interview")
+        self.assertEqual(
+            [e["step"] for e in job["application_timeline"]],
+            ["applied", "screening", "interview_invite"],
+        )
+        expect(progress.locator(".progress-node")).to_have_count(3)
+
+        progress.get_by_role("button", name="+ Submitted").click()
+        self.confirm_modal()
+        wait_for(
+            lambda: [
+                e["step"] for e in self.job(PENDING_ID)["application_timeline"]
+            ] == ["applied", "screening", "screening_done", "interview_invite"],
+            "submitted sits before invite",
+        )
+        self.assertEqual(self.job(PENDING_ID)["status"], "interview")
+        expect(progress.locator(".progress-node")).to_have_count(4)
+
     def test_undo_applied_resets_to_not_applied(self):
         progress = self.open_card(APPLIED_ID)
         progress.get_by_role("button", name="↩ Undo").click()

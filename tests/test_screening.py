@@ -26,6 +26,7 @@ with patch.object(db_mongo, "ensure_indexes"):
         TIMELINE_STEPS,
         _hydrate_timeline,
         _normalize_timeline,
+        _sort_timeline,
         _status_from_timeline,
         _status_update_fields,
         _timeline_update_fields,
@@ -35,6 +36,7 @@ with patch.object(db_mongo, "ensure_indexes"):
         job_reached_interview,
         jobs_status_filter_query,
     )
+    from web.serialize import _serialize  # noqa: E402
 
 from page_source import page_source  # noqa: E402
 
@@ -237,6 +239,130 @@ class ScreeningUiTests(unittest.TestCase):
         self.assertIn(".status-pill.s-screening", HTML)
         self.assertIn(".progress-node.step-screening", HTML)
         self.assertIn(".dot-screening", HTML)
+        self.assertIn("function screeningBackfillActions(timeline)", HTML)
+        self.assertIn("function mergeTimelineActions(timeline, forward)", HTML)
+        self.assertIn("function initialTimeForStep(step, timeline)", HTML)
+        self.assertIn("function sortTimeline(timeline)", HTML)
+        self.assertIn("function furthestTimelineStep(timeline)", HTML)
+
+
+class ScreeningBackfillTests(unittest.TestCase):
+    def test_normalize_inserts_screening_before_later_invite(self):
+        invite = datetime(2026, 4, 2, 11, 0)
+        raw = [
+            {"step": "applied", "at": APPLIED_AT},
+            {"step": "interview_invite", "at": invite},
+            {"step": "screening", "at": SCREEN_AT},
+            {"step": "screening_done", "at": datetime(2026, 3, 20, 11, 0)},
+        ]
+        steps = [e["step"] for e in _normalize_timeline(raw)]
+        self.assertEqual(
+            steps,
+            ["applied", "screening", "screening_done", "interview_invite"],
+        )
+
+    def test_latest_dated_step_keeps_interview_status(self):
+        invite = datetime(2026, 4, 2, 11, 0)
+        tl = [
+            {"step": "applied", "at": APPLIED_AT},
+            {"step": "interview_invite", "at": invite},
+            {"step": "interview_1", "at": datetime(2026, 4, 10, 9, 0)},
+            {"step": "screening", "at": SCREEN_AT},
+        ]
+        self.assertEqual(_status_from_timeline(tl), "interview")
+        self.assertEqual(
+            [e["step"] for e in _sort_timeline(tl)],
+            ["applied", "screening", "interview_invite", "interview_1"],
+        )
+
+    def test_write_backfill_keeps_interview_status(self):
+        invite = datetime(2026, 4, 2, 11, 0)
+        job = {
+            "status": "interview",
+            "applied_at": APPLIED_AT,
+            "application_timeline": [
+                {"step": "applied", "at": APPLIED_AT},
+                {"step": "interview_invite", "at": invite},
+            ],
+        }
+        fields = _timeline_update_fields(
+            job,
+            [
+                {"step": "applied", "at": APPLIED_AT},
+                {"step": "interview_invite", "at": invite},
+                {"step": "screening", "at": SCREEN_AT},
+                {"step": "screening_done", "at": datetime(2026, 3, 20, 11, 0)},
+            ],
+            NOW,
+        )
+        self.assertEqual(fields["status"], "interview")
+        self.assertEqual(
+            [e["step"] for e in fields["application_timeline"]],
+            ["applied", "screening", "screening_done", "interview_invite"],
+        )
+
+    def test_json_string_stamps_sort_before_invite(self):
+        raw = [
+            {"step": "applied", "at": "2026-03-10 14:30"},
+            {"step": "interview_invite", "at": "2026-04-02T11:00:00.000Z"},
+            {"step": "screening", "at": "2026-03-18T16:00"},
+            {"step": "screening_done", "at": "2026-03-20 11:00:00.123"},
+        ]
+        self.assertEqual(
+            [e["step"] for e in _normalize_timeline(raw)],
+            ["applied", "screening", "screening_done", "interview_invite"],
+        )
+        self.assertEqual(_status_from_timeline(raw), "interview")
+
+    def test_screening_last_still_interview_if_invite_exists(self):
+        tl = [
+            {"step": "applied", "at": APPLIED_AT},
+            {"step": "interview_invite", "at": datetime(2026, 4, 2, 11, 0)},
+            {"step": "screening", "at": NOW},
+        ]
+        self.assertEqual(_status_from_timeline(tl), "interview")
+        self.assertTrue(job_matches_status_filter(_job(
+            status="interview",
+            application_timeline=tl,
+        ), "interview"))
+        self.assertFalse(job_matches_status_filter(_job(
+            status="interview",
+            application_timeline=tl,
+        ), "screening"))
+        query = jobs_status_filter_query("interview")
+        self.assertIn("screening", repr(query))
+        screen_q = jobs_status_filter_query("screening")
+        self.assertIn("$not", repr(screen_q))
+
+    def test_serialize_repairs_stale_screening_status(self):
+        job = _serialize({
+            "_id": "abc",
+            "status": "screening",
+            "applied_at": APPLIED_AT,
+            "application_timeline": [
+                {"step": "applied", "at": APPLIED_AT},
+                {"step": "interview_invite", "at": datetime(2026, 4, 2, 11, 0)},
+                {"step": "screening", "at": SCREEN_AT},
+            ],
+        })
+        self.assertEqual(job["status"], "interview")
+        self.assertEqual(
+            [e["step"] for e in job["application_timeline"]],
+            ["applied", "screening", "interview_invite"],
+        )
+
+    def test_serialize_keeps_side_overlay_with_backfill(self):
+        job = _serialize({
+            "_id": "abc",
+            "status": "unsuitable",
+            "applied_at": APPLIED_AT,
+            "application_timeline": [
+                {"step": "applied", "at": APPLIED_AT},
+                {"step": "interview_invite", "at": datetime(2026, 4, 2, 11, 0)},
+                {"step": "screening", "at": SCREEN_AT},
+            ],
+        })
+        self.assertEqual(job["status"], "unsuitable")
 
 
 if __name__ == "__main__":

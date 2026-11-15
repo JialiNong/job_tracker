@@ -133,10 +133,20 @@ function journeyPct(day, start, end) {
 }
 
 function renderCompanyTrack(track, start, end) {
+  const rank = {
+    applied: 0, reapplied: 1, screening: 2, screening_done: 3,
+    interview_invite: 4, interview_1: 5, interview_2: 6, interview_3: 7,
+    interview_final: 8, rejected: 9, offer: 10,
+  };
   const steps = (track.steps || [])
     .map(s => ({ ...s, _day: parseJourneyDay(s.date || s.at) }))
     .filter(s => s._day)
-    .sort((a, b) => a._day - b._day);
+    .sort((a, b) => {
+      const da = parseTimelineAt ? parseTimelineAt(a.at || a.date) : a._day;
+      const db = parseTimelineAt ? parseTimelineAt(b.at || b.date) : b._day;
+      if (da !== db) return da - db;
+      return (rank[a.step] ?? 99) - (rank[b.step] ?? 99);
+    });
 
   const segs = [];
   for (let i = 0; i < steps.length - 1; i++) {

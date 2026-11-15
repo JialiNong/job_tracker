@@ -152,6 +152,13 @@ def classify_flow_sink(job: dict, now: datetime | None = None) -> str:
     steps = [e["step"] for e in events]
 
     ranks = [INTERVIEW_RANK[s] for s in steps if s in INTERVIEW_RANK]
+    # Backfilled Screening must not hide an Invite / round already on the track.
+    if last in SCREENING_TIMELINE_STEPS and ranks:
+        last_event = max(
+            (e for e in events if e["step"] in INTERVIEW_RANK),
+            key=lambda e: INTERVIEW_RANK[e["step"]],
+        )
+        last = last_event["step"]
     has_offer = last == "offer" or "offer" in steps
 
     if has_offer and last != "rejected":

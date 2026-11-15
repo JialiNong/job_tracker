@@ -78,6 +78,18 @@ class ClassifyFlowSinkTests(unittest.TestCase):
         self.assertEqual(classify_flow_sink(sent), "screening")
         self.assertEqual(job_flow_links(sent), [("applied", "screening")])
 
+    def test_backfilled_screening_does_not_leave_interview_path(self):
+        job = _job(status="interview", steps=(
+            ("applied", APPLIED),
+            ("interview_invite", INVITE),
+            ("screening", datetime(2026, 11, 15, 21, 0)),
+        ))
+        self.assertEqual(classify_flow_sink(job), "awaiting")
+        self.assertEqual(
+            job_flow_links(job),
+            [("applied", "interview"), ("interview", "awaiting")],
+        )
+
     def test_rejected_without_interview(self):
         job = _job(status="rejected", steps=(
             ("applied", APPLIED),

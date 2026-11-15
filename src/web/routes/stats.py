@@ -26,6 +26,7 @@ from web.status import (
     TIMELINE_STEPS,
     _format_timeline_at,
     _parse_timeline_at,
+    _timeline_sort_key,
     chip_status_counts,
 )
 
@@ -237,7 +238,7 @@ def api_journey():
         if not has_interview:
             continue
 
-        steps.sort(key=lambda s: s["_dt"])
+        steps.sort(key=lambda s: _timeline_sort_key({"step": s["step"], "at": s["_dt"]}))
         for s in steps:
             s.pop("_dt", None)
 

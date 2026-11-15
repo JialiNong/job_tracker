@@ -154,7 +154,7 @@ class ReappliedUiTests(unittest.TestCase):
 
     def test_label_and_actions(self):
         self.assertIn("reapplied:        'Reapplied'", HTML)
-        self.assertIn("if (last === 'rejected') return [reapply];", HTML)
+        self.assertIn("if (last === 'rejected') return mergeTimelineActions(timeline, [reapply]);", HTML)
         self.assertIn("if (last === 'applied' || last === 'reapplied') {", HTML)
         self.assertIn("if (last === 'applied' || last === 'reapplied') return 'applied';", HTML)
         self.assertIn(".progress-node.step-reapplied", HTML)
