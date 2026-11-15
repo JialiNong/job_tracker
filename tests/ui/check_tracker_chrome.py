@@ -303,6 +303,10 @@ def check_funnel_rail(page, run: Runner, prefix: str, expect_h: int):
               page.locator("#flowSection").is_visible())
     run.check(f"{prefix}: weekly applications board is on Overview",
               page.locator("#weeklySection").is_visible())
+    run.check(f"{prefix}: Jobs status chips are hidden on Overview",
+              not page.locator("#statsBar").is_visible())
+    run.check(f"{prefix}: Active chip is not on Overview",
+              not page.locator('.stat-chip[data-status="active"]').is_visible())
     page.wait_for_function(
         """() => {
           const interview = document.getElementById('fp-interview');
@@ -328,6 +332,10 @@ def check_funnel_rail(page, run: Runner, prefix: str, expect_h: int):
     run.shot(page, f"{prefix.split()[0]}-overview.png")
     page.click("#tabJobs")
     page.wait_for_timeout(150)
+    run.check(f"{prefix}: Jobs status chips return after leaving Overview",
+              page.locator("#statsBar").is_visible())
+    run.check(f"{prefix}: Active chip returns on Jobs",
+              page.locator('.stat-chip[data-status="active"]').is_visible())
 
 
 def check_got_interview_chip(page, run: Runner, prefix: str):

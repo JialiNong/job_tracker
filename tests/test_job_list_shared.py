@@ -134,6 +134,17 @@ class SharedCardChromeTests(unittest.TestCase):
         self.assertIn("static_url('js/tracker/flow.js')", (ROOT / "templates" / "index.html").read_text())
         self.assertIn("static_url('css/tracker/flow.css')", (ROOT / "templates" / "index.html").read_text())
 
+    def test_status_chips_live_in_sidebar_not_jobs_view(self):
+        html = (ROOT / "templates" / "index.html").read_text()
+        stats = html.find('id="statsBar"')
+        jobs = html.find('id="jobsView"')
+        self.assertGreater(stats, 0)
+        self.assertGreater(jobs, stats)
+        js = (ROOT / "static" / "js" / "tracker" / "index.js").read_text()
+        self.assertIn("statusFilters.hidden = overview", js)
+        css = (ROOT / "static" / "css" / "base.css").read_text()
+        self.assertIn(".side-extra[hidden]", css)
+
     def test_page_css_does_not_redefine_shared_ring(self):
         ring = re.compile(r"^\.score-ring \{", re.M)
         shared = SHARED_CSS.read_text()

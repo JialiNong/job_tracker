@@ -125,6 +125,7 @@ After any edit under `templates/`, `static/css/`, or `static/js/`, run **`./scri
 | Log Job / Timeouts selects | shared `--phone-ctrl-h` recipe (appearance none, padding, 16px) | (phone recipe only) |
 | Unmatched Filters | same sheet contract + custom score | — |
 | Batch bar / timeline modal | bar stays on screen | datetime modal z-index above the drawer |
+| Overview | Jobs status chips (`#statsBar`) hidden; they return on Jobs | same |
 
 Look at the screenshots under the path the script prints (`/tmp/job-ui-chrome/` unless `UI_CHECK_OUT` is set). A green exit code is not a substitute for a visual miss (text sitting high, mask too faint).
 

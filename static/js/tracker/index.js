@@ -114,6 +114,10 @@ function showTrackerView(view) {
   tabOverview.setAttribute('aria-selected', String(overview));
   tabJobs.tabIndex = overview ? -1 : 0;
   tabOverview.tabIndex = overview ? 0 : -1;
+  // Status chips live in the sidebar, not inside #jobsView — hide them on Overview
+  // (phone chip row and desktop Status column) and restore them on Jobs.
+  const statusFilters = document.querySelector('.side-extra');
+  if (statusFilters) statusFilters.hidden = overview;
   if (overview) {
     // Heatmap, bubbles, and flow boards measure width; re-measure now they are visible
     requestAnimationFrame(() => {

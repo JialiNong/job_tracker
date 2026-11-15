@@ -290,7 +290,7 @@ Already-scored jobs are not rematched automatically. To re-score one: Unmatched 
 
 **Tracker / Unmatched List layout:** the company line also shows LinkedIn applicant count (`applicants` when scraped). On Tracker, a saved `#N at apply` (`applicant_position`) replaces that scraped phrase on the row.
 
-**Sidebar:** from Tracker, Log a job / Timeouts / Unmatched open in a new tab so the job list stays. Switching among those three pages stays in the same tab.
+**Sidebar:** from Tracker, Log a job / Timeouts / Unmatched open in a new tab so the job list stays. Switching among those three pages stays in the same tab. Tracker status chips (Active, Not applied, …) live in `.side-extra` — Jobs only. Overview hides that block (phone chip row and desktop Status column); switching back to Jobs restores it.
 
 **Overview pipeline rail:** one bar to scale where the full width is every opened job (`title_passed_clicked`). Parts: not in English (grey) · in English not matched · AI matched, with **Applied** inside matched, **Got interview** inside Applied (same lookback as the Got interview chip: invite / a round / offer, including later rejected), and **Offer** inside Got interview. Volume percentages (through Applied) are a share of opened jobs. **Got interview** and **Offer** are a share of Applied (interview rate and offer rate among applications), not of opened jobs. Offer stays in the readout at 0 so the slot is reserved. On a phone the colour strip is 14px; labels sit under the bar.
 

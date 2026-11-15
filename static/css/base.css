@@ -178,6 +178,8 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 600; letter-spacing: -0
   padding: 0 10px 6px;
 }
 .side-extra { display: flex; flex-direction: column; flex: none; }
+/* display:flex above would otherwise keep [hidden] visible. */
+.side-extra[hidden] { display: none; }
 /* flex: none so a long status list makes the sidebar scroll instead of
    squeezing under "Log out" (it used to draw over it on short windows) */
 .side-logout { margin-top: auto; color: var(--muted); font-size: .88rem; }
@@ -330,6 +332,7 @@ html.ui-lock body {
   .side-logout { margin: 0 0 0 auto; padding: 2px 6px; }
   .nav, .side-extra { min-width: 0; max-width: 100%; }
   .side-extra { order: 4; flex-basis: 100%; }
+  .side-extra[hidden] { display: none; }
   .side-label { display: none; }
   .main { padding: 12px 12px 72px; gap: 12px; }
   .page-head { gap: 8px; }
