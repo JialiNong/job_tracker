@@ -27,6 +27,7 @@
   /* Job status colours (one system for pills, dots, timelines) */
   --pending: #4f6673;
   --applied: #33649e;
+  --screening: #4b4f91;
   --rejected: #a64338;
   --interview: #885a0d;
   --offer: #266f46;
@@ -84,6 +85,7 @@
     --warning: #e0a646;
     --pending: #8fb0c4;
     --applied: #6fa3e0;
+    --screening: #a0a6ef;
     --rejected: #e18072;
     --interview: #e0a646;
     --offer: #5cbf84;

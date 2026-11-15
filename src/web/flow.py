@@ -10,7 +10,7 @@ from collections import Counter, defaultdict
 from datetime import date, datetime, timedelta
 
 from core.db_mongo import resolve_applied_at
-from web.status import _hydrate_timeline, _parse_timeline_at
+from web.status import SCREENING_TIMELINE_STEPS, _hydrate_timeline, _parse_timeline_at
 
 # ISO-week stacked bars: LinkedIn / Indeed stay named; everything else is Other.
 PLATFORM_KEYS = ("linkedin", "indeed", "other")
@@ -51,12 +51,13 @@ IN_PROGRESS_AT = {
 }
 
 # Terminals that never reached invite / a round / offer.
-COL1_SINKS = frozenset({"waiting", "rejected"})
+COL1_SINKS = frozenset({"waiting", "rejected", "screening"})
 
 # id, English label, column, CSS tone (status colour token)
 SANKY_NODE_META = (
     {"id": "applied", "label": "Applied", "column": 0, "tone": "applied"},
     {"id": "interview", "label": "Interview", "column": 1, "tone": "interview"},
+    {"id": "screening", "label": "Screening", "column": 1, "tone": "screening"},
     {"id": "waiting", "label": "Waiting", "column": 1, "tone": "waiting"},
     {"id": "rejected", "label": "Rejected", "column": 1, "tone": "rejected"},
     {"id": "awaiting", "label": "Awaiting interview", "column": 2, "tone": "interview"},
@@ -136,8 +137,9 @@ def classify_flow_sink(job: dict, now: datetime | None = None) -> str:
     """
     Current Sankey sink for one application record.
 
-    Waiting / pre-interview rejected sit in column 1. Anything that reached
-    invite / a round / offer continues through Interview into column 2.
+    Waiting / screening / pre-interview rejected sit in column 1. Anything
+    that reached invite / a round / offer continues through Interview into
+    column 2.
 
     A round whose timestamp is still in the future is "upcoming"; a past
     timestamp means that round already happened and the job is waiting after
@@ -162,6 +164,8 @@ def classify_flow_sink(job: dict, now: datetime | None = None) -> str:
         last_event = next((e for e in reversed(events) if e["step"] == last), None)
         upcoming = _is_upcoming(last_event.get("at") if last_event else None, now)
         return IN_PROGRESS_AT[(last, upcoming)]
+    if last in SCREENING_TIMELINE_STEPS:
+        return "screening"
     return "waiting"
 
 

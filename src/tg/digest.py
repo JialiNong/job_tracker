@@ -19,6 +19,7 @@ _TELEGRAM_MSG_LIMIT = 3500
 STATUS_LABELS = {
     "pending": "Not Applied",
     "applied": "Applied",
+    "screening": "Screening",
     "rejected": "Rejected",
     "interview": "Interview",
     "offer": "Offer",

@@ -350,6 +350,18 @@ def check_got_interview_chip(page, run: Runner, prefix: str):
     wait_cards(page)
 
 
+def check_screening_chip(page, run: Runner, prefix: str):
+    chip = page.locator('.stat-chip[data-status="screening"]')
+    run.check(f"{prefix}: Screening chip is visible", chip.is_visible())
+    chip.click()
+    page.wait_for_timeout(150)
+    run.check(f"{prefix}: Screening chip activates on tap",
+              "active" in (chip.get_attribute("class") or ""),
+              f"class={chip.get_attribute('class')}")
+    page.locator('.stat-chip[data-status="active"]').click()
+    wait_cards(page)
+
+
 def nav_targets(page):
     return page.evaluate(
         """() => {
@@ -497,6 +509,7 @@ def run_phone(page, base, run: Runner):
               status_outlined(m.get("statusOutline")),
               f"outline={m.get('statusOutline')}")
     check_got_interview_chip(page, run, "phone list")
+    check_screening_chip(page, run, "phone list")
     check_funnel_rail(page, run, "phone overview", 14)
 
     page.click(".card-row")
@@ -656,6 +669,7 @@ def run_desktop(page, base, run: Runner):
               status_outlined(m.get("statusOutline")),
               f"outline={m.get('statusOutline')}")
     check_got_interview_chip(page, run, "desktop list")
+    check_screening_chip(page, run, "desktop list")
     check_funnel_rail(page, run, "desktop overview", 92)
 
     page.click(".card-row")

@@ -110,6 +110,7 @@ function formatJourneyDate(iso) {
 function journeyNodeClass(step) {
   if (step === 'applied') return 'step-applied';
   if (step === 'reapplied') return 'step-reapplied';
+  if (String(step).startsWith('screening')) return 'step-screening';
   if (step === 'rejected') return 'step-rejected';
   if (step === 'offer') return 'step-offer';
   if (String(step).startsWith('interview_')) return 'step-interview';

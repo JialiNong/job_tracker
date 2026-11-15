@@ -289,6 +289,7 @@
 }
 .jt-node.step-applied   { --node-color: var(--applied); }
 .jt-node.step-reapplied { --node-color: var(--applied); }
+.jt-node.step-screening { --node-color: var(--screening); }
 .jt-node.step-interview { --node-color: var(--interview); }
 .jt-node.step-rejected  { --node-color: var(--rejected); }
 .jt-node.step-offer     { --node-color: var(--offer); }

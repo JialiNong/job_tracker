@@ -134,9 +134,13 @@ async function addTimelineStep(jobId, step) {
       ? 'When did you apply for this job?'
       : step === 'reapplied'
         ? 'When did you apply again (e.g. to the repost)?'
-      : step === 'interview_invite'
-        ? 'When did you receive the interview invitation?'
-        : `When did you get the “${label}” update?`,
+        : step === 'screening'
+          ? 'When did they send the screening (questions, Loom, or similar)?'
+          : step === 'screening_done'
+            ? 'When did you send the answers / video?'
+            : step === 'interview_invite'
+              ? 'When did you receive the interview invitation?'
+              : `When did you get the “${label}” update?`,
     initial: nowLocalInputValue(),
   });
   if (!at) return;

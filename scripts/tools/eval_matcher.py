@@ -38,7 +38,7 @@ import matching.evaluator as ev  # noqa: E402
 from core.db_mongo import APPLICATION_QUERY, get_collection  # noqa: E402
 from matching.evaluator import load_user_profile  # noqa: E402
 
-POSITIVE = ["applied", "rejected", "interview", "prev_rejected", "closed_no_reply"]
+POSITIVE = ["applied", "screening", "rejected", "interview", "prev_rejected", "closed_no_reply"]
 RESULTS_DIR = os.path.join(_ROOT, "evals", "results")
 CACHE_PATH = os.path.join(RESULTS_DIR, "company_cache.json")
 MIN_DESC = 500

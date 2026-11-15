@@ -149,6 +149,33 @@ class TrackerE2E(unittest.TestCase):
         expect(self.page.locator("#jobGrid .card")).to_have_count(1)
         expect(self.page.locator(f"#card-{APPLIED_ID}")).to_have_count(1)
 
+    def test_record_applied_then_screening(self):
+        progress = self.open_card(PENDING_ID)
+        progress.get_by_role("button", name="+ Applied").click()
+        self.confirm_modal()
+        wait_for(lambda: self.job(PENDING_ID)["status"] == "applied", "status = applied")
+
+        progress = self.page.locator(f"#progress-{PENDING_ID}")
+        progress.get_by_role("button", name="+ Screening").click()
+        self.confirm_modal()
+        wait_for(lambda: self.job(PENDING_ID)["status"] == "screening", "status = screening")
+        steps = [e["step"] for e in self.job(PENDING_ID)["application_timeline"]]
+        self.assertEqual(steps, ["applied", "screening"])
+        expect(progress.locator(".progress-node")).to_have_count(2)
+        expect(progress.get_by_role("button", name="+ Submitted")).to_be_visible()
+
+        progress.get_by_role("button", name="+ Submitted").click()
+        self.confirm_modal()
+        wait_for(
+            lambda: [
+                e["step"] for e in self.job(PENDING_ID)["application_timeline"]
+            ] == ["applied", "screening", "screening_done"],
+            "timeline includes submitted",
+        )
+        self.assertEqual(self.job(PENDING_ID)["status"], "screening")
+        expect(progress.locator(".progress-node")).to_have_count(3)
+        expect(progress.get_by_role("button", name="+ Invite")).to_be_visible()
+
     def test_record_applied_then_invite(self):
         progress = self.open_card(PENDING_ID)
         progress.get_by_role("button", name="+ Applied").click()

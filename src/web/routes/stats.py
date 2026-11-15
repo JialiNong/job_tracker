@@ -161,7 +161,7 @@ def api_journey():
     Application Journey:
     - Overview line: first apply date → today + total applied count
     - Company tracks: only jobs with interview invite / rounds / offer,
-      each showing the full step timeline (Applied → Invite → Rounds …)
+      each showing the full step timeline (Applied → Screening → Submitted → Invite → Rounds …)
     """
     collection = get_collection("matched_jobs")
     jobs = list(collection.find(APPLICATION_QUERY, JOURNEY_PROJECTION))

@@ -147,6 +147,7 @@
 .flow-tone-applied { fill: var(--applied); }
 .flow-tone-waiting { fill: var(--pending); }
 .flow-tone-rejected { fill: var(--rejected); }
+.flow-tone-screening { fill: var(--screening); }
 .flow-tone-interview { fill: var(--interview); }
 .flow-tone-offer { fill: var(--offer); }
 

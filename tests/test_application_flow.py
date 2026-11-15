@@ -63,6 +63,21 @@ class ClassifyFlowSinkTests(unittest.TestCase):
     def test_waiting_after_apply(self):
         self.assertEqual(classify_flow_sink(_job()), "waiting")
 
+    def test_screening_is_column1_not_interview(self):
+        asked = _job(status="screening", steps=(
+            ("applied", APPLIED),
+            ("screening", INVITE),
+        ))
+        sent = _job(status="screening", steps=(
+            ("applied", APPLIED),
+            ("screening", INVITE),
+            ("screening_done", ROUND1),
+        ))
+        self.assertEqual(classify_flow_sink(asked), "screening")
+        self.assertEqual(job_flow_links(asked), [("applied", "screening")])
+        self.assertEqual(classify_flow_sink(sent), "screening")
+        self.assertEqual(job_flow_links(sent), [("applied", "screening")])
+
     def test_rejected_without_interview(self):
         job = _job(status="rejected", steps=(
             ("applied", APPLIED),

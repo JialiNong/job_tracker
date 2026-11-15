@@ -20,7 +20,7 @@
   <div class="side-label">Status</div>
   <!-- ── Status filter (side statuses fold under "Show more") ──────── -->
   <div class="stats-bar" id="statsBar">
-    <button type="button" class="stat-chip active" data-status="active" onclick="setStatusFilter('active')" title="Not Applied, Applied, Interview, Offer and Rejected — hides Unsuitable, Closed, Repost and other side statuses">
+    <button type="button" class="stat-chip active" data-status="active" onclick="setStatusFilter('active')" title="Not Applied, Applied, Screening, Interview, Offer and Rejected — hides Unsuitable, Closed, Repost and other side statuses">
       <span class="dot dot-active"></span><span class="chip-label">Active</span><b id="cnt-active">–</b>
     </button>
     <button type="button" class="stat-chip" data-status="pending" onclick="setStatusFilter('pending')">
@@ -28,6 +28,9 @@
     </button>
     <button type="button" class="stat-chip" data-status="applied" onclick="setStatusFilter('applied')">
       <span class="dot dot-applied"></span><span class="chip-label">Applied</span><b id="cnt-applied">–</b>
+    </button>
+    <button type="button" class="stat-chip" data-status="screening" onclick="setStatusFilter('screening')" title="Asked for questions / Loom, or already submitted — not a live interview">
+      <span class="dot dot-screening"></span><span class="chip-label">Screening</span><b id="cnt-screening">–</b>
     </button>
     <button type="button" class="stat-chip" data-status="interview" onclick="setStatusFilter('interview')">
       <span class="dot dot-interview"></span><span class="chip-label">Interview</span><b id="cnt-interview">–</b>

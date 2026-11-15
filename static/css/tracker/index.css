@@ -32,6 +32,7 @@
 .dot-active     { background: var(--text); }
 .dot-pending    { background: var(--pending); }
 .dot-applied    { background: var(--applied); }
+.dot-screening  { background: var(--screening); }
 .dot-rejected   { background: var(--rejected); }
 .dot-interview  { background: var(--interview); }
 .dot-got_interview {

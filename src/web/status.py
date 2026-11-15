@@ -20,10 +20,12 @@ JOURNEY_INTERVIEW_STEPS = frozenset({
     "interview_final",
     "offer",
 })
-# All steps shown on a company track (including Applied / Rejected)
+# All steps shown on a company track (including Applied / Screening / Rejected)
 JOURNEY_TRACK_STEPS = frozenset({
     "applied",
     "reapplied",
+    "screening",
+    "screening_done",
     "interview_invite",
     "interview_1",
     "interview_2",
@@ -38,6 +40,7 @@ JOURNEY_TRACK_STEPS = frozenset({
 STATUS_MAP = {
     "pending":    "Not Applied",
     "applied":    "Applied",
+    "screening":  "Screening",
     "rejected":   "Rejected",
     "interview":  "Interview",
     "offer":      "Offer",
@@ -77,6 +80,12 @@ INTERVIEW_TIMELINE_STEPS = (
     "interview_3",
     "interview_final",
 )
+# "screening": they asked for a questionnaire / Loom / similar.
+# "screening_done": you sent it. Both stay the Screening chip; not Got interview.
+SCREENING_TIMELINE_STEPS = (
+    "screening",
+    "screening_done",
+)
 
 # Application progress timeline steps (ordered interview track)
 # "reapplied": same job (e.g. a repost with the same id/JD) applied again
@@ -84,6 +93,8 @@ INTERVIEW_TIMELINE_STEPS = (
 TIMELINE_STEPS = {
     "applied":         "Applied",
     "reapplied":       "Reapplied",
+    "screening":       "Screening",
+    "screening_done":  "Submitted",
     "interview_invite": "Invite",
     "interview_1":     "Round 1",
     "interview_2":     "Round 2",
@@ -95,6 +106,8 @@ TIMELINE_STEPS = {
 
 TIMELINE_STEP_ORDER = (
     "applied",
+    "screening",
+    "screening_done",
     "interview_invite",
     "interview_1",
     "interview_2",
@@ -136,6 +149,8 @@ def _status_from_timeline(timeline: list, fallback: str = "pending") -> str:
     last = timeline[-1].get("step", "")
     if last in ("applied", "reapplied"):
         return "applied"
+    if last in SCREENING_TIMELINE_STEPS:
+        return "screening"
     if last.startswith("interview_"):
         return "interview"
     if last == "rejected":
@@ -170,7 +185,8 @@ def job_reached_offer(job: dict) -> bool:
 
 def application_progress(job: dict) -> Optional[str]:
     """
-    Application stage for Tracker chips: applied / interview / rejected / offer.
+    Application stage for Tracker chips: applied / screening / interview /
+    rejected / offer.
 
     Uses timeline (then applied_at / applied-like status). Side overlays
     (unsuitable / closed / repost / duplicate) do not hide progress.
@@ -234,6 +250,8 @@ def jobs_status_filter_query(status_filter: Optional[str]) -> dict:
         last_matches = {"$expr": {"$in": [last_step, list(INTERVIEW_TIMELINE_STEPS)]}}
     elif status_filter == "applied":
         last_matches = {"$expr": {"$in": [last_step, ["applied", "reapplied"]]}}
+    elif status_filter == "screening":
+        last_matches = {"$expr": {"$in": [last_step, list(SCREENING_TIMELINE_STEPS)]}}
     else:
         last_matches = {"$expr": {"$eq": [last_step, status_filter]}}
 
@@ -311,6 +329,8 @@ def _hydrate_timeline(job: dict) -> list:
             seeded.append({"step": "offer", "at": job.get("updated_at") or at or datetime.now()})
         elif status == "interview":
             seeded.append({"step": "interview_1", "at": job.get("updated_at") or at or datetime.now()})
+        elif status == "screening":
+            seeded.append({"step": "screening", "at": job.get("updated_at") or at or datetime.now()})
         return seeded
     return []
 

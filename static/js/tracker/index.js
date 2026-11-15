@@ -31,6 +31,7 @@ const PAGE_SIZE = 20;
 const STATUS_LABEL = {
   pending:    'Not applied',
   applied:    'Applied',
+  screening:  'Screening',
   rejected:   'Rejected',
   interview:  'Interview',
   offer:      'Offer',
@@ -43,7 +44,7 @@ const STATUS_LABEL = {
   duplicate:  'Duplicate',
 };
 const SIDE_STATUSES = ['unsuitable', 'closed', 'closed_no_reply', 'prev_rejected', 'too_many_questions', 'repost', 'duplicate'];
-const PROGRESS_STAGES = ['applied', 'rejected', 'interview', 'offer'];
+const PROGRESS_STAGES = ['applied', 'screening', 'rejected', 'interview', 'offer'];
 const selectedFetchIds = new Set();
 // Selected cards that are not eligible for batch Fetch / Run AI (already
 // scored) — only Delete selected acts on them.
@@ -57,6 +58,8 @@ let fetchBatchMode = 'fetch';
 const TIMELINE_LABEL = {
   applied:          'Applied',
   reapplied:        'Reapplied',
+  screening:        'Screening',
+  screening_done:   'Submitted',
   interview_invite: 'Invite',
   interview_1:      'Round 1',
   interview_2:      'Round 2',
@@ -93,7 +96,7 @@ async function loadStats() {
       const el = document.getElementById(`cnt-${status}`);
       if (el) el.textContent = cnt;
     }
-    ['active','pending','applied','rejected','interview','got_interview','offer','unsuitable','closed','closed_no_reply','prev_rejected','too_many_questions','repost','duplicate'].forEach(s => {
+    ['active','pending','applied','screening','rejected','interview','got_interview','offer','unsuitable','closed','closed_no_reply','prev_rejected','too_many_questions','repost','duplicate'].forEach(s => {
       if (!data.by_status[s]) {
         const el = document.getElementById(`cnt-${s}`);
         if (el) el.textContent = 0;

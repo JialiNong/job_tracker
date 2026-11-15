@@ -187,6 +187,7 @@ function renderHighlightsBlock(job) {
 function companyHistoryStatus(item) {
   const progress = item.progress || '';
   if (progress === 'rejected') return { label: 'Rejected', cls: 'st-rejected' };
+  if (progress === 'screening') return { label: 'Screening', cls: 'st-screening' };
   if (progress === 'interview') return { label: 'Interview', cls: 'st-interview' };
   if (progress === 'offer') return { label: 'Offer', cls: 'st-offer' };
   if (progress === 'applied') {
@@ -509,6 +510,7 @@ function renderApplicationQa(job) {
 function timelineStepClass(step) {
   if (step === 'applied') return 'step-applied';
   if (step === 'reapplied') return 'step-reapplied';
+  if (String(step).startsWith('screening')) return 'step-screening';
   if (step === 'rejected') return 'step-rejected';
   if (step === 'offer') return 'step-offer';
   if (String(step).startsWith('interview_')) return 'step-interview';
@@ -535,9 +537,21 @@ function nextTimelineActions(timeline) {
 
   const actions = [];
   if (last === 'applied' || last === 'reapplied') {
+    actions.push({ step: 'screening', label: '+ Screening', cls: 'btn-screening-step' });
     actions.push({ step: 'interview_invite', label: '+ Invite', cls: 'btn-interview-step' });
     actions.push({ step: 'rejected', label: '+ Rejected', cls: 'btn-reject-step' });
     actions.push(reapply);
+    return actions;
+  }
+  if (last === 'screening') {
+    actions.push({ step: 'screening_done', label: '+ Submitted', cls: 'btn-screening-step' });
+    actions.push({ step: 'interview_invite', label: '+ Invite', cls: 'btn-interview-step' });
+    actions.push({ step: 'rejected', label: '+ Rejected', cls: 'btn-reject-step' });
+    return actions;
+  }
+  if (last === 'screening_done') {
+    actions.push({ step: 'interview_invite', label: '+ Invite', cls: 'btn-interview-step' });
+    actions.push({ step: 'rejected', label: '+ Rejected', cls: 'btn-reject-step' });
     return actions;
   }
   if (last === 'interview_invite') {
@@ -561,6 +575,7 @@ function statusFromTimeline(timeline) {
   if (!Array.isArray(timeline) || !timeline.length) return '';
   const last = timeline[timeline.length - 1].step;
   if (last === 'applied' || last === 'reapplied') return 'applied';
+  if (last === 'screening' || last === 'screening_done') return 'screening';
   if (String(last).startsWith('interview_')) return 'interview';
   if (last === 'rejected') return 'rejected';
   if (last === 'offer') return 'offer';
@@ -612,7 +627,7 @@ function statusPillHtml(status, timeline) {
 }
 
 function isAppliedLike(status, timeline) {
-  if (['applied', 'interview', 'rejected', 'offer'].includes(status)) return true;
+  if (['applied', 'screening', 'interview', 'rejected', 'offer'].includes(status)) return true;
   return Array.isArray(timeline) && timeline.length > 0;
 }
 
