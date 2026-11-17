@@ -1,6 +1,4 @@
 """Run AI and Fetch details: per card and in batches (Chrome, background)."""
-import threading
-
 from bson import ObjectId
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
@@ -10,16 +8,16 @@ from web.chrome_tasks import (
     FETCH_DETAILS_BATCH_MAX,
     _chrome_busy_reason,
     _fetch_batch_state,
-    _run_ai_lock,
-    _run_ai_state,
     collect_fetch_detail_targets,
     guard_fetch_details_playwright,
     load_tracker_docs_in_order,
     parse_batch_job_oids,
     run_ai_batch_jobs,
+    run_ai_status,
     run_fetch_details_batch_jobs,
     run_fetch_job_details,
     start_chrome_batch,
+    start_run_ai,
 )
 from web.list_query import _jobs_list_query_from_args
 
@@ -44,71 +42,8 @@ def api_job_run_ai(job_id: str):
     if not doc:
         return jsonify({"error": "Job not found"}), 404
 
-    if not _run_ai_lock.acquire(blocking=False):
-        return jsonify({
-            "error": "Another Run AI is already in progress. Please wait.",
-            "busy_job_id": _run_ai_state.get("job_id"),
-        }), 429
-
-    # A complete stored JD is matched without Chrome; only a scrape needs
-    # Chrome to be free of Log Job / batch Fetch details.
-    try:
-        from scrapers.manual_apply_scraper import stored_jd_usable
-        uses_stored_jd = stored_jd_usable(doc)
-    except ImportError:
-        uses_stored_jd = False
-    if not uses_stored_jd:
-        busy = _chrome_busy_reason(ignore_run_ai=True)
-        if busy:
-            _run_ai_lock.release()
-            return jsonify({"error": busy}), 429
-
-    def run():
-        try:
-            _run_ai_state["running"] = True
-            _run_ai_state["job_id"] = job_id
-            _run_ai_state["log"] = []
-            _run_ai_state["ok"] = False
-            _run_ai_state["error"] = None
-            _run_ai_state["match_score"] = None
-            _run_ai_state["match_gate"] = None
-            _run_ai_state["gate_reason"] = None
-
-            from scrapers.manual_apply_scraper import run_ai_on_matched_job
-
-            import builtins
-            _original_print = builtins.print
-
-            def _capture_print(*args, **kwargs):
-                line = " ".join(str(a) for a in args)
-                _run_ai_state["log"].append(line)
-                _original_print(*args, **kwargs)
-
-            builtins.print = _capture_print
-            try:
-                result = run_ai_on_matched_job(doc)
-                _run_ai_state["ok"] = bool(result.get("ok"))
-                _run_ai_state["error"] = result.get("error")
-                _run_ai_state["match_score"] = result.get("match_score")
-                _run_ai_state["match_gate"] = result.get("match_gate")
-                _run_ai_state["gate_reason"] = result.get("gate_reason")
-            finally:
-                builtins.print = _original_print
-        except Exception as e:
-            _run_ai_state["ok"] = False
-            _run_ai_state["error"] = str(e)
-            _run_ai_state["log"].append(f"❌ Fatal error: {e}")
-        finally:
-            _run_ai_state["running"] = False
-            _run_ai_lock.release()
-
-    t = threading.Thread(target=run, daemon=True)
-    t.start()
-    return jsonify({
-        "status": "started",
-        "job_id": job_id,
-        "uses_stored_jd": uses_stored_jd,
-    })
+    payload, status = start_run_ai(doc, job_id)
+    return jsonify(payload), status
 
 
 @bp.route("/api/jobs/<job_id>/fetch-details", methods=["POST"])
@@ -259,14 +194,4 @@ def api_fetch_details_batch_status():
 @login_required
 def api_job_run_ai_status(job_id: str):
     """Poll progress for the current / last Run AI job."""
-    state = _run_ai_state
-    return jsonify({
-        "running": state["running"] and state.get("job_id") == job_id,
-        "job_id": state.get("job_id"),
-        "log": state["log"][-80:],
-        "ok": state["ok"] if state.get("job_id") == job_id and not state["running"] else None,
-        "error": state.get("error") if state.get("job_id") == job_id else None,
-        "match_score": state.get("match_score") if state.get("job_id") == job_id else None,
-        "match_gate": state.get("match_gate") if state.get("job_id") == job_id else None,
-        "gate_reason": state.get("gate_reason") if state.get("job_id") == job_id else None,
-    })
+    return jsonify(run_ai_status(job_id))

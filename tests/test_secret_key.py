@@ -2,18 +2,12 @@
 from __future__ import annotations
 
 import os
-import sys
 import tempfile
 import unittest
-from pathlib import Path
 from unittest.mock import patch
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
-
 import core.db_mongo as db_mongo  # noqa: E402
+from core.paths import PROJECT_ROOT as ROOT
 
 with patch.object(db_mongo, "ensure_indexes"):
     import web.web_app as web_app  # noqa: E402

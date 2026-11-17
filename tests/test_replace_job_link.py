@@ -4,20 +4,11 @@ Does not touch a live MongoDB.
 """
 from __future__ import annotations
 
-import sys
 import unittest
 from datetime import datetime
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 from bson import ObjectId
-
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
-if str(ROOT / "tests") not in sys.path:
-    sys.path.insert(0, str(ROOT / "tests"))
 
 from page_source import page_source  # noqa: E402
 

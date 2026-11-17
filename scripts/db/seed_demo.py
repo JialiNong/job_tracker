@@ -14,20 +14,15 @@ import argparse
 import os
 import sys
 from datetime import datetime
-from pathlib import Path
-
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-
 from urllib.parse import urlsplit, urlunsplit
 
 from dotenv import load_dotenv
 from pymongo import MongoClient
 
-from demo_dataset import build_demo_dataset, dataset_summary
+from core.paths import PROJECT_ROOT
+from demo_dataset import build_demo_dataset, dataset_summary  # sibling file
 
-load_dotenv(ROOT / ".env")
+load_dotenv(PROJECT_ROOT / ".env")
 
 PRODUCTION_DB_NAMES = frozenset({"job_scraper"})
 DEFAULT_DB = "job_scraper_demo"

@@ -1,0 +1,20 @@
+# Makes src/ importable (core, web, scrapers, …) without sys.path hacks.
+#
+#   pip install -e . --no-deps
+#
+# Always install editable: code finds templates/, static/, config/ and docs/
+# relative to the repo (core.paths.PROJECT_ROOT), so a copied wheel would not.
+# Runtime dependencies stay in the requirements-*.txt files, one per target
+# (local scrapers, Render web, GitHub Actions sources).
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "job-scraper"
+version = "0.1.0"
+requires-python = ">=3.12"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -3,13 +3,8 @@ from __future__ import annotations
 
 import sys
 import unittest
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
 import core.manual_log as ml  # noqa: E402
 
@@ -177,7 +172,7 @@ class SaveLinkIdentityTests(unittest.TestCase):
 
 class FetchKeepsManualIdentityTests(unittest.TestCase):
     def test_fetch_details_does_not_overwrite_user_title(self):
-        import scrapers.manual_apply_scraper as mas
+        import services.tracker_jobs as svc
 
         existing = {
             "job_id": JOB_KEY,
@@ -206,12 +201,12 @@ class FetchKeepsManualIdentityTests(unittest.TestCase):
         fake_pw.return_value.__enter__.return_value = MagicMock()
         fake_pw.return_value.__exit__.return_value = False
 
-        with patch.object(mas, "_load_playwright", return_value=(fake_pw, Exception)), patch(
-            "core.scraper_utils.connect_browser", return_value=browser
-        ), patch.object(mas, "scrape_job_page", return_value=scraped), patch.object(
-            mas, "apply_scraped_details", return_value={"ok": True, "error": None}
+        with patch.object(svc, "load_playwright", return_value=fake_pw), patch(
+            "services.browser_session.connect_browser", return_value=browser
+        ), patch.object(svc, "scrape_job_page", return_value=scraped), patch.object(
+            svc, "apply_scraped_details", return_value={"ok": True, "error": None}
         ) as save:
-            result = mas.fetch_job_details_for_matched_job(existing)
+            result = svc.fetch_job_details_for_matched_job(existing)
 
         self.assertTrue(result["ok"])
         written = save.call_args[0][0]
@@ -223,13 +218,13 @@ class FetchKeepsManualIdentityTests(unittest.TestCase):
 
 class ProcessUrlsIdentityFallbackTests(unittest.TestCase):
     def test_playwright_missing_passes_identity_to_stub_save(self):
-        import scrapers.manual_apply_scraper as mas
+        import services.log_job as svc
 
         ident = ml.normalize_manual_identity(title="Phone title", location="Leipzig")
         with patch.object(
-            mas, "_load_playwright", side_effect=ImportError("No module named 'playwright'")
-        ), patch.object(mas, "save_link_only_urls") as save:
-            mas.process_urls([USER_URL], status="applied", identity=ident)
+            svc, "load_playwright", side_effect=ImportError("No module named 'playwright'")
+        ), patch.object(svc, "save_link_only_urls") as save:
+            svc.process_urls([USER_URL], status="applied", identity=ident)
 
         save.assert_called_once()
         self.assertEqual(save.call_args.kwargs.get("identity"), ident)

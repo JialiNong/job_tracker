@@ -80,16 +80,12 @@ LINKEDIN_WINDOW_ARGS=()
 
 release_pipeline_lock() {
     "$PYTHON" -c "
-import sys
-sys.path.insert(0, '$PROJECT_DIR/src')
 from core.pipeline_lock import release_pipeline_lock
 release_pipeline_lock(pid=int('$$'))
 " 2>/dev/null || true
 }
 
 if ! "$PYTHON" -c "
-import sys
-sys.path.insert(0, '$PROJECT_DIR/src')
 from core.pipeline_lock import acquire_pipeline_lock
 ok, msg = acquire_pipeline_lock(pid=int('$$'))
 print(msg)
@@ -139,9 +135,9 @@ source "$PROJECT_DIR/scripts/lib/pipeline_common.sh"
 
 # Two parallel lanes: scrape then match that source as soon as it finishes.
 # Page and card budgets live in src/core/config.py.
-FULL_PAGES="${PAGES:-$($PYTHON -c "import sys; sys.path.insert(0, 'src'); from core.config import FULL_MAX_PAGES; print(FULL_MAX_PAGES)")}"
-INDEED_JOBS="$($PYTHON -c "import sys; sys.path.insert(0, 'src'); from core.config import INDEED_JOBS_PER_PAGE; print(INDEED_JOBS_PER_PAGE)")"
-LINKEDIN_JOBS="$($PYTHON -c "import sys; sys.path.insert(0, 'src'); from core.config import LINKEDIN_JOBS_PER_PAGE; print(LINKEDIN_JOBS_PER_PAGE)")"
+FULL_PAGES="${PAGES:-$($PYTHON -c "from core.config import FULL_MAX_PAGES; print(FULL_MAX_PAGES)")}"
+INDEED_JOBS="$($PYTHON -c "from core.config import INDEED_JOBS_PER_PAGE; print(INDEED_JOBS_PER_PAGE)")"
+LINKEDIN_JOBS="$($PYTHON -c "from core.config import LINKEDIN_JOBS_PER_PAGE; print(LINKEDIN_JOBS_PER_PAGE)")"
 STAMP="$(date +%Y%m%d_%H%M%S)"
 # Tag every matched_jobs row this run writes, so the final digest only lists this run's matches
 export PIPELINE_RUN_ID="run_${STAMP}_$$"
@@ -193,8 +189,7 @@ log "LinkedIn match:  $([ "$LINKEDIN_MATCH_EXIT" -eq 0 ] && echo '✅' || echo '
 # Get today's stats from the database
 log "Fetching today's stats..."
 STATS=$($PYTHON << 'EOF'
-import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+import os
 from core.db_mongo import get_collection
 from datetime import datetime
 try:
@@ -216,8 +211,7 @@ log "Today: ${SCRAPED} jobs scraped; this run: ${MATCHED} high-quality matches"
 # Push this run's matched jobs to Telegram only after both lanes finish
 log "Step 2/2: Pushing this run's matches to Telegram..."
 $PYTHON -c "
-import os, sys
-sys.path.insert(0, 'src')
+import os
 from tg.digest import push_todays_matched_jobs
 push_todays_matched_jobs(run_id=os.environ['PIPELINE_RUN_ID'])
 " >> "$LOG_DIR/telegram_push_$(date +%Y%m%d).log" 2>&1 \

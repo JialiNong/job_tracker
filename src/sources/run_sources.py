@@ -15,14 +15,9 @@ from __future__ import annotations
 
 import argparse
 import os
-import sys
 import time
 from collections import Counter
 from datetime import datetime
-
-_SRC_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if _SRC_ROOT not in sys.path:
-    sys.path.insert(0, _SRC_ROOT)
 
 from dotenv import load_dotenv  # noqa: E402
 

@@ -3,14 +3,9 @@ from __future__ import annotations
 
 import sys
 import unittest
-from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
 from core import dedup  # noqa: E402
 from sources import arbeitnow, arbeitsagentur, ats, base  # noqa: E402

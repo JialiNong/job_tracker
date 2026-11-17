@@ -1,6 +1,4 @@
 import asyncio
-import sys
-from pathlib import Path
 
 from dotenv import load_dotenv
 import os
@@ -15,16 +13,12 @@ from telegram.ext import (
 )
 from telegram.request import HTTPXRequest
 
-# Repo root: src/tg/bot.py -> ../../
-PROJECT_DIR = Path(__file__).resolve().parents[2]
-SRC_ROOT = Path(__file__).resolve().parents[1]
+from core.paths import PROJECT_ROOT as PROJECT_DIR
+
 load_dotenv(PROJECT_DIR / ".env")
 
-if str(SRC_ROOT) not in sys.path:
-    sys.path.insert(0, str(SRC_ROOT))
-
-from core.challenge_wait import signal_indeed_resume  # noqa: E402
 from core.config import INDEED_CONFIG  # noqa: E402
+from core.indeed_resume import signal_indeed_resume  # noqa: E402
 from core.pipeline_lock import pipeline_is_running  # noqa: E402
 from tg.client import telegram_send_kwargs  # noqa: E402
 

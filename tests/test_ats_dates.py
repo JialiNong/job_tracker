@@ -1,15 +1,9 @@
 """ATS publish dates: every provider's format parses to a naive datetime."""
 from __future__ import annotations
 
-import sys
 import unittest
 from datetime import datetime
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
 from sources.ats import _dt  # noqa: E402
 

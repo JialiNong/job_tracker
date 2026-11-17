@@ -13,13 +13,14 @@ Manual fallback (bot offline):
 from __future__ import annotations
 
 import time
-from pathlib import Path
 
+from core.indeed_resume import (
+    LOGS_DIR,
+    RESUME_FLAG_PATH,
+    clear_resume_flag,
+    resume_flag_exists,
+)
 from tg.client import indeed_challenge_keyboard, send_telegram_message
-
-_PROJECT_ROOT = Path(__file__).resolve().parents[2]
-_LOGS_DIR = _PROJECT_ROOT / "logs"
-RESUME_FLAG_PATH = _LOGS_DIR / "indeed_human_resume.flag"
 
 # How long the scraper waits for the user after notifying Telegram
 DEFAULT_RESUME_TIMEOUT_SEC = 45 * 60
@@ -62,29 +63,6 @@ _CHALLENGE_TEXT_HINTS = (
     "bitte bestätige, dass du ein mensch bist",
     "bitte bestätigen sie, dass sie ein mensch sind",
 )
-
-
-def clear_resume_flag() -> None:
-    """Remove a stale resume signal so we do not auto-continue from a prior run."""
-    try:
-        RESUME_FLAG_PATH.unlink(missing_ok=True)
-    except OSError as exc:
-        print(f"⚠ Could not clear resume flag: {exc}")
-
-
-def signal_indeed_resume() -> Path:
-    """
-    Write the resume flag (called by the Telegram bot after user confirms).
-
-    Returns the flag path.
-    """
-    _LOGS_DIR.mkdir(parents=True, exist_ok=True)
-    RESUME_FLAG_PATH.write_text(f"resume_at={time.time()}\n", encoding="utf-8")
-    return RESUME_FLAG_PATH
-
-
-def resume_flag_exists() -> bool:
-    return RESUME_FLAG_PATH.is_file()
 
 
 def is_indeed_challenge_page(page) -> bool:
@@ -162,7 +140,7 @@ def wait_for_indeed_human_resume(
       - timeout (returns False)
     """
     clear_resume_flag()
-    _LOGS_DIR.mkdir(parents=True, exist_ok=True)
+    LOGS_DIR.mkdir(parents=True, exist_ok=True)
 
     message = (
         "⚠️ Indeed needs human verification\n\n"

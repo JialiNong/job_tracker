@@ -8,10 +8,10 @@ tab (Playwright TargetClosedError).
 from __future__ import annotations
 
 import os
-from pathlib import Path
 
-_PROJECT_ROOT = Path(__file__).resolve().parents[2]
-_LOGS_DIR = _PROJECT_ROOT / "logs"
+from core.paths import PROJECT_ROOT
+
+_LOGS_DIR = PROJECT_ROOT / "logs"
 PIDFILE = _LOGS_DIR / "pipeline.pid"
 
 

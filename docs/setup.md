@@ -6,10 +6,17 @@ Local install, `.env`, tests, and matcher CLI. For how the pipeline works see [a
 
 ```bash
 pip3 install -r requirements.txt
+pip3 install --no-deps -e .   # makes src/ importable (core, web, services, …)
 playwright install chromium   # used by the E2E tests
 ```
 
 Python 3.12 is what GitHub Actions uses.
+
+The editable install (`pyproject.toml`) is what lets every script, test and
+the web server `import core…` / `import web…` — nothing edits `sys.path`. Keep
+it editable: the code finds `templates/`, `static/`, `config/` and `docs/`
+next to `src/`. If you see `ModuleNotFoundError: No module named 'core'`, run
+the install line again in the Python you are using.
 
 ## 2. Configure `.env`
 
@@ -110,7 +117,7 @@ python3 scripts/tools/eval_matcher.py --unapplied --limit 100
 **MongoDB connection failed**
 
 ```bash
-python3 -c "import sys; sys.path.insert(0,'src'); from core.db_mongo import init_db; init_db(); print('OK')"
+python3 -c "from core.db_mongo import init_db; init_db(); print('OK')"
 ```
 
 Check `MONGO_URI` and that your IP is allowed in Atlas Network Access.

@@ -1,15 +1,10 @@
 """Indeed short links (to.indeed.com) expand to a jk= URL before id resolution."""
 import io
-import sys
 import unittest
 import urllib.error
-from pathlib import Path
 from email.message import Message
 from unittest import mock
 
-SRC = Path(__file__).resolve().parents[1] / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
 from core.job_url import expand_short_job_url, is_short_job_url, resolve_job_id
 

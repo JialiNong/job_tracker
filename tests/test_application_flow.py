@@ -4,14 +4,9 @@ Does not touch a live MongoDB.
 """
 from __future__ import annotations
 
-import sys
 import unittest
 from datetime import date, datetime, timezone
-from pathlib import Path
 
-SRC = Path(__file__).resolve().parents[1] / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
 from web.flow import (  # noqa: E402
     build_sankey,

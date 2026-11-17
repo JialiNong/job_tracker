@@ -7,17 +7,11 @@ job and company, code scores it), write the result onto the jobs document, and c
 jobs at or above MATCH_THRESHOLD to matched_jobs (the Tracker).
 
 Used by scripts/lib/pipeline_common.sh (`ai_matcher.py --source indeed|linkedin`),
-manual_apply_scraper (Log Job / Run AI) via evaluate_job().
+services.job_analysis (Log Job / Run AI) via evaluate_job().
 """
 import os
-import sys
 from datetime import datetime
 from typing import Dict, Optional
-
-# Add src/ to path so package imports work when run as a script
-_SRC_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if _SRC_ROOT not in sys.path:
-    sys.path.insert(0, _SRC_ROOT)
 
 from dotenv import load_dotenv
 
@@ -31,8 +25,8 @@ from core.db_mongo import (  # noqa: E402
 )
 from core.job_origin import found_origin  # noqa: E402
 from core.manual_log import analysis_fields  # noqa: E402
-from core.job_url import posting_key_fields  # noqa: E402
-from core.scraper_utils import indeed_job_id_variants, scrub_bullet_location  # noqa: E402
+from core.indeed_meta import scrub_bullet_location  # noqa: E402
+from core.job_url import indeed_job_id_variants, posting_key_fields  # noqa: E402
 from matching import evaluator  # noqa: E402
 from matching.evaluator import (  # noqa: E402,F401  (re-exported for callers)
     is_blocked_match_company,

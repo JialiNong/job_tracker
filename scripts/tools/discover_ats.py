@@ -26,12 +26,11 @@ import sys
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 
-ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.insert(0, os.path.join(ROOT, "src"))
-
 from dotenv import load_dotenv  # noqa: E402
 
-load_dotenv(os.path.join(ROOT, ".env"))
+from core.paths import PROJECT_ROOT  # noqa: E402
+
+load_dotenv(PROJECT_ROOT / ".env")
 
 from core.dedup import normalize_company  # noqa: E402
 from sources import ats  # noqa: E402

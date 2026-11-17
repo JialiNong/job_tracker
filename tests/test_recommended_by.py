@@ -7,13 +7,8 @@ from __future__ import annotations
 import sys
 import unittest
 from datetime import datetime
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
 import core.db_mongo as db_mongo  # noqa: E402
 import core.manual_log as ml  # noqa: E402
@@ -162,14 +157,14 @@ class ApplyScrapedDetailsTests(unittest.TestCase):
 
 class FetchDetailsTests(unittest.TestCase):
     def test_playwright_unavailable_returns_friendly_error(self):
-        import scrapers.manual_apply_scraper as mas
+        import services.tracker_jobs as svc
 
         with patch.object(
-            mas, "_load_playwright", side_effect=ImportError("No module named 'playwright'")
-        ), patch.object(mas, "scrape_job_page") as scrape, patch.object(
-            mas, "enrich_job_and_evaluate"
+            svc, "load_playwright", side_effect=ImportError("No module named 'playwright'")
+        ), patch.object(svc, "scrape_job_page") as scrape, patch.object(
+            svc, "enrich_job_and_evaluate"
         ) as ai, patch.object(ml, "apply_scraped_details") as save:
-            result = mas.fetch_job_details_for_matched_job(_agent_job())
+            result = svc.fetch_job_details_for_matched_job(_agent_job())
 
         self.assertFalse(result["ok"])
         self.assertEqual(result["error"], PLAYWRIGHT_UNAVAILABLE_MSG)
@@ -178,7 +173,7 @@ class FetchDetailsTests(unittest.TestCase):
         save.assert_not_called()
 
     def test_fetch_updates_details_without_running_ai(self):
-        import scrapers.manual_apply_scraper as mas
+        import services.tracker_jobs as svc
 
         scraped = {
             "job_id": JOB_KEY,
@@ -197,14 +192,14 @@ class FetchDetailsTests(unittest.TestCase):
         fake_pw.return_value.__enter__.return_value = MagicMock()
         fake_pw.return_value.__exit__.return_value = False
 
-        with patch.object(mas, "_load_playwright", return_value=(fake_pw, Exception)), patch(
-            "core.scraper_utils.connect_browser", return_value=browser
-        ), patch.object(mas, "scrape_job_page", return_value=scraped), patch.object(
-            mas, "enrich_job_and_evaluate"
+        with patch.object(svc, "load_playwright", return_value=fake_pw), patch(
+            "services.browser_session.connect_browser", return_value=browser
+        ), patch.object(svc, "scrape_job_page", return_value=scraped), patch.object(
+            svc, "enrich_job_and_evaluate"
         ) as ai, patch.object(
-            mas, "apply_scraped_details", return_value={"ok": True, "error": None}
+            svc, "apply_scraped_details", return_value={"ok": True, "error": None}
         ) as save:
-            result = mas.fetch_job_details_for_matched_job(_agent_job())
+            result = svc.fetch_job_details_for_matched_job(_agent_job())
 
         self.assertTrue(result["ok"])
         self.assertEqual(result["title"], "Backend Engineer")
@@ -212,7 +207,7 @@ class FetchDetailsTests(unittest.TestCase):
         save.assert_called_once()
 
     def test_fetch_keeps_this_tracker_row_identity(self):
-        import scrapers.manual_apply_scraper as mas
+        import services.tracker_jobs as svc
 
         scraped = {
             "job_id": "other-hash",
@@ -230,12 +225,12 @@ class FetchDetailsTests(unittest.TestCase):
         fake_pw.return_value.__enter__.return_value = MagicMock()
         fake_pw.return_value.__exit__.return_value = False
 
-        with patch.object(mas, "_load_playwright", return_value=(fake_pw, Exception)), patch(
-            "core.scraper_utils.connect_browser", return_value=browser
-        ), patch.object(mas, "scrape_job_page", return_value=scraped), patch.object(
-            mas, "apply_scraped_details", return_value={"ok": True, "error": None}
+        with patch.object(svc, "load_playwright", return_value=fake_pw), patch(
+            "services.browser_session.connect_browser", return_value=browser
+        ), patch.object(svc, "scrape_job_page", return_value=scraped), patch.object(
+            svc, "apply_scraped_details", return_value={"ok": True, "error": None}
         ) as save:
-            result = mas.fetch_job_details_for_matched_job(_agent_job())
+            result = svc.fetch_job_details_for_matched_job(_agent_job())
 
         self.assertTrue(result["ok"])
         saved_job = save.call_args[0][0]
@@ -243,19 +238,19 @@ class FetchDetailsTests(unittest.TestCase):
         self.assertEqual(saved_job["source"], "indeed")
 
     def test_fetch_allows_untagged_link_only_stub(self):
-        import scrapers.manual_apply_scraper as mas
+        import services.tracker_jobs as svc
 
         stub = _agent_job(recommended_by="")
         with patch.object(
-            mas, "_load_playwright", side_effect=ImportError("No module named 'playwright'")
+            svc, "load_playwright", side_effect=ImportError("No module named 'playwright'")
         ) as load_pw:
-            result = mas.fetch_job_details_for_matched_job(stub)
+            result = svc.fetch_job_details_for_matched_job(stub)
         self.assertFalse(result["ok"])
         self.assertEqual(result["error"], PLAYWRIGHT_UNAVAILABLE_MSG)
         load_pw.assert_called()
 
     def test_fetch_rejects_complete_job_without_missing_details(self):
-        import scrapers.manual_apply_scraper as mas
+        import services.tracker_jobs as svc
 
         complete = _agent_job(
             recommended_by="",
@@ -266,15 +261,15 @@ class FetchDetailsTests(unittest.TestCase):
             ai_pending=False,
             details_fetched_at=datetime(2026, 10, 1),
         )
-        with patch.object(mas, "_load_playwright") as load_pw:
-            result = mas.fetch_job_details_for_matched_job(complete)
+        with patch.object(svc, "load_playwright") as load_pw:
+            result = svc.fetch_job_details_for_matched_job(complete)
         self.assertFalse(result["ok"])
         self.assertIn("already has job details", result["error"].lower())
         load_pw.assert_not_called()
 
-    def test_web_helper_returns_friendly_error_when_scraper_import_fails(self):
+    def test_web_helper_returns_friendly_error_without_playwright(self):
         doc = _agent_job()
-        with patch.dict(sys.modules, {"scrapers.manual_apply_scraper": None}):
+        with patch.dict(sys.modules, {"playwright": None, "playwright.sync_api": None}):
             payload, code = run_fetch_job_details(doc)
         self.assertEqual(code, 503)
         self.assertFalse(payload["ok"])
@@ -297,12 +292,12 @@ class FetchDetailsTests(unittest.TestCase):
 
 class ProcessUrlsRecommendedByTests(unittest.TestCase):
     def test_stub_fallback_passes_recommended_by(self):
-        import scrapers.manual_apply_scraper as mas
+        import services.log_job as svc
 
         with patch.object(
-            mas, "_load_playwright", side_effect=ImportError("No module named 'playwright'")
-        ), patch.object(mas, "save_link_only_urls") as save:
-            mas.process_urls([USER_URL], status="applied", recommended_by="gemini")
+            svc, "load_playwright", side_effect=ImportError("No module named 'playwright'")
+        ), patch.object(svc, "save_link_only_urls") as save:
+            svc.process_urls([USER_URL], status="applied", recommended_by="gemini")
 
         save.assert_called_once()
         kwargs = save.call_args.kwargs

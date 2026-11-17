@@ -3,10 +3,9 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from core.job_url import posting_key, posting_key_fields
+from core.job_url import indeed_job_id_variants, posting_key, posting_key_fields
 from core.mongo.client import COLLECTION_NAME, TIMEOUT_JOBS_COLLECTION, get_db
 from core.mongo.jobs import increment_scraper_stat
-from core.scraper_utils import indeed_job_id_variants
 
 
 def _timeout_id_query(job_id, source):

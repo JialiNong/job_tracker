@@ -14,12 +14,7 @@ Rules (core.job_origin.infer_origin):
 Dry run by default; pass --apply to write.
 """
 import argparse
-import os
-import sys
 from collections import Counter
-
-_SRC = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "src")
-sys.path.insert(0, _SRC)
 
 from dotenv import load_dotenv
 from pymongo import UpdateOne

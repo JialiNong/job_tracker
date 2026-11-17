@@ -14,13 +14,13 @@ import os
 import time
 import urllib.error
 import urllib.request
-from pathlib import Path
 from typing import Any, Optional
 
 from dotenv import load_dotenv
 
-_PROJECT_ROOT = Path(__file__).resolve().parents[2]
-load_dotenv(_PROJECT_ROOT / ".env")
+from core.paths import PROJECT_ROOT
+
+load_dotenv(PROJECT_ROOT / ".env")
 
 
 def _bot_token() -> str:

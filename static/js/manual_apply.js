@@ -2,6 +2,7 @@
    inline onclick="..." handlers in the page call these globals. */
 let _pollTimer = null;
 let _knownLogLen = 0;
+let _allLogLines = [];
 let _submittedStatus = 'pending';
 let _submittedLinkOnly = false;
 let _lookupTimer = null;
@@ -211,6 +212,7 @@ function clearForm() {
   document.getElementById('logBody').innerHTML = '';
   document.getElementById('logCounter').textContent = '';
   _knownLogLen = 0;
+  _allLogLines = [];
   _submittedStatus = 'pending';
   _submittedLinkOnly = false;
 
@@ -281,6 +283,7 @@ async function submitUrls({ linkOnly = false } = {}) {
   document.getElementById('logWrap').classList.add('visible');
   document.getElementById('logBody').innerHTML = '';
   _knownLogLen = 0;
+  _allLogLines = [];
 
   try {
     const res = await fetch('/api/manual-apply', {
@@ -315,22 +318,22 @@ async function submitUrls({ linkOnly = false } = {}) {
 
 async function pollStatus() {
   try {
-    const res = await fetch('/api/manual-apply/status');
+    const res = await fetch(`/api/manual-apply/status?since=${_knownLogLen}`);
     const data = await res.json();
 
-    // Append new log lines
+    // Append only the lines this page has not shown yet
     const logBody = document.getElementById('logBody');
-    const lines = data.log || [];
-    if (lines.length > _knownLogLen) {
-      const newLines = lines.slice(_knownLogLen);
+    const newLines = data.log || [];
+    if (newLines.length) {
       newLines.forEach(line => {
         const div = document.createElement('div');
         div.innerHTML = colorLine(line);
         logBody.appendChild(div);
       });
-      _knownLogLen = lines.length;
+      _allLogLines.push(...newLines);
       logBody.scrollTop = logBody.scrollHeight;
     }
+    _knownLogLen = data.log_total ?? (_knownLogLen + newLines.length);
 
     // Update counter
     const skipCount = data.skip_count || 0;
@@ -343,9 +346,9 @@ async function pollStatus() {
       document.getElementById('linkOnlyBtn').disabled = false;
       const statusLabel = _submittedStatus === 'applied' ? 'Applied' : 'Not Applied';
       const modeHint = _submittedLinkOnly ? ' (link-only, AI pending)' : '';
-      const logText = (data.log || []).join('\n');
+      const logText = _allLogLines.join('\n');
       const hasFatal = /Fatal error|Cannot open Chrome/.test(logText);
-      const savedPartial = (data.log || []).some(l =>
+      const savedPartial = _allLogLines.some(l =>
         /saving with URL|saving link only|AI pending|No user profile|Cannot open Chrome/i.test(l)
       );
       const parts = [];
@@ -353,7 +356,7 @@ async function pollStatus() {
       if (skipCount > 0) parts.push(`${skipCount} already on Tracker (skipped)`);
       if (data.fail_count > 0) parts.push(`${data.fail_count} failed`);
       if (data.done_count === 0 && (data.fail_count > 0 || hasFatal) && skipCount === 0) {
-        const fatalLine = (data.log || []).find(l => /Fatal error|Cannot open Chrome/.test(l));
+        const fatalLine = _allLogLines.find(l => /Fatal error|Cannot open Chrome/.test(l));
         setBanner('error', `${fatalLine || `All ${data.fail_count || 1} URL(s) failed. Check the log above.`}`);
       } else if (data.done_count === 0 && skipCount > 0 && data.fail_count === 0) {
         setBanner('error', `All ${skipCount} URL(s) already on Tracker — nothing saved.`);

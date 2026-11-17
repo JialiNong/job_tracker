@@ -27,11 +27,11 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
-_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.insert(0, os.path.join(_ROOT, "src"))
-
 from dotenv import load_dotenv  # noqa: E402
 
+from core.paths import PROJECT_ROOT  # noqa: E402
+
+_ROOT = str(PROJECT_ROOT)
 load_dotenv(os.path.join(_ROOT, ".env"))
 
 import matching.evaluator as ev  # noqa: E402

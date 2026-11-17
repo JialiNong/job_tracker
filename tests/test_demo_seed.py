@@ -7,9 +7,8 @@ from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
-sys.path.insert(0, str(ROOT / "scripts" / "db"))
+# scripts/db is not a package: import its modules the way the scripts run
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts" / "db"))
 
 from core.applied_location import is_germany_or_remote, normalize_applied_location  # noqa: E402
 from demo_dataset import build_demo_dataset, dataset_summary  # noqa: E402

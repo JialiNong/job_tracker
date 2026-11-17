@@ -26,12 +26,12 @@ from core.config import (
     FEED_TITLE_INCLUDE_PATTERNS,
 )
 from core.dedup import dedup_key, find_cross_source_duplicate
-from core.scraper_utils import (
-    description_save_flags,
-    is_non_english_job_detail,
+from core.jd_quality import description_save_flags
+from core.language import is_non_english_job_detail
+from core.text import strip_html
+from core.title_gate import (
     is_title_excluded,
     is_title_relevant_by_ai,
-    strip_html,
     title_matches_auto_pass,
 )
 

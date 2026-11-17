@@ -29,11 +29,12 @@ from datetime import datetime
 from typing import Callable, Dict, List
 
 from core.config import ATS_CONFIG
+from core.paths import PROJECT_ROOT
 from sources.base import SourceJob
 from sources.http_client import get_json, get_text
 
 SOURCE = ATS_CONFIG["source"]
-_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_PROJECT_ROOT = str(PROJECT_ROOT)
 
 
 def _dt(value) -> datetime | None:

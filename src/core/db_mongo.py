@@ -56,7 +56,6 @@ from core.mongo.tracker import (  # noqa: F401
     reapplied_count,
     resolve_applied_at,
 )
-from core.scraper_utils import indeed_job_id_variants  # noqa: F401  (manual_log re-export)
 
 
 if __name__ == "__main__":

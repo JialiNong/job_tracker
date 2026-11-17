@@ -3,14 +3,7 @@
 Job Tracker Web UI
 Flask web app to view and manage matched jobs
 """
-import sys
 import os
-
-# Add src/ to path so package imports work when run as a script
-_SRC_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-_PROJECT_ROOT = os.path.dirname(_SRC_ROOT)
-if _SRC_ROOT not in sys.path:
-    sys.path.insert(0, _SRC_ROOT)
 
 from dotenv import load_dotenv
 
@@ -20,20 +13,21 @@ load_dotenv()
 from flask import Flask, request, url_for  # noqa: E402
 from werkzeug.middleware.proxy_fix import ProxyFix  # noqa: E402
 from core.db_mongo import ensure_indexes  # noqa: E402
+from core.paths import PROJECT_ROOT  # noqa: E402
 from web.auth import bp as auth_bp, login_manager  # noqa: E402
 from web.routes import ai_tasks, jobs, log_job, pages, stats, timeouts, unmatched  # noqa: E402
 
 app = Flask(
     __name__,
-    template_folder=os.path.join(_PROJECT_ROOT, "templates"),
-    static_folder=os.path.join(_PROJECT_ROOT, "static"),
+    template_folder=os.path.join(PROJECT_ROOT, "templates"),
+    static_folder=os.path.join(PROJECT_ROOT, "static"),
 )
 # Always pick up HTML/template edits without restarting the server
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.jinja_env.auto_reload = True
 
 # Session config (required for login)
-_LOCAL_SECRET_FILE = os.path.join(_PROJECT_ROOT, ".flask_secret_key")
+_LOCAL_SECRET_FILE = os.path.join(PROJECT_ROOT, ".flask_secret_key")
 
 
 def _load_secret_key() -> str:

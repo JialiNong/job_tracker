@@ -107,6 +107,24 @@ class TrackerE2E(unittest.TestCase):
     def job(self, oid):
         return self.db.matched_jobs.find_one({"_id": oid})
 
+    def settled_chip_counts(self, *statuses) -> dict:
+        """
+        Chip counts once the page agrees with the server.
+
+        After a progress click the page bumps chips optimistically, then
+        reloads them from /api/stats. Reading in between races that reload.
+        """
+        def matches():
+            # Same browser context → same login session as the page
+            by_status = self.ctx.request.get(f"{self.base}/api/stats").json()["by_status"]
+            want = {s: int(by_status.get(s) or 0) for s in statuses}
+            shown = {
+                s: self.page.locator(f"#cnt-{s}").inner_text().strip() for s in statuses
+            }
+            return want if all(shown[s] == str(want[s]) for s in statuses) else None
+
+        return wait_for(matches, f"chips {statuses} match /api/stats")
+
     # ── login ────────────────────────────────────────────────────────────
 
     def test_login_required_and_wrong_password_rejected(self):
@@ -217,14 +235,10 @@ class TrackerE2E(unittest.TestCase):
         progress.get_by_role("button", name="+ Invite").click()
         self.confirm_modal()
         wait_for(lambda: self.job(PENDING_ID)["status"] == "interview", "status = interview")
-        self.page.wait_for_function(
-            "() => /^\\d+$/.test(document.getElementById('cnt-got_interview').textContent)"
-            " && /^\\d+$/.test(document.getElementById('cnt-interview').textContent)"
-            " && /^\\d+$/.test(document.getElementById('cnt-interview_cancelled').textContent)"
-        )
-        before_got = int(self.page.locator("#cnt-got_interview").inner_text())
-        before_interview = int(self.page.locator("#cnt-interview").inner_text())
-        before_cancelled = int(self.page.locator("#cnt-interview_cancelled").inner_text())
+        before = self.settled_chip_counts("got_interview", "interview", "interview_cancelled")
+        before_got = before["got_interview"]
+        before_interview = before["interview"]
+        before_cancelled = before["interview_cancelled"]
 
         progress = self.page.locator(f"#progress-{PENDING_ID}")
         progress.get_by_role("button", name="+ Cancelled").click()
@@ -235,13 +249,10 @@ class TrackerE2E(unittest.TestCase):
         )
         steps = [e["step"] for e in self.job(PENDING_ID)["application_timeline"]]
         self.assertEqual(steps, ["applied", "interview_invite", "interview_cancelled"])
-        wait_for(
-            lambda: self.page.locator("#cnt-interview_cancelled").inner_text()
-            == str(before_cancelled + 1),
-            "cancelled chip +1",
-        )
-        self.assertEqual(int(self.page.locator("#cnt-got_interview").inner_text()), before_got)
-        self.assertEqual(int(self.page.locator("#cnt-interview").inner_text()), before_interview - 1)
+        after = self.settled_chip_counts("got_interview", "interview", "interview_cancelled")
+        self.assertEqual(after["interview_cancelled"], before_cancelled + 1)
+        self.assertEqual(after["got_interview"], before_got)
+        self.assertEqual(after["interview"], before_interview - 1)
 
     def test_record_applied_then_invite(self):
         progress = self.open_card(PENDING_ID)
@@ -434,6 +445,10 @@ class TrackerE2E(unittest.TestCase):
         self.assertEqual(saved["title"], "Data Engineer")
         self.assertEqual(saved["company"], "Wayne Enterprises")
         self.assertEqual(saved["status"], "pending")
+        # Counts come from the saver's results; the log streams via ?since=
+        expect(self.page.locator("#logCounter")).to_have_text("1 saved, 0 skipped, 0 failed")
+        expect(self.page.locator("#statusBanner")).to_contain_text("1 saved as Not Applied")
+        expect(self.page.locator("#logBody")).to_contain_text("Saved to matched_jobs")
 
     def test_agent_api_requires_token_and_saves(self):
         url = "https://www.linkedin.com/jobs/view/4500000001/"

@@ -1,14 +1,8 @@
 """LinkedIn job ids from every URL shape users and agents paste."""
 from __future__ import annotations
 
-import sys
 import unittest
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
 from core.job_url import canonical_job_link, job_stub_from_url, resolve_job_id  # noqa: E402
 

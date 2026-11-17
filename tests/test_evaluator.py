@@ -1,15 +1,9 @@
 """matching.evaluator: code-side scoring and storage mapping (no API calls)."""
 from __future__ import annotations
 
-import sys
 import unittest
-from pathlib import Path
 from unittest.mock import patch
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
 from matching import evaluator as ev  # noqa: E402
 

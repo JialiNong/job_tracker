@@ -23,19 +23,18 @@ from typing import Dict, Optional
 from openai import OpenAI
 
 from core.config import MATCH_BLOCKED_COMPANIES, MATCH_WEIGHTS
-from core.scraper_utils import (
-    assess_job_description,
-    is_non_english_job_detail,
-    scrub_bullet_location,
-    strip_html,
-)
+from core.indeed_meta import scrub_bullet_location
+from core.jd_quality import assess_job_description
+from core.language import is_non_english_job_detail
+from core.paths import PROJECT_ROOT
+from core.text import strip_html
 
 JOB_MODEL = os.getenv("MATCH_JOB_MODEL", "gpt-5.4-mini")
 COMPANY_MODEL = os.getenv("MATCH_COMPANY_MODEL", "gpt-5.4-mini")
 REASONING_EFFORT = os.getenv("MATCH_REASONING", "low")
 MAX_DESCRIPTION_CHARS = 12000
 
-_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_PROJECT_ROOT = str(PROJECT_ROOT)
 
 ROLE_TYPES = [
     "frontend",

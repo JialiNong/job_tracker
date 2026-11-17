@@ -1,17 +1,11 @@
 """Pre-click title gate: blacklist → auto-pass keywords → AI title check."""
 from __future__ import annotations
 
-import sys
 import unittest
-from pathlib import Path
 from unittest.mock import patch
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
-from core import scraper_utils as su  # noqa: E402
+from core import title_gate as su
 
 
 class TitleGateTests(unittest.TestCase):

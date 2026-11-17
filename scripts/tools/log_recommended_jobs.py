@@ -22,16 +22,13 @@ Skips on Unmatched are reported as below_threshold (not on the Tracker).
 """
 import argparse
 import json
-import os
 import sys
-
-# Allow imports from src/ when run from project root
-_SRC = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "src")
-sys.path.insert(0, _SRC)
 
 from dotenv import load_dotenv
 
-load_dotenv(os.path.join(os.path.dirname(_SRC), ".env"))
+from core.paths import PROJECT_ROOT
+
+load_dotenv(PROJECT_ROOT / ".env")
 
 from core.db_mongo import init_db  # noqa: E402
 from core.agent_push import log_agent_jobs  # noqa: E402

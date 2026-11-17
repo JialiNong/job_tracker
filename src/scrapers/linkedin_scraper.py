@@ -3,16 +3,9 @@
 LinkedIn Job Scraper
 Scrapes job listings from LinkedIn and saves them to MongoDB
 """
-import sys
-import os
 from urllib.parse import quote_plus
 import random
 import re
-
-# Add src/ to path so package imports work when run as a script
-_SRC_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if _SRC_ROOT not in sys.path:
-    sys.path.insert(0, _SRC_ROOT)
 
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
@@ -30,21 +23,17 @@ from core.config import (
     LINKEDIN_CONFIG,
     linkedin_default_max_pages,
 )
-from core.scraper_utils import (
-    pause,
-    safe_text,
-    strip_html,
-    parse_args,
-    connect_browser,
-    open_scraper_page,
-    goto_page,
-    should_skip_title_before_click,
-    is_non_english_job_detail,
-    is_complete_job_description,
+from core.browser import connect_browser, goto_page, open_scraper_page, pause, safe_text
+from core.jd_quality import (
+    DESCRIPTION_FETCH_RETRIES,
     assess_job_description,
     description_save_flags,
-    DESCRIPTION_FETCH_RETRIES,
+    is_complete_job_description,
 )
+from core.language import is_non_english_job_detail
+from core.text import strip_html
+from core.title_gate import should_skip_title_before_click
+from scrapers.cli import parse_args
 
 # LinkedIn configuration
 BASE_URL = LINKEDIN_CONFIG["base_url"]

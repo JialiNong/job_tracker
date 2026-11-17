@@ -4,7 +4,6 @@
 telegram_status() {
     "$PYTHON" -c "
 import sys
-sys.path.insert(0, 'src')
 from tg.client import send_telegram_message
 send_telegram_message(sys.argv[1])
 " "$1" || true

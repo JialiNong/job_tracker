@@ -153,7 +153,7 @@ One-line funnel (must stay true in architecture + code):
 
 | Stage | Module | Question | Outcome |
 |-------|--------|----------|---------|
-| Scrape | `scraper_utils.is_non_english_job_detail` | Is the JD body non-English? | Do **not** save; count `german_filtered` |
+| Scrape | `core.language.is_non_english_job_detail` | Is the JD body non-English? | Do **not** save; count `german_filtered` |
 | Match | `matching.evaluator` layer 1 (`german_required` + quote) | Does an **English** JD require German as a must-have language? | Hard fail (score 1), `match_gate=german` |
 
 Location / German company / “nice to have German” / plus / German-OR-English / basic German / “businesses speak German” in a since-clause must **not** fail the match gate.
@@ -173,8 +173,10 @@ There is no cron / launchd schedule in this project; do not add one. When you ch
 
 ## Code conventions
 
-- **Python 3**, package imports via `src/` on `sys.path` (existing scraper/matcher pattern).
-- Prefer shared helpers in `src/core/scraper_utils.py` and config in `src/core/config.py` over copying filter logic into each scraper.
+- **Python 3**, packages under `src/` installed with `pip install --no-deps -e .` (`pyproject.toml`). Never add `sys.path` edits.
+- Layers, top → bottom: `web` / CLI → `services` → `scrapers`, `matching`, `sources` → `core`. A lower layer never imports a higher one (`tests/test_architecture.py`).
+- Prefer shared helpers in `src/core/` (`title_gate.py`, `jd_quality.py`, `language.py`, `browser.py`, `text.py`) and config in `src/core/config.py` over copying filter logic into each scraper.
+- The web server runs one gunicorn worker: background task state lives in `web/chrome_tasks.py` memory.
 - Playwright talks to an existing Chrome via CDP (`CDP_URL` / port 9222). Do not close the user’s Chrome session from scrapers.
 - Fail-open where the current code already does (e.g. AI title check / language too-short → allow) unless the user asks to tighten.
 - Keep changes scoped: no drive-by refactors; no new markdown files unless asked (architecture updates are required when flow changes).

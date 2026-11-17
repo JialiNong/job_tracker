@@ -1,7 +1,6 @@
 """Log Job (manual URLs) and the token-authenticated agent push endpoint."""
 import hmac
 import os
-import threading
 from datetime import datetime
 
 from flask import Blueprint, jsonify, request
@@ -16,7 +15,7 @@ from core.manual_log import (
     normalize_recommended_by,
     tracker_needs_scrape,
 )
-from web.chrome_tasks import _chrome_busy_reason, _manual_apply_lock, _manual_apply_state
+from web.chrome_tasks import manual_log_status, start_manual_log
 
 bp = Blueprint("log_job", __name__)
 
@@ -162,93 +161,15 @@ def api_manual_apply():
         if applied_date.date() == now.date():
             applied_date = now
 
-    busy = _chrome_busy_reason()
-    if busy:
-        return jsonify({"error": busy}), 429
-
-    if not _manual_apply_lock.acquire(blocking=False):
-        return jsonify({"error": "A manual job log run is already in progress. Please wait."}), 429
-
-    def run():
-        try:
-            _manual_apply_state["running"] = True
-            _manual_apply_state["log"] = []
-            _manual_apply_state["done_count"] = 0
-            _manual_apply_state["fail_count"] = 0
-            _manual_apply_state["skip_count"] = 0
-
-            # Link-only must not import Playwright / scrapers (Render has neither).
-            from core.manual_log import save_link_only_urls as _save_link_only
-
-            def _process_urls(*args, **kwargs):
-                try:
-                    from scrapers.manual_apply_scraper import process_urls as _scrape
-                except ImportError as e:
-                    print(f"⚠️  Scrape is unavailable ({e}). Saving link(s) only.")
-                    _save_link_only(*args, **kwargs)
-                    return
-                _scrape(*args, **kwargs)
-
-            # Monkey-patch print so progress goes to the state log
-            import builtins
-            _original_print = builtins.print
-
-            def _capture_print(*args, **kwargs):
-                line = " ".join(str(a) for a in args)
-                _manual_apply_state["log"].append(line)
-                _original_print(*args, **kwargs)
-
-            builtins.print = _capture_print
-            try:
-                if mode == "link_only":
-                    _save_link_only(
-                        urls,
-                        applied_date=applied_date,
-                        status=job_status,
-                        recommended_by=recommended_by,
-                        identity=identity,
-                    )
-                else:
-                    _process_urls(
-                        urls,
-                        applied_date=applied_date,
-                        status=job_status,
-                        recommended_by=recommended_by,
-                        identity=identity,
-                    )
-                # Count results from log
-                for line in _manual_apply_state["log"]:
-                    if (
-                        "✅ Saved to matched_jobs" in line
-                        or "Marked existing Tracker job as applied" in line
-                    ):
-                        _manual_apply_state["done_count"] += 1
-                    elif "Already on Tracker" in line and "skipping" in line:
-                        _manual_apply_state["skip_count"] += 1
-                    elif (
-                        "❌ Scraping failed" in line
-                        or "Cannot extract" in line
-                        or "Cannot resolve job_id" in line
-                        or "Cannot build a job record" in line
-                        or "Fatal error" in line
-                    ):
-                        _manual_apply_state["fail_count"] += 1
-            finally:
-                builtins.print = _original_print
-        except Exception as e:
-            _manual_apply_state["log"].append(f"❌ Fatal error: {e}")
-        finally:
-            _manual_apply_state["running"] = False
-            _manual_apply_lock.release()
-
-    t = threading.Thread(target=run, daemon=True)
-    t.start()
-    return jsonify({
-        "status": "started",
-        "total": len(urls),
-        "job_status": job_status,
-        "mode": mode,
-    })
+    payload, status = start_manual_log(
+        urls,
+        mode=mode,
+        status=job_status,
+        applied_date=applied_date,
+        recommended_by=recommended_by,
+        identity=identity,
+    )
+    return jsonify(payload), status
 
 
 @bp.route("/api/agent/jobs", methods=["POST"])
@@ -338,12 +259,10 @@ def api_agent_jobs():
 @bp.route("/api/manual-apply/status")
 @login_required
 def api_manual_apply_status():
-    """Poll this to get progress of the current / last manual-apply run."""
-    state = _manual_apply_state
-    return jsonify({
-        "running":    state["running"],
-        "log":        state["log"][-100:],   # last 100 lines
-        "done_count": state["done_count"],
-        "fail_count": state["fail_count"],
-        "skip_count": state.get("skip_count", 0),
-    })
+    """
+    Poll progress of the current / last manual-apply run.
+
+    ?since=N returns only log lines after the first N (log_total = all lines),
+    so the page can append without missing or repeating lines.
+    """
+    return jsonify(manual_log_status(request.args.get("since", 0)))

@@ -1,14 +1,8 @@
 """Posting key: one id per job ad across URL decorations and sources."""
 from __future__ import annotations
 
-import sys
 import unittest
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
 from core.job_url import posting_key, posting_key_fields  # noqa: E402
 

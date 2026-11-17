@@ -1,15 +1,9 @@
 """Manual LinkedIn scrape uses /jobs/view (not a 24h search-results filter)."""
 from __future__ import annotations
 
-import sys
 import unittest
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
 from scrapers.job_page import (  # noqa: E402
     linkedin_view_url,
@@ -90,13 +84,12 @@ class ScrapeLinkedInJobTests(unittest.TestCase):
 
     def test_navigates_to_view_url_not_search_results(self):
         page = self._page()
-        with patch("scrapers.job_page._su") as su, patch(
+        with patch("scrapers.job_page.pause"), patch("scrapers.job_page.safe_text") as safe_text, patch(
             "scrapers.linkedin_scraper.extract_linkedin_description", return_value=JD
         ), patch("scrapers.job_page.extract_linkedin_job_id", return_value=LI_ID), patch(
             "scrapers.job_page.wait_for_job_content", return_value="ready"
         ):
-            su.return_value.pause = lambda *a, **k: None
-            su.return_value.safe_text = lambda loc, timeout=5000: loc._text
+            safe_text.side_effect = lambda loc, timeout=5000: loc._text
             job = scrape_linkedin_job(page, LI_URL)
 
         self.assertEqual(page.gotos, [VIEW_URL])
@@ -114,13 +107,12 @@ class ScrapeLinkedInJobTests(unittest.TestCase):
             f"https://www.linkedin.com/jobs/search-results/"
             f"?currentJobId={LI_ID}&keywords=frontend&f_TPR=r86400"
         )
-        with patch("scrapers.job_page._su") as su, patch(
+        with patch("scrapers.job_page.pause"), patch("scrapers.job_page.safe_text") as safe_text, patch(
             "scrapers.linkedin_scraper.extract_linkedin_description", return_value=JD
         ), patch("scrapers.job_page.extract_linkedin_job_id", return_value=LI_ID), patch(
             "scrapers.job_page.wait_for_job_content", return_value="ready"
         ):
-            su.return_value.pause = lambda *a, **k: None
-            su.return_value.safe_text = lambda loc, timeout=5000: loc._text
+            safe_text.side_effect = lambda loc, timeout=5000: loc._text
             scrape_linkedin_job(page, search)
 
         self.assertEqual(page.gotos, [VIEW_URL])
@@ -138,7 +130,7 @@ class ScrapeLinkedInJobTests(unittest.TestCase):
             raise TimeoutError("wait")
 
         page.wait_for_selector = boom
-        with patch("scrapers.job_page._su") as su, patch(
+        with patch("scrapers.job_page.pause"), patch("scrapers.job_page.safe_text") as safe_text, patch(
             "scrapers.linkedin_scraper.extract_linkedin_description",
             return_value="",
         ), patch(
@@ -147,8 +139,7 @@ class ScrapeLinkedInJobTests(unittest.TestCase):
         ), patch("scrapers.job_page.extract_linkedin_job_id", return_value=LI_ID), patch(
             "scrapers.job_page.wait_for_job_content", return_value="timeout"
         ):
-            su.return_value.pause = lambda *a, **k: None
-            su.return_value.safe_text = lambda loc, timeout=5000: loc._text
+            safe_text.side_effect = lambda loc, timeout=5000: loc._text
             job = scrape_linkedin_job(page, LI_URL)
 
         self.assertEqual(job["title"], "Software Engineer - Frontend Autonomous Air System V&V")
@@ -157,7 +148,7 @@ class ScrapeLinkedInJobTests(unittest.TestCase):
 
     def test_empty_page_returns_warning_not_none(self):
         page = FakePage({})
-        with patch("scrapers.job_page._su") as su, patch(
+        with patch("scrapers.job_page.pause"), patch("scrapers.job_page.safe_text") as safe_text, patch(
             "scrapers.linkedin_scraper.extract_linkedin_description",
             return_value="",
         ), patch(
@@ -169,8 +160,7 @@ class ScrapeLinkedInJobTests(unittest.TestCase):
         ), patch("scrapers.job_page.extract_linkedin_job_id", return_value=LI_ID), patch(
             "scrapers.job_page.wait_for_job_content", return_value="timeout"
         ):
-            su.return_value.pause = lambda *a, **k: None
-            su.return_value.safe_text = lambda loc, timeout=5000: ""
+            safe_text.side_effect = lambda loc, timeout=5000: ""
             job = scrape_linkedin_job(page, LI_URL)
 
         self.assertIsNotNone(job)
@@ -180,7 +170,7 @@ class ScrapeLinkedInJobTests(unittest.TestCase):
 
 class ProcessUrlsRefreshStubTests(unittest.TestCase):
     def test_existing_link_only_is_scraped_in_place(self):
-        import scrapers.manual_apply_scraper as mas
+        import services.log_job as svc
 
         existing = {
             "job_id": LI_ID,
@@ -207,24 +197,24 @@ class ProcessUrlsRefreshStubTests(unittest.TestCase):
         fake_pw.return_value.__enter__.return_value = MagicMock()
         fake_pw.return_value.__exit__.return_value = False
 
-        with patch.object(mas, "_load_playwright", return_value=(fake_pw, Exception)), patch(
-            "core.scraper_utils.connect_browser", return_value=browser
+        with patch.object(svc, "load_playwright", return_value=fake_pw), patch(
+            "services.browser_session.connect_browser", return_value=browser
         ), patch(
             "matching.ai_matcher.load_user_profile", return_value="profile"
         ), patch(
             "matching.ai_matcher.load_matching_rules", return_value="rules"
-        ), patch.object(mas, "get_tracker_job", return_value=existing), patch.object(
-            mas, "scrape_job_page", return_value=scraped
+        ), patch.object(svc, "get_tracker_job", return_value=existing), patch.object(
+            svc, "scrape_job_page", return_value=scraped
         ), patch.object(
-            mas, "enrich_job_and_evaluate", return_value={"match_score": 8.5}
+            svc, "enrich_job_and_evaluate", return_value={"match_score": 8.5}
         ) as enrich, patch.object(
-            mas, "apply_analysis_to_existing", return_value=True
-        ) as apply_ai, patch.object(
-            mas, "force_save_manual_job"
+            svc, "apply_analysis_to_existing", return_value=True
+        ) as apply_ai, patch(
+            "core.manual_log.force_save_manual_job"
         ) as force, patch.object(
-            mas, "save_job_record"
-        ) as save_rec, patch("core.scraper_utils.pause"):
-            mas.process_urls([LI_URL], status="pending")
+            svc, "save_job_record"
+        ) as save_rec, patch("services.log_job.pause"):
+            svc.process_urls([LI_URL], status="pending")
 
         enrich.assert_called_once()
         apply_ai.assert_called_once()
@@ -232,7 +222,7 @@ class ProcessUrlsRefreshStubTests(unittest.TestCase):
         save_rec.assert_not_called()
 
     def test_existing_complete_card_is_still_skipped(self):
-        import scrapers.manual_apply_scraper as mas
+        import services.log_job as svc
 
         existing = {
             "job_id": LI_ID,
@@ -247,16 +237,16 @@ class ProcessUrlsRefreshStubTests(unittest.TestCase):
         fake_pw.return_value.__enter__.return_value = MagicMock()
         fake_pw.return_value.__exit__.return_value = False
 
-        with patch.object(mas, "_load_playwright", return_value=(fake_pw, Exception)), patch(
-            "core.scraper_utils.connect_browser", return_value=MagicMock()
+        with patch.object(svc, "load_playwright", return_value=fake_pw), patch(
+            "services.browser_session.connect_browser", return_value=MagicMock()
         ), patch(
             "matching.ai_matcher.load_user_profile", return_value="profile"
         ), patch(
             "matching.ai_matcher.load_matching_rules", return_value="rules"
-        ), patch.object(mas, "get_tracker_job", return_value=existing), patch.object(
-            mas, "handle_existing_tracker", return_value="skip"
-        ) as handle, patch.object(mas, "scrape_job_page") as scrape:
-            mas.process_urls([LI_URL], status="pending")
+        ), patch.object(svc, "get_tracker_job", return_value=existing), patch.object(
+            svc, "handle_existing_tracker", return_value="skip"
+        ) as handle, patch.object(svc, "scrape_job_page") as scrape:
+            svc.process_urls([LI_URL], status="pending")
 
         handle.assert_called_once()
         scrape.assert_not_called()
@@ -264,7 +254,7 @@ class ProcessUrlsRefreshStubTests(unittest.TestCase):
 
 class FetchAndRunAiEmptyScrapeTests(unittest.TestCase):
     def test_fetch_rejects_empty_description(self):
-        import scrapers.manual_apply_scraper as mas
+        import services.tracker_jobs as svc
 
         stub = {
             "job_id": LI_ID,
@@ -281,20 +271,20 @@ class FetchAndRunAiEmptyScrapeTests(unittest.TestCase):
         fake_pw.return_value.__enter__.return_value = MagicMock()
         fake_pw.return_value.__exit__.return_value = False
 
-        with patch.object(mas, "_load_playwright", return_value=(fake_pw, Exception)), patch(
-            "core.scraper_utils.connect_browser", return_value=browser
+        with patch.object(svc, "load_playwright", return_value=fake_pw), patch(
+            "services.browser_session.connect_browser", return_value=browser
         ), patch.object(
-            mas, "scrape_job_page",
+            svc, "scrape_job_page",
             return_value={"description": "", "scrape_warning": "login wall"},
-        ), patch.object(mas, "apply_scraped_details") as save:
-            result = mas.fetch_job_details_for_matched_job(stub)
+        ), patch.object(svc, "apply_scraped_details") as save:
+            result = svc.fetch_job_details_for_matched_job(stub)
 
         self.assertFalse(result["ok"])
         self.assertIn("login wall", result["error"])
         save.assert_not_called()
 
     def test_fetch_infers_missing_identity(self):
-        import scrapers.manual_apply_scraper as mas
+        import services.tracker_jobs as svc
 
         stub = {
             "job_id": LI_ID,
@@ -320,19 +310,19 @@ class FetchAndRunAiEmptyScrapeTests(unittest.TestCase):
         fake_pw.return_value.__enter__.return_value = MagicMock()
         fake_pw.return_value.__exit__.return_value = False
 
-        with patch.object(mas, "_load_playwright", return_value=(fake_pw, Exception)), patch(
-            "core.scraper_utils.connect_browser", return_value=browser
-        ), patch.object(mas, "scrape_job_page", return_value=scraped), patch.object(
-            mas, "infer_job_metadata_with_ai",
+        with patch.object(svc, "load_playwright", return_value=fake_pw), patch(
+            "services.browser_session.connect_browser", return_value=browser
+        ), patch.object(svc, "scrape_job_page", return_value=scraped), patch(
+            "services.job_analysis.infer_job_metadata_with_ai",
             return_value={
                 "title": "Software Engineer - Frontend",
                 "company": "Helsing",
                 "location": "Munich",
             },
         ), patch.object(
-            mas, "apply_scraped_details", return_value={"ok": True, "error": None}
+            svc, "apply_scraped_details", return_value={"ok": True, "error": None}
         ) as save:
-            result = mas.fetch_job_details_for_matched_job(stub)
+            result = svc.fetch_job_details_for_matched_job(stub)
 
         self.assertTrue(result["ok"])
         written = save.call_args[0][0]

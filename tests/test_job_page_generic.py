@@ -1,15 +1,9 @@
 """Generic / Glassdoor / Indeed Fetch-details scrape (no live Chrome)."""
 from __future__ import annotations
 
-import sys
 import unittest
-from pathlib import Path
+from contextlib import ExitStack, contextmanager
 from unittest.mock import patch
-
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
 from scrapers.job_page import (  # noqa: E402
     glassdoor_detail_ready,
@@ -95,13 +89,20 @@ class FakePage:
         return False
 
 
-def _su_stub():
-    class SU:
-        pause = staticmethod(lambda *a, **k: None)
-        safe_text = staticmethod(lambda loc, timeout=5000: getattr(loc, "_text", "") or "")
-        strip_html = staticmethod(lambda html: "Acme is hiring a Frontend Engineer to build design systems in React. You will own TypeScript UI, accessibility, and the public website. Experience with CSS and component libraries is required for this role.")
-        extract_indeed_detail_meta = staticmethod(lambda page: ("Acme", "Berlin"))
-    return SU
+@contextmanager
+def _page_helpers():
+    """Stub the browser / text helpers job_page imports (no sleeps, fixed JD)."""
+    with ExitStack() as stack:
+        stack.enter_context(patch("scrapers.job_page.pause", lambda *a, **k: None))
+        stack.enter_context(patch(
+            "scrapers.job_page.safe_text",
+            lambda loc, timeout=5000: getattr(loc, "_text", "") or "",
+        ))
+        stack.enter_context(patch("scrapers.job_page.strip_html", lambda html: GD_JD))
+        stack.enter_context(patch(
+            "scrapers.job_page.extract_indeed_detail_meta", lambda page: ("Acme", "Berlin"),
+        ))
+        yield
 
 
 class GlassdoorUrlTests(unittest.TestCase):
@@ -124,7 +125,7 @@ class GlassdoorScrapeTests(unittest.TestCase):
 
     def test_extracts_glassdoor_selectors(self):
         page = self._page()
-        with patch("scrapers.job_page._su", _su_stub), patch(
+        with _page_helpers(), patch(
             "scrapers.job_page.wait_for_job_content", return_value="ready"
         ) as wait:
             job = scrape_generic_job(page, GD_URL)
@@ -140,7 +141,7 @@ class GlassdoorScrapeTests(unittest.TestCase):
     def test_goto_timeout_still_extracts(self):
         page = self._page()
         page.goto_error = TimeoutError("Timeout 40000ms exceeded")
-        with patch("scrapers.job_page._su", _su_stub), patch(
+        with _page_helpers(), patch(
             "scrapers.job_page.wait_for_job_content", return_value="ready"
         ):
             job = scrape_generic_job(page, GD_URL)
@@ -150,7 +151,7 @@ class GlassdoorScrapeTests(unittest.TestCase):
 
     def test_short_page_returns_warning_not_none(self):
         page = FakePage({"body": FakeLocator(1, "Sign in")})
-        with patch("scrapers.job_page._su", _su_stub), patch(
+        with _page_helpers(), patch(
             "scrapers.job_page.wait_for_job_content", return_value="timeout"
         ), patch("scrapers.job_page._extract_main_text_from_html", return_value=""), patch(
             "scrapers.job_page._fallback_page_text", return_value="Sign in"
@@ -185,10 +186,10 @@ class IndeedWaitTests(unittest.TestCase):
             '[data-testid="vj-job-title"]': FakeLocator(1, "Frontend Engineer"),
             "#jobDescriptionText": FakeLocator(1, GD_JD, html=f"<p>{GD_JD}</p>"),
         })
-        with patch("scrapers.job_page._su", _su_stub), patch(
+        with _page_helpers(), patch(
             "scrapers.job_page.wait_for_job_content", return_value="clicked"
         ) as wait, patch(
-            "core.challenge_wait.is_indeed_challenge_page", return_value=True
+            "scrapers.job_page.is_indeed_challenge_page", return_value=True
         ):
             job = scrape_indeed_job(page, "https://de.indeed.com/viewjob?jk=abcdef123456")
         wait.assert_called_once()

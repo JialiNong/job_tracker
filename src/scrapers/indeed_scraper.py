@@ -3,15 +3,8 @@
 Indeed Job Scraper
 Scrapes job listings from Indeed and saves them to MongoDB
 """
-import sys
-import os
 from urllib.parse import quote_plus
 import random
-
-# Add src/ to path so package imports work when run as a script
-_SRC_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if _SRC_ROOT not in sys.path:
-    sys.path.insert(0, _SRC_ROOT)
 
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
@@ -28,30 +21,31 @@ from core.config import (
     INDEED_CONFIG,
     DEFAULT_MAX_PAGES,
 )
-from core.scraper_utils import (
-    pause,
-    safe_text,
-    safe_attr,
-    parse_args,
+from core.browser import (
     connect_browser,
-    open_scraper_page,
-    should_skip_title_before_click,
-    is_non_english_job_detail,
-    is_complete_job_description,
-    assess_job_description,
-    description_save_flags,
-    strip_html,
-    normalize_indeed_job_id,
-    extract_indeed_jk_from_url,
-    extract_indeed_detail_meta,
     goto_page,
     is_target_closed_error,
-    DESCRIPTION_FETCH_RETRIES,
+    open_scraper_page,
+    pause,
+    safe_attr,
+    safe_text,
 )
-from core.challenge_wait import (
+from core.indeed_meta import extract_indeed_detail_meta
+from core.jd_quality import (
+    DESCRIPTION_FETCH_RETRIES,
+    assess_job_description,
+    description_save_flags,
+    is_complete_job_description,
+)
+from core.job_url import extract_indeed_jk_from_url, normalize_indeed_job_id
+from core.language import is_non_english_job_detail
+from core.text import strip_html
+from core.title_gate import should_skip_title_before_click
+from scrapers.challenge_wait import (
     handle_indeed_challenge_if_needed,
     is_indeed_challenge_page,
 )
+from scrapers.cli import parse_args
 
 # Indeed configuration
 BASE_URL = INDEED_CONFIG["base_url"]

@@ -7,13 +7,8 @@ from __future__ import annotations
 import sys
 import unittest
 from datetime import datetime
-from pathlib import Path
 from unittest.mock import patch
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
 import core.db_mongo as db_mongo  # noqa: E402
 import core.manual_log as ml  # noqa: E402
@@ -151,19 +146,18 @@ class JobMissingDetailsTests(unittest.TestCase):
 
 
 class GuardPlaywrightTests(unittest.TestCase):
-    def test_import_error_returns_friendly_503(self):
-        with patch.dict(sys.modules, {"scrapers.manual_apply_scraper": None}):
+    def test_missing_playwright_package_returns_friendly_503(self):
+        # Render: the playwright package is not installed at all
+        with patch.dict(sys.modules, {"playwright": None, "playwright.sync_api": None}):
             payload, code = guard_fetch_details_playwright()
         self.assertEqual(code, 503)
         self.assertFalse(payload["ok"])
         self.assertEqual(payload["error"], PLAYWRIGHT_UNAVAILABLE_MSG)
 
     def test_load_playwright_import_error(self):
-        import importlib
-
-        mas = importlib.import_module("scrapers.manual_apply_scraper")
-        with patch.dict(sys.modules, {"scrapers.manual_apply_scraper": mas}), patch.object(
-            mas, "_load_playwright", side_effect=ImportError("No module named 'playwright'")
+        with patch(
+            "services.browser_session.load_playwright",
+            side_effect=ImportError("No module named 'playwright'"),
         ):
             payload, code = guard_fetch_details_playwright()
         self.assertEqual(code, 503)
@@ -209,14 +203,14 @@ class BatchRunTests(unittest.TestCase):
         self.assertTrue(summary["results"][3]["ok"])
 
     def test_does_not_call_ai(self):
-        import scrapers.manual_apply_scraper as mas
+        import services.tracker_jobs as svc
 
         with patch.object(
-            mas, "fetch_job_details_for_matched_job", return_value={"ok": True, "title": "X"}
-        ) as fetch, patch.object(mas, "enrich_job_and_evaluate") as ai:
+            svc, "fetch_job_details_for_matched_job", return_value={"ok": True, "title": "X"}
+        ) as fetch, patch.object(svc, "enrich_job_and_evaluate") as ai:
             summary = run_fetch_details_batch_jobs(
                 [_agent_job()],
-                fetch_one=lambda doc: mas.fetch_job_details_for_matched_job(doc),
+                fetch_one=lambda doc: svc.fetch_job_details_for_matched_job(doc),
             )
         fetch.assert_called_once()
         ai.assert_not_called()

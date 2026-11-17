@@ -9,13 +9,15 @@ services:
     region: oregon  # Choose region closest to you
     plan: free
     
-    # Build command - install only web dependencies (no Playwright/lingua)
-    buildCommand: pip install -r requirements-web.txt
-    
+    # Build command - install only web dependencies (no Playwright/lingua),
+    # then the project itself (editable, see pyproject.toml)
+    buildCommand: pip install -r requirements-web.txt && pip install --no-deps -e .
+
     # Start command - use gunicorn for production
     # Bind to $PORT (Render sets this automatically)
-    # 4 workers for free plan (adjust based on traffic)
-    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 4 --threads 2 --timeout 60 src.web.web_app:app
+    # Exactly ONE worker: Log Job / Run AI progress and locks live in process
+    # memory (src/web/chrome_tasks.py). Scale with --threads, never --workers.
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 8 --timeout 60 web.web_app:app
     
     # Health check endpoint
     healthCheckPath: /health

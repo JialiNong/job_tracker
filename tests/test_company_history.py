@@ -5,20 +5,14 @@ Does not touch a live MongoDB.
 from __future__ import annotations
 
 import re
-import sys
 import unittest
 from datetime import datetime
-from pathlib import Path
 from unittest.mock import patch
 
 from bson import ObjectId
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
-
 import core.db_mongo as db_mongo  # noqa: E402
+from core.paths import PROJECT_ROOT as ROOT
 
 with patch.object(db_mongo, "ensure_indexes"):
     from web.list_query import (  # noqa: E402

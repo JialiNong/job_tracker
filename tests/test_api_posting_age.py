@@ -1,15 +1,9 @@
 """API sources skip ads published more than API_MAX_POSTING_AGE_DAYS ago."""
 from __future__ import annotations
 
-import sys
 import unittest
 from datetime import datetime, timedelta
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
 from sources.base import SourceJob, is_too_old  # noqa: E402
 

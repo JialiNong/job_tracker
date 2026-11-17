@@ -4,15 +4,10 @@ Does not touch a live MongoDB — mocked collections only.
 """
 from __future__ import annotations
 
-import sys
 import unittest
 from datetime import datetime
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-SRC = Path(__file__).resolve().parents[1] / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
 import core.db_mongo as db_mongo  # noqa: E402
 from core.mongo.lookup import lookup_known_job  # noqa: E402

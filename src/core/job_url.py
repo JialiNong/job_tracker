@@ -8,9 +8,51 @@ from __future__ import annotations
 import hashlib
 import re
 from typing import Optional
-from urllib.parse import urljoin, urlparse, urlunparse
+from urllib.parse import unquote, urljoin, urlparse, urlunparse
 
-from core.scraper_utils import extract_indeed_jk_from_url
+# Indeed job keys appear as jk= (viewjob) or vjk= (SERP selected card),
+# and as DOM ids with job_/sj_ prefixes.
+_INDEED_JK_RE = re.compile(r"[?&]jk=([a-zA-Z0-9]+)")
+_INDEED_VJK_RE = re.compile(r"[?&]vjk=([a-zA-Z0-9]+)")
+_INDEED_ID_PREFIXES = ("job_", "sj_")
+
+
+def normalize_indeed_job_id(raw: str) -> str:
+    """Strip Indeed DOM id prefixes (job_ / sj_) down to the bare job key."""
+    if not raw:
+        return ""
+    value = str(raw).strip()
+    for prefix in _INDEED_ID_PREFIXES:
+        if value.startswith(prefix):
+            return value[len(prefix):]
+    return value
+
+
+def indeed_job_id_variants(job_id: str) -> list:
+    """Bare jk plus legacy prefixed forms for DB lookups / dedup."""
+    bare = normalize_indeed_job_id(job_id)
+    if not bare:
+        return []
+    return [bare, f"job_{bare}", f"sj_{bare}"]
+
+
+def extract_indeed_jk_from_url(url: str) -> str:
+    """
+    Extract the Indeed job key from a URL.
+
+    Prefers jk= (viewjob / rc/clk); falls back to vjk= (SERP selected card).
+    Accepts percent-encoded query strings (jk%3D…).
+    Returns the bare key only (no jk_/vjk_ prefix).
+    """
+    if not url:
+        return ""
+    text = unquote(str(url).strip())
+    m = _INDEED_JK_RE.search(text)
+    if m:
+        return m.group(1)
+    m = _INDEED_VJK_RE.search(text)
+    return m.group(1) if m else ""
+
 
 _SCHEME_RE = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.-]*://")
 _TRAILING_JUNK_RE = re.compile(r"[.,;:)\]\"']+$")

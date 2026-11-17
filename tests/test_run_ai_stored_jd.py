@@ -4,15 +4,10 @@ from __future__ import annotations
 import sys
 import types
 import unittest
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
-import scrapers.manual_apply_scraper as mas  # noqa: E402
+import services.tracker_jobs as svc  # noqa: E402
 
 from page_source import page_source  # noqa: E402
 
@@ -56,27 +51,27 @@ def _fake_ai_matcher():
 
 class StoredJdUsableTests(unittest.TestCase):
     def test_complete_jd_is_usable(self):
-        self.assertTrue(mas.stored_jd_usable(_doc()))
+        self.assertTrue(svc.stored_jd_usable(_doc()))
 
     def test_link_only_stub_is_not_usable(self):
-        self.assertFalse(mas.stored_jd_usable(_doc(title="(Link only) LinkedIn job")))
+        self.assertFalse(svc.stored_jd_usable(_doc(title="(Link only) LinkedIn job")))
 
     def test_short_jd_is_not_usable(self):
-        self.assertFalse(mas.stored_jd_usable(_doc(description="Short teaser text.")))
+        self.assertFalse(svc.stored_jd_usable(_doc(description="Short teaser text.")))
 
     def test_empty_jd_is_not_usable(self):
-        self.assertFalse(mas.stored_jd_usable(_doc(description="")))
+        self.assertFalse(svc.stored_jd_usable(_doc(description="")))
 
     def test_replaced_link_stale_jd_is_not_usable(self):
         from datetime import datetime
-        self.assertFalse(mas.stored_jd_usable(_doc(
+        self.assertFalse(svc.stored_jd_usable(_doc(
             details_fetched_at=datetime(2026, 10, 1),
             link_replaced_at=datetime(2026, 11, 11),
         )))
 
     def test_fetched_after_replace_is_usable(self):
         from datetime import datetime
-        self.assertTrue(mas.stored_jd_usable(_doc(
+        self.assertTrue(svc.stored_jd_usable(_doc(
             details_fetched_at=datetime(2026, 11, 11, 12, 0),
             link_replaced_at=datetime(2026, 11, 11, 11, 0),
         )))
@@ -90,27 +85,27 @@ class TrackerJobUrlTests(unittest.TestCase):
             "link": "/jobs/view/4480031306/?eBP=NOT_ELIGIBLE_FOR_CHARGING&trk=x",
         }
         self.assertEqual(
-            mas._tracker_job_url(doc),
+            svc.tracker_job_url(doc),
             "https://www.linkedin.com/jobs/view/4480031306/",
         )
 
     def test_relative_link_without_job_id_gets_host(self):
         doc = {"source": "indeed", "link": "/rc/clk?jk=abc"}
-        self.assertEqual(mas._tracker_job_url(doc), "https://de.indeed.com/rc/clk?jk=abc")
+        self.assertEqual(svc.tracker_job_url(doc), "https://de.indeed.com/rc/clk?jk=abc")
 
     def test_absolute_link_kept(self):
         doc = {"source": "linkedin", "job_id": "1", "link": "https://example.com/job"}
-        self.assertEqual(mas._tracker_job_url(doc), "https://example.com/job")
+        self.assertEqual(svc.tracker_job_url(doc), "https://example.com/job")
 
 
 class RunAiStoredJdTests(unittest.TestCase):
     def test_complete_jd_skips_chrome_and_saves(self):
         analysis = {"match_score": 8.0, "match_gate": "scored"}
         with _fake_ai_matcher(), \
-                patch.object(mas, "_load_playwright") as load_pw, \
-                patch.object(mas, "enrich_job_and_evaluate", return_value=analysis) as evaluate, \
-                patch.object(mas, "apply_analysis_to_existing", return_value=True) as save:
-            result = mas.run_ai_on_matched_job(_doc())
+                patch.object(svc, "load_playwright") as load_pw, \
+                patch.object(svc, "enrich_job_and_evaluate", return_value=analysis) as evaluate, \
+                patch.object(svc, "apply_analysis_to_existing", return_value=True) as save:
+            result = svc.run_ai_on_matched_job(_doc())
 
         load_pw.assert_not_called()
         self.assertTrue(result["ok"])
@@ -129,10 +124,10 @@ class RunAiStoredJdTests(unittest.TestCase):
             "disqualification_reason": "Mandatory German",
         }
         with _fake_ai_matcher(), \
-                patch.object(mas, "_load_playwright") as load_pw, \
-                patch.object(mas, "enrich_job_and_evaluate", return_value=analysis), \
-                patch.object(mas, "apply_analysis_to_existing", return_value=True):
-            result = mas.run_ai_on_matched_job(_doc())
+                patch.object(svc, "load_playwright") as load_pw, \
+                patch.object(svc, "enrich_job_and_evaluate", return_value=analysis), \
+                patch.object(svc, "apply_analysis_to_existing", return_value=True):
+            result = svc.run_ai_on_matched_job(_doc())
         load_pw.assert_not_called()
         self.assertEqual(result["match_gate"], "german")
         self.assertEqual(result["gate_reason"], "Mandatory German")
@@ -145,15 +140,13 @@ class RunAiStoredJdTests(unittest.TestCase):
         pw_cm = MagicMock()
         pw_cm.__enter__.return_value = MagicMock()
         sync_playwright = MagicMock(return_value=pw_cm)
-        fake_utils = types.SimpleNamespace(connect_browser=lambda pw, label: browser)
         with _fake_ai_matcher(), \
-                patch.object(mas, "_load_playwright", return_value=(sync_playwright, None)), \
-                patch.dict(sys.modules, {"core.scraper_utils": __import__("core.scraper_utils", fromlist=["x"])}), \
-                patch("core.scraper_utils.connect_browser", fake_utils.connect_browser, create=True), \
-                patch.object(mas, "scrape_job_page", return_value=scraped) as scrape, \
-                patch.object(mas, "enrich_job_and_evaluate", return_value={"match_score": 7.0}), \
-                patch.object(mas, "apply_analysis_to_existing", return_value=True):
-            result = mas.run_ai_on_matched_job(
+                patch.object(svc, "load_playwright", return_value=sync_playwright), \
+                patch("services.browser_session.connect_browser", return_value=browser), \
+                patch.object(svc, "scrape_job_page", return_value=scraped) as scrape, \
+                patch.object(svc, "enrich_job_and_evaluate", return_value={"match_score": 7.0}), \
+                patch.object(svc, "apply_analysis_to_existing", return_value=True):
+            result = svc.run_ai_on_matched_job(
                 _doc(title="(Link only) LinkedIn job", description="")
             )
         scrape.assert_called_once()

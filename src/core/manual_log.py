@@ -11,7 +11,6 @@ from datetime import datetime
 from core.db_mongo import (
     APPLIED_STATUSES,
     get_collection,
-    indeed_job_id_variants,
     is_job_on_tracker,
     lookup_known_job,
 )
@@ -19,6 +18,7 @@ from core.country import normalize_country
 from core.job_origin import log_job_origin
 from core.job_url import (
     detect_source,
+    indeed_job_id_variants,
     job_stub_from_url,
     link_only_job_title,
     normalize_pasted_job_url,
@@ -516,9 +516,6 @@ def force_save_manual_job(
         print(f"  ❌ Failed to save to matched_jobs: {type(e).__name__}: {e}")
         return False
     return True
-
-
-force_save_applied_job = force_save_manual_job
 
 
 def handle_existing_tracker(

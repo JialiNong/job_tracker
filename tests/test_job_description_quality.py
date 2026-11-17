@@ -3,24 +3,19 @@ from __future__ import annotations
 
 import sys
 import unittest
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
 sys.modules.setdefault("playwright", MagicMock())
 sys.modules.setdefault("playwright.sync_api", MagicMock())
 
-from core.scraper_utils import (  # noqa: E402
+from core.jd_quality import (  # noqa: E402
     MIN_COMPLETE_JOB_DESCRIPTION_CHARS,
     assess_job_description,
     is_complete_job_description,
-    is_non_english_job_detail,
     is_usable_job_description,
 )
+from core.language import is_non_english_job_detail  # noqa: E402
 from scrapers.linkedin_scraper import (  # noqa: E402
     expand_linkedin_see_more,
     extract_linkedin_applicants,

@@ -11,20 +11,12 @@ Optionally reset AI analysis fields on remaining non-matched jobs
 so ai_matcher can re-process them.
 """
 import argparse
-import os
-import sys
-
-# Allow imports from src/ when run from project root
-_SRC = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "src")
-sys.path.insert(0, _SRC)
 
 from dotenv import load_dotenv
 
 from core.db_mongo import get_collection
-from core.scraper_utils import (
-    is_non_english_job_detail,
-    is_title_excluded,
-)
+from core.language import is_non_english_job_detail
+from core.title_gate import is_title_excluded
 
 load_dotenv()
 

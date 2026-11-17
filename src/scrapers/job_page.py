@@ -13,8 +13,9 @@ from __future__ import annotations
 from typing import Optional
 from urllib.parse import urlparse
 
+from core.browser import pause, safe_text
 from core.config import INDEED_CONFIG
-from core.content_wait import locator_has_text, wait_for_job_content
+from core.indeed_meta import extract_indeed_detail_meta
 from core.job_url import (
     canonicalize_url,
     detect_source,
@@ -23,6 +24,9 @@ from core.job_url import (
     job_id_from_url,
     normalize_pasted_job_url,
 )
+from core.text import strip_html
+from scrapers.challenge_wait import is_indeed_challenge_page
+from scrapers.content_wait import locator_has_text, wait_for_job_content
 
 # Minimum chars of extracted body text before we treat a generic page as a JD
 _GENERIC_MIN_DESC_CHARS = 200
@@ -132,12 +136,6 @@ _SHOW_MORE_BUTTONS = (
 )
 
 
-def _su():
-    """Lazy scraper_utils — not imported for Save Link Only."""
-    import core.scraper_utils as su
-    return su
-
-
 def linkedin_view_url(job_id: str) -> str:
     """Canonical LinkedIn job page — used for Log Job / Run AI / Fetch."""
     return f"https://www.linkedin.com/jobs/view/{job_id}/"
@@ -149,13 +147,12 @@ def is_glassdoor_url(url: str) -> bool:
 
 
 def _first_locator_text(page, selectors) -> str:
-    su = _su()
     for sel in selectors:
         try:
             loc = page.locator(sel).first
             if loc.count() == 0:
                 continue
-            text = (su.safe_text(loc) or "").strip()
+            text = (safe_text(loc) or "").strip()
             if text:
                 return text
         except Exception:
@@ -182,7 +179,7 @@ def _dismiss_cookie_overlays(page) -> None:
             btn = page.locator(selector)
             if btn.count() > 0 and btn.first.is_visible():
                 btn.first.click(timeout=2000)
-                _su().pause(0.5, 1.0)
+                pause(0.5, 1.0)
                 return
         except Exception:
             continue
@@ -194,7 +191,7 @@ def _click_show_more(page) -> None:
             btn = page.locator(selector)
             if btn.count() > 0 and btn.first.is_visible():
                 btn.first.click(timeout=2000)
-                _su().pause(0.4, 0.8)
+                pause(0.4, 0.8)
                 return
         except Exception:
             continue
@@ -227,7 +224,6 @@ def linkedin_detail_ready(page) -> bool:
 
 
 def indeed_detail_ready(page) -> bool:
-    from core.challenge_wait import is_indeed_challenge_page
     try:
         if is_indeed_challenge_page(page):
             return False
@@ -277,7 +273,7 @@ def _empty_job(url: str, job_id: str, source: str) -> dict:
 
 def _after_content_wait(outcome: str) -> None:
     if outcome == "clicked":
-        _su().pause(0.4, 0.8)
+        pause(0.4, 0.8)
 
 
 def scrape_linkedin_job(page, url: str) -> Optional[dict]:
@@ -357,7 +353,6 @@ def scrape_indeed_job(page, url: str) -> Optional[dict]:
     blocked, the detail timed out, or Indeed showed a challenge. Callers
     must still save that stub instead of dropping the URL.
     """
-    su = _su()
     url = normalize_pasted_job_url(url)
     job_id = extract_indeed_job_id(url)
     if not job_id:
@@ -382,12 +377,12 @@ def scrape_indeed_job(page, url: str) -> Optional[dict]:
     _after_content_wait(outcome)
 
     try:
-        company, location = su.extract_indeed_detail_meta(page)
+        company, location = extract_indeed_detail_meta(page)
     except Exception:
         company, location = "", ""
     title = ""
     try:
-        title = su.safe_text(page.locator('[data-testid="vj-job-title"]')) or ""
+        title = safe_text(page.locator('[data-testid="vj-job-title"]')) or ""
     except Exception:
         pass
 
@@ -403,7 +398,7 @@ def scrape_indeed_job(page, url: str) -> Optional[dict]:
             if loc.count() > 0:
                 desc_html = loc.inner_html(timeout=8000) or ""
                 if desc_html:
-                    description = su.strip_html(desc_html)
+                    description = strip_html(desc_html)
                     if description:
                         print(f"  🔍 Description found via: {sel}")
                         break
@@ -472,7 +467,6 @@ def _extract_glassdoor_fields(page) -> tuple[str, str, str, str]:
     company = _first_locator_text(page, _GLASSDOOR_COMPANY_SELECTORS)
     location = _first_locator_text(page, _GLASSDOOR_LOCATION_SELECTORS)
     description = ""
-    su = _su()
     for sel in _GLASSDOOR_DESC_SELECTORS:
         try:
             loc = page.locator(sel).first
@@ -480,9 +474,9 @@ def _extract_glassdoor_fields(page) -> tuple[str, str, str, str]:
                 continue
             html = loc.inner_html(timeout=8000) or ""
             if html:
-                description = su.strip_html(html)
+                description = strip_html(html)
             if not description:
-                description = (su.safe_text(loc) or "").strip()
+                description = (safe_text(loc) or "").strip()
             if description:
                 print(f"  🔍 Glassdoor description via: {sel}")
                 break

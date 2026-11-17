@@ -1,17 +1,11 @@
 """Wait-for-posting handshake used by Fetch details / Log Job / Run AI."""
 from __future__ import annotations
 
-import sys
 import unittest
-from pathlib import Path
 from unittest.mock import patch
 
-ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
 
-from core.content_wait import (  # noqa: E402
+from scrapers.content_wait import (  # noqa: E402
     locator_has_text,
     wait_for_job_content,
 )
@@ -123,8 +117,8 @@ class WaitForJobContentTests(unittest.TestCase):
         self.assertEqual(readies, [])
 
     def test_telegram_copy_mentions_click(self):
-        with patch("core.content_wait.send_telegram_message", return_value=True) as send:
-            from core.content_wait import notify_waiting_for_click, notify_click_succeeded
+        with patch("scrapers.content_wait.send_telegram_message", return_value=True) as send:
+            from scrapers.content_wait import notify_waiting_for_click, notify_click_succeeded
             notify_waiting_for_click("Glassdoor")
             notify_click_succeeded("Glassdoor")
         texts = [call.args[0] for call in send.call_args_list]

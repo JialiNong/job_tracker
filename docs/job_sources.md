@@ -13,7 +13,7 @@ There are **5 ways to get jobs**, plus 2 ways to rescue jobs the pipeline alread
 | 1 | **Browser scrapers** | LinkedIn, Indeed | Your Mac, on demand (Telegram `/jobs` → `scripts/run_jobs.sh`) | Mac on, debug Chrome, sometimes an Indeed captcha | `linkedin`, `indeed` | `pipeline` |
 | 2 | **Public job APIs** | Arbeitnow, Bundesagentur für Arbeit (Adzuna: opt-in, paid) | GitHub Actions, **daily 09:17 UTC** (10:17 Berlin in winter; Mac can be off), or by hand | Nothing (Adzuna: paid key) | `arbeitnow`, `arbeitsagentur`, `adzuna` | `api` |
 | 3 | **Company ATS boards** | Greenhouse, Lever, Ashby, Personio, Recruitee, Workable — for companies on the watchlist | Same daily GitHub Actions run | Watchlist `config/ats_companies.json` | `ats` (+ `ats_provider`, `ats_slug`) | `api` |
-| 4 | **Manual Log Job** | Any job URL you paste | Tracker web UI **Log Job**, or `src/scrapers/manual_apply_scraper.py` | — | `linkedin` / `indeed` / `manual` | `manual` |
+| 4 | **Manual Log Job** | Any job URL you paste | Tracker web UI **Log Job**, or `scripts/tools/log_jobs.py` | — | `linkedin` / `indeed` / `manual` | `manual` |
 | 5 | **Agent push** | Cursor and Claude daily screens (Gemini / GPT also accepted) | Scheduled `POST /api/agent/jobs` on Render, or `scripts/tools/log_recommended_jobs.py` locally | `AGENT_API_TOKEN` | from the URL | `agent` |
 
 Rescue paths (not new sources):

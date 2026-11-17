@@ -6,9 +6,8 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
 from core.db_mongo import get_collection, lookup_known_job
-from core.job_url import replacement_link_fields
+from core.job_url import indeed_job_id_variants, replacement_link_fields
 from core.manual_log import can_fetch_details
-from core.scraper_utils import indeed_job_id_variants
 from web.chrome_tasks import _fetch_batch_state, parse_batch_job_oids
 from web.list_query import JOBS_LIST_PROJECTION, _jobs_list_query_from_args
 from web.serialize import _serialize, attach_company_history, parse_applicant_position

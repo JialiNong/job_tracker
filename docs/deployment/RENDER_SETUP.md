@@ -146,8 +146,9 @@ Daily collection and matching run on GitHub Actions and write **directly to Mong
 Before deploying, test the production setup locally:
 
 ```bash
-# 1. Install dependencies
+# 1. Install dependencies + the project (editable, like Render's buildCommand)
 pip3 install -r requirements-web.txt
+pip3 install --no-deps -e .
 
 # 2. Set environment variables
 export PORT=8080
@@ -155,8 +156,9 @@ export TRACKER_USERNAME=test
 export TRACKER_PASSWORD_HASH='$2b$12$...'  # your hash
 export MONGO_URI='mongodb+srv://...'
 
-# 3. Start with gunicorn (same as Render)
-gunicorn --bind 0.0.0.0:$PORT --workers 4 src.web.web_app:app
+# 3. Start with gunicorn (same as Render). Keep ONE worker: Log Job / Run AI
+#    progress and locks live in process memory (src/web/chrome_tasks.py).
+gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 8 web.web_app:app
 
 # 4. Test in browser
 open http://localhost:8080

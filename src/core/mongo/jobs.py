@@ -5,9 +5,8 @@ from datetime import datetime
 
 from pymongo import errors
 
-from core.job_url import posting_key_fields
+from core.job_url import indeed_job_id_variants, posting_key_fields
 from core.mongo.client import COLLECTION_NAME, get_db
-from core.scraper_utils import indeed_job_id_variants
 
 
 def save_job(job_data):

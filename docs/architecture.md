@@ -25,7 +25,7 @@ flowchart TB
         Chrome["Chrome CDP :9222"]
         Indeed["indeed_scraper.py<br/>1d default · --days N"]
         LI["linkedin_scraper.py<br/>24h default · --hours N"]
-        Manual["manual_apply_scraper.py<br/>manual job URLs"]
+        Manual["services/log_job.py<br/>manual job URLs (Log Job)"]
     end
 
     subgraph Filters["Per-card filters (before/after click)"]
@@ -146,7 +146,7 @@ A `goto` timeout no longer aborts the extract — the listing is often already o
 | `python3 src/scrapers/indeed_scraper.py [-k …] [-p N] [-j N] [--days N]` | Indeed only, no matching (default 3 pages × 15, last 1 day) |
 | `python3 src/scrapers/linkedin_scraper.py [-k …] [-p N] [-j N] [--hours N]` | Full LinkedIn keyword loop (default 3 pages × 30; `--hours` < 24 → 2 pages; time window default config 24h, or `--hours`) |
 | `python3 src/matching/ai_matcher.py [-l N] [-s source] [-t 7.0]` | AI match only (jobs without `matched_at`) |
-| `python3 src/scrapers/manual_apply_scraper.py <urls…>` | Manual job URLs → `matched_jobs` (default `status=pending`; `--status applied` optional). Already on Tracker with a full card: skip, or mark applied when requested. Link-only / `ai_pending` Tracker rows are scraped in place (notes / timeline kept). Chrome / Indeed / AI failure still saves a **new** URL stub (`ai_pending`). `--link-only` skips scrape/AI. |
+| `python3 scripts/tools/log_jobs.py <urls…>` | Manual job URLs → `matched_jobs` (default `status=pending`; `--status applied` optional). Already on Tracker with a full card: skip, or mark applied when requested. Link-only / `ai_pending` Tracker rows are scraped in place (notes / timeline kept). Chrome / Indeed / AI failure still saves a **new** URL stub (`ai_pending`). `--link-only` skips scrape/AI. |
 | `python3 scripts/tools/log_recommended_jobs.py <jobs.json \| ->` | Local twin of `POST /api/agent/jobs`. Batch log agent picks as link-only Tracker stubs: `pending`, `recommended_by` from `--recommended-by` (default `claude`; per-job `recommended_by` wins), per-job title / company / location. No browser / no AI; a job_id already in `matched_jobs` / `jobs` / `timeout_jobs` is skipped with no write. Skips on Unmatched are returned as `below_threshold` (title, score, `/unmatched?open=` path) and tagged `agent_recommended_by` on the `jobs` row so Overview and Unmatched can show the disagreement. Score later with Tracker **Select missing details** → **Run AI for selected**. |
 | `python3 scripts/db/cleanup_excluded_titles.py …` | Cleanup DB rows by title blacklist |
 | `python3 scripts/db/seed_demo.py` | Fictional screenshot dataset into `job_scraper_demo` (never copies production; refuses the `job_scraper` name unless `--force`) |
@@ -264,7 +264,7 @@ flowchart TD
 
 Unified title-gate entry point:
 
-`should_skip_title_before_click()` → `src/core/scraper_utils.py`
+`should_skip_title_before_click()` → `src/core/title_gate.py`
 
 ---
 
@@ -310,7 +310,7 @@ flowchart TD
 
 **Stored fields:** `match_score`, `match_gate` (`scored`, `german`, `non_english`, `stack`, `leadership`, `not_web_dev`, `backend_heavy`, `too_many_years`, `contract_or_location`, `blocked_company`, `incomplete_desc`, `empty_desc`, `score_failed`; older rows may still carry `ai_ml`), `disqualification_reason` (quote), `summary`, `match_reasons` (Business / Customers/markets / Stack / score breakdown), `red_flags` (watch-out), `job_labels`, `company_profile`. JDs are never cleared.
 
-**Scrape-time language filter vs German requirement:** Lingua (`scraper_utils.is_non_english_job_detail`) drops postings *written* in another language before they are saved — including JDs that look “incomplete” because the company string does not appear. If a non-English JD still reaches matching (Fetch details / an older row), code skips the model with `match_gate=non_english`. A German requirement inside an English JD is a layer-1 hard fail (`german_required` + quote); German as a plus / "German or English" passes.
+**Scrape-time language filter vs German requirement:** Lingua (`core.language.is_non_english_job_detail`) drops postings *written* in another language before they are saved — including JDs that look “incomplete” because the company string does not appear. If a non-English JD still reaches matching (Fetch details / an older row), code skips the model with `match_gate=non_english`. A German requirement inside an English JD is a layer-1 hard fail (`german_required` + quote); German as a plus / "German or English" passes.
 
 If the OpenAI account runs out of credits, matching stops and the remaining jobs stay without `matched_at` for the next run.
 
@@ -361,8 +361,10 @@ job_scraper/
 │   ├── images/                  # README screenshots / GIFs
 │   ├── deployment/              # Render setup
 │   └── archive/testing/         # past one-off test / verification reports
-├── src/
-│   ├── core/
+├── pyproject.toml               # `pip install -e .` → src/ packages are importable (no sys.path edits)
+├── src/                         # layers, top → bottom: web / CLI → services → scrapers, matching, sources → core
+│   ├── core/                    # bottom layer: never imports scrapers / services / web / tg (tests/test_architecture.py)
+│   │   ├── paths.py             # PROJECT_ROOT (templates/, config/, logs/ … are found from here)
 │   │   ├── config.py            # keywords, title blacklist, platform URLs
 │   │   ├── db_mongo.py          # Mongo facade (`from core.db_mongo import …`)
 │   │   ├── mongo/               # Mongo implementation (not flat mongo_*.py siblings)
@@ -372,15 +374,27 @@ job_scraper/
 │   │   │   └── tracker.py       # unmatched list, application counts, heatmap
 │   │   ├── applied_location.py  # Germany + Remote bubble labels (no Mongo)
 │   │   ├── country.py           # Tracker country (agent field or location guess) + filter query
-│   │   ├── job_url.py           # Log Job URL parse / Indeed jk= / stubs / replace-link fields
+│   │   ├── job_url.py           # Log Job URL parse / Indeed jk= + job-id variants / stubs / replace-link fields
 │   │   ├── manual_log.py        # Save Link Only / stub save (no Playwright)
 │   │   ├── agent_push.py        # POST /api/agent/jobs: save stubs, report Unmatched skips
-│   │   ├── scraper_utils.py     # title gates, Lingua, CDP helpers
-│   │   ├── challenge_wait.py    # Indeed captcha detect + auto-continue / Telegram resume
-│   │   ├── content_wait.py      # Fetch details: settle + wait for a click, Telegram when it worked
+│   │   ├── title_gate.py        # pre-click title gate: blacklist → auto-pass → AI title check
+│   │   ├── jd_quality.py        # is a scraped JD empty / incomplete / ok to match?
+│   │   ├── language.py          # Lingua English-only gate (optional import: not on Render)
+│   │   ├── text.py              # strip_html
+│   │   ├── browser.py           # debug-Chrome CDP connect + Playwright page helpers (no Playwright import)
+│   │   ├── indeed_meta.py       # Indeed company / location header parsing, rating-chip guard
+│   │   ├── indeed_resume.py     # resume flag for the Indeed captcha handshake (bot writes, scraper waits)
 │   │   ├── pipeline_lock.py     # Single-flight pidfile for scripts/run_jobs.sh
 │   │   └── dedup.py             # Cross-source duplicate check (company + title) for API sources
-│   ├── scrapers/                # Indeed / LinkedIn / Manual (`job_page.py` = one-URL extract)
+│   ├── scrapers/                # Indeed / LinkedIn scrapers; `job_page.py` = one-URL extract
+│   │   ├── challenge_wait.py    # Indeed captcha detect + auto-continue / Telegram resume
+│   │   ├── content_wait.py      # Fetch details: settle + wait for a click, Telegram when it worked
+│   │   └── cli.py               # shared --keywords / --max-pages / --hours / --days options
+│   ├── services/                # workflows shared by web + CLI; import-safe on Render
+│   │   ├── log_job.py           # Log Job: scrape + AI + save pasted URLs → {ok, skipped, failed}
+│   │   ├── tracker_jobs.py      # Run AI / Fetch details on an existing Tracker card
+│   │   ├── job_analysis.py      # AI identity fill, evaluate, write analysis back
+│   │   └── browser_session.py   # lazy Playwright + first debug-Chrome tab
 │   ├── sources/                 # API sources: Arbeitnow / Bundesagentur / Adzuna / company ATS (run_sources.py)
 │   ├── matching/
 │   │   ├── ai_matcher.py        # match orchestration (`evaluate_job`)
@@ -392,7 +406,8 @@ job_scraper/
 │   │   ├── flow.py              # Overview Sankey sinks + weekly-by-platform (pure, no Flask)
 │   │   ├── list_query.py        # Tracker list filters → Mongo query
 │   │   ├── serialize.py         # Mongo doc → card JSON, company history
-│   │   ├── chrome_tasks.py      # Log Job / Run AI / batch Fetch state + locks (one Chrome)
+│   │   ├── chrome_tasks.py      # Log Job / Run AI / batch Fetch state + locks (one Chrome, one worker)
+│   │   ├── task_log.py          # per-thread capture of printed progress for those tasks
 │   │   └── routes/              # Blueprints, no URL prefix: pages, jobs, unmatched,
 │   │                            #   timeouts, stats, log_job, ai_tasks
 │   └── tg/                      # Telegram — package is not named `telegram` (would shadow python-telegram-bot)
@@ -405,7 +420,7 @@ job_scraper/
     ├── start_ui_demo.sh         # Tracker UI against `job_scraper_demo` (screenshots)
     ├── lib/pipeline_common.sh   # shared shell helpers (lanes, Telegram pings)
     ├── db/                      # one-off DB maintenance + `seed_demo.py` (fictional screenshot data)
-    └── tools/                   # eval_matcher, generate_password_hash, log_recommended_jobs
+    └── tools/                   # log_jobs (Log Job CLI), log_recommended_jobs, eval_matcher, generate_password_hash
 ```
 
 ---
