@@ -18,6 +18,7 @@ from core.db_mongo import (
     resolve_applied_at,
 )
 from web.flow import build_sankey, build_weekly_by_platform
+from web.stacks import build_stack_stats
 from web.status import (
     GOT_INTERVIEW_FILTER,
     JOURNEY_INTERVIEW_STEPS,
@@ -50,6 +51,17 @@ JOURNEY_PROJECTION = {
 FLOW_PROJECTION = {
     "status": 1,
     "source": 1,
+    "application_timeline": 1,
+    "applied_at": 1,
+    "updated_at": 1,
+    "matched_at": 1,
+}
+
+# Stacks tab: the JD text is the input, plus what decides rejected / apply date.
+STACKS_PROJECTION = {
+    "title": 1,
+    "description": 1,
+    "status": 1,
     "application_timeline": 1,
     "applied_at": 1,
     "updated_at": 1,
@@ -153,6 +165,19 @@ def api_stats_flow():
         "sankey": build_sankey(jobs),
         "weekly": build_weekly_by_platform(jobs),
     })
+
+
+@bp.route("/api/stats/stacks")
+@login_required
+def api_stats_stacks():
+    """
+    Stacks tab: frontend / backend framework buckets and per-framework rows
+    for every application, each with how many were rejected. Also returned
+    for settled applications only (see web.stacks.SETTLED_AFTER_DAYS).
+    """
+    collection = get_collection("matched_jobs")
+    jobs = list(collection.find(APPLICATION_QUERY, STACKS_PROJECTION))
+    return jsonify(build_stack_stats(jobs))
 
 
 @bp.route("/api/journey")

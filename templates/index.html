@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="{{ static_url('css/shared/job_list.css') }}" />
   <link rel="stylesheet" href="{{ static_url('css/tracker/overview.css') }}" />
   <link rel="stylesheet" href="{{ static_url('css/tracker/flow.css') }}" />
+  <link rel="stylesheet" href="{{ static_url('css/tracker/stacks.css') }}" />
   <link rel="stylesheet" href="{{ static_url('css/tracker/cards.css') }}" />
   <link rel="stylesheet" href="{{ static_url('css/tracker/index.css') }}" />
 </head>
@@ -82,6 +83,7 @@
     <div class="tabs" role="tablist" aria-label="Tracker views">
       <button type="button" role="tab" id="tabJobs" aria-selected="true" aria-controls="jobsView" onclick="showTrackerView('jobs')">Jobs</button>
       <button type="button" role="tab" id="tabOverview" aria-selected="false" tabindex="-1" aria-controls="overviewView" onclick="showTrackerView('overview')">Overview</button>
+      <button type="button" role="tab" id="tabStacks" aria-selected="false" tabindex="-1" aria-controls="stacksView" onclick="showTrackerView('stacks')">Stacks</button>
     </div>
     <div class="page-actions">
       <button id="refreshBtn" class="ui-btn" onclick="refreshAll()">Refresh</button>
@@ -325,6 +327,33 @@
         <div class="loc-empty">Loading…</div>
       </div>
     </div>
+  </div>
+
+  <!-- ── Stacks view: framework buckets vs rejection rate ─────────── -->
+  <!-- Copy lives in js/tracker/stacks.js (English default, 中文 toggle). -->
+  <div id="stacksView" class="tracker-view stacks" role="tabpanel" aria-labelledby="tabStacks" hidden>
+    <section class="stacks-head panel">
+      <div class="stacks-head-top">
+        <div class="stacks-totals" id="stacksTotals"><span class="muted">Loading…</span></div>
+        <div class="stacks-controls">
+          <div class="seg-toggle" role="group" id="stacksRange" aria-label="Applications">
+            <button type="button" data-range="all" aria-pressed="true">All</button>
+            <button type="button" data-range="settled" aria-pressed="false">Settled</button>
+          </div>
+          <div class="seg-toggle" role="group" id="stacksLang" aria-label="Language">
+            <button type="button" data-lang="en" lang="en" aria-pressed="true">EN</button>
+            <button type="button" data-lang="zh" lang="zh" aria-pressed="false">中文</button>
+          </div>
+        </div>
+      </div>
+      <p class="stacks-intro" id="stacksIntro"></p>
+      <div class="stacks-key" id="stacksKey"></div>
+    </section>
+    <section class="panel stacks-panel" data-group="frontend"></section>
+    <section class="panel stacks-panel" data-group="backend"></section>
+    <section class="panel stacks-panel" data-group="node"></section>
+    <section class="panel stacks-panel" data-group="non_node"></section>
+    <p class="stacks-foot" id="stacksFoot"></p>
   </div>
 
 </main>

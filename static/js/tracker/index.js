@@ -12,6 +12,7 @@ import { loadLocationStats } from './overview/bubbles.js';
 import { loadDailyStats } from './overview/heatmap.js';
 import { loadJourney } from './overview/journey.js';
 import { sizeFunnelRail } from './overview/rail.js';
+import { loadStackStats, resetStackStats } from './stacks.js';
 import { state } from './state.js';
 /* ── State ───────────────────────────────────────────────────────── */
 let highlightsOnly = false;
@@ -77,21 +78,31 @@ export async function loadStats() {
     if (err && err.name === 'AbortError') return;
   }
 }
-/* ── Jobs / Overview tabs ────────────────────────────────────────── */
+/* ── Jobs / Overview / Stacks tabs ───────────────────────────────── */
+const TRACKER_VIEWS = [
+  { view: 'jobs', tab: 'tabJobs', panel: 'jobsView' },
+  { view: 'overview', tab: 'tabOverview', panel: 'overviewView' },
+  { view: 'stacks', tab: 'tabStacks', panel: 'stacksView' },
+];
+
 export function showTrackerView(view) {
+  if (!TRACKER_VIEWS.some(v => v.view === view)) view = 'jobs';
+  TRACKER_VIEWS.forEach(v => {
+    const on = v.view === view;
+    const panel = document.getElementById(v.panel);
+    const tab = document.getElementById(v.tab);
+    if (panel) panel.hidden = !on;
+    if (tab) {
+      tab.setAttribute('aria-selected', String(on));
+      tab.tabIndex = on ? 0 : -1;
+    }
+  });
   const overview = view === 'overview';
-  document.getElementById('jobsView').hidden = overview;
-  document.getElementById('overviewView').hidden = !overview;
-  const tabJobs = document.getElementById('tabJobs');
-  const tabOverview = document.getElementById('tabOverview');
-  tabJobs.setAttribute('aria-selected', String(!overview));
-  tabOverview.setAttribute('aria-selected', String(overview));
-  tabJobs.tabIndex = overview ? -1 : 0;
-  tabOverview.tabIndex = overview ? 0 : -1;
-  // Status chips live in the sidebar, not inside #jobsView — hide them on Overview
-  // (phone chip row and desktop Status column) and restore them on Jobs.
+  // Status chips live in the sidebar, not inside #jobsView — hide them on
+  // Overview / Stacks (phone chip row and desktop Status column).
   const statusFilters = document.querySelector('.side-extra');
-  if (statusFilters) statusFilters.hidden = overview;
+  if (statusFilters) statusFilters.hidden = view !== 'jobs';
+  if (view === 'stacks') loadStackStats();
   if (overview) {
     // Replay flow/weekly reveals on this visit; skip them after they finish
     // so a resize re-render does not grow the bars again.
@@ -105,15 +116,19 @@ export function showTrackerView(view) {
   }
 }
 
-// Tab list keys: Left / Right / Home / End move between the two views
+// Tab list keys: Left / Right wrap through the views, Home / End jump to the ends
 function bindTabKeys() {
   document.querySelector('.tabs[role="tablist"]')?.addEventListener('keydown', (e) => {
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
     e.preventDefault();
-    const toOverview = e.key === 'End'
-      || (e.key !== 'Home' && document.getElementById('tabJobs').getAttribute('aria-selected') === 'true');
-    showTrackerView(toOverview ? 'overview' : 'jobs');
-    document.getElementById(toOverview ? 'tabOverview' : 'tabJobs').focus();
+    const n = TRACKER_VIEWS.length;
+    const current = Math.max(0, TRACKER_VIEWS.findIndex(
+      v => document.getElementById(v.tab)?.getAttribute('aria-selected') === 'true'));
+    const next = e.key === 'Home' ? 0
+      : e.key === 'End' ? n - 1
+        : (current + (e.key === 'ArrowRight' ? 1 : -1) + n) % n;
+    showTrackerView(TRACKER_VIEWS[next].view);
+    document.getElementById(TRACKER_VIEWS[next].tab).focus();
   });
 }
 /* ── Status filter ───────────────────────────────────────────────── */
@@ -599,6 +614,9 @@ export function loadOverviewData() {
   loadLocationStats();
   loadDailyStats();
   loadFlowStats();
+  // Stacks reads every JD, so it only loads while its tab is open
+  resetStackStats();
+  if (!document.getElementById('stacksView')?.hidden) loadStackStats();
 }
 
 function loadAfterJobList() {
