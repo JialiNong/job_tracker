@@ -9,7 +9,8 @@ import { clearFetchSelection, deleteSelectedJobs, fetchDetailsForSelected, fetch
 import { addHighlightFromInput, addHighlightPreset, addQaItem, cancelEditInfo, deleteMatchedJob, openEditInfo, removeHighlight, removeQaItem, saveApplicationQa, saveJobInfo, saveNotes, saveReplaceLink } from './card-actions.js';
 import { saveApplicantPosition } from './cards.js';
 import { clearAppliedFilter, copyJobDescription, debounceLoad, filterByCompany, initTrackerPage, loadJobDescription, loadJobs, nextPage, onTimePresetChange, prevPage, refreshAll, setStatusFilter, showTrackerView, toggleHighlightsFilter, toggleStatsExpanded } from './index.js';
-import { hideJourneyTip, showJourneyTip, toggleCompanyPop, toggleLocBubble } from './overview.js';
+import { toggleLocBubble } from './overview/bubbles.js';
+import { hideJourneyTip, showJourneyTip, toggleCompanyPop } from './overview/journey.js';
 import { addTimelineStep, editTimelineStep, undoTimelineStep, updateSideStatus } from './timeline.js';
 
 Object.assign(window, {

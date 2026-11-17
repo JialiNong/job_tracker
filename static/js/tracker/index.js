@@ -8,7 +8,10 @@ import { updateFilterCount } from '../shared/shell.js';
 import { updateBatchFetchUI } from './batch.js';
 import { renderCard } from './cards.js';
 import { loadFlowStats, renderFlowBoards } from './flow.js';
-import { loadDailyStats, loadJourney, loadLocationStats, sizeFunnelRail } from './overview.js';
+import { loadLocationStats } from './overview/bubbles.js';
+import { loadDailyStats } from './overview/heatmap.js';
+import { loadJourney } from './overview/journey.js';
+import { sizeFunnelRail } from './overview/rail.js';
 import { state } from './state.js';
 /* ── State ───────────────────────────────────────────────────────── */
 let highlightsOnly = false;

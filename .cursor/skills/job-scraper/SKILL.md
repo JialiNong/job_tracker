@@ -91,7 +91,7 @@ Phones have **no hover**. Do not ship desktop-only affordances (`:hover` tooltip
 |---------|-----------------|
 | Hover shows detail / count / preview | Single tap shows the same detail |
 | Click navigates or opens a filtered view | Double-tap (or an explicit link/button) navigates |
-| Copy says “hover” | Copy says “tap” (`TOUCH_UI` / `POINT_VERB` / `[data-point-verb]` in `static/js/shared/job_list.js`; Overview visuals live in `static/js/tracker/overview.js` / `flow.js` and `static/css/tracker/overview.css` / `flow.css`) |
+| Copy says “hover” | Copy says “tap” (`TOUCH_UI` / `POINT_VERB` / `[data-point-verb]` in `static/js/shared/job_list.js`; Overview visuals live in `static/js/tracker/overview/` (rail, journey, bubbles, heatmap) / `flow.js` and `static/css/tracker/overview.css` / `flow.css`) |
 
 Patterns already in the Tracker:
 
@@ -133,7 +133,7 @@ If the script fails, fix the UI and re-run before finishing. Mention the result 
 
 ### First-load request order
 
-On Tracker cold entry, **`/api/jobs` is critical path**. Chips (`/api/stats`) and Overview (journey / heatmap / locations / flow) load **after** the first job list (`loadAfterJobList` / `listReady` in `static/js/tracker/index.js`; Overview fetches in `static/js/tracker/overview.js` and `static/js/tracker/flow.js`). Do not reintroduce parallel `/api/stats` on init without a reason. Tracker assets live in folders: `static/js/shared/` + `static/css/shared/` (job-list chrome, also used by Unmatched), `static/js/tracker/` + `static/css/tracker/` (overview, flow, cards, batch, timeline, card-actions, page init). Single-file pages stay `static/js/<page>.js`.
+On Tracker cold entry, **`/api/jobs` is critical path**. Chips (`/api/stats`) and Overview (journey / heatmap / locations / flow) load **after** the first job list (`loadAfterJobList` / `listReady` in `static/js/tracker/index.js`; Overview fetches in `static/js/tracker/overview/*.js` and `static/js/tracker/flow.js`). Do not reintroduce parallel `/api/stats` on init without a reason. Tracker assets live in folders: `static/js/shared/` + `static/css/shared/` (job-list chrome, also used by Unmatched), `static/js/tracker/` + `static/css/tracker/` (overview, flow, cards, batch, timeline, card-actions, page init). Single-file pages stay `static/js/<page>.js`.
 
 ## Matching source of truth
 
@@ -212,7 +212,7 @@ After a split: grep the old names, point tests at the **implementing** module wh
 - **Shared state**: a scalar that more than one Tracker module reassigns lives on `state` in `tracker/state.js` (an imported binding cannot be assigned). Constants and shared Sets / maps are exported from there too.
 - **Escaping**: `shared/html.js` has `escHtml` (text and attribute values) and `safeUrl` (any job link that reaches an `href`; only http(s) or same-site paths pass). Never put `escHtml()` output inside a JS string in an inline handler: the browser decodes the entities before the JS runs. Pass data with `data-*` and read `this.dataset` instead.
 - Shared job-list chrome (score ring, row, channel chip, breakdown, toast, expand / sheet): `static/js/shared/job_list.js` + `static/css/shared/job_list.css`. Shell (`shared/shell.js`) is also shared.
-- Tracker-only: `static/js/tracker/` (`main.js` entry, `state.js`, `overview.js`, `flow.js`, `cards.js`, `batch.js`, `timeline.js`, `card-actions.js`, `index.js`) and `static/css/tracker/` (`overview.css`, `flow.css`, `cards.css`, `index.css`).
+- Tracker-only: `static/js/tracker/` (`main.js` entry, `state.js`, `overview/` (`rail.js`, `journey.js`, `bubbles.js`, `heatmap.js`), `flow.js`, `cards.js`, `batch.js`, `timeline.js`, `card-actions.js`, `index.js`) and `static/css/tracker/` (`overview.css`, `flow.css`, `cards.css`, `index.css`).
 - Phone vs desktop and `--phone-ctrl-h`: see **Web UI** above. After template/CSS/JS edits run `./scripts/check_ui.sh`.
 - Unit tests for JS helpers: `tests/js/` (Node) plus a thin `tests/test_*.py` wrapper. `page_source()` concatenates the template, every `static_url()` asset, and the module graph reached from the page's `module_entry()`, so a missing import fails.
 - `tests/e2e` is **data** (click, then assert Mongo). Overlay / viewport contracts stay in `check_ui.sh`.
