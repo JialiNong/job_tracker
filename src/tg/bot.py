@@ -1,4 +1,5 @@
 import asyncio
+import sys
 
 from dotenv import load_dotenv
 import os
@@ -119,6 +120,8 @@ async def _run_pipeline(
         process = await asyncio.create_subprocess_exec(
             *cmd,
             cwd=str(PROJECT_DIR),
+            # The pipeline uses the interpreter this bot runs on (it has the deps)
+            env={**os.environ, "PYTHON": sys.executable},
             stdout=asyncio.subprocess.DEVNULL,
             stderr=asyncio.subprocess.DEVNULL,
         )

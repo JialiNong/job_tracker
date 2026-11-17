@@ -15,9 +15,9 @@
 #   --pages N   Pages per keyword on both platforms (default: config FULL_MAX_PAGES)
 
 # Configuration
-PROJECT_DIR="/Users/carrienon/Desktop/code-project/job_scraper"
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 LOG_DIR="$PROJECT_DIR/logs"
-PYTHON="/opt/miniconda3/bin/python3"
+PYTHON="${PYTHON:-python3}"  # override: PYTHON=/path/to/python3 ./scripts/run_jobs.sh
 
 # Create log directory if it doesn't exist
 mkdir -p "$LOG_DIR"
@@ -130,6 +130,12 @@ if ! lsof -nP -iTCP:9222 -sTCP:LISTEN >/dev/null 2>&1; then
 fi
 
 cd "$PROJECT_DIR" || exit 1
+
+if ! "$PYTHON" -c 'import pymongo, core' 2>/dev/null; then
+    echo "error: $PYTHON cannot import the project dependencies." >&2
+    echo "  Activate the project environment, or run: PYTHON=/path/to/python3 $0" >&2
+    exit 1
+fi
 # shellcheck source=lib/pipeline_common.sh
 source "$PROJECT_DIR/scripts/lib/pipeline_common.sh"
 

@@ -147,7 +147,7 @@ TITLE_EXCLUDE_KEYWORDS = [
 ]
 
 
-# ===== API job sources (src/sources/, scripts/run_sources.sh) =====
+# ===== API job sources (src/sources/, src/sources/run_sources.py) =====
 # Keyword-less feeds (Arbeitnow, company ATS boards) list every role, so a
 # title must look like a dev role before the AI title check is paid for.
 # Searchable sources (Bundesagentur, Adzuna) already query DEFAULT_KEYWORDS.

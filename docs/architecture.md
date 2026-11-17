@@ -59,7 +59,7 @@ flowchart TB
     F5 -->|English JD saved| Jobs
     F5 -->|non-English| Stats
 
-    T3 --> Jobs
+    T3 -->|API/ATS jobs · same gates| F1
     Jobs --> M0 --> M1 --> M1b --> M2 --> M3
     M3 -->|≥ 7.0| Matched
     M2 -->|write analysis back| Jobs

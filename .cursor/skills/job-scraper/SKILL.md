@@ -160,8 +160,12 @@ Location / German company / “nice to have German” / plus / German-OR-English
 
 ## Entry points
 
+Daily production ingest runs without the Mac: **GitHub Actions** (`.github/workflows/api-sources.yml`, daily) runs the API / ATS sources through the same gates and matcher, and scheduled **Cursor / Claude** screens push jobs to `POST /api/agent/jobs` on Render. The browser scrapers (`run_jobs.sh`, Telegram `/jobs`) are on-demand from the Mac. Treat the first two as the main path when a change affects ingest.
+
 | Entry | Role |
 |-------|------|
+| `.github/workflows/api-sources.yml` → `src/sources/run_sources.py` | **Daily (GitHub Actions).** Arbeitnow / Bundesagentur / company ATS (Adzuna opt-in) → `sources/base.py` `ingest()` (title gates, dedup, JD language) → AI matcher → Telegram summary. See `docs/job_sources.md` |
+| `POST /api/agent/jobs` (`Authorization: Bearer AGENT_API_TOKEN`) | **Daily (scheduled agents).** Cursor / Claude already screened the jobs: link-only Tracker stubs, no title gates, no matcher (`core/agent_push.py`) |
 | `scripts/run_jobs.sh` / Telegram `/jobs [days] [linkedin_hours] [pages]` | Indeed (`--days`, 1/3/7/14) + LinkedIn (`--hours`, default days × 24) parallel lanes (scrape → match that source + Telegram ping) → Telegram match digest. `--pages` sets pages/keyword on both (default `FULL_MAX_PAGES`). No DB cleanup step. |
 | `./scripts/start_ui.sh` | Flask tracker UI (default port 5050) |
 | `src/tg/bot.py` | `/start` `/test` `/jobs` `/indeed_ok` (only `/jobs` starts scrapes) |
@@ -169,7 +173,7 @@ Location / German company / “nice to have German” / plus / German-OR-English
 | `/timeouts` | Review title-qualified scrape timeouts; add to Tracker as pending |
 | Individual `src/scrapers/*.py`, `src/matching/ai_matcher.py` | Debug / partial runs |
 
-There is no cron / launchd schedule in this project; do not add one. When you change `scripts/run_jobs.sh`, check the Telegram `/jobs` handler still passes the right flags and describes behavior correctly.
+Schedules live in GitHub Actions and the agents' own schedulers. Do not add a cron / launchd job on the Mac. When you change `scripts/run_jobs.sh`, check the Telegram `/jobs` handler still passes the right flags and describes behavior correctly.
 
 ## Code conventions
 
