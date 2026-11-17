@@ -165,7 +165,7 @@ class SharedCardChromeTests(unittest.TestCase):
         self.assertGreater(stats, 0)
         self.assertGreater(jobs, stats)
         js = (ROOT / "static" / "js" / "tracker" / "index.js").read_text()
-        self.assertIn("statusFilters.hidden = overview", js)
+        self.assertIn("statusFilters.hidden = view !== 'jobs'", js)
         css = (ROOT / "static" / "css" / "base.css").read_text()
         self.assertIn(".side-extra[hidden]", css)
 
