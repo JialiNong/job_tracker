@@ -1,0 +1,15 @@
+---
+description: After code changes, run change-reviewer + security-reviewer (max 2 rounds)
+alwaysApply: true
+---
+
+# Change review loop
+
+After you **implement** a feature or bugfix, do not stop at the impact check. Run the loop in [`.cursor/skills/change-review-loop/SKILL.md`](../skills/change-review-loop/SKILL.md).
+
+1. Parent stays the coding agent (do not spawn a second implementer).
+2. In parallel: `change-reviewer` (edge cases, tests, splits) and `security-reviewer` (auth, XSS, Mongo, Telegram, secrets, CDP).
+3. Fix **Must-fix** only; list Should-fix; drop Skip.
+4. Re-review at most **one** extra round (max 2 total). Then stop.
+
+Skip the loop for questions, docs-only, user “don’t review”, or commit/push with no new code. If the user also asked to ship, finish this loop **before** commit.

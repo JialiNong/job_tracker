@@ -247,7 +247,8 @@ After a split: grep the old names, point tests at the **implementing** module wh
 4. Update `docs/architecture.md` if flow/commands/filters/gates changed.
 5. If matching changed, keep `docs/matching_rules.md`, the schema in `evaluator.py`, and `MATCH_WEIGHTS` aligned, and run `scripts/tools/eval_matcher.py`.
 6. Impact check: grep usages of every touched function / field / component; update neighbors from the checklist in the same PR.
-7. Briefly tell the user what flow docs were updated and which related areas you checked.
+7. Run the **change review loop** in [`.cursor/skills/change-review-loop/SKILL.md`](../change-review-loop/SKILL.md): `change-reviewer` + `security-reviewer` in parallel, fix Must-fix, at most 2 rounds.
+8. Briefly tell the user what flow docs were updated, which related areas you checked, and the review-loop outcome.
 
 ## Out of scope reminders
 
