@@ -155,7 +155,16 @@ def api_update_timeline(job_id: str):
         }
         for e in timeline
     ]
-    return jsonify({"ok": True, "status": new_status, "application_timeline": serialized})
+    applied_at = (
+        update_fields["applied_at"] if "applied_at" in update_fields
+        else job.get("applied_at")
+    )
+    return jsonify({
+        "ok": True,
+        "status": new_status,
+        "applied_at": _format_timeline_at(applied_at) if applied_at else None,
+        "application_timeline": serialized,
+    })
 
 
 @bp.route("/api/jobs/<job_id>/notes", methods=["PATCH"])

@@ -522,7 +522,7 @@ async function loadFlowStats() {
   const weeklyRoot = document.getElementById('weeklyRoot');
   if (!flowRoot && !weeklyRoot) return;
   try {
-    const res = await fetch('/api/stats/flow');
+    const res = await fetch('/api/stats/flow', { cache: 'no-store' });
     _flowCache = await res.json();
     renderFlowBoards();
   } catch (_) {

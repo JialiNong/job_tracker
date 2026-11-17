@@ -10,7 +10,12 @@ from collections import Counter, defaultdict
 from datetime import date, datetime, timedelta
 
 from core.db_mongo import resolve_applied_at
-from web.status import SCREENING_TIMELINE_STEPS, _hydrate_timeline, _parse_timeline_at
+from web.status import (
+    CANCELLED_TIMELINE_STEP,
+    SCREENING_TIMELINE_STEPS,
+    _hydrate_timeline,
+    _parse_timeline_at,
+)
 
 # ISO-week stacked bars: LinkedIn / Indeed stay named; everything else is Other.
 PLATFORM_KEYS = ("linkedin", "indeed", "other")
@@ -61,6 +66,7 @@ SANKY_NODE_META = (
     {"id": "waiting", "label": "Waiting", "column": 1, "tone": "waiting"},
     {"id": "rejected", "label": "Rejected", "column": 1, "tone": "rejected"},
     {"id": "awaiting", "label": "Awaiting interview", "column": 2, "tone": "interview"},
+    {"id": "cancelled", "label": "Interview cancelled", "column": 2, "tone": "cancelled"},
     {"id": "round_1_upcoming", "label": "Round 1 upcoming", "column": 2, "tone": "interview"},
     {"id": "round_1", "label": "After round 1", "column": 2, "tone": "interview"},
     {"id": "rejected_invite", "label": "Invite rejected", "column": 2, "tone": "rejected"},
@@ -163,6 +169,8 @@ def classify_flow_sink(job: dict, now: datetime | None = None) -> str:
 
     if has_offer and last != "rejected":
         return "offer"
+    if last == CANCELLED_TIMELINE_STEP:
+        return "cancelled"
     if last == "rejected":
         if not ranks:
             return "rejected"

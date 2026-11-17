@@ -70,6 +70,7 @@
 .status-pill.s-screening { color: var(--screening); }
 .status-pill.s-rejected { color: var(--rejected); }
 .status-pill.s-interview { color: var(--interview); }
+.status-pill.s-interview_cancelled { color: var(--cancelled); }
 .status-pill.s-offer { color: var(--offer); }
 .status-pill.s-unsuitable { color: var(--unsuitable); }
 .status-pill.s-closed { color: var(--closed); }
@@ -453,6 +454,7 @@
 .progress-node.step-reapplied .node-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 4px var(--applied); }
 .progress-node.step-screening { --node-color: var(--screening); }
 .progress-node.step-interview { --node-color: var(--interview); }
+.progress-node.step-cancelled { --node-color: var(--cancelled); }
 .progress-node.step-rejected  { --node-color: var(--rejected); }
 .progress-node.step-offer     { --node-color: var(--offer); }
 .progress-line {
@@ -465,6 +467,7 @@
 }
 .progress-line.done { background: var(--interview); opacity: .55; }
 .progress-line.done.end-rejected { background: var(--rejected); }
+.progress-line.done.end-cancelled { background: var(--cancelled); }
 .progress-line.done.end-offer { background: var(--offer); }
 .progress-empty {
   font-size: .8rem;
@@ -494,6 +497,7 @@
 .progress-btn.btn-apply-step { border-color: color-mix(in srgb, var(--applied) 45%, var(--border)); color: var(--applied); }
 .progress-btn.btn-screening-step { border-color: color-mix(in srgb, var(--screening) 45%, var(--border)); color: var(--screening); }
 .progress-btn.btn-interview-step { border-color: color-mix(in srgb, var(--interview) 45%, var(--border)); color: var(--interview); }
+.progress-btn.btn-cancel-step { border-color: color-mix(in srgb, var(--cancelled) 45%, var(--border)); color: var(--cancelled); }
 .progress-btn.btn-reject-step { border-color: color-mix(in srgb, var(--rejected) 45%, var(--border)); color: var(--rejected); }
 .progress-btn.btn-offer-step { border-color: color-mix(in srgb, var(--offer) 45%, var(--border)); color: var(--offer); }
 .progress-btn.btn-undo {
@@ -755,6 +759,7 @@
 .company-history .ch-status.st-applied { color: var(--applied); }
 .company-history .ch-status.st-screening { color: var(--screening); }
 .company-history .ch-status.st-interview { color: var(--interview); }
+.company-history .ch-status.st-cancelled { color: var(--cancelled); }
 .company-history .ch-status.st-offer { color: var(--offer); }
 .company-history .ch-title { flex: 1 1 160px; min-width: 0; }
 .company-history .ch-dates { color: var(--muted); white-space: nowrap; }
@@ -847,6 +852,7 @@
 .status-pill.s-pending   { color: var(--pending); }
 .status-pill.s-screening { color: var(--screening); }
 .status-pill.s-interview { color: var(--interview); }
+.status-pill.s-interview_cancelled { color: var(--cancelled); }
 .status-pill.s-offer     { color: var(--offer); }
 
 .job-grid.layout-compact .score-ring { --ring-size: 40px; }

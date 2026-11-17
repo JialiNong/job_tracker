@@ -31,6 +31,7 @@ JOURNEY_TRACK_STEPS = frozenset({
     "interview_2",
     "interview_3",
     "interview_final",
+    "interview_cancelled",
     "rejected",
     "offer",
 })
@@ -43,6 +44,7 @@ STATUS_MAP = {
     "screening":  "Screening",
     "rejected":   "Rejected",
     "interview":  "Interview",
+    "interview_cancelled": "Cancelled",
     "offer":      "Offer",
     "unsuitable": "Unsuitable",
     "closed":     "Closed",
@@ -80,6 +82,9 @@ INTERVIEW_TIMELINE_STEPS = (
     "interview_3",
     "interview_final",
 )
+# Invite / a round was cancelled before it happened. Not a live interview,
+# and not a rejection — Got interview still counts from the invite/round.
+CANCELLED_TIMELINE_STEP = "interview_cancelled"
 # "screening": they asked for a questionnaire / Loom / similar.
 # "screening_done": you sent it. Both stay the Screening chip; not Got interview.
 SCREENING_TIMELINE_STEPS = (
@@ -100,6 +105,7 @@ TIMELINE_STEPS = {
     "interview_2":     "Round 2",
     "interview_3":     "Round 3",
     "interview_final": "Final",
+    "interview_cancelled": "Cancelled",
     "rejected":        "Rejected",
     "offer":           "Offer",
 }
@@ -115,6 +121,7 @@ TIMELINE_STEP_ORDER = (
     "interview_2",
     "interview_3",
     "interview_final",
+    "interview_cancelled",
     "rejected",
     "offer",
 )
@@ -181,6 +188,16 @@ def _sort_timeline(events: list) -> list:
     )
 
 
+def _is_live_interview_step(step: str) -> bool:
+    """Invite / a round / offer — not a cancelled interview."""
+    return step in INTERVIEW_TIMELINE_STEPS or step == "offer"
+
+
+def _is_interview_related_step(step: str) -> bool:
+    """Live interview progress, plus cancelled-before-it-happened."""
+    return _is_live_interview_step(step) or step == CANCELLED_TIMELINE_STEP
+
+
 def _status_from_timeline(timeline: list, fallback: str = "pending") -> str:
     """Derive matched_jobs.status from the latest-dated timeline step."""
     ordered = _sort_timeline(timeline or [])
@@ -188,20 +205,19 @@ def _status_from_timeline(timeline: list, fallback: str = "pending") -> str:
         return fallback if fallback in (*SIDE_STATUSES, "pending") else "pending"
     last = ordered[-1].get("step", "")
     steps = [e.get("step") or "" for e in ordered]
-    # Invite / rounds win over a backfilled Screening that still sits last
-    # (unparsed "now" stamp, or not yet sorted in Mongo).
+    # Invite / rounds / cancelled win over a backfilled Screening that still
+    # sits last (unparsed "now" stamp, or not yet sorted in Mongo).
     if last in SCREENING_TIMELINE_STEPS and any(
-        s.startswith("interview_") or s == "offer" for s in steps
+        _is_interview_related_step(s) for s in steps
     ):
-        last = next(
-            s for s in reversed(steps)
-            if s.startswith("interview_") or s == "offer"
-        )
+        last = next(s for s in reversed(steps) if _is_interview_related_step(s))
     if last in ("applied", "reapplied"):
         return "applied"
     if last in SCREENING_TIMELINE_STEPS:
         return "screening"
-    if last.startswith("interview_"):
+    if last == CANCELLED_TIMELINE_STEP:
+        return CANCELLED_TIMELINE_STEP
+    if last in INTERVIEW_TIMELINE_STEPS:
         return "interview"
     if last == "rejected":
         return "rejected"
@@ -219,7 +235,7 @@ def job_reached_interview(job: dict) -> bool:
             for item in raw
         )
     status = job.get("status") or "pending"
-    return status in ("interview", "offer")
+    return status in ("interview", "offer", CANCELLED_TIMELINE_STEP)
 
 
 def job_reached_offer(job: dict) -> bool:
@@ -236,7 +252,7 @@ def job_reached_offer(job: dict) -> bool:
 def application_progress(job: dict) -> Optional[str]:
     """
     Application stage for Tracker chips: applied / screening / interview /
-    rejected / offer.
+    interview_cancelled / rejected / offer.
 
     Uses timeline (then applied_at / applied-like status). Side overlays
     (unsuitable / closed / repost / duplicate) do not hide progress.
@@ -288,7 +304,7 @@ def jobs_status_filter_query(status_filter: Optional[str]) -> dict:
                 {"application_timeline.step": {"$in": list(JOURNEY_INTERVIEW_STEPS)}},
                 {
                     "application_timeline.0": {"$exists": False},
-                    "status": {"$in": ["interview", "offer"]},
+                    "status": {"$in": ["interview", "offer", CANCELLED_TIMELINE_STEP]},
                 },
             ]
         }
@@ -358,7 +374,8 @@ def chip_status_counts(jobs: list) -> dict:
     Overlay chips (pending / side statuses) use the status field.
     Progress chips use application_progress, so a side-status interview
     increments both Unsuitable and Interview. Got interview counts any job
-    that ever reached invite / a round / offer, including later rejected.
+    that ever reached invite / a round / offer, including later rejected
+    or cancelled before the interview happened.
     """
     counts: dict = {ACTIVE_STATUS_FILTER: 0, GOT_INTERVIEW_FILTER: 0}
     for job in jobs:
@@ -411,6 +428,10 @@ def _hydrate_timeline(job: dict) -> list:
             seeded.append({"step": "offer", "at": job.get("updated_at") or at or datetime.now()})
         elif status == "interview":
             seeded.append({"step": "interview_1", "at": job.get("updated_at") or at or datetime.now()})
+        elif status == CANCELLED_TIMELINE_STEP:
+            when = job.get("updated_at") or at or datetime.now()
+            seeded.append({"step": "interview_invite", "at": when})
+            seeded.append({"step": CANCELLED_TIMELINE_STEP, "at": when})
         elif status == "screening":
             seeded.append({"step": "screening", "at": job.get("updated_at") or at or datetime.now()})
         return seeded
@@ -429,6 +450,51 @@ def _existing_applied_event(job: dict) -> Optional[dict]:
     if at:
         return {"step": "applied", "at": at}
     return None
+
+
+def _event_at(event: dict) -> Optional[datetime]:
+    at = event.get("at") if isinstance(event, dict) else None
+    if isinstance(at, datetime):
+        return _naive_dt(at)
+    return _parse_timeline_at(at)
+
+
+def _latest_cancel_at(timeline: list) -> Optional[datetime]:
+    latest = None
+    for event in timeline:
+        if not isinstance(event, dict) or event.get("step") != CANCELLED_TIMELINE_STEP:
+            continue
+        at = _event_at(event)
+        if at and (latest is None or at > latest):
+            latest = at
+    return latest
+
+
+def _prune_rounds_after_new_cancel(job: dict, timeline: list) -> list:
+    """
+    Recording Cancelled means the scheduled interview did not happen.
+
+    Drop live rounds dated after the cancel so a Thursday Round 1 does not
+    sit after a Tuesday cancellation and keep the job on Interview. Invite
+    stays (Got interview). A round added after cancel was already stored
+    (reschedule) is kept.
+    """
+    new_cancel = _latest_cancel_at(timeline)
+    if new_cancel is None:
+        return timeline
+    prev = job.get("application_timeline") if isinstance(job.get("application_timeline"), list) else []
+    if _latest_cancel_at(prev) is not None:
+        return timeline
+    kept = []
+    for event in timeline:
+        if not isinstance(event, dict):
+            continue
+        step = event.get("step")
+        at = _event_at(event)
+        if step in INTERVIEW_TIMELINE_STEPS and step != "interview_invite" and at and at > new_cancel:
+            continue
+        kept.append(event)
+    return kept
 
 
 def _ensure_applied_record(job: dict, timeline: list) -> list:
@@ -469,6 +535,7 @@ def _timeline_update_fields(job: dict, timeline: list, now: datetime) -> dict:
     that event when the job is not on a side status, and never cleared except
     when the derived status is pending (undo back to Not Applied).
     """
+    timeline = _prune_rounds_after_new_cancel(job, timeline)
     prev_status = job.get("status") or "pending"
     if prev_status in SIDE_STATUSES:
         timeline = _ensure_applied_record(job, timeline)

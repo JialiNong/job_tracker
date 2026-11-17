@@ -113,6 +113,7 @@ function journeyNodeClass(step) {
   if (String(step).startsWith('screening')) return 'step-screening';
   if (step === 'rejected') return 'step-rejected';
   if (step === 'offer') return 'step-offer';
+  if (step === 'interview_cancelled') return 'step-cancelled';
   if (String(step).startsWith('interview_')) return 'step-interview';
   return '';
 }
@@ -136,7 +137,7 @@ function renderCompanyTrack(track, start, end) {
   const rank = {
     applied: 0, reapplied: 1, screening: 2, screening_done: 3,
     interview_invite: 4, interview_1: 5, interview_2: 6, interview_3: 7,
-    interview_final: 8, rejected: 9, offer: 10,
+    interview_final: 8, interview_cancelled: 9, rejected: 10, offer: 11,
   };
   const steps = (track.steps || [])
     .map(s => ({ ...s, _day: parseJourneyDay(s.date || s.at) }))
@@ -157,6 +158,7 @@ function renderCompanyTrack(track, start, end) {
     let cls = 'jt-seg';
     if (steps[i + 1].step === 'rejected') cls += ' end-rejected';
     else if (steps[i + 1].step === 'offer') cls += ' end-offer';
+    else if (steps[i + 1].step === 'interview_cancelled') cls += ' end-cancelled';
     segs.push(`<div class="${cls}" style="left:${left}%;width:${width}%"></div>`);
   }
 
@@ -272,7 +274,7 @@ async function loadJourney() {
   if (!root) return;
   hideCompanyPop();
   try {
-    const res = await fetch('/api/journey');
+    const res = await fetch('/api/journey', { cache: 'no-store' });
     const data = await res.json();
     const total = data.total_applied || 0;
 
@@ -456,7 +458,7 @@ async function loadLocationStats() {
   const sub = document.getElementById('locSubtitle');
   if (!root) return;
   try {
-    const res = await fetch('/api/stats/locations');
+    const res = await fetch('/api/stats/locations', { cache: 'no-store' });
     const data = await res.json();
     const total = data.total || 0;
     // Single-job cities add clutter; only chart places with 2+ applications
@@ -581,7 +583,7 @@ async function loadDailyStats() {
 
   try {
     // ~3 months (13–14 week columns)
-    const res = await fetch('/api/stats/daily?days=92');
+    const res = await fetch('/api/stats/daily?days=92', { cache: 'no-store' });
     const data = await res.json();
     const days = data.days || [];
     calDaysByDate = {};

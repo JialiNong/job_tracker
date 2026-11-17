@@ -114,10 +114,12 @@ def _html_no_store(response):
     """
     Do not let the browser keep a stale Tracker page. Cached HTML still
     points at old static ?v= hashes, so CSS/JS edits look like they need a
-    server restart. Static files with ?v= stay long-cached.
+    server restart. JSON stats/list responses also skip the cache so a
+    progress change is not painted over by an older GET. Static files
+    with ?v= stay long-cached.
     """
     ctype = response.headers.get("Content-Type", "")
-    if ctype.startswith("text/html"):
+    if ctype.startswith("text/html") or ctype.startswith("application/json"):
         response.headers["Cache-Control"] = "no-store, max-age=0"
         response.headers["Pragma"] = "no-cache"
     return response

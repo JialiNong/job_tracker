@@ -448,6 +448,5 @@ async function deleteSelectedJobs() {
   }
   clearFetchSelection();
   await loadJobs();
-  loadStats();
-  loadOverviewData();
+  refreshTrackerStats();
 }

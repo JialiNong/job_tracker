@@ -176,6 +176,73 @@ class TrackerE2E(unittest.TestCase):
         expect(progress.locator(".progress-node")).to_have_count(3)
         expect(progress.get_by_role("button", name="+ Invite")).to_be_visible()
 
+    def test_record_applied_updates_status_chips(self):
+        self.open_card(PENDING_ID)
+        self.page.wait_for_function(
+            "() => /^\\d+$/.test(document.getElementById('cnt-applied').textContent)"
+            " && /^\\d+$/.test(document.getElementById('cnt-pending').textContent)"
+            " && /^\\d+$/.test(document.getElementById('cnt-rejected').textContent)"
+        )
+        before_applied = int(self.page.locator("#cnt-applied").inner_text())
+        before_pending = int(self.page.locator("#cnt-pending").inner_text())
+        before_rejected = int(self.page.locator("#cnt-rejected").inner_text())
+
+        progress = self.page.locator(f"#progress-{PENDING_ID}")
+        progress.get_by_role("button", name="+ Applied").click()
+        self.confirm_modal()
+        wait_for(lambda: self.job(PENDING_ID)["status"] == "applied", "status = applied")
+        wait_for(
+            lambda: self.page.locator("#cnt-applied").inner_text() == str(before_applied + 1),
+            "applied chip +1",
+        )
+        self.assertEqual(int(self.page.locator("#cnt-pending").inner_text()), before_pending - 1)
+
+        progress = self.page.locator(f"#progress-{PENDING_ID}")
+        progress.get_by_role("button", name="+ Rejected").click()
+        self.confirm_modal()
+        wait_for(lambda: self.job(PENDING_ID)["status"] == "rejected", "status = rejected")
+        wait_for(
+            lambda: self.page.locator("#cnt-rejected").inner_text() == str(before_rejected + 1),
+            "rejected chip +1",
+        )
+        self.assertEqual(int(self.page.locator("#cnt-applied").inner_text()), before_applied)
+
+    def test_record_invite_then_cancelled_keeps_got_interview(self):
+        progress = self.open_card(PENDING_ID)
+        progress.get_by_role("button", name="+ Applied").click()
+        self.confirm_modal()
+        wait_for(lambda: self.job(PENDING_ID)["status"] == "applied", "status = applied")
+
+        progress = self.page.locator(f"#progress-{PENDING_ID}")
+        progress.get_by_role("button", name="+ Invite").click()
+        self.confirm_modal()
+        wait_for(lambda: self.job(PENDING_ID)["status"] == "interview", "status = interview")
+        self.page.wait_for_function(
+            "() => /^\\d+$/.test(document.getElementById('cnt-got_interview').textContent)"
+            " && /^\\d+$/.test(document.getElementById('cnt-interview').textContent)"
+            " && /^\\d+$/.test(document.getElementById('cnt-interview_cancelled').textContent)"
+        )
+        before_got = int(self.page.locator("#cnt-got_interview").inner_text())
+        before_interview = int(self.page.locator("#cnt-interview").inner_text())
+        before_cancelled = int(self.page.locator("#cnt-interview_cancelled").inner_text())
+
+        progress = self.page.locator(f"#progress-{PENDING_ID}")
+        progress.get_by_role("button", name="+ Cancelled").click()
+        self.confirm_modal()
+        wait_for(
+            lambda: self.job(PENDING_ID)["status"] == "interview_cancelled",
+            "status = interview_cancelled",
+        )
+        steps = [e["step"] for e in self.job(PENDING_ID)["application_timeline"]]
+        self.assertEqual(steps, ["applied", "interview_invite", "interview_cancelled"])
+        wait_for(
+            lambda: self.page.locator("#cnt-interview_cancelled").inner_text()
+            == str(before_cancelled + 1),
+            "cancelled chip +1",
+        )
+        self.assertEqual(int(self.page.locator("#cnt-got_interview").inner_text()), before_got)
+        self.assertEqual(int(self.page.locator("#cnt-interview").inner_text()), before_interview - 1)
+
     def test_record_applied_then_invite(self):
         progress = self.open_card(PENDING_ID)
         progress.get_by_role("button", name="+ Applied").click()

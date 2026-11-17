@@ -258,6 +258,7 @@
   pointer-events: none;
 }
 .jt-seg.end-rejected { background: var(--rejected); }
+.jt-seg.end-cancelled { background: var(--cancelled); }
 .jt-seg.end-offer { background: var(--offer); }
 .jt-node {
   position: absolute;
@@ -291,6 +292,7 @@
 .jt-node.step-reapplied { --node-color: var(--applied); }
 .jt-node.step-screening { --node-color: var(--screening); }
 .jt-node.step-interview { --node-color: var(--interview); }
+.jt-node.step-cancelled { --node-color: var(--cancelled); }
 .jt-node.step-rejected  { --node-color: var(--rejected); }
 .jt-node.step-offer     { --node-color: var(--offer); }
 .journey-side {

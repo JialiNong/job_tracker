@@ -102,7 +102,7 @@ def api_stats():
             "ai_unmatched": unmatched,
             "applied": applied_total,
             # Same lookback as the Got interview chip: invite / round / offer,
-            # including jobs later marked rejected or a side overlay.
+            # including jobs later marked rejected, cancelled, or a side overlay.
             "interviewed": by_status.get(GOT_INTERVIEW_FILTER, 0),
             "offer": by_status.get("offer", 0),
         },

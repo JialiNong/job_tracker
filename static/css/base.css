@@ -30,6 +30,7 @@
   --screening: #4b4f91;
   --rejected: #a64338;
   --interview: #885a0d;
+  --cancelled: #6d5c4a;
   --offer: #266f46;
   --unsuitable: #70559d;
   --closed: #545b5a;
@@ -88,6 +89,7 @@
     --screening: #a0a6ef;
     --rejected: #e18072;
     --interview: #e0a646;
+    --cancelled: #c4b09a;
     --offer: #5cbf84;
     --unsuitable: #b39ce0;
     --closed: #959e9c;

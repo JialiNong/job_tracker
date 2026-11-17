@@ -299,7 +299,7 @@ class StatusFilterQueryTests(unittest.TestCase):
             query["$or"][1],
             {
                 "application_timeline.0": {"$exists": False},
-                "status": {"$in": ["interview", "offer"]},
+                "status": {"$in": ["interview", "offer", "interview_cancelled"]},
             },
         )
 
@@ -387,6 +387,7 @@ class CountryTests(unittest.TestCase):
     def test_default_view_is_active(self):
         self.assertIn("let currentStatusFilter = 'active';", HTML)
         self.assertIn('data-status="got_interview"', HTML)
+        self.assertIn('data-status="interview_cancelled"', HTML)
         self.assertIn("function jobReachedInterview", HTML)
         self.assertIn('id="countryFilter"', HTML)
         self.assertIn('<option value="germany" selected>Germany</option>', HTML)

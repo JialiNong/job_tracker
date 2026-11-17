@@ -8,7 +8,10 @@ from core.mongo.client import COLLECTION_NAME, get_collection, get_db
 
 
 # Statuses that mean the user has submitted an application
-APPLIED_STATUSES = ("applied", "screening", "rejected", "interview", "offer")
+APPLIED_STATUSES = (
+    "applied", "screening", "rejected", "interview",
+    "interview_cancelled", "offer",
+)
 
 # Jobs that count as an application: current applied-like status, or a recorded
 # apply date / timeline (status may later become closed / unsuitable / repost / duplicate).

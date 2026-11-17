@@ -149,6 +149,7 @@
 .flow-tone-rejected { fill: var(--rejected); }
 .flow-tone-screening { fill: var(--screening); }
 .flow-tone-interview { fill: var(--interview); }
+.flow-tone-cancelled { fill: var(--cancelled); }
 .flow-tone-offer { fill: var(--offer); }
 
 .weekly-bar { cursor: pointer; }

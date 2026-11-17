@@ -35,6 +35,7 @@
 .dot-screening  { background: var(--screening); }
 .dot-rejected   { background: var(--rejected); }
 .dot-interview  { background: var(--interview); }
+.dot-interview_cancelled { background: var(--cancelled); }
 .dot-got_interview {
   background: color-mix(in srgb, var(--interview) 35%, var(--surface));
   box-shadow: inset 0 0 0 1.5px var(--interview);

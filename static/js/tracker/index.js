@@ -34,6 +34,7 @@ const STATUS_LABEL = {
   screening:  'Screening',
   rejected:   'Rejected',
   interview:  'Interview',
+  interview_cancelled: 'Cancelled',
   offer:      'Offer',
   unsuitable: 'Unsuitable',
   closed:     'Closed',
@@ -44,7 +45,12 @@ const STATUS_LABEL = {
   duplicate:  'Duplicate',
 };
 const SIDE_STATUSES = ['unsuitable', 'closed', 'closed_no_reply', 'prev_rejected', 'too_many_questions', 'repost', 'duplicate'];
-const PROGRESS_STAGES = ['applied', 'screening', 'rejected', 'interview', 'offer'];
+const PROGRESS_STAGES = ['applied', 'screening', 'rejected', 'interview', 'interview_cancelled', 'offer'];
+const STATS_CHIP_KEYS = [
+  'active', 'pending', 'applied', 'screening', 'rejected', 'interview',
+  'interview_cancelled', 'got_interview', 'offer', 'unsuitable', 'closed',
+  'closed_no_reply', 'prev_rejected', 'too_many_questions', 'repost', 'duplicate',
+];
 const selectedFetchIds = new Set();
 // Selected cards that are not eligible for batch Fetch / Run AI (already
 // scored) — only Delete selected acts on them.
@@ -65,6 +71,7 @@ const TIMELINE_LABEL = {
   interview_2:      'Round 2',
   interview_3:      'Round 3',
   interview_final:  'Final',
+  interview_cancelled: 'Cancelled',
   rejected:         'Rejected',
   offer:            'Offer',
 };
@@ -77,9 +84,13 @@ const TERMINAL_STEPS = new Set(['rejected', 'offer']);
 /** In-memory timeline cache keyed by job id */
 const jobTimelines = {};
 /* ── Stats bar + funnel ──────────────────────────────────────────── */
+let statsAbortController = null;
 async function loadStats() {
+  if (statsAbortController) statsAbortController.abort();
+  statsAbortController = new AbortController();
+  const signal = statsAbortController.signal;
   try {
-    const res = await fetch('/api/stats');
+    const res = await fetch('/api/stats', { signal, cache: 'no-store' });
     const data = await res.json();
 
     // Filter chips (existing)
@@ -96,7 +107,7 @@ async function loadStats() {
       const el = document.getElementById(`cnt-${status}`);
       if (el) el.textContent = cnt;
     }
-    ['active','pending','applied','screening','rejected','interview','got_interview','offer','unsuitable','closed','closed_no_reply','prev_rejected','too_many_questions','repost','duplicate'].forEach(s => {
+    STATS_CHIP_KEYS.forEach(s => {
       if (!data.by_status[s]) {
         const el = document.getElementById(`cnt-${s}`);
         if (el) el.textContent = 0;
@@ -104,7 +115,9 @@ async function loadStats() {
     });
 
     if (data.funnel) sizeFunnelRail(data.funnel);
-  } catch (_) {}
+  } catch (err) {
+    if (err && err.name === 'AbortError') return;
+  }
 }
 /* ── Jobs / Overview tabs ────────────────────────────────────────── */
 function showTrackerView(view) {

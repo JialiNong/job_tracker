@@ -199,6 +199,18 @@ class ClassifyFlowSinkTests(unittest.TestCase):
         ))
         self.assertEqual(classify_flow_sink(job), "offer")
 
+    def test_cancelled_before_interview(self):
+        job = _job(status="interview_cancelled", steps=(
+            ("applied", APPLIED),
+            ("interview_invite", INVITE),
+            ("interview_cancelled", REJECT),
+        ))
+        self.assertEqual(classify_flow_sink(job), "cancelled")
+        self.assertEqual(
+            job_flow_links(job),
+            [("applied", "interview"), ("interview", "cancelled")],
+        )
+
     def test_flat_status_without_timeline_hydrates(self):
         rejected = {
             "status": "rejected",
