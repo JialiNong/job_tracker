@@ -8,13 +8,17 @@ All project docs and code comments are written in English.
 
 ## 1. System overview
 
+Daily production ingest is **GitHub Actions** (API/ATS → same matcher) plus **Cursor / Claude agent push** (skip matcher). The browser scrapers below are on-demand from the Mac.
+
 ```mermaid
 flowchart TB
     subgraph Triggers["Entry points"]
         T1["Telegram<br/>/jobs [days] [li_hours] [pages] · /indeed_ok"]
         T2["Shell<br/>scripts/run_jobs.sh"]
+        T3["GitHub Actions<br/>daily APIs + ATS"]
         T4["Web UI<br/>./scripts/start_ui.sh"]
         T5["Manual CLI<br/>scrapers / matcher"]
+        T6["Cursor / Claude<br/>daily screen<br/>POST /api/agent/jobs"]
     end
 
     subgraph Scrape["Scrape layer"]
@@ -55,10 +59,12 @@ flowchart TB
     F5 -->|English JD saved| Jobs
     F5 -->|non-English| Stats
 
+    T3 --> Jobs
     Jobs --> M0 --> M1 --> M1b --> M2 --> M3
     M3 -->|≥ 7.0| Matched
     M2 -->|write analysis back| Jobs
 
+    T6 -->|skip matcher · already AI-screened| Matched
     T4 --> Matched & Jobs
 ```
 
@@ -70,7 +76,9 @@ flowchart TB
 
 The browser pipeline (LinkedIn / Indeed) has **no schedule**: it runs on demand from Telegram `/jobs` (or the same script from a shell) on the Mac.
 
-The **API sources pipeline** (Arbeitnow, Bundesagentur, company ATS boards; Adzuna opt-in; `src/sources/run_sources.py`) runs **daily on GitHub Actions** (`.github/workflows/api-sources.yml`, 09:17 UTC / 10:17 Berlin in winter), with no Mac needed. It uses the same title / language gates and the same AI matcher, and sends its own Telegram summary + match cards. Full source list, setup and watchlist: [`job_sources.md`](./job_sources.md).
+The **API sources pipeline** (Arbeitnow, Bundesagentur, company ATS boards; Adzuna opt-in; `src/sources/run_sources.py`) runs **daily on GitHub Actions** (`.github/workflows/api-sources.yml`, 09:17 UTC / 10:17 Berlin in winter), with no Mac needed. It uses the same title / language gates and the same AI matcher, and sends its own Telegram summary + match cards.
+
+A third daily lane is **agent ingest**: Cursor and Claude scheduled screens `POST /api/agent/jobs` on Render. Those picks skip this funnel (see [2.4](#24-agent-ingest-cursor--claude-daily)). Full source list, setup and watchlist: [`job_sources.md`](./job_sources.md).
 
 | Command | What it does | Typical time |
 |---------|--------------|--------------|
@@ -145,6 +153,16 @@ A `goto` timeout no longer aborts the extract — the listing is often already o
 | `./scripts/start_ui_demo.sh [port]` | Tracker UI against `job_scraper_demo` (default port 5051). Refuses `DATABASE_NAME=job_scraper` |
 | `python3 scripts/tools/eval_matcher.py …` | Matcher evaluation |
 | `python3 scripts/tools/eval_matcher.py [--pos N --neg N --german N] [--job-model M]` | Check the matcher against Tracker decisions (applied vs unsuitable) and re-check old German rejects. `--unapplied [--limit N]` scores Tracker jobs she did not apply to. `--from-results <file>` re-scores a saved run with the current weights (no API calls). Read-only on MongoDB (company lookups cached in `evals/results/company_cache.json`); output in `evals/results/`. |
+
+### 2.4 Agent ingest (Cursor / Claude daily)
+
+Scheduled Cursor and Claude screens `POST /api/agent/jobs` on Render (`Authorization: Bearer AGENT_API_TOKEN`). Each agent already filtered with its own model, so this path **does not** run title gates or the matcher. It is a third ingest lane next to GitHub Actions and the on-demand browser scrapers, not a coding-agent side effect.
+
+- New URL → `matched_jobs` link-only stub (`origin=agent`, `recommended_by` = `cursor` / `claude` / `gemini` / `gpt`)
+- URL already on Tracker, in `jobs`, or in `timeout_jobs` → no overwrite of a scraped JD
+- URL already Unmatched → stamp `agent_recommended_by` / `agent_recommend_reason`, return `below_threshold` so the agent can report the disagreement
+
+Local twin: `python3 scripts/tools/log_recommended_jobs.py`. Source list: [`job_sources.md`](./job_sources.md).
 
 ---
 
@@ -397,3 +415,5 @@ job_scraper/
 > **Title gates (blacklist → auto-pass keywords → AI title) → open detail → discard non-English JD → save English JD → matcher skips empty / incomplete / non-English desc → model labels the job against CV + rules (hard fails quote the JD) → model looks up the company (cached) → code scores with MATCH_WEIGHTS → ≥ 7 and company not blocked enters Tracker.**
 
 `/jobs` arguments only change *how much* to scrape: Indeed days, LinkedIn hours, and pages per keyword (both platforms). Each source starts AI matching as soon as its scrape finishes; job cards are pushed only after both lanes complete. **Filter and match rules are the same for every window.**
+
+Agent-recommended URLs skip this funnel: Cursor / Claude already screened them, and `POST /api/agent/jobs` writes `origin=agent` stubs to Tracker. A URL the matcher already rejected is not copied onto Tracker; it is tagged on Unmatched instead.

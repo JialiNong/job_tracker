@@ -56,7 +56,7 @@ When deploying to Render, you must configure these environment variables in the 
 
 ### Architecture
 
-Daily collection and matching run on GitHub Actions and write **directly to MongoDB Atlas**. Render only serves the Flask UI.
+Daily collection and matching run on GitHub Actions and write **directly to MongoDB Atlas**. Cursor and Claude daily screens POST picks to the agent API on Render (they skip the matcher). Render never runs collection.
 
 ```
 ┌─────────────────────┐                      ┌─────────────┐
@@ -67,18 +67,22 @@ Daily collection and matching run on GitHub Actions and write **directly to Mong
 └─────────────────────┘                             │
                                                     │ read jobs
 ┌─────────────────────┐                             │ write status
-│ Render · Flask UI   │◀────────────────────────────┘
-│  tracker + agent API│
-└─────────┬───────────┘
-          ├─────► Phone
-          └─────► Browser
+│ Cursor / Claude     │   POST /api/agent/jobs      │ + agent stubs
+│ daily screen        │───────────────┐             │
+└─────────────────────┘               ▼             │
+                               ┌────────────────────┴──┐
+                               │ Render · Flask UI     │
+                               │ tracker + agent API   │
+                               └──────────┬────────────┘
+                                          ├─────► Phone
+                                          └─────► Browser
 ```
 
 ### What runs where
 
 **GitHub Actions (daily):** `src/sources/run_sources.py` — fetch, filter, match, Telegram. Writes jobs and scores to Atlas. See [job_sources.md](../job_sources.md).
 
-**Render:** Flask tracker only. Reads jobs, writes application status, agent API. No collection, no Playwright, no Chrome.
+**Render:** Flask tracker only. Reads jobs, writes application status, and accepts `POST /api/agent/jobs` from Cursor / Claude daily screens. No collection, no Playwright, no Chrome.
 
 **MongoDB Atlas:** Shared store. Actions and Render both connect to it.
 

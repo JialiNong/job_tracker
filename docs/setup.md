@@ -31,7 +31,7 @@ cp .env.example .env
 | `TRACKER_USERNAME` / `TRACKER_PASSWORD_HASH` | Web UI login (required) |
 | `FLASK_SECRET_KEY` | Session signing; auto-generated if unset |
 | `TELEGRAM_*` | Daily match cards and bot commands |
-| `AGENT_API_TOKEN` | Bearer token for `POST /api/agent/jobs` |
+| `AGENT_API_TOKEN` | Bearer token for `POST /api/agent/jobs` (Cursor / Claude daily screens) |
 
 Generate the password hash:
 

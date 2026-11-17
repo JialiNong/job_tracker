@@ -14,14 +14,14 @@ There are **5 ways to get jobs**, plus 2 ways to rescue jobs the pipeline alread
 | 2 | **Public job APIs** | Arbeitnow, Bundesagentur für Arbeit (Adzuna: opt-in, paid) | GitHub Actions, **daily 09:17 UTC** (10:17 Berlin in winter; Mac can be off), or by hand | Nothing (Adzuna: paid key) | `arbeitnow`, `arbeitsagentur`, `adzuna` | `api` |
 | 3 | **Company ATS boards** | Greenhouse, Lever, Ashby, Personio, Recruitee, Workable — for companies on the watchlist | Same daily GitHub Actions run | Watchlist `config/ats_companies.json` | `ats` (+ `ats_provider`, `ats_slug`) | `api` |
 | 4 | **Manual Log Job** | Any job URL you paste | Tracker web UI **Log Job**, or `src/scrapers/manual_apply_scraper.py` | — | `linkedin` / `indeed` / `manual` | `manual` |
-| 5 | **Agent push** | Jobs an AI agent (Claude, …) recommends | `POST /api/agent/jobs` (Render) or `scripts/tools/log_recommended_jobs.py` | `AGENT_API_TOKEN` | from the URL | `agent` |
+| 5 | **Agent push** | Cursor and Claude daily screens (Gemini / GPT also accepted) | Scheduled `POST /api/agent/jobs` on Render, or `scripts/tools/log_recommended_jobs.py` locally | `AGENT_API_TOKEN` | from the URL | `agent` |
 
 Rescue paths (not new sources):
 
 - **Unmatched → Can Apply**: a job the matcher scored below 7.0 that you still want → copied to the Tracker.
 - **Timeouts → Add as Not Applied**: a job whose detail page did not load during scraping.
 
-Ways 1–3 go through the same filters and the same AI matcher. Only jobs scoring ≥ `MATCH_THRESHOLD` (7.0) appear on the Tracker; the rest stay on Unmatched. Ways 4–5 put the job on the Tracker directly, except when **agent push** finds the URL already in `jobs` / `timeout_jobs`: it skips the write (does not copy Unmatched onto Tracker) and returns `below_threshold` so the agent can say the matcher already rejected it. Those skips are tagged `agent_recommended_by` and show on Overview that day plus the Unmatched **Agent recommended** chip.
+Ways 1–3 go through the same filters and the same AI matcher. Only jobs scoring ≥ `MATCH_THRESHOLD` (7.0) appear on the Tracker; the rest stay on Unmatched. Way 4 (Log Job) and way 5 (agent push) put a new URL on the Tracker directly. Agent push is a **scheduled extra source**, not a manual paste: Cursor and Claude already screened the posting with their own models, so it does not run the matcher again. If that URL is already in `jobs` / `timeout_jobs`, the write is skipped (Unmatched is not copied onto Tracker) and the response is `below_threshold` so the agent can say the matcher already rejected it. Those skips are tagged `agent_recommended_by` and show on Overview that day plus the Unmatched **Agent recommended** chip.
 
 ---
 
@@ -34,7 +34,8 @@ Ways 1–3 go through the same filters and the same AI matcher. Only jobs scorin
 | Bundesagentur | Most complete German job database | Mostly German-language postings (dropped by the English gate), many traditional employers |
 | Adzuna (opt-in) | Proper search API across many boards | **Paid** (25 trial calls, then £8/month); only a ~500-char teaser, so the full JD comes from following the link (best effort) |
 | Company ATS | First-hand data, full JD, new roles show up before the boards | Only covers companies you put on the watchlist |
-| Log Job / agent | Anything you or an agent find elsewhere | Manual |
+| Log Job | Anything you paste from a tab | Manual, one URL at a time |
+| Agent push | Roles on company pages / boards the API watchlist does not cover; a second AI opinion | Depends on what the agent searched that day; no second matcher score |
 
 **Language:** the Bundesagentur returns mostly German postings. The search uses the English `DEFAULT_KEYWORDS`, which already favours English postings. Any German JD is dropped by the language gate after the free detail call, before any AI cost. In the first dry run (1 day): 39 listings → 14 dropped by title blacklist, 14 by AI title check, 4 German, 1 duplicate, 1 saved (Zalando).
 
@@ -174,3 +175,25 @@ Edit `config/ats_companies.json` by hand to remove a company or pause it:
 The initial watchlist (80 companies) was seeded from the Tracker. Recruiters, marketplaces (Clera, Turing, Jobster) and name collisions were removed by hand. Companies with no public board (custom career sites, SmartRecruiters, Workday, JOIN) cannot be added; for those, keep using ways 1, 4 and 5.
 
 Privacy note: the watchlist is committed to the repo. If the repo is public, it shows which companies you track.
+
+---
+
+## 6. Agent push (Cursor / Claude daily)
+
+Code: `src/core/agent_push.py` — `POST /api/agent/jobs` on Render (token `AGENT_API_TOKEN`). Local twin: `scripts/tools/log_recommended_jobs.py`.
+
+Cursor and Claude each run a scheduled screen (search + their own AI filter), then POST the URLs they liked. This is a **data source**. It is not the same as using those agents to write code in this repo.
+
+Why it skips the matcher: the agent already decided the role is a fit. Re-scoring would cost extra tokens and could drop a pick that should still appear on the board. New URLs are saved as link-only Tracker stubs (`origin=agent`, `recommended_by` = `cursor` / `claude` / …). Fetch details / Run AI later if a full JD and score are needed.
+
+| Result | What happens |
+|--------|----------------|
+| New URL | Tracker card, `pending`, `ai_pending` |
+| Already on Tracker / in `timeout_jobs` | Skip, no overwrite |
+| Already on Unmatched | Skip copy; stamp `agent_recommended_by` so Overview and the Unmatched **Agent recommended** chip show the disagreement |
+
+```bash
+python3 scripts/tools/log_recommended_jobs.py jobs.json --recommended-by cursor
+```
+
+The HTTP shape and token setup: [`setup.md`](./setup.md) (`AGENT_API_TOKEN`) and the docstring on `api_agent_jobs` in `src/web/routes/log_job.py`.
