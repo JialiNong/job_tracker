@@ -56,6 +56,7 @@ const {
   scoreRingHtml,
   groupJobsByDate,
   jobChannel,
+  jobViaText,
   postedPillHtml,
 } = sandbox;
 
@@ -106,6 +107,12 @@ eq(jobChannel({ source: "linkedin", origin: "pipeline" }).label, "Scraper", "cha
 eq(jobChannel({ recommended_by: "cursor" }).label, "Cursor", "channel agent");
 eq(jobChannel({ source: "manual", origin: "manual" }).label, "Log job", "channel log");
 eq(jobChannel({ source: "ats" }).label, "ATS", "channel ats");
+eq(jobChannel({ source: "arbeitsagentur" }).label, "Bundesagentur", "channel bundesagentur");
+eq(jobViaText({ source: "linkedin" }), "LinkedIn", "via linkedin");
+eq(jobViaText({ source: "arbeitsagentur" }), "Bundesagentur", "via bundesagentur");
+eq(jobViaText({ source: "arbeitnow" }), "Arbeitnow", "via arbeitnow");
+eq(jobViaText({ source: "ats" }), "ATS", "via ats");
+eq(jobViaText({ source: "adzuna" }), "Adzuna", "via adzuna");
 
 const pill = postedPillHtml({ posted_at: "2026-11-11" });
 if (!pill.includes("Posted") || !pill.includes("meta-pill")) {

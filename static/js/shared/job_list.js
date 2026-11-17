@@ -197,9 +197,17 @@ function channelChipHtml(job) {
   return `<span class="channel-chip ${escHtml(ch.cls)}" title="${escHtml(ch.title)}">${escHtml(ch.label)}</span>`;
 }
 
-function jobViaText(job) {
-  const src = String(job.source || '').toLowerCase();
+function sourceViaLabel(job) {
+  const src = String((job && job.source) || '').toLowerCase();
   if (BOARD_LABEL[src]) return BOARD_LABEL[src];
+  const api = SOURCE_BADGE[src];
+  if (api) return api.label.replace(/ API$/, '');
+  return '';
+}
+
+function jobViaText(job) {
+  const named = sourceViaLabel(job);
+  if (named) return named;
   const ch = jobChannel(job);
   if (ch && (ch.cls === 'ch-ai' || ch.cls === 'ch-manual')) return jobHost(job);
   return '';

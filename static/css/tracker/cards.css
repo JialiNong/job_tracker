@@ -837,7 +837,13 @@
 .row-seen.seen-rejected::before { background: var(--rejected); }
 
 .job-grid.layout-compact .row-meta { gap: 12px; }
-.row-channel { width: 108px; display: flex; justify-content: flex-end; }
+.row-channel {
+  min-width: 108px;
+  width: max-content;
+  max-width: 12rem;
+  display: flex;
+  justify-content: flex-end;
+}
 
 /* Status: outlined so the list stays a line of type, not a row of stamps.
    Color still carries the state; the fill that made pills feel flat is gone. */

@@ -46,7 +46,7 @@ except ImportError:
 
 PHONE = {"width": 390, "height": 844}
 DESKTOP = {"width": 1280, "height": 800}
-PHONE_SELECT_PAD = "2px 26px 0px 8px"
+PHONE_SELECT_PAD = "2px 32px 0px 8px"
 PHONE_CTRL_H = 30
 
 

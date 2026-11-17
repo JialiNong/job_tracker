@@ -247,7 +247,7 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 600; letter-spacing: -0
 .filter-pop { position: relative; }
 .pop {
   position: absolute; top: calc(100% + 6px); left: 0; z-index: 60;
-  width: min(320px, calc(100vw - 32px));
+  width: min(360px, calc(100vw - 32px));
   max-width: calc(100vw - 32px);
   display: grid; gap: 10px;
   padding: 14px;
@@ -273,6 +273,31 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 600; letter-spacing: -0
   padding: 7px 9px;
   font-size: .88rem; font-weight: 400;
 }
+/* Custom chevron, inset from the edge so long labels (Bundesagentur)
+   and Log Job selects are not flush with the border. html prefix beats
+   later page CSS padding shorthand. */
+html .toolbar select,
+html .pop select,
+html select.option-input,
+html .status-select,
+html .status-side-select {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 32px;
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23576665' d='M2.6 4.2 6 7.6l3.4-3.4'/%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme: dark) {
+  html .toolbar select,
+  html .pop select,
+  html select.option-input,
+  html .status-select,
+  html .status-side-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23919e9a' d='M2.6 4.2 6 7.6l3.4-3.4'/%3E%3C/svg%3E");
+  }
+}
 .pop .filter-group {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -283,7 +308,7 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 600; letter-spacing: -0
   max-width: 100%;
 }
 /* Two native date inputs will not shrink below ~150px; stack them so the
-   range stays inside the 320px panel instead of spilling out the sides. */
+   range stays inside the 360px panel instead of spilling out the sides. */
 .pop .filter-dates {
   grid-template-columns: minmax(0, 1fr);
   justify-items: stretch;
@@ -466,9 +491,9 @@ html.ui-lock body {
     appearance: none;
     font-size: 16px;
     line-height: 1.15;
-    padding: 2px 26px 0 8px;
+    padding: 2px 32px 0 8px;
     background-repeat: no-repeat;
-    background-position: right 8px center;
+    background-position: right 12px center;
     background-size: 12px;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23576665' d='M2.6 4.2 6 7.6l3.4-3.4'/%3E%3C/svg%3E");
   }

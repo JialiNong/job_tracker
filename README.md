@@ -71,8 +71,10 @@ job_tracker/
 ├── scripts/
 │   ├── run_jobs.sh                    # Optional browser pipeline (see the end of this README)
 │   ├── start_ui.sh                    # Start Job Tracker web UI
+│   ├── start_ui_demo.sh               # Tracker UI against the fictional demo DB
 │   ├── lib/pipeline_common.sh         # Shared shell helpers for run_jobs.sh
 │   ├── db/cleanup_excluded_titles.py  # One-off DB cleanup by title blacklist
+│   ├── db/seed_demo.py                # Fictional screenshot dataset → job_scraper_demo
 │   └── tools/                         # eval_matcher, generate_password_hash, log_recommended_jobs
 ├── evals/                             # Matcher evaluation set + baselines
 ├── static/                            # Page JS/CSS: css/<page>.css + js/<page>.js per template
@@ -144,6 +146,20 @@ python3 src/matching/ai_matcher.py -l 3
 # View results (web UI)
 ./scripts/start_ui.sh
 ```
+
+### 6. Screenshot / demo database (optional)
+
+For README GIFs, seed a **separate** Mongo database of fictional jobs so Overview
+(locations, application counts, daily activity) looks full without your real
+data. Browser-scraper origin (`pipeline`) is not included.
+
+```bash
+python3 scripts/db/seed_demo.py
+DATABASE_NAME=job_scraper_demo ./scripts/start_ui_demo.sh
+```
+
+This writes `job_scraper_demo` and refuses the production name `job_scraper`
+unless you pass `--force`. The demo UI defaults to port 5051.
 
 ---
 
