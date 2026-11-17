@@ -237,6 +237,9 @@ def new_page(browser, state, *, phone):
     ctx = browser.new_context(**kwargs)
     ctx.set_default_timeout(12_000)
     page = ctx.new_page()
+    # Overview charts animate on first paint; freeze them so screenshots
+    # and height checks see the finished layout.
+    page.emulate_media(reduced_motion="reduce")
     errors = []
     page.on("pageerror", lambda err: errors.append(str(err)))
     return ctx, page, errors

@@ -134,6 +134,15 @@ class SharedCardChromeTests(unittest.TestCase):
         self.assertIn("static_url('js/tracker/flow.js')", (ROOT / "templates" / "index.html").read_text())
         self.assertIn("static_url('css/tracker/flow.css')", (ROOT / "templates" / "index.html").read_text())
 
+    def test_overview_weekly_uses_theme_heat_ramp(self):
+        css = (CSS / "tracker" / "flow.css").read_text()
+        self.assertIn("--wk-linkedin: var(--heat-4)", css)
+        self.assertIn("--wk-indeed: var(--heat-1)", css)
+        self.assertNotIn("var(--duplicate)", css)
+        ov = (CSS / "tracker" / "overview.css").read_text()
+        self.assertIn("@keyframes ov-wipe-x", ov)
+        self.assertIn("@keyframes ov-grow-y", ov)
+
     def test_status_chips_live_in_sidebar_not_jobs_view(self):
         html = (ROOT / "templates" / "index.html").read_text()
         stats = html.find('id="statsBar"')

@@ -41,12 +41,11 @@
   flex-wrap: wrap;
 }
 .weekly-section {
-  /* Same hues as before, same wash as location bubbles
-     (`color-mix(..., 80%, transparent)` on paper). Mix with --surface
-     so stacked segments stay opaque. */
-  --wk-linkedin: color-mix(in srgb, var(--ai) 80%, var(--surface));
-  --wk-indeed: color-mix(in srgb, var(--duplicate) 80%, var(--surface));
-  --wk-other: color-mix(in srgb, var(--muted) 42%, var(--surface2));
+  /* Theme blue-purple ramp (same tokens as the daily-activity heatmap):
+     strongest vs lightest for LinkedIn / Indeed; Other stays quiet. */
+  --wk-linkedin: var(--heat-4);
+  --wk-indeed: var(--heat-1);
+  --wk-other: color-mix(in srgb, var(--muted) 28%, var(--surface2));
 }
 
 .weekly-swatch {
@@ -193,8 +192,31 @@
   .flow-caption { font-size: .72rem; }
 }
 
+/* First paint on Overview: ribbons wipe left → right; bars grow up.
+   `.has-revealed` is set after the run so a resize re-render does not replay. */
+.overview:not([hidden]) .flow-root:not(.has-revealed) .flow-chart {
+  animation: ov-wipe-x .95s cubic-bezier(.22, .61, .36, 1) both;
+}
+.overview:not([hidden]) .weekly-root:not(.has-revealed) .weekly-stack {
+  transform-box: view-box;
+  animation: ov-grow-y .72s cubic-bezier(.2, .7, .2, 1) both;
+  animation-delay: calc(var(--wk-i, 0) * 28ms);
+}
+.overview:not([hidden]) .weekly-root:not(.has-revealed) .weekly-week-label,
+.overview:not([hidden]) .weekly-root:not(.has-revealed) .weekly-month-label,
+.overview:not([hidden]) .weekly-root:not(.has-revealed) .weekly-axis {
+  animation: ov-fade .4s ease .2s both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .flow-ribbon,
   .weekly-bar,
   .flow-node { transition: none; }
+  .overview:not([hidden]) .flow-root:not(.has-revealed) .flow-chart,
+  .overview:not([hidden]) .weekly-root:not(.has-revealed) .weekly-stack,
+  .overview:not([hidden]) .weekly-root:not(.has-revealed) .weekly-week-label,
+  .overview:not([hidden]) .weekly-root:not(.has-revealed) .weekly-month-label,
+  .overview:not([hidden]) .weekly-root:not(.has-revealed) .weekly-axis {
+    animation: none;
+  }
 }

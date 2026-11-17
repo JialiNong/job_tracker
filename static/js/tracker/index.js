@@ -135,6 +135,10 @@ function showTrackerView(view) {
   const statusFilters = document.querySelector('.side-extra');
   if (statusFilters) statusFilters.hidden = overview;
   if (overview) {
+    // Replay flow/weekly reveals on this visit; skip them after they finish
+    // so a resize re-render does not grow the bars again.
+    document.getElementById('flowRoot')?.classList.remove('has-revealed');
+    document.getElementById('weeklyRoot')?.classList.remove('has-revealed');
     // Heatmap, bubbles, and flow boards measure width; re-measure now they are visible
     requestAnimationFrame(() => {
       window.dispatchEvent(new Event('resize'));

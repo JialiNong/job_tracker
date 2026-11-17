@@ -6,6 +6,30 @@ let _flowSticky = false;
 let _weeklyPick = null;
 let _weeklySticky = false;
 
+function overviewIsOpen() {
+  return !document.getElementById('overviewView')?.hidden;
+}
+
+function markRevealedAfter(root, selector) {
+  if (!root) return;
+  const done = () => root.classList.add('has-revealed');
+  // Hidden Overview never played; leave unmarked so the first visit animates.
+  if (!overviewIsOpen()) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    done();
+    return;
+  }
+  const nodes = [...root.querySelectorAll(selector)];
+  const last = nodes[nodes.length - 1];
+  if (!last) {
+    done();
+    return;
+  }
+  last.addEventListener('animationend', done, { once: true });
+  clearTimeout(root._revealT);
+  root._revealT = setTimeout(done, 1800);
+}
+
 function flowFmt(n) {
   return Number(n || 0).toLocaleString('en-US');
 }
@@ -309,6 +333,7 @@ function renderSankey(sankey) {
     if (!TOUCH_UI && !_flowSticky) applyFlowPick(root, null, sankey, false);
   });
   applyFlowPick(root, _flowSticky ? _flowPick : null, sankey, _flowSticky);
+  markRevealedAfter(root, '.flow-chart');
 }
 
 function formatWeekLabel(iso) {
@@ -404,6 +429,7 @@ function renderWeekly(weekly) {
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     g.setAttribute('class', 'weekly-bar');
     g.setAttribute('data-week', week.week_start);
+    g.style.setProperty('--wk-i', String(i));
     g.setAttribute('tabindex', '0');
     g.setAttribute('role', 'button');
     g.setAttribute('aria-label', describeWeeklyPick(week));
@@ -427,6 +453,9 @@ function renderWeekly(weekly) {
       segs.push({ key, y, h: Math.max(h, 1) });
     });
     const stack = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    stack.setAttribute('class', 'weekly-stack');
+    stack.style.setProperty('--wk-i', String(i));
+    stack.style.transformOrigin = `${x + barW / 2}px ${padT + bodyH}px`;
     if (segs.length) {
       const top = segs[segs.length - 1].y;
       const clipId = `wk-clip-${i}`;
@@ -509,6 +538,7 @@ function renderWeekly(weekly) {
   });
   const picked = _weeklySticky && _weeklyPick && weeks.find(w => w.week_start === _weeklyPick);
   applyWeeklyPick(root, picked || null, weekly, _weeklySticky);
+  markRevealedAfter(root, '.weekly-stack');
 }
 
 function renderFlowBoards() {
