@@ -24,7 +24,7 @@ When deploying to Render, you must configure these environment variables in the 
 | Variable Name | Example Value | Where to Get It | Notes |
 |--------------|---------------|-----------------|-------|
 | `OPENAI_API_KEY` | `sk-proj-abc...xyz` | OpenAI Platform → API Keys | Only needed if logging jobs via web UI |
-| `AI_MODEL` | `gpt-4o-mini` | — | Default is already set in `render.yaml` |
+| `AI_MODEL` | `gpt-4.1-mini` | — | Title check only; default is already set in `render.yaml` |
 | `MATCH_THRESHOLD` | `7.0` | — | Default is already set in `render.yaml` |
 
 ## Important: MongoDB Atlas Network Access
@@ -56,37 +56,31 @@ When deploying to Render, you must configure these environment variables in the 
 
 ### Architecture
 
+Daily collection and matching run on GitHub Actions and write **directly to MongoDB Atlas**. Render only serves the Flask UI.
+
 ```
-┌─────────────────────┐         ┌──────────────────────┐         ┌─────────────┐
-│   Mac (Local)       │         │  Render (Free)       │         │  MongoDB    │
-│                     │         │                      │         │  Atlas      │
-│  • Scrapers         │────────▶│  • Flask Web UI      │────────▶│             │
-│  • LaunchD          │  writes │  • Gunicorn (4 wkrs) │  R/W    │  • Jobs DB  │
-│  • Chrome           │  jobs   │  • Health check      │  status │             │
-│  • Playwright       │         │  • ProxyFix (HTTPS)  │         │             │
-└─────────────────────┘         └──────────────────────┘         └─────────────┘
-                                          │
-                                          ├─────► 📱 Phone
-                                          └─────► 💻 Browser
+┌─────────────────────┐                      ┌─────────────┐
+│ GitHub Actions      │      jobs + scores   │ MongoDB     │
+│  APIs + ATS         │─────────────────────▶│ Atlas       │
+│  AI matcher         │                      │             │
+│  Telegram digest    │                      └──────▲──────┘
+└─────────────────────┘                             │
+                                                    │ read jobs
+┌─────────────────────┐                             │ write status
+│ Render · Flask UI   │◀────────────────────────────┘
+│  tracker + agent API│
+└─────────┬───────────┘
+          ├─────► Phone
+          └─────► Browser
 ```
 
-### What Runs Where
+### What runs where
 
-**Mac (Local):**
-- Job scrapers (Indeed, LinkedIn) - need Chrome/Playwright
-- AI matcher - scores jobs with OpenAI
-- Writes to MongoDB Atlas
+**GitHub Actions (daily):** `src/sources/run_sources.py` — fetch, filter, match, Telegram. Writes jobs and scores to Atlas. See [job_sources.md](../job_sources.md).
 
-**Render (Cloud):**
-- Flask web UI only
-- Reads jobs from MongoDB
-- Updates application status
-- No scraping, no Playwright, no Chrome
+**Render:** Flask tracker only. Reads jobs, writes application status, agent API. No collection, no Playwright, no Chrome.
 
-**MongoDB Atlas (Cloud):**
-- Central database
-- Both Mac and Render connect to it
-- Data syncs automatically
+**MongoDB Atlas:** Shared store. Actions and Render both connect to it.
 
 ## Gotchas & Common Issues
 
@@ -210,4 +204,4 @@ If this works, Render deployment will work too.
 
 - **Render Docs:** [render.com/docs](https://render.com/docs)
 - **MongoDB Atlas:** [docs.atlas.mongodb.com](https://docs.atlas.mongodb.com/)
-- **Project Issues:** Check `DEPLOYMENT_REPORT.md` for more details
+- Local install: [setup.md](../setup.md)

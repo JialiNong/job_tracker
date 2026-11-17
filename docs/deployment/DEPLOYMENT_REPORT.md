@@ -1,5 +1,9 @@
 # Job Tracker - Deployment & Testing Report
 
+> **Outdated notes.** Production hosting is Render, documented in [RENDER_SETUP.md](./RENDER_SETUP.md). Railway / Fly / ngrok below were never used. Keep this file only as a historical record.
+
+---
+
 ## Testing Summary
 
 ### Mobile Viewport Testing (390px × 844px - iPhone size)

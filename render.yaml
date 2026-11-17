@@ -1,6 +1,6 @@
 # Render Blueprint for Job Tracker Web UI
-# Deploy only the Flask tracking interface (no scrapers)
-# Scrapers continue to run locally on Mac with Chrome/Playwright
+# Deploy only the Flask tracking interface.
+# Daily collection + matching run on GitHub Actions and write to MongoDB Atlas.
 
 services:
   - type: web
@@ -42,7 +42,7 @@ services:
         sync: false  # Secret - optional, only if logging jobs via web UI
       
       - key: AI_MODEL
-        value: gpt-4o-mini
+        value: gpt-4.1-mini
       
       - key: MATCH_THRESHOLD
         value: "7.0"

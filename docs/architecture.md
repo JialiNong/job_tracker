@@ -336,10 +336,12 @@ AI `special_match` / `special_match_reasons` are still written by the matcher fo
 job_scraper/
 ├── docs/
 │   ├── architecture.md          # this file
+│   ├── setup.md                 # local install, .env, tests
 │   ├── matching_rules.md        # layer-1 rules for the model (hard fails, labels)
 │   ├── job_sources.md           # every way jobs come in + API sources / ATS setup
 │   ├── user_profile.md          # resume / profile
-│   ├── deployment/              # Render setup + deployment report
+│   ├── images/                  # README screenshots / GIFs
+│   ├── deployment/              # Render setup
 │   └── archive/testing/         # past one-off test / verification reports
 ├── src/
 │   ├── core/
