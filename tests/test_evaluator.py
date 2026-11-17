@@ -100,6 +100,39 @@ class EvaluateTests(unittest.TestCase):
         classify.assert_not_called()
         self.assertEqual(ev.to_analysis(res)["match_gate"], "empty_desc")
 
+    def test_incomplete_description_skips_the_model(self):
+        teaser = "We build React and TypeScript apps for shops in Berlin."
+        with patch.object(ev, "classify_job") as classify:
+            res = ev.evaluate({**JOB, "description": teaser, "source": "linkedin"})
+        classify.assert_not_called()
+        out = ev.to_analysis(res)
+        self.assertEqual(out["match_gate"], "incomplete_desc")
+        self.assertTrue(out["needs_refetch"])
+
+    def test_german_description_skips_the_model(self):
+        german = (
+            "Unternehmensbeschreibung\n"
+            "SCAYLE ist eine der am schnellsten wachsenden Enterprise-Commerce-"
+            "Plattformen der Welt und ermöglicht es Marken und Einzelhändlern, "
+            "ihre D2C-Ambitionen zu verwirklichen. Wir suchen ab sofort eine:n "
+            "Senior Frontend Developer, um unser dynamisches Engineering-Team "
+            "zu verstärken. Entwicklung hochfrequentierter Benutzeroberflächen "
+            "auf Basis von JavaScript, TypeScript, Vue 3 und Nuxt 3.\n"
+        ) * 3
+        with patch.object(ev, "classify_job") as classify:
+            res = ev.evaluate({
+                **JOB,
+                "title": "Senior Frontend Engineer (m/f/d)",
+                "company": "ABOUT YOU",
+                "source": "linkedin",
+                "description": german,
+            })
+        classify.assert_not_called()
+        out = ev.to_analysis(res)
+        self.assertEqual(out["match_gate"], "non_english")
+        self.assertFalse(out["needs_refetch"])
+        self.assertIn("not English", out["disqualification_reason"])
+
     def test_company_lookup_only_after_layer1_passes(self):
         long_jd = "We build React apps for shops. " * 40
         with patch.object(ev, "classify_job", return_value=labels(german_required=True)), \

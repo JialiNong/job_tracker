@@ -167,6 +167,7 @@ const GATE_PILLS = {
   blocked_company: 'Blocked',
   empty_desc: 'No JD',
   incomplete_desc: 'Unusable JD',
+  non_english: 'Not English',
   ai_ml: 'AI/ML',
   scored: 'Scored',
 };

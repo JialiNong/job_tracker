@@ -331,6 +331,7 @@ const GATE_LABELS = {
   blocked_company: 'Blocked company',
   empty_desc: 'Empty JD',
   incomplete_desc: 'Unusable JD',
+  non_english: 'Not English',
   ai_ml: 'AI/ML role',
 };
 

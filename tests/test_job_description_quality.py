@@ -18,6 +18,7 @@ from core.scraper_utils import (  # noqa: E402
     MIN_COMPLETE_JOB_DESCRIPTION_CHARS,
     assess_job_description,
     is_complete_job_description,
+    is_non_english_job_detail,
     is_usable_job_description,
 )
 from scrapers.linkedin_scraper import (  # noqa: E402
@@ -135,6 +136,38 @@ class DescriptionAssessmentTests(unittest.TestCase):
             source="linkedin",
         )
         self.assertEqual(result["kind"], "incomplete")
+
+    def test_long_linkedin_jd_without_parent_company_name_is_complete(self):
+        text = (
+            "About the job\n"
+            "SCAYLE is one of the fastest-growing enterprise commerce platforms. "
+            "We are looking for a Senior Frontend Developer to own high-traffic "
+            "storefronts for our customers, using JavaScript, TypeScript, Vue 3 "
+            "and Nuxt 3, and to work with product managers on conversion.\n"
+        ) * 4
+        result = assess_job_description(
+            text,
+            title="Senior Frontend Engineer (m/f/d)",
+            company="ABOUT YOU",
+            source="linkedin",
+        )
+        self.assertTrue(result["ok"], result)
+
+    def test_german_jd_is_non_english_even_when_company_name_differs(self):
+        text = (
+            "About the job\n"
+            "Unternehmensbeschreibung\n"
+            "SCAYLE ist eine der am schnellsten wachsenden Enterprise-Commerce-"
+            "Plattformen der Welt und ermöglicht es Marken und Einzelhändlern, "
+            "ihre D2C-Ambitionen zu verwirklichen. Wir suchen ab sofort eine:n "
+            "Senior Frontend Developer, um unser dynamisches Engineering-Team "
+            "zu verstärken. Entwicklung hochfrequentierter Benutzeroberflächen "
+            "auf Basis von JavaScript, TypeScript, Vue 3 und Nuxt 3.\n"
+        ) * 3
+        skip, lang, share = is_non_english_job_detail(text)
+        self.assertTrue(skip)
+        self.assertEqual(lang, "de")
+        self.assertGreater(share, 0.2)
 
 
 class LinkedInExtractTests(unittest.TestCase):

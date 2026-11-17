@@ -213,13 +213,12 @@ def ingest(
         flags = description_save_flags(
             description, title=job.title, company=job.company, source=job.source
         )
-        if not (flags["description_empty"] or flags["description_incomplete"]):
-            skip, lang, _share = is_non_english_job_detail(description)
-            if skip:
-                stats["german_filtered"] += 1
-                stat("german_filtered")
-                log(f"  ✗ {label} — JD language {lang}")
-                continue
+        skip, lang, _share = is_non_english_job_detail(description)
+        if skip:
+            stats["german_filtered"] += 1
+            stat("german_filtered")
+            log(f"  ✗ {label} — JD language {lang}")
+            continue
 
         doc = {
             "title": job.title.strip(),

@@ -218,12 +218,11 @@ flowchart TD
     Click --> Detail{"JD panel loaded?"}
     Detail -->|timeout| TO["timeout_jobs<br/>(title + link, /timeouts)"]
     Detail -->|yes| Fetch["Fetch description (up to 3 retries)"]
-    Fetch --> Empty{"Complete description?<br/>assess_job_description"}
-    Empty -->|empty / incomplete| SaveEmpty["Still save<br/>description_empty / description_incomplete<br/>matcher will skip AI"]
-    Empty -->|yes| Lang{"5. Lingua language check<br/>is_non_english_job_detail"}
-
+    Fetch --> Lang{"5. Lingua language check<br/>is_non_english_job_detail"}
     Lang -->|non-English de/fr/…| SkipDE["Do not save<br/>count german_filtered"]
-    Lang -->|English or undetectable| Save["save_job → jobs"]
+    Lang -->|English or undetectable| Quality{"Complete description?<br/>assess_job_description"}
+    Quality -->|empty / incomplete| SaveEmpty["Still save<br/>description_empty / description_incomplete<br/>matcher will skip AI"]
+    Quality -->|yes| Save["save_job → jobs"]
 ```
 
 ### What each stage does
@@ -237,10 +236,10 @@ flowchart TD
 | 4b. Detail timeout | `save_timeout_job()` | Title passed but JD panel missing → `timeout_jobs` for `/timeouts` |
 | 4c. LinkedIn JD body | `extract_linkedin_description()` | About-the-job region only (`JobDetails_AboutTheJob_*`). Expands See more / Mehr anzeigen. Never the whole SDUI `lazy-column` (top card + teaser + similar jobs). |
 | 4c2. LinkedIn applicants | `extract_linkedin_applicants()` | Short phrase from classic top-card or SDUI details (`25 applicants`, `Be among the first 25`). Stored as `applicants`; shown on Tracker / Unmatched List rows. |
-| 4d. JD completeness | `assess_job_description()` | Too short, UI chrome, similar-jobs sidebar, or title/company mismatch → save with `description_incomplete` (or `description_empty`); matcher skips AI |
-| 5. JD language | `is_non_english_job_detail()` · Lingua | **JD body not English** (usually German posts) → **do not save**. UI: German Filtered |
+| 4d. JD completeness | `assess_job_description()` | Too short, UI chrome, similar-jobs sidebar, or a **short** title/company mismatch → save with `description_incomplete` (or `description_empty`); matcher skips AI. Long LinkedIn JDs that name a product instead of the parent company are still complete. |
+| 5. JD language | `is_non_english_job_detail()` · Lingua | **JD body not English** (usually German posts) → **do not save**, even if completeness is incomplete. UI: German Filtered |
 
-> Step 5 answers “what language is the JD written in?”, not “does an English JD require German skills?”. The latter is the match-stage German gate. Incomplete English teasers are saved and skipped at match, not sent to the model.
+> Step 5 answers “what language is the JD written in?”, not “does an English JD require German skills?”. The latter is the match-stage German gate. Language runs **before** completeness. Incomplete English teasers are saved and skipped at match, not sent to the model.
 
 Unified title-gate entry point:
 
@@ -257,7 +256,11 @@ flowchart TD
     New["get_new_jobs()<br/>no matched_at yet"]
     New --> Empty{"Empty description?<br/>assess_job_description kind=empty"}
     Empty -->|yes| FailEmpty["score 0 · empty_desc · needs_refetch<br/>no AI call"]
-    Empty -->|no| L1["Layer 1 · classify_job()<br/>CV (user_profile.md) + matching_rules.md + JD<br/>gpt-5.4-mini · JSON schema"]
+    Empty -->|no| Lang{"Non-English JD?<br/>is_non_english_job_detail"}
+    Lang -->|yes| FailLang["score 0 · non_english<br/>no AI call"]
+    Lang -->|no| Inc{"Incomplete JD?<br/>assess_job_description not ok"}
+    Inc -->|yes| FailInc["score 0 · incomplete_desc · needs_refetch<br/>no AI call"]
+    Inc -->|no| L1["Layer 1 · classify_job()<br/>CV (user_profile.md) + matching_rules.md + JD<br/>gpt-5.4-mini · JSON schema"]
     L1 --> Hard{"Hard fail?<br/>German required · required non-JS backend ·<br/>leadership · not web dev · backend-heavy ·<br/>years · contract/location · unusable JD ·<br/>blocked company"}
     Hard -->|yes| FailHard["score 1 (0 for unusable JD)<br/>match_gate = fail kind<br/>reason quotes the JD"]
     Hard -->|no| L2["Layer 2 · research_company()<br/>web search → business, product type,<br/>customer markets, recruiter?<br/>cached in company_profiles"]
@@ -268,6 +271,8 @@ flowchart TD
     MJ --> Mark["mark_job_as_matched<br/>analysis + job_labels + company_profile"]
     OnlyJobs --> Mark
     FailEmpty --> Mark
+    FailLang --> Mark
+    FailInc --> Mark
     FailHard --> Mark
 ```
 
@@ -275,16 +280,16 @@ flowchart TD
 
 | Step | Decided by |
 |------|------------|
-| Empty JD | Code (`assess_job_description`) — no API call |
+| Empty / incomplete / non-English JD | Code (`assess_job_description` + `is_non_english_job_detail`) — no API call |
 | Job labels and hard fails | Model (`MATCH_JOB_MODEL`, default `gpt-5.4-mini`), rules in [`matching_rules.md`](./matching_rules.md). Every hard fail and German requirement must quote the posting |
 | What a label does | Code (`score_job`). Only `backend_language_ask = required_non_js` fails on backend; `implied_non_js` is −1. Duties like "lead a squad / lead projects" → `lead_or_above` (−3) |
 | Company business / markets | Model with web search (`MATCH_COMPANY_MODEL`), cached per normalised company name in MongoDB `company_profiles`. Only for jobs that passed layer 1 |
 | Final score | Code, `MATCH_WEIGHTS` in `src/core/config.py`. Tune preferences there, not in prompts |
 | Tracker cut-off | `MATCH_THRESHOLD` (`.env`, default 7.0) and `MATCH_BLOCKED_COMPANIES` (case-insensitive) |
 
-**Stored fields:** `match_score`, `match_gate` (`scored`, `german`, `stack`, `leadership`, `not_web_dev`, `backend_heavy`, `too_many_years`, `contract_or_location`, `blocked_company`, `incomplete_desc`, `empty_desc`, `score_failed`; older rows may still carry `ai_ml`), `disqualification_reason` (quote), `summary`, `match_reasons` (Business / Customers/markets / Stack / score breakdown), `red_flags` (watch-out), `job_labels`, `company_profile`. JDs are never cleared.
+**Stored fields:** `match_score`, `match_gate` (`scored`, `german`, `non_english`, `stack`, `leadership`, `not_web_dev`, `backend_heavy`, `too_many_years`, `contract_or_location`, `blocked_company`, `incomplete_desc`, `empty_desc`, `score_failed`; older rows may still carry `ai_ml`), `disqualification_reason` (quote), `summary`, `match_reasons` (Business / Customers/markets / Stack / score breakdown), `red_flags` (watch-out), `job_labels`, `company_profile`. JDs are never cleared.
 
-**Scrape-time language filter vs German requirement:** Lingua (`scraper_utils.is_non_english_job_detail`) drops postings *written* in another language before they are saved. A German requirement inside an English JD is a layer-1 hard fail (`german_required` + quote); German as a plus / "German or English" passes.
+**Scrape-time language filter vs German requirement:** Lingua (`scraper_utils.is_non_english_job_detail`) drops postings *written* in another language before they are saved — including JDs that look “incomplete” because the company string does not appear. If a non-English JD still reaches matching (Fetch details / an older row), code skips the model with `match_gate=non_english`. A German requirement inside an English JD is a layer-1 hard fail (`german_required` + quote); German as a plus / "German or English" passes.
 
 If the OpenAI account runs out of credits, matching stops and the remaining jobs stay without `matched_at` for the next run.
 
@@ -383,6 +388,6 @@ job_scraper/
 
 ## 8. One-line funnel
 
-> **Title gates (blacklist → auto-pass keywords → AI title) → open detail → discard non-English JD → save English JD → matcher skips empty desc → model labels the job against CV + rules (hard fails quote the JD) → model looks up the company (cached) → code scores with MATCH_WEIGHTS → ≥ 7 and company not blocked enters Tracker.**
+> **Title gates (blacklist → auto-pass keywords → AI title) → open detail → discard non-English JD → save English JD → matcher skips empty / incomplete / non-English desc → model labels the job against CV + rules (hard fails quote the JD) → model looks up the company (cached) → code scores with MATCH_WEIGHTS → ≥ 7 and company not blocked enters Tracker.**
 
 `/jobs` arguments only change *how much* to scrape: Indeed days, LinkedIn hours, and pages per keyword (both platforms). Each source starts AI matching as soon as its scrape finishes; job cards are pushed only after both lanes complete. **Filter and match rules are the same for every window.**

@@ -23,7 +23,12 @@ from typing import Dict, Optional
 from openai import OpenAI
 
 from core.config import MATCH_BLOCKED_COMPANIES, MATCH_WEIGHTS
-from core.scraper_utils import assess_job_description, scrub_bullet_location, strip_html
+from core.scraper_utils import (
+    assess_job_description,
+    is_non_english_job_detail,
+    scrub_bullet_location,
+    strip_html,
+)
 
 JOB_MODEL = os.getenv("MATCH_JOB_MODEL", "gpt-5.4-mini")
 COMPANY_MODEL = os.getenv("MATCH_COMPANY_MODEL", "gpt-5.4-mini")
@@ -426,13 +431,15 @@ def evaluate(
     company_cache=None,
 ) -> Dict:
     """
-    Full path for one job: empty-JD check, layer 1, layer 2 if it passes, score.
+    Full path for one job: empty / non-English / incomplete checks, then
+    layer 1, layer 2 if it passes, score.
 
     Returns {"labels", "company", "score", "parts"}; score is None when the
     layer-1 call failed.
     """
+    description = job.get("description") or ""
     assessment = assess_job_description(
-        job.get("description") or "",
+        description,
         title=job.get("title") or "",
         company=job.get("company") or "",
         source=job.get("source") or "",
@@ -443,6 +450,21 @@ def evaluate(
             "company": None,
             "score": 0.0,
             "parts": ["empty description"],
+        }
+    skip_lang, _lang, _share = is_non_english_job_detail(description)
+    if skip_lang:
+        return {
+            "labels": None,
+            "company": None,
+            "score": 0.0,
+            "parts": ["non-english description"],
+        }
+    if not assessment.get("ok"):
+        return {
+            "labels": None,
+            "company": None,
+            "score": 0.0,
+            "parts": ["description unusable"],
         }
     labels = classify_job(job, cv=cv, rules=rules)
     company = None
@@ -471,6 +493,8 @@ def _gate(parts) -> str:
             return "empty_desc"
         if part == "description unusable":
             return "incomplete_desc"
+        if part == "non-english description":
+            return "non_english"
         if part.startswith("hard fail: "):
             kind = part[len("hard fail: "):]
             return _GATE_BY_HARD_FAIL.get(kind, kind)
@@ -508,6 +532,8 @@ def to_analysis(result: Dict, threshold: float = 7.0) -> Optional[Dict]:
     disqualification = ""
     if gate == "german":
         disqualification = f"Mandatory German: {labels.get('german_evidence') or ''}".strip()
+    elif gate == "non_english":
+        disqualification = "Job description is not English"
     elif gate not in ("scored",):
         evidence = labels.get("hard_fail_evidence") or ""
         disqualification = f"{gate}: {evidence}".strip(": ") if evidence else gate
@@ -531,7 +557,12 @@ def to_analysis(result: Dict, threshold: float = 7.0) -> Optional[Dict]:
         "nice_to_have_matches": [],
         "summary": labels.get("summary") or (
             "No usable job description scraped; not sent to AI."
-            if gate == "empty_desc" else ""
+            if gate == "empty_desc"
+            else "Job description is incomplete or looks like page chrome; not sent to AI."
+            if gate == "incomplete_desc"
+            else "Job description is not English; not sent to AI."
+            if gate == "non_english"
+            else ""
         ),
         "what_youll_do": {"matched": [], "unmatched": []},
         "what_theyre_looking_for": {"matched": [], "unmatched": []},

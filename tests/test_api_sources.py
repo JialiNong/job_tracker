@@ -148,7 +148,7 @@ def _fake_db_mongo(known=False):
 
 
 class IngestFunnelTests(unittest.TestCase):
-    def _run(self, jobs, fake, **kw):
+    def _run(self, jobs, fake, lang=(False, "en", 0.0), **kw):
         import core
 
         # ingest() does `from core import db_mongo`: swap both the module entry and the attribute
@@ -157,7 +157,7 @@ class IngestFunnelTests(unittest.TestCase):
              patch.object(base, "find_cross_source_duplicate", return_value=None), \
              patch.object(base, "is_title_relevant_by_ai", return_value=True), \
              patch.object(base, "location_ok", return_value=True), \
-             patch.object(base, "is_non_english_job_detail", return_value=(False, "en", 0.0)):
+             patch.object(base, "is_non_english_job_detail", return_value=lang):
             return base.ingest(jobs, log=lambda *_: None, **kw)
 
     def test_saves_new_job_with_fetched_description(self):
@@ -190,6 +190,21 @@ class IngestFunnelTests(unittest.TestCase):
         self.assertEqual(stats["would_save"], 1)
         fake.save_job.assert_not_called()
         fake.increment_scraper_stat.assert_not_called()
+
+    def test_non_english_is_dropped_even_when_incomplete(self):
+        fake = _fake_db_mongo()
+        job = base.SourceJob(
+            "ats",
+            "greenhouse:acme:de",
+            "Frontend Engineer",
+            "Acme",
+            "Berlin",
+            "https://x/de",
+            description="Wir suchen Entwickler.",
+        )
+        stats = self._run([job], fake, lang=(True, "de", 0.9))
+        self.assertEqual(stats["german_filtered"], 1)
+        fake.save_job.assert_not_called()
 
 
 if __name__ == "__main__":

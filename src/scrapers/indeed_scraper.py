@@ -404,13 +404,26 @@ def scrape_jobs(page, max_jobs=INDEED_JOBS_PER_PAGE, keyword=""):
             quality_flags = description_save_flags(
                 description, title=title, company=company, source=SOURCE
             )
-            if quality_flags["description_empty"] or quality_flags["description_incomplete"]:
-                kind = quality_flags["description_quality"]
+            should_skip, lang, german_share = is_non_english_job_detail(description)
+            print(
+                f"Job {index + 1}: description length {len(description or '')}, "
+                f"company={company or '(none)'}, location={location or '(none)'}, "
+                f"language={lang or 'unknown'}, german_share={german_share:.0%}"
+            )
+            if should_skip:
+                increment_scraper_stat("german_filtered")
                 print(
-                    f"Job {index + 1}: description still {kind} after "
-                    f"{DESCRIPTION_FETCH_RETRIES} attempts — save anyway "
-                    f"(AI will skip)"
+                    f"Job {index + 1}: Non-English description ({lang}) detected, "
+                    f"skip save (german_filtered)"
                 )
+            else:
+                kind = quality_flags["description_quality"]
+                if kind != "ok":
+                    print(
+                        f"Job {index + 1}: description still {kind} after "
+                        f"{DESCRIPTION_FETCH_RETRIES} attempts — save anyway "
+                        f"(AI will skip)"
+                    )
                 job_data = {
                     "title": title,
                     "company": company,
@@ -425,38 +438,8 @@ def scrape_jobs(page, max_jobs=INDEED_JOBS_PER_PAGE, keyword=""):
                 }
                 if save_job(job_data):
                     jobs_data.append(job_data)
-                    print(f"Job {index + 1}: saved job_id {job_id} ({kind} description)")
-            else:
-                should_skip, lang, german_share = is_non_english_job_detail(description)
-                print(
-                    f"Job {index + 1}: description length {len(description)}, "
-                    f"company={company or '(none)'}, location={location or '(none)'}, "
-                    f"language={lang or 'unknown'}, german_share={german_share:.0%}"
-                )
-
-                if should_skip:
-                    increment_scraper_stat("german_filtered")
-                    print(
-                        f"Job {index + 1}: Non-English description ({lang}) detected, "
-                        f"skip save (german_filtered)"
-                    )
-                else:
-                    job_data = {
-                        "title": title,
-                        "company": company,
-                        "location": location,
-                        "status": "new",
-                        "link": href_value,
-                        "job_id": job_id,
-                        "applicants": "",
-                        "description": description,
-                        "source": SOURCE,
-                        **quality_flags,
-                    }
-
-                    if save_job(job_data):
-                        jobs_data.append(job_data)
-                        print(f"Job {index + 1}: saved job_id {job_id}")
+                    suffix = f" ({kind} description)" if kind != "ok" else ""
+                    print(f"Job {index + 1}: saved job_id {job_id}{suffix}")
 
             if random.random() < 0.35:
                 pause(2, 6, f"Job {index + 1}: extra think time")

@@ -147,7 +147,7 @@ On Tracker cold entry, **`/api/jobs` is critical path**. Chips (`/api/stats`) an
 
 One-line funnel (must stay true in architecture + code):
 
-> Title gates (exclude → TITLE_AUTO_PASS_KEYWORDS → AI title) → click detail → non-English JD discarded → English JD saved → matcher empty-desc skip → layer 1 model labels (hard fails quote the JD) → layer 2 company lookup (cached) → code score (`MATCH_WEIGHTS`) → ≥ threshold and company not in `MATCH_BLOCKED_COMPANIES` → `matched_jobs`.
+> Title gates (exclude → TITLE_AUTO_PASS_KEYWORDS → AI title) → click detail → non-English JD discarded (even if completeness is incomplete) → English JD saved → matcher skips empty / incomplete / non-English desc → layer 1 model labels (hard fails quote the JD) → layer 2 company lookup (cached) → code score (`MATCH_WEIGHTS`) → ≥ threshold and company not in `MATCH_BLOCKED_COMPANIES` → `matched_jobs`.
 
 ### Two German-related gates
 

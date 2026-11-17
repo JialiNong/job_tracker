@@ -120,6 +120,11 @@ class SharedCardChromeTests(unittest.TestCase):
         self.assertIn("agent_recommended", html)
         self.assertIn("agentAlsoHtml", html)
 
+    def test_unmatched_gate_filter_includes_non_english(self):
+        html = page_source("unmatched")
+        self.assertIn('value="non_english"', html)
+        self.assertIn("non_english: 'Not English'", html)
+
     def test_overview_has_agent_unmatched_day_link(self):
         html = page_source("index")
         self.assertIn('id="calAgentUnmatchedLink"', html)

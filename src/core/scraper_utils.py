@@ -409,11 +409,13 @@ def assess_job_description(
     title_hit = any(tok in lowered for tok in title_tokens)
     # Only flag identity mismatch when neither title nor company appears, and
     # the text is still short or looks like other job cards (LinkedIn sidebar).
+    # Long LinkedIn JDs often name a product (SCAYLE) instead of the parent
+    # company (ABOUT YOU); that is not a truncated teaser.
     if (
         (company_tokens or title_tokens)
         and not company_hit
         and not title_hit
-        and (source == "linkedin" or len(plain) < 600 or sidebar)
+        and (len(plain) < 600 or sidebar)
     ):
         return {
             "ok": False,
@@ -732,6 +734,9 @@ def is_non_english_job_detail(text: str):
     not skip (fail open). Callers still increment german_filtered — on DE job
     boards almost all non-English posts are German; FR etc. are rare but must
     not reach matching either.
+
+    Always run this before save, including when assess_job_description marked
+    the text incomplete. Completeness and language are separate gates.
     """
     lang, german_share = detect_job_detail_language(text)
     if lang is None or lang == "en":
