@@ -82,7 +82,25 @@ def _static_url_helper():
         except OSError:
             version = 0
         return url_for("static", filename=filename, v=version)
-    return {"static_url": static_url}
+
+    def js_importmap() -> dict:
+        """
+        Import map for the ES modules under static/js: maps each module's
+        plain URL to its static_url(), so `import './cards.js'` also gets a
+        ?v=<mtime> URL and the long cache stays safe after an edit.
+        """
+        js_root = os.path.join(app.static_folder, "js")
+        imports = {}
+        for dirpath, _dirs, files in os.walk(js_root):
+            for name in files:
+                if not name.endswith(".js"):
+                    continue
+                rel = os.path.relpath(os.path.join(dirpath, name), app.static_folder)
+                rel = rel.replace(os.sep, "/")
+                imports[url_for("static", filename=rel)] = static_url(rel)
+        return {"imports": dict(sorted(imports.items()))}
+
+    return {"static_url": static_url, "js_importmap": js_importmap}
 
 
 _default_send_file_max_age = app.get_send_file_max_age

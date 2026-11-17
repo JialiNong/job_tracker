@@ -1,7 +1,12 @@
 /* Tracker application timeline: progress track, record / edit / undo, side
    status, and chip/overview refresh after a write.
-   Classic script — functions stay global. Loaded after cards.js, before
-   index.js (renderCard calls these after every script has loaded). */
+   ES module. */
+import { escHtml } from '../shared/html.js';
+import { showToast } from '../shared/job_list.js';
+import { removeMatchedCardSilently } from './card-actions.js';
+import { companyHistoryStatus, setApplicantPositionUI } from './cards.js';
+import { loadOverviewData, loadStats } from './index.js';
+import { GOT_INTERVIEW_FILTER, GOT_INTERVIEW_STEPS, INTERVIEW_STEPS, jobTimelines, PROGRESS_STAGES, SIDE_STATUSES, state, STATUS_LABEL, TERMINAL_STEPS, TIMELINE_LABEL } from './state.js';
 
 const TIMELINE_STEP_RANK = {
   applied: 0,
@@ -61,7 +66,7 @@ function askTimelineTime({ title, hint, initial }) {
   });
 }
 
-function askConfirm({ title, hint, detail, confirmLabel = 'Confirm', danger = false }) {
+export function askConfirm({ title, hint, detail, confirmLabel = 'Confirm', danger = false }) {
   return new Promise(resolve => {
     const backdrop = document.createElement('div');
     backdrop.className = 'tl-modal-backdrop';
@@ -129,7 +134,7 @@ function mergeTimelineActions(timeline, forward) {
   return extras.concat(forward);
 }
 
-function parseTimelineAt(at) {
+export function parseTimelineAt(at) {
   if (!at) return 0;
   const m = String(at).match(/(\d{4})-(\d{2})-(\d{2})[ T](\d{2})?:?(\d{2})?/);
   if (!m) return 0;
@@ -293,12 +298,12 @@ function cardStatusView(status, timeline) {
   return { cls: status, label: STATUS_LABEL[status] || status };
 }
 
-function statusPillHtml(status, timeline) {
+export function statusPillHtml(status, timeline) {
   const view = cardStatusView(status, timeline);
   return `<span class="status-pill s-${escHtml(view.cls)}" data-status-pill>${escHtml(view.label)}</span>`;
 }
 
-function isAppliedLike(status, timeline) {
+export function isAppliedLike(status, timeline) {
   if (['applied', 'screening', 'interview', 'interview_cancelled', 'rejected', 'offer'].includes(status)) return true;
   return Array.isArray(timeline) && timeline.length > 0;
 }
@@ -310,7 +315,7 @@ function progressLineClass(nextStep) {
   return 'progress-line done';
 }
 
-function renderProgressBlock(job) {
+export function renderProgressBlock(job) {
   const id = job._id;
   const timeline = sortTimeline(
     Array.isArray(job.application_timeline) ? job.application_timeline.slice() : []
@@ -436,9 +441,9 @@ function syncCompanyHistoryItem(jobId, status, timeline, appliedAt) {
   });
 }
 
-function refreshTrackerStats() {
-  if (typeof loadStats === 'function') loadStats();
-  if (typeof loadOverviewData === 'function') loadOverviewData();
+export function refreshTrackerStats() {
+  loadStats();
+  loadOverviewData();
 }
 
 function refreshProgressUI(jobId, timeline, status) {
@@ -498,7 +503,7 @@ async function saveTimeline(jobId, timeline) {
     status: data.status,
     application_timeline: saved,
     applied_at: data.applied_at,
-  }, currentStatusFilter)) {
+  }, state.currentStatusFilter)) {
     removeMatchedCardSilently(document.getElementById(`card-${jobId}`));
   }
   refreshTrackerStats();
@@ -526,7 +531,7 @@ function initialTimeForStep(step, timeline) {
   return nowLocalInputValue();
 }
 
-async function addTimelineStep(jobId, step) {
+export async function addTimelineStep(jobId, step) {
   const label = TIMELINE_LABEL[step] || step;
   let timeline = (jobTimelines[jobId] || []).slice();
   const at = await askTimelineTime({
@@ -565,7 +570,7 @@ async function addTimelineStep(jobId, step) {
   }
 }
 
-async function editTimelineStep(jobId, index) {
+export async function editTimelineStep(jobId, index) {
   const timeline = (jobTimelines[jobId] || []).slice();
   const ev = timeline[index];
   if (!ev) return;
@@ -586,7 +591,7 @@ async function editTimelineStep(jobId, index) {
   }
 }
 
-async function undoTimelineStep(jobId) {
+export async function undoTimelineStep(jobId) {
   const timeline = (jobTimelines[jobId] || []).slice();
   if (!timeline.length) return;
   const wrap = document.getElementById(`progress-${jobId}`);
@@ -607,7 +612,7 @@ async function undoTimelineStep(jobId) {
   }
 }
 
-async function updateSideStatus(select) {
+export async function updateSideStatus(select) {
   const id = select.dataset.id;
   let status = select.value;
   const currentTimeline = jobTimelines[id] || [];
@@ -635,7 +640,7 @@ async function updateSideStatus(select) {
     refreshProgressUI(id, timeline, status);
     applyChipDelta(prevChips, chipSnapshot(status, timeline, prevApplied));
     syncCompanyHistoryItem(id, status, timeline, prevApplied);
-    if (!jobMatchesStatusFilter({ status, application_timeline: timeline }, currentStatusFilter)) {
+    if (!jobMatchesStatusFilter({ status, application_timeline: timeline }, state.currentStatusFilter)) {
       // Fade this card out in place — no list reload, scroll position stays
       removeMatchedCardSilently(document.getElementById(`card-${id}`));
     }

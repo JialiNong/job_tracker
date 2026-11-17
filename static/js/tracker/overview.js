@@ -1,12 +1,15 @@
 /* Tracker Overview tab (templates/index.html): funnel rail, journey,
-   heatmap, and location bubbles. Classic script — functions stay global.
-   Loaded before index.js. */
+   heatmap, and location bubbles. ES module. */
+import { escHtml } from '../shared/html.js';
+import { formatDate, POINT_VERB, TOUCH_UI } from '../shared/job_list.js';
+import { filterByAppliedDay } from './index.js';
+import { parseTimelineAt } from './timeline.js';
 /* Pipeline rail: one bar, to scale, where the full width is every opened job.
    Parts: not in English | in English, not matched | AI matched
    (Applied inside it, Got interview inside Applied, Offer inside interview).
    Volume slices (through Applied) are a share of opened jobs. Got interview
    and Offer are conversion from Applied, not from opened. Offer stays at 0. */
-function sizeFunnelRail(funnel) {
+export function sizeFunnelRail(funnel) {
   const opened = Number(funnel.title_clicked) || 0;
   const german = Number(funnel.german_filtered) || 0;
   const matched = Number(funnel.ai_matched) || 0;
@@ -200,7 +203,7 @@ function renderCompanyTrack(track, start, end) {
   `;
 }
 
-function toggleCompanyPop(btn) {
+export function toggleCompanyPop(btn) {
   const key = `${btn.dataset.company || ''}||${btn.dataset.title || ''}`;
   const existing = document.getElementById('jtCompanyPop');
   if (existing && existing.dataset.anchorId === key) {
@@ -246,7 +249,7 @@ document.addEventListener('click', (e) => {
   hideCompanyPop();
 });
 
-function showJourneyTip(el) {
+export function showJourneyTip(el) {
   hideCompanyPop();
   const text = el.getAttribute('data-tip') || '';
   if (!text) return;
@@ -264,12 +267,12 @@ function showJourneyTip(el) {
   tip.classList.add('show');
 }
 
-function hideJourneyTip() {
+export function hideJourneyTip() {
   const tip = document.getElementById('jtFloatingTip');
   if (tip) tip.classList.remove('show');
 }
 
-async function loadJourney() {
+export async function loadJourney() {
   const root = document.getElementById('journeyRoot');
   if (!root) return;
   hideCompanyPop();
@@ -435,7 +438,7 @@ function renderLocationBubbles(locations, total) {
 let _locStatsCache = null;
 let _locResizeTimer = null;
 
-function toggleLocBubble(el) {
+export function toggleLocBubble(el) {
   const root = document.getElementById('locBubbles');
   const wasOpen = el.classList.contains('is-open');
   document.querySelectorAll('.loc-bubble.is-open').forEach(b => b.classList.remove('is-open'));
@@ -453,7 +456,7 @@ document.addEventListener('click', (e) => {
   document.getElementById('locBubbles')?.classList.remove('has-open');
 });
 
-async function loadLocationStats() {
+export async function loadLocationStats() {
   const root = document.getElementById('locBubbles');
   const sub = document.getElementById('locSubtitle');
   if (!root) return;
@@ -577,7 +580,7 @@ function unmatchedAgentDayUrl(dateStr) {
   return `/unmatched?agent=1&date_from=${day}&date_to=${day}`;
 }
 
-async function loadDailyStats() {
+export async function loadDailyStats() {
   const container = document.getElementById('calMonths');
   if (!container) return;
 

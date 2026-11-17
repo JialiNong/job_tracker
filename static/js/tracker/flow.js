@@ -1,5 +1,6 @@
 /* Overview application-flow boards: Sankey + weekly stacked bars.
-   Classic script — loadFlowStats stays global so timeline / batch refresh it. */
+   ES module. */
+import { TOUCH_UI } from '../shared/job_list.js';
 let _flowCache = null;
 let _flowPick = null;
 let _flowSticky = false;
@@ -541,13 +542,13 @@ function renderWeekly(weekly) {
   markRevealedAfter(root, '.weekly-stack');
 }
 
-function renderFlowBoards() {
+export function renderFlowBoards() {
   if (!_flowCache) return;
   renderSankey(_flowCache.sankey || { total: 0, nodes: [], links: [] });
   renderWeekly(_flowCache.weekly || { weeks: [], totals: { total: 0 } });
 }
 
-async function loadFlowStats() {
+export async function loadFlowStats() {
   const flowRoot = document.getElementById('flowRoot');
   const weeklyRoot = document.getElementById('weeklyRoot');
   if (!flowRoot && !weeklyRoot) return;

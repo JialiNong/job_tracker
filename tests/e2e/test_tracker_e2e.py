@@ -372,6 +372,21 @@ class TrackerE2E(unittest.TestCase):
         self.assertIsNone(self.db.jobs.find_one({"job_id": "4100000003"}))
         self.assertIsNotNone(self.job(PENDING_ID), "other cards must stay")
 
+    def test_stored_javascript_link_and_html_title_stay_inert(self):
+        # A link / title saved before ingest validation, or from a third-party
+        # API, must not run script on the Tracker. (LinkedIn links are rebuilt
+        # from job_id by the server, so use an ATS job.)
+        self.db.matched_jobs.update_one({"_id": PENDING_ID}, {"$set": {
+            "source": "ats",
+            "link": "javascript://%0Awindow.__xss=1",
+            "title": '<img src=x onerror="window.__xss=1">',
+        }})
+        self.open_card(PENDING_ID)
+        card = self.page.locator(f"#card-{PENDING_ID}")
+        expect(card.locator(".btn-apply")).to_have_attribute("href", "#")
+        expect(card.locator(".row-title")).to_have_text('<img src=x onerror="window.__xss=1">')
+        self.assertIsNone(self.page.evaluate("window.__xss"))
+
     # ── Unmatched / Timeouts / Log Job ───────────────────────────────────
 
     def test_unmatched_card_uses_shared_chrome(self):

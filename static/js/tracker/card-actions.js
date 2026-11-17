@@ -1,7 +1,12 @@
 /* Tracker card actions: notes, highlights, Q&A, edit info, replace link, delete.
-   Classic script — functions stay global. Loaded before index.js. */
+   ES module. */
+import { escHtml } from '../shared/html.js';
+import { showToast } from '../shared/job_list.js';
+import { cardCompanyHtml, highlightBadgesHtml, normalizeHighlights, renderCard, renderHighlightChips, renderQaItemHtml } from './cards.js';
+import { jobHighlights, jobTimelines, state } from './state.js';
+import { askConfirm, refreshTrackerStats } from './timeline.js';
 
-function renderReplaceLinkBlock(job) {
+export function renderReplaceLinkBlock(job) {
   const id = job._id;
   const link = String(job.link || '');
   return `
@@ -18,7 +23,7 @@ function renderReplaceLinkBlock(job) {
     </div>`;
 }
 
-async function saveReplaceLink(el) {
+export async function saveReplaceLink(el) {
   const wrap = el && el.closest ? el.closest('.replace-link-wrap') : null;
   if (!wrap) return;
   const id = wrap.dataset.id;
@@ -68,7 +73,7 @@ async function saveReplaceLink(el) {
   }
 }
 /* ── Save notes ──────────────────────────────────────────────────── */
-async function saveNotes(btn) {
+export async function saveNotes(btn) {
   const id    = btn.dataset.id;
   const card  = document.getElementById(`card-${id}`);
   const notes = card.querySelector('.notes-textarea').value;
@@ -150,11 +155,11 @@ async function addHighlightTag(id, tag) {
   }
 }
 
-function addHighlightPreset(id, tag) {
+export function addHighlightPreset(id, tag) {
   addHighlightTag(id, tag);
 }
 
-function addHighlightFromInput(id) {
+export function addHighlightFromInput(id) {
   const wrap = document.getElementById(`highlights-${id}`);
   if (!wrap) return;
   const input = wrap.querySelector('.hl-input');
@@ -163,7 +168,7 @@ function addHighlightFromInput(id) {
   addHighlightTag(id, value);
 }
 
-async function removeHighlight(btn) {
+export async function removeHighlight(btn) {
   const wrap = btn.closest('.highlights-wrap');
   if (!wrap) return;
   const id = wrap.dataset.id;
@@ -183,7 +188,7 @@ async function removeHighlight(btn) {
 }
 
 /* ── Application Q&A ─────────────────────────────────────────────── */
-function addQaItem(btn) {
+export function addQaItem(btn) {
   const wrap = btn.closest('.qa-wrap');
   const list = wrap.querySelector('.qa-list');
   list.insertAdjacentHTML('beforeend', renderQaItemHtml());
@@ -191,7 +196,7 @@ function addQaItem(btn) {
   last.querySelector('.qa-question').focus();
 }
 
-function removeQaItem(btn) {
+export function removeQaItem(btn) {
   const list = btn.closest('.qa-list');
   const item = btn.closest('.qa-item');
   item.remove();
@@ -200,7 +205,7 @@ function removeQaItem(btn) {
   }
 }
 
-async function saveApplicationQa(btn) {
+export async function saveApplicationQa(btn) {
   const id   = btn.dataset.id;
   const wrap = btn.closest('.qa-wrap');
   const application_qa = [...wrap.querySelectorAll('.qa-item')].map(item => ({
@@ -225,14 +230,14 @@ async function saveApplicationQa(btn) {
 }
 
 /* ── Edit job info (title / company / location) ──────────────────── */
-function openEditInfo(btn) {
+export function openEditInfo(btn) {
   const block = btn.closest('.card-title-block');
   block.querySelector('.info-view').style.display = 'none';
   const edit = block.querySelector('.info-edit');
   edit.classList.add('active');
   edit.querySelector('[data-field="title"]').select();
 }
-async function deleteMatchedJob(jobId, btn) {
+export async function deleteMatchedJob(jobId, btn) {
   const card = btn.closest('.card') || document.getElementById(`card-${jobId}`);
   const title = card?.querySelector('.card-title-text')?.textContent?.trim()
     || card?.querySelector('.row-title')?.textContent?.trim()
@@ -267,7 +272,7 @@ async function deleteMatchedJob(jobId, btn) {
   }
 }
 
-function removeMatchedCardSilently(card) {
+export function removeMatchedCardSilently(card) {
   if (!card) return;
 
   const group = card.closest('.date-group-cards');
@@ -291,9 +296,9 @@ function removeMatchedCardSilently(card) {
     }
 
     // Bump local total label without refetch
-    totalJobs = Math.max(0, totalJobs - 1);
+    state.totalJobs = Math.max(0, state.totalJobs - 1);
     const label = document.getElementById('countLabel');
-    if (label) label.textContent = `Page ${currentPage} of ${totalPages} (${totalJobs} total)`;
+    if (label) label.textContent = `Page ${state.currentPage} of ${state.totalPages} (${state.totalJobs} total)`;
 
     // Empty state if grid has no cards left
     const grid = document.getElementById('jobGrid');
@@ -312,13 +317,13 @@ function removeMatchedCardSilently(card) {
   setTimeout(finish, 180);
 }
 
-function cancelEditInfo(btn) {
+export function cancelEditInfo(btn) {
   const block = btn.closest('.card-title-block');
   block.querySelector('.info-view').style.display = '';
   block.querySelector('.info-edit').classList.remove('active');
 }
 
-async function saveJobInfo(btn) {
+export async function saveJobInfo(btn) {
   const block   = btn.closest('.card-title-block');
   const id      = block.dataset.id;
   const inputs  = block.querySelectorAll('.info-input');

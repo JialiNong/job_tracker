@@ -1,4 +1,4 @@
-{% from "_shell.html" import fonts, sidebar %}
+{% from "_shell.html" import fonts, sidebar, module_entry with context %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -121,6 +121,6 @@ python scripts/tools/log_jobs.py --file my_urls.txt</code></pre>
 </main>
 </div>
 
-<script src="{{ static_url('js/manual_apply.js') }}"></script>
+{{ module_entry('js/manual_apply.js') }}
 </body>
 </html>

@@ -1,4 +1,4 @@
-{% from "_shell.html" import fonts, sidebar %}
+{% from "_shell.html" import fonts, sidebar, module_entry with context %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,6 +41,6 @@
 </div>
 <div class="toast" id="toast"></div>
 
-<script src="{{ static_url('js/timeouts.js') }}"></script>
+{{ module_entry('js/timeouts.js') }}
 </body>
 </html>

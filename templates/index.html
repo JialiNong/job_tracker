@@ -1,4 +1,4 @@
-{% from "_shell.html" import fonts, sidebar, search_icon %}
+{% from "_shell.html" import fonts, sidebar, search_icon, module_entry with context %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -333,14 +333,6 @@
 <!-- ── Toast ───────────────────────────────────────────────────────── -->
 <div class="toast" id="toast"></div>
 
-<script src="{{ static_url('js/shared/shell.js') }}"></script>
-<script src="{{ static_url('js/shared/job_list.js') }}"></script>
-<script src="{{ static_url('js/tracker/overview.js') }}"></script>
-<script src="{{ static_url('js/tracker/flow.js') }}"></script>
-<script src="{{ static_url('js/tracker/cards.js') }}"></script>
-<script src="{{ static_url('js/tracker/batch.js') }}"></script>
-<script src="{{ static_url('js/tracker/timeline.js') }}"></script>
-<script src="{{ static_url('js/tracker/card-actions.js') }}"></script>
-<script src="{{ static_url('js/tracker/index.js') }}"></script>
+{{ module_entry('js/tracker/main.js') }}
 </body>
 </html>

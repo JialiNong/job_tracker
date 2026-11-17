@@ -146,6 +146,17 @@ def expand_short_job_url(url: str) -> str:
     return url
 
 
+def is_http_url(url: str) -> bool:
+    """
+    True for an http(s) URL with a host, after the usual paste cleanup.
+
+    Job links are shown as clickable hrefs on the Tracker, so a pushed
+    `javascript://…` or `data:` link must never be stored.
+    """
+    parsed = urlparse(normalize_pasted_job_url(url))
+    return parsed.scheme in ("http", "https") and bool(parsed.hostname)
+
+
 def detect_source(url: str) -> str:
     """Return 'linkedin', 'indeed', or 'manual' based on the hostname."""
     url_lower = normalize_pasted_job_url(url).lower()

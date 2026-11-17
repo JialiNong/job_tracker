@@ -22,12 +22,12 @@ function setOverlayLock(on) {
   }
 }
 
-function filterPopOpen() {
+export function filterPopOpen() {
   const pop = document.getElementById('filterPop');
   return Boolean(pop && !pop.hidden);
 }
 
-function syncOverlayLock() {
+export function syncOverlayLock() {
   const filterLock = isPhoneUi() && filterPopOpen();
   const panelScrim = document.getElementById('panelScrim');
   const panelLock = Boolean(panelScrim && !panelScrim.hidden);
@@ -54,7 +54,7 @@ function syncFilterScrim() {
   syncOverlayLock();
 }
 
-function toggleFilterPop(event) {
+export function toggleFilterPop(event) {
   if (event) event.stopPropagation();
   const pop = document.getElementById('filterPop');
   const btn = document.getElementById('filterBtn');
@@ -77,7 +77,7 @@ function closeFilterPop({ returnFocus = false } = {}) {
 }
 
 /** "Filters (2)": how many selects in the popover differ from their page-load default. */
-function updateFilterCount() {
+export function updateFilterCount() {
   const pop = document.getElementById('filterPop');
   const btn = document.getElementById('filterBtn');
   if (!pop || !btn) return;

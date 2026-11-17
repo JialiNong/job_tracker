@@ -379,7 +379,7 @@ class CountryTests(unittest.TestCase):
         self.assertIn("amsterdam", derived["$regex"])
 
     def test_default_view_is_active(self):
-        self.assertIn("let currentStatusFilter = 'active';", HTML)
+        self.assertIn("currentStatusFilter: 'active',", HTML)
         self.assertIn('data-status="got_interview"', HTML)
         self.assertIn('data-status="interview_cancelled"', HTML)
         self.assertIn("function jobReachedInterview", HTML)

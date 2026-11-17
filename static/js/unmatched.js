@@ -1,21 +1,26 @@
-/* Unmatched page (templates/unmatched.html) script. Classic script, not a module:
-   inline onclick="..." handlers in the page call these globals.
-   Shared card chrome: job_list.js (loaded first). */
+/* Unmatched page (templates/unmatched.html) entry module.
+   Inline onclick="..." handlers call the functions exposed on window at the
+   bottom of this file. Shared card chrome: ./shared/job_list.js. */
+import { escHtml, safeUrl } from './shared/html.js';
+import { applicantsMetaPillHtml, channelChipHtml, closeCardPanel, collapseOtherCards, consumeOpenJobId, currentDateRange, currentLayout, formatGroupDate, groupJobsByDate, postedPillHtml, RECOMMENDED_BY_LABEL, renderBreakdown, rowApplicantsHtml, rowViaHtml, scoreRingHtml, setCardOpen, setLayout, showToast, toggleCardExpand } from './shared/job_list.js';
+import { toggleFilterPop, updateFilterCount } from './shared/shell.js';
 let currentPage = 1;
 let debounceTimer = null;
 let dateDebounceTimer = null;
 const PAGE_SIZE = 20;
 let watchlistOnly = false;  // Filter to show only "Can Apply" jobs
 let agentRecommendedOnly = false;  // Agent push that stayed on Unmatched
+// /?open=<id> deep link, consumed after the first list renders
+let pendingOpenJobId = '';
 /* ── Watchlist filter toggle ─────────────────────────────────────── */
-function toggleWatchlistFilter() {
+export function toggleWatchlistFilter() {
   watchlistOnly = !watchlistOnly;
   const chip = document.getElementById('watchlistChip');
   chip.classList.toggle('active', watchlistOnly);
   goPage(1);
 }
 
-function toggleAgentFilter() {
+export function toggleAgentFilter() {
   agentRecommendedOnly = !agentRecommendedOnly;
   const chip = document.getElementById('agentChip');
   if (chip) chip.classList.toggle('active', agentRecommendedOnly);
@@ -42,7 +47,7 @@ function applyUnmatchedQuery() {
 }
 
 /* ── Update unmatched job user_status ────────────────────────────── */
-async function updateUnmatchedStatus(select) {
+export async function updateUnmatchedStatus(select) {
   const id         = select.dataset.id;
   const userStatus = select.value;
 
@@ -110,16 +115,16 @@ async function loadAgentCount() {
   } catch (_) {}
 }
 
-function debounceLoad() {
+export function debounceLoad() {
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(() => goPage(1), 600);
 }
 
-function goPage(page) {
+export function goPage(page) {
   currentPage = Math.max(1, page);
   loadJobs();
 }
-function onTimePresetChange() {
+export function onTimePresetChange() {
   const preset = document.getElementById('timePreset').value;
   document.getElementById('customDateGroup').classList.toggle('hidden-filter', preset !== 'custom');
   if (preset !== 'custom') {
@@ -127,7 +132,7 @@ function onTimePresetChange() {
   }
   // For custom, reload is triggered only when user actually picks a date
 }
-function onScorePresetChange() {
+export function onScorePresetChange() {
   const preset = document.getElementById('scorePreset').value;
   document.getElementById('customScoreGroup').classList.toggle('hidden-filter', preset !== 'custom');
   goPage(1);
@@ -206,7 +211,7 @@ function renderCard(job) {
     ? `<span class="meta-pill gate-pill${gate === 'stack' ? ' gate-stack' : ''}">${escHtml(gateLabel(gate))}</span>`
     : '';
   const openLink = job.link
-    ? `<a class="row-open" href="${escHtml(job.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Open</a>`
+    ? `<a class="row-open" href="${escHtml(safeUrl(job.link))}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Open</a>`
     : '';
 
   const card = document.createElement('div');
@@ -265,7 +270,7 @@ function renderCard(job) {
       ${renderList('Red flags', job.red_flags, 'bd-no')}
       ${renderList('Company & score', job.match_reasons, '')}
 
-      <a class="btn-apply" href="${escHtml(job.link || '#')}" target="_blank" rel="noopener">View Original</a>
+      <a class="btn-apply" href="${escHtml(safeUrl(job.link))}" target="_blank" rel="noopener">View Original</a>
 
       ${renderUnmatchedStatusSelect(job)}
     </div>
@@ -314,9 +319,9 @@ function renderPager(data) {
   `;
 }
 
-async function loadJobs() {
+export async function loadJobs() {
   const grid = document.getElementById('jobGrid');
-  if (window.updateFilterCount) updateFilterCount();
+  updateFilterCount();
   const search = document.getElementById('searchInput').value.trim();
   const source = document.getElementById('sourceFilter').value;
   const gate = document.getElementById('gateFilter').value;
@@ -366,7 +371,7 @@ async function loadJobs() {
     groups.forEach(([dateStr, jobs]) => {
       const hdr = document.createElement('div');
       hdr.className = 'date-group-header';
-      hdr.innerHTML = `<span>${formatGroupDate(dateStr)}</span><span class="dg-count">${jobs.length} jobs</span>`;
+      hdr.innerHTML = `<span>${escHtml(formatGroupDate(dateStr))}</span><span class="dg-count">${jobs.length} jobs</span>`;
       grid.appendChild(hdr);
       jobs.forEach(job => grid.appendChild(renderCard(job)));
     });
@@ -398,9 +403,9 @@ function openUnmatchedCard(card) {
 }
 
 async function focusOpenJobFromQuery() {
-  if (!window.__pendingOpenJobId) return;
-  const openId = window.__pendingOpenJobId;
-  window.__pendingOpenJobId = '';
+  if (!pendingOpenJobId) return;
+  const openId = pendingOpenJobId;
+  pendingOpenJobId = '';
 
   const grid = document.getElementById('jobGrid');
   let card = document.getElementById(`card-${openId}`);
@@ -440,9 +445,16 @@ async function focusOpenJobFromQuery() {
 }
 
 applyUnmatchedQuery();
-window.__pendingOpenJobId = consumeOpenJobId('/unmatched');
+pendingOpenJobId = consumeOpenJobId('/unmatched');
 
 setLayout(currentLayout);
 loadJobs().then(() => focusOpenJobFromQuery());
 loadWatchlistCount();
 loadAgentCount();
+
+// Inline onclick="..." handlers in the page look these up on window
+Object.assign(window, {
+  closeCardPanel, debounceLoad, goPage, loadJobs, onScorePresetChange, onTimePresetChange,
+  setLayout, toggleAgentFilter, toggleCardExpand, toggleFilterPop, toggleWatchlistFilter,
+  updateUnmatchedStatus,
+});

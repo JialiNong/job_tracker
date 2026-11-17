@@ -1,10 +1,16 @@
-/* Tracker page (templates/index.html) script. Classic script, not a module:
-   inline onclick="..." handlers in the page call these globals.
-   Shared card chrome: ../shared/job_list.js. Sibling files in this folder
-   (overview / cards / batch / timeline / card-actions) load before this
-   file; init stays here. */
+/* Tracker page (templates/index.html): job list, filters, pagination, and
+   deep links. tracker/main.js is the entry: it exposes the inline-handler
+   functions on window and calls initTrackerPage(). Shared state lives in
+   ./state.js; card chrome in ../shared/job_list.js. */
+import { escHtml } from '../shared/html.js';
+import { collapseOtherCards, consumeOpenJobId, currentDateRange, currentLayout, formatGroupDate, groupJobsByDate, setCardOpen, setLayout, showToast, syncPanelScrim } from '../shared/job_list.js';
+import { updateFilterCount } from '../shared/shell.js';
+import { updateBatchFetchUI } from './batch.js';
+import { renderCard } from './cards.js';
+import { loadFlowStats, renderFlowBoards } from './flow.js';
+import { loadDailyStats, loadJourney, loadLocationStats, sizeFunnelRail } from './overview.js';
+import { state } from './state.js';
 /* ── State ───────────────────────────────────────────────────────── */
-let currentStatusFilter = 'active';
 let highlightsOnly = false;
 let companyFilters = []; // exact companies (chips in the search box)
 let appliedOnFilter = ''; // YYYY-MM-DD: jobs applied that day (heatmap → /?applied=…)
@@ -17,75 +23,24 @@ const SEARCH_DEBOUNCE_MS = 600; // wait until typing pauses before searching
 // Never hold them back for more than a few seconds.
 let resolveListReady;
 const listReady = new Promise(resolve => { resolveListReady = resolve; });
-setTimeout(() => resolveListReady(), 4000);
 const collapsedGroups = new Set(); // tracks which date groups are collapsed
-const jobHighlights = {}; // job_id -> string[]
-const HIGHLIGHT_PRESETS = ['Leipzig', 'Chinese+'];
+// /?open=<id> deep link, consumed after the first list renders
+let pendingOpenJobId = '';
 
 // Pagination state
-let currentPage = 1;
-let totalPages = 1;
-let totalJobs = 0;
 const PAGE_SIZE = 20;
 
-const STATUS_LABEL = {
-  pending:    'Not applied',
-  applied:    'Applied',
-  screening:  'Screening',
-  rejected:   'Rejected',
-  interview:  'Interview',
-  interview_cancelled: 'Cancelled',
-  offer:      'Offer',
-  unsuitable: 'Unsuitable',
-  closed:     'Closed',
-  closed_no_reply: 'Closed, no reply',
-  prev_rejected: 'Rejected before',
-  too_many_questions: 'Skipped, long form',
-  repost:     'Repost',
-  duplicate:  'Duplicate',
-};
-const SIDE_STATUSES = ['unsuitable', 'closed', 'closed_no_reply', 'prev_rejected', 'too_many_questions', 'repost', 'duplicate'];
-const PROGRESS_STAGES = ['applied', 'screening', 'rejected', 'interview', 'interview_cancelled', 'offer'];
 const STATS_CHIP_KEYS = [
   'active', 'pending', 'applied', 'screening', 'rejected', 'interview',
   'interview_cancelled', 'got_interview', 'offer', 'unsuitable', 'closed',
   'closed_no_reply', 'prev_rejected', 'too_many_questions', 'repost', 'duplicate',
 ];
-const selectedFetchIds = new Set();
-// Selected cards that are not eligible for batch Fetch / Run AI (already
-// scored) — only Delete selected acts on them.
-const selectedDeleteOnlyIds = new Set();
-// "Select jobs" mode: card checkboxes are hidden until it is turned on.
-let selectMode = false;
-let fetchBatchPollTimer = null;
-let fetchBatchRunning = false;
-let fetchBatchMode = 'fetch';
 
-const TIMELINE_LABEL = {
-  applied:          'Applied',
-  reapplied:        'Reapplied',
-  screening:        'Screening',
-  screening_done:   'Submitted',
-  interview_invite: 'Invite',
-  interview_1:      'Round 1',
-  interview_2:      'Round 2',
-  interview_3:      'Round 3',
-  interview_final:  'Final',
-  interview_cancelled: 'Cancelled',
-  rejected:         'Rejected',
-  offer:            'Offer',
-};
 
-const INTERVIEW_STEPS = ['interview_1', 'interview_2', 'interview_3', 'interview_final'];
-const GOT_INTERVIEW_FILTER = 'got_interview';
-const GOT_INTERVIEW_STEPS = new Set(['interview_invite', ...INTERVIEW_STEPS, 'offer']);
-const TERMINAL_STEPS = new Set(['rejected', 'offer']);
 
-/** In-memory timeline cache keyed by job id */
-const jobTimelines = {};
 /* ── Stats bar + funnel ──────────────────────────────────────────── */
 let statsAbortController = null;
-async function loadStats() {
+export async function loadStats() {
   if (statsAbortController) statsAbortController.abort();
   statsAbortController = new AbortController();
   const signal = statsAbortController.signal;
@@ -120,7 +75,7 @@ async function loadStats() {
   }
 }
 /* ── Jobs / Overview tabs ────────────────────────────────────────── */
-function showTrackerView(view) {
+export function showTrackerView(view) {
   const overview = view === 'overview';
   document.getElementById('jobsView').hidden = overview;
   document.getElementById('overviewView').hidden = !overview;
@@ -142,24 +97,26 @@ function showTrackerView(view) {
     // Heatmap, bubbles, and flow boards measure width; re-measure now they are visible
     requestAnimationFrame(() => {
       window.dispatchEvent(new Event('resize'));
-      if (typeof renderFlowBoards === 'function') renderFlowBoards();
+      renderFlowBoards();
     });
   }
 }
 
 // Tab list keys: Left / Right / Home / End move between the two views
-document.querySelector('.tabs[role="tablist"]')?.addEventListener('keydown', (e) => {
-  if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
-  e.preventDefault();
-  const toOverview = e.key === 'End'
-    || (e.key !== 'Home' && document.getElementById('tabJobs').getAttribute('aria-selected') === 'true');
-  showTrackerView(toOverview ? 'overview' : 'jobs');
-  document.getElementById(toOverview ? 'tabOverview' : 'tabJobs').focus();
-});
+function bindTabKeys() {
+  document.querySelector('.tabs[role="tablist"]')?.addEventListener('keydown', (e) => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+    e.preventDefault();
+    const toOverview = e.key === 'End'
+      || (e.key !== 'Home' && document.getElementById('tabJobs').getAttribute('aria-selected') === 'true');
+    showTrackerView(toOverview ? 'overview' : 'jobs');
+    document.getElementById(toOverview ? 'tabOverview' : 'tabJobs').focus();
+  });
+}
 /* ── Status filter ───────────────────────────────────────────────── */
-function setStatusFilter(status) {
-  currentStatusFilter = status;
-  currentPage = 1; // Reset to first page when filter changes
+export function setStatusFilter(status) {
+  state.currentStatusFilter = status;
+  state.currentPage = 1; // Reset to first page when filter changes
   document.querySelectorAll('.stat-chip[data-status]').forEach(el => {
     el.classList.toggle('active', el.dataset.status === status);
   });
@@ -176,7 +133,7 @@ function setStatsExpanded(expanded) {
   btn.textContent = expanded ? 'Show fewer statuses' : 'Show more statuses';
 }
 
-function toggleStatsExpanded() {
+export function toggleStatsExpanded() {
   setStatsExpanded(!document.getElementById('statsBar').classList.contains('stats-expanded'));
 }
 
@@ -229,7 +186,7 @@ function applyCompanyFilterUI() {
 }
 
 /** Tracker URL filtered to one company (opened in a new tab from company history). */
-function companyPageUrl(name) {
+export function companyPageUrl(name) {
   return `/?company=${encodeURIComponent(String(name || '').trim())}`;
 }
 
@@ -265,7 +222,7 @@ function resetToolbarFilters() {
   }
 }
 
-function filterByCompany(name) {
+export function filterByCompany(name) {
   const company = String(name || '').trim();
   if (!company) return;
   if (companyFilters.some(c => companyKey(c) === companyKey(company))) {
@@ -284,11 +241,11 @@ function filterByCompany(name) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return;
   }
-  currentPage = 1;
+  state.currentPage = 1;
   loadJobs();
 }
 
-function filterByAppliedDay(dateStr) {
+export function filterByAppliedDay(dateStr) {
   const day = String(dateStr || '').trim();
   if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return;
   appliedOnFilter = day;
@@ -301,11 +258,11 @@ function filterByAppliedDay(dateStr) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function clearAppliedFilter() {
+export function clearAppliedFilter() {
   appliedOnFilter = '';
   syncFilterParams();
   applyAppliedFilterUI();
-  currentPage = 1;
+  state.currentPage = 1;
   loadJobs();
 }
 
@@ -316,7 +273,7 @@ function removeCompanyFilter(name) {
   companyFilters = next;
   syncFilterParams();
   applyCompanyFilterUI();
-  currentPage = 1;
+  state.currentPage = 1;
   loadJobs();
 }
 
@@ -325,21 +282,21 @@ function clearCompanyFilter() {
   companyFilters = [];
   syncFilterParams();
   applyCompanyFilterUI();
-  currentPage = 1;
+  state.currentPage = 1;
   loadJobs();
 }
 
-function toggleHighlightsFilter() {
+export function toggleHighlightsFilter() {
   highlightsOnly = !highlightsOnly;
   document.getElementById('highlightsFilter').classList.toggle('active', highlightsOnly);
   loadJobs();
 }
 
 /* ── Debounce search ─────────────────────────────────────────────── */
-function debounceLoad() {
+export function debounceLoad() {
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(() => {
-    currentPage = 1; // Reset to first page on search
+    state.currentPage = 1; // Reset to first page on search
     loadJobs();
   }, SEARCH_DEBOUNCE_MS);
 }
@@ -351,33 +308,33 @@ function updatePagination() {
   const nextBtn = document.getElementById('nextPage');
   const pageInfo = document.getElementById('pageInfo');
 
-  if (totalPages <= 1) {
+  if (state.totalPages <= 1) {
     pagination.style.display = 'none';
     return;
   }
 
   pagination.style.display = 'flex';
-  pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-  prevBtn.disabled = currentPage <= 1;
-  nextBtn.disabled = currentPage >= totalPages;
+  pageInfo.textContent = `Page ${state.currentPage} of ${state.totalPages}`;
+  prevBtn.disabled = state.currentPage <= 1;
+  nextBtn.disabled = state.currentPage >= state.totalPages;
 }
 
-function prevPage() {
-  if (currentPage > 1) {
-    currentPage--;
+export function prevPage() {
+  if (state.currentPage > 1) {
+    state.currentPage--;
     loadJobs();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
-function nextPage() {
-  if (currentPage < totalPages) {
-    currentPage++;
+export function nextPage() {
+  if (state.currentPage < state.totalPages) {
+    state.currentPage++;
     loadJobs();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
-function onTimePresetChange() {
+export function onTimePresetChange() {
   const preset = document.getElementById('timePreset').value;
   document.getElementById('customDateGroup').classList.toggle('hidden-filter', preset !== 'custom');
   if (preset !== 'custom') {
@@ -398,7 +355,7 @@ function toggleGroup(dateStr, headerEl) {
   if (container) container.classList.toggle('hidden', nowCollapsed);
 }
 /* ── Load jobs ───────────────────────────────────────────────────── */
-async function loadJobDescription(detailsEl) {
+export async function loadJobDescription(detailsEl) {
   if (!detailsEl.open) return;
   const body = detailsEl.querySelector('.job-description-body');
   if (!body || body.dataset.loaded === '1') return;
@@ -437,7 +394,7 @@ async function copyText(text) {
 }
 
 /** Copy the full original JD (fetched if the panel was never opened). */
-async function copyJobDescription(btn) {
+export async function copyJobDescription(btn) {
   const jobId = btn.dataset.jobId;
   const details = btn.closest('.job-description');
   const body = details && details.querySelector('.job-description-body');
@@ -466,7 +423,7 @@ async function copyJobDescription(btn) {
   }
 }
 
-function currentJobListParams() {
+export function currentJobListParams() {
   const params = new URLSearchParams();
   const search = document.getElementById('searchInput').value.trim();
   const source = document.getElementById('sourceFilter').value;
@@ -474,7 +431,7 @@ function currentJobListParams() {
   const country = document.getElementById('countryFilter').value;
   const origin = document.getElementById('originFilter').value;
   if (origin !== 'all') params.set('origin', origin);
-  if (currentStatusFilter !== 'all') params.set('status', currentStatusFilter);
+  if (state.currentStatusFilter !== 'all') params.set('status', state.currentStatusFilter);
   if (country !== 'all') params.set('country', country);
   if (highlightsOnly) params.set('highlights', 'true');
   if (source !== 'all') params.set('source', source);
@@ -486,9 +443,9 @@ function currentJobListParams() {
   return params;
 }
 
-async function loadJobs() {
+export async function loadJobs() {
   const grid   = document.getElementById('jobGrid');
-  if (window.updateFilterCount) updateFilterCount();
+  updateFilterCount();
 
   if (jobsAbortController) jobsAbortController.abort();
   jobsAbortController = new AbortController();
@@ -499,21 +456,21 @@ async function loadJobs() {
   grid.classList.toggle('layout-cards', currentLayout === 'cards');
 
   const params = currentJobListParams();
-  params.set('page', currentPage);
+  params.set('page', state.currentPage);
   params.set('page_size', PAGE_SIZE);
 
   try {
     const res  = await fetch('/api/jobs?' + params.toString(), { signal });
     const data = await res.json();
 
-    totalPages = data.pages || 1;
-    totalJobs = data.total || 0;
-    currentPage = data.page || 1;
+    state.totalPages = data.pages || 1;
+    state.totalJobs = data.total || 0;
+    state.currentPage = data.page || 1;
 
     grid.innerHTML = '';
     grid.classList.toggle('layout-compact', currentLayout === 'compact');
     grid.classList.toggle('layout-cards', currentLayout === 'cards');
-    document.getElementById('countLabel').textContent = `Page ${currentPage} of ${totalPages} (${totalJobs} total)`;
+    document.getElementById('countLabel').textContent = `Page ${state.currentPage} of ${state.totalPages} (${state.totalJobs} total)`;
 
     if (!data.jobs.length) {
       grid.innerHTML = `
@@ -535,7 +492,7 @@ async function loadJobs() {
       hdr.className = 'date-group-header' + (isCollapsed ? ' collapsed' : '');
       hdr.innerHTML = `
         <span class="dg-toggle">▾</span>
-        <span>${formatGroupDate(dateStr)}</span>
+        <span>${escHtml(formatGroupDate(dateStr))}</span>
         <span class="dg-count">${jobs.length} jobs</span>
       `;
       hdr.addEventListener('click', () => toggleGroup(dateStr, hdr));
@@ -557,7 +514,7 @@ async function loadJobs() {
     await focusOpenJobFromQuery();
   } catch (err) {
     if (err.name === 'AbortError') return;
-    grid.innerHTML = `<div class="empty"><h2>Loading Failed</h2><p>${err.message}</p></div>`;
+    grid.innerHTML = `<div class="empty"><h2>Loading Failed</h2><p>${escHtml(err.message)}</p></div>`;
   } finally {
     if (!signal.aborted) resolveListReady();
   }
@@ -588,9 +545,9 @@ function openMatchedCard(card) {
 }
 
 async function focusOpenJobFromQuery() {
-  if (!window.__pendingOpenJobId) return;
-  const openId = window.__pendingOpenJobId;
-  window.__pendingOpenJobId = '';
+  if (!pendingOpenJobId) return;
+  const openId = pendingOpenJobId;
+  pendingOpenJobId = '';
 
   const grid = document.getElementById('jobGrid');
   let card = document.getElementById(`card-${openId}`);
@@ -634,7 +591,7 @@ async function focusOpenJobFromQuery() {
   }
 }
 /* ── Init ────────────────────────────────────────────────────────── */
-function loadOverviewData() {
+export function loadOverviewData() {
   loadJourney();
   loadLocationStats();
   loadDailyStats();
@@ -646,7 +603,7 @@ function loadAfterJobList() {
   loadOverviewData();
 }
 
-function refreshAll() {
+export function refreshAll() {
   // Job list first; chips + Overview after so they do not race /api/jobs.
   loadJobs().finally(loadAfterJobList);
 }
@@ -654,7 +611,7 @@ function refreshAll() {
 // Auto-refresh the page when templates or static JS/CSS change (no server restart needed).
 // Local development only: in production this polled every 1.5 s from every open
 // tab (and the server walked the template + static folders for each poll).
-(function setupTemplateHotReload() {
+function setupTemplateHotReload() {
   if (!['127.0.0.1', 'localhost'].includes(location.hostname)) return;
   let token = null;
   async function check() {
@@ -675,55 +632,62 @@ function refreshAll() {
   }
   setInterval(check, 1500);
   check();
-})();
-
-// Date input listeners – debounced so the native picker doesn't fire mid-pick
-['dateFrom', 'dateTo'].forEach(id => {
-  document.getElementById(id).addEventListener('change', function() {
-    if (document.getElementById('timePreset').value === 'custom') {
-      clearTimeout(dateDebounceTimer);
-      dateDebounceTimer = setTimeout(loadJobs, 400);
-    }
-  });
-});
-
-window.__pendingOpenJobId = consumeOpenJobId();
-const initialParams = new URLSearchParams(location.search);
-const initialCompanies = uniqueCompanies(initialParams.getAll('company'));
-const initialApplied = (initialParams.get('applied') || '').trim();
-
-const searchField = document.getElementById('searchField');
-const searchInput = document.getElementById('searchInput');
-if (searchField && searchInput) {
-  searchField.addEventListener('click', ev => {
-    if (ev.target.closest('button')) return;
-    searchInput.focus();
-  });
-  searchInput.addEventListener('keydown', ev => {
-    if (ev.key !== 'Backspace' || searchInput.value || !companyFilters.length) return;
-    ev.preventDefault();
-    removeCompanyFilter(companyFilters[companyFilters.length - 1]);
-  });
 }
 
-setLayout(currentLayout);
-// ?company=… / ?applied=YYYY-MM-DD → open straight into that view
-if (initialApplied) {
-  if (initialCompanies.length) {
-    companyFilters = initialCompanies;
-    applyCompanyFilterUI();
+export function initTrackerPage() {
+  // Chips + Overview wait for the first list, but never more than 4 s
+  setTimeout(() => resolveListReady(), 4000);
+  setupTemplateHotReload();
+  bindTabKeys();
+
+  // Date input listeners – debounced so the native picker doesn't fire mid-pick
+  ['dateFrom', 'dateTo'].forEach(id => {
+    document.getElementById(id).addEventListener('change', function() {
+      if (document.getElementById('timePreset').value === 'custom') {
+        clearTimeout(dateDebounceTimer);
+        dateDebounceTimer = setTimeout(loadJobs, 400);
+      }
+    });
+  });
+
+  pendingOpenJobId = consumeOpenJobId();
+  const initialParams = new URLSearchParams(location.search);
+  const initialCompanies = uniqueCompanies(initialParams.getAll('company'));
+  const initialApplied = (initialParams.get('applied') || '').trim();
+
+  const searchField = document.getElementById('searchField');
+  const searchInput = document.getElementById('searchInput');
+  if (searchField && searchInput) {
+    searchField.addEventListener('click', ev => {
+      if (ev.target.closest('button')) return;
+      searchInput.focus();
+    });
+    searchInput.addEventListener('keydown', ev => {
+      if (ev.key !== 'Backspace' || searchInput.value || !companyFilters.length) return;
+      ev.preventDefault();
+      removeCompanyFilter(companyFilters[companyFilters.length - 1]);
+    });
   }
-  filterByAppliedDay(initialApplied);
-} else if (initialCompanies.length) {
-  companyFilters = initialCompanies;
-  syncFilterParams();
-  resetToolbarFilters();
-  applyCompanyFilterUI();
-  showTrackerView('jobs');
-  setStatusFilter('all');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-} else {
-  loadJobs();
+
+  setLayout(currentLayout);
+  // ?company=… / ?applied=YYYY-MM-DD → open straight into that view
+  if (initialApplied) {
+    if (initialCompanies.length) {
+      companyFilters = initialCompanies;
+      applyCompanyFilterUI();
+    }
+    filterByAppliedDay(initialApplied);
+  } else if (initialCompanies.length) {
+    companyFilters = initialCompanies;
+    syncFilterParams();
+    resetToolbarFilters();
+    applyCompanyFilterUI();
+    showTrackerView('jobs');
+    setStatusFilter('all');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    loadJobs();
+  }
+  // Chips + Overview after the first list (or the 4s safety timeout)
+  listReady.then(loadAfterJobList);
 }
-// Chips + Overview after the first list (or the 4s safety timeout)
-listReady.then(loadAfterJobList);

@@ -13,7 +13,7 @@ from datetime import datetime
 from bson import ObjectId
 
 from core.db_mongo import COLLECTION_NAME, get_collection, lookup_known_job
-from core.job_url import detect_source, expand_short_job_url, resolve_job_id
+from core.job_url import detect_source, expand_short_job_url, is_http_url, resolve_job_id
 from core.manual_log import (
     normalize_manual_identity,
     normalize_recommend_reason,
@@ -150,6 +150,10 @@ def log_agent_jobs(jobs: list, recommended_by="claude") -> dict:
         raw = str(item.get("url") or "").strip()
         url = expand_short_job_url(raw) or raw
         if not url:
+            continue
+        if not is_http_url(url):
+            print(f"  ❌ Not an http(s) job URL: {url}")
+            merged["failed"].append(url)
             continue
         source = detect_source(url)
         job_id = resolve_job_id(url, source)

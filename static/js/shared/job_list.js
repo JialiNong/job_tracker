@@ -1,43 +1,38 @@
-/* Shared by Tracker and Unmatched (classic script, not a module).
+/* Shared by Tracker and Unmatched (ES module).
    Card chrome lives in static/css/shared/job_list.css: score ring, row
    (title / company / location / via), channel chip, breakdown, toast,
-   details sheet. Page scripts load after this file. */
+   details sheet. Escaping / link helpers are in ./html.js. */
+import { escHtml } from './html.js';
+import { filterPopOpen, syncOverlayLock } from './shell.js';
 
-const TOUCH_UI = !!window.matchMedia?.('(hover: none)').matches;
-const POINT_VERB = TOUCH_UI ? 'tap' : 'hover';
+export const TOUCH_UI = !!window.matchMedia?.('(hover: none)').matches;
+export const POINT_VERB = TOUCH_UI ? 'tap' : 'hover';
 if (typeof document !== 'undefined') {
   document.querySelectorAll('[data-point-verb]').forEach(el => { el.textContent = POINT_VERB; });
 }
 
-let currentLayout = (typeof localStorage !== 'undefined' && localStorage.getItem('jobLayout')) || 'compact';
+export let currentLayout = (typeof localStorage !== 'undefined' && localStorage.getItem('jobLayout')) || 'compact';
 
-const SOURCE_BADGE = {
+export const SOURCE_BADGE = {
   ats:            { label: 'ATS',           title: 'Company careers page (ATS board)' },
   arbeitsagentur: { label: 'Bundesagentur', title: 'Bundesagentur für Arbeit Jobsuche API' },
   arbeitnow:      { label: 'Arbeitnow API', title: 'Arbeitnow job board API' },
   adzuna:         { label: 'Adzuna API',    title: 'Adzuna job search API' },
 };
-const BOARD_LABEL = { linkedin: 'LinkedIn', indeed: 'Indeed' };
-const RECOMMENDED_BY_LABEL = {
+export const BOARD_LABEL = { linkedin: 'LinkedIn', indeed: 'Indeed' };
+export const RECOMMENDED_BY_LABEL = {
   claude: 'Claude',
   cursor: 'Cursor',
   gemini: 'Gemini',
   gpt: 'GPT',
 };
-const ORIGIN_PILL = {
+export const ORIGIN_PILL = {
   pipeline: { label: 'Scraper', title: 'Found by the LinkedIn / Indeed scraper' },
   manual:   { label: 'Log job', title: 'Logged by hand via Log Job' },
 };
 
-function escHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
 
-function showToast(msg, type = 'ok', ms = 2500) {
+export function showToast(msg, type = 'ok', ms = 2500) {
   const t = document.getElementById('toast');
   if (!t) return;
   t.textContent = msg;
@@ -45,14 +40,14 @@ function showToast(msg, type = 'ok', ms = 2500) {
   setTimeout(() => { t.className = 'toast'; }, ms);
 }
 
-function formatDate(date) {
+export function formatDate(date) {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, '0');
   const d = String(date.getDate()).padStart(2, '0');
   return `${y}-${m}-${d}`;
 }
 
-function formatGroupDate(dateStr) {
+export function formatGroupDate(dateStr) {
   if (!dateStr) return 'Unknown Date';
   const today = formatDate(new Date());
   const yd = new Date(); yd.setDate(yd.getDate() - 1);
@@ -62,7 +57,7 @@ function formatGroupDate(dateStr) {
   return dateStr;
 }
 
-function groupJobsByDate(jobs) {
+export function groupJobsByDate(jobs) {
   const groups = new Map();
   jobs.forEach(job => {
     const dateStr = (job.matched_at || '').split(' ')[0] || 'Unknown Date';
@@ -72,7 +67,7 @@ function groupJobsByDate(jobs) {
   return [...groups.entries()];
 }
 
-function currentDateRange() {
+export function currentDateRange() {
   const presetEl = document.getElementById('timePreset');
   if (!presetEl) return { from: '', to: '' };
   const preset = presetEl.value;
@@ -91,7 +86,7 @@ function currentDateRange() {
   return { from: formatDate(from), to: formatDate(today) };
 }
 
-function consumeOpenJobId(path = '/') {
+export function consumeOpenJobId(path = '/') {
   const params = new URLSearchParams(location.search);
   const id = (params.get('open') || '').trim();
   if (!id) return '';
@@ -103,14 +98,14 @@ function consumeOpenJobId(path = '/') {
 
 /* ── Score ring ──────────────────────────────────────────────────── */
 
-function scoreCls(score) {
+export function scoreCls(score) {
   if (score == null || score === '') return 'score-pending';
   if (score >= 8)  return 'score-hi';
   if (score >= 6)  return 'score-mid';
   return 'score-lo';
 }
 
-function hasAiScore(job) {
+export function hasAiScore(job) {
   return job && job.match_score != null && job.match_score !== '';
 }
 
@@ -127,7 +122,7 @@ function scoreRingPct(score) {
 }
 
 /** job object (Tracker) or a raw 0–10 number (Unmatched). */
-function scoreRingHtml(jobOrScore, { size = '' } = {}) {
+export function scoreRingHtml(jobOrScore, { size = '' } = {}) {
   const fromJob = jobOrScore != null && typeof jobOrScore === 'object';
   const has = fromJob ? hasAiScore(jobOrScore) : Number.isFinite(Number(jobOrScore));
   const raw = has ? Number(fromJob ? jobOrScore.match_score : jobOrScore) : null;
@@ -152,7 +147,7 @@ function scoreRingHtml(jobOrScore, { size = '' } = {}) {
     </div>`;
 }
 
-function renderBreakdown(title, section, { autoOpenGaps = false } = {}) {
+export function renderBreakdown(title, section, { autoOpenGaps = false } = {}) {
   if (!section) return '';
   const matched = Array.isArray(section.matched) ? section.matched : [];
   const unmatched = Array.isArray(section.unmatched) ? section.unmatched : [];
@@ -176,7 +171,7 @@ function jobHost(job) {
   try { return new URL(job.link || '').hostname.replace(/^www\./, ''); } catch (e) { return ''; }
 }
 
-function jobChannel(job) {
+export function jobChannel(job) {
   const rec = RECOMMENDED_BY_LABEL[String(job.recommended_by || '').toLowerCase()];
   if (rec) return { cls: 'ch-ai', label: rec, title: `Recommended by ${rec}` };
   const src = String(job.source || '').toLowerCase();
@@ -191,7 +186,7 @@ function jobChannel(job) {
   return src ? { cls: 'ch-other', label: src, title: '' } : null;
 }
 
-function channelChipHtml(job) {
+export function channelChipHtml(job) {
   const ch = jobChannel(job);
   if (!ch) return '';
   return `<span class="channel-chip ${escHtml(ch.cls)}" title="${escHtml(ch.title)}">${escHtml(ch.label)}</span>`;
@@ -205,7 +200,7 @@ function sourceViaLabel(job) {
   return '';
 }
 
-function jobViaText(job) {
+export function jobViaText(job) {
   const named = sourceViaLabel(job);
   if (named) return named;
   const ch = jobChannel(job);
@@ -213,14 +208,14 @@ function jobViaText(job) {
   return '';
 }
 
-function rowViaHtml(job, extraClass) {
+export function rowViaHtml(job, extraClass) {
   const text = jobViaText(job);
   if (!text) return '';
   const cls = extraClass ? `row-via ${extraClass}` : 'row-via';
   return `<span class="${cls}">via ${escHtml(text)}</span>`;
 }
 
-function formatApplicantsLabel(raw) {
+export function formatApplicantsLabel(raw) {
   const text = String(raw || '').replace(/\s+/g, ' ').trim();
   if (!text) return '';
   const first = text.match(
@@ -236,7 +231,7 @@ function formatApplicantsLabel(raw) {
   return '';
 }
 
-function rowApplicantsHtml(job) {
+export function rowApplicantsHtml(job) {
   const pos = job.applicant_position;
   const scraped = formatApplicantsLabel(job.applicants);
   const label = pos ? `#${pos} at apply` : scraped;
@@ -246,14 +241,14 @@ function rowApplicantsHtml(job) {
   return `<span class="row-applicants" data-row-applicants title="${escHtml(title)}"${label ? '' : ' hidden'}>${escHtml(label)}</span>`;
 }
 
-function applicantsMetaPillHtml(job) {
+export function applicantsMetaPillHtml(job) {
   const label = formatApplicantsLabel(job.applicants);
   if (!label) return '';
   return `<span class="meta-pill" title="Applicant count when the job was scraped">${escHtml(label)}</span>`;
 }
 
 // Employer's publish date (API sources: ATS boards, Bundesagentur …)
-function postedPillHtml(job) {
+export function postedPillHtml(job) {
   const raw = String(job.posted_at || '').slice(0, 10);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) return '';
   const [y, m, d] = raw.split('-').map(Number);
@@ -304,17 +299,17 @@ function ensurePanelScrim() {
   return el;
 }
 
-function syncPanelScrim() {
+export function syncPanelScrim() {
   const scrim = ensurePanelScrim();
   const sel = jobListOpt('scrim', 'all') === 'cards'
     ? '#jobGrid.layout-cards .card.expanded'
     : '#jobGrid .card.expanded';
   const open = document.querySelector(sel);
   scrim.hidden = !(open && stackedDetails());
-  if (typeof syncOverlayLock === 'function') syncOverlayLock();
+  syncOverlayLock();
 }
 
-function setCardOpen(card, open, { focus = false } = {}) {
+export function setCardOpen(card, open, { focus = false } = {}) {
   card.classList.toggle('expanded', open);
   const row = card.querySelector('.card-row');
   if (row) row.setAttribute('aria-expanded', String(open));
@@ -325,18 +320,18 @@ function setCardOpen(card, open, { focus = false } = {}) {
   target?.focus({ preventScroll: true });
 }
 
-function collapseOtherCards(keep) {
+export function collapseOtherCards(keep) {
   document.querySelectorAll('#jobGrid .card.expanded').forEach(c => {
     if (c !== keep) setCardOpen(c, false);
   });
 }
 
-function closeCardPanel(btn) {
+export function closeCardPanel(btn) {
   const card = btn.closest('.card');
   if (card) setCardOpen(card, false, { focus: true });
 }
 
-function toggleCardExpand(rowEl) {
+export function toggleCardExpand(rowEl) {
   const card = rowEl.closest('.card');
   if (!card) return;
   const open = !card.classList.contains('expanded');
@@ -346,7 +341,7 @@ function toggleCardExpand(rowEl) {
   setCardOpen(card, open, { focus: open && focusOnOpen });
 }
 
-function setLayout(mode) {
+export function setLayout(mode) {
   currentLayout = mode;
   localStorage.setItem('jobLayout', mode);
   const grid = jobGridEl();
@@ -364,7 +359,7 @@ if (typeof document !== 'undefined') {
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     if (document.querySelector('.tl-modal-backdrop')) return;
-    if (typeof filterPopOpen === 'function' && filterPopOpen()) return;
+    if (filterPopOpen()) return;
     const tag = (document.activeElement?.tagName || '').toLowerCase();
     if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
     const open = document.querySelectorAll('#jobGrid .card.expanded');

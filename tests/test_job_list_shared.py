@@ -1,7 +1,8 @@
 """Tracker and Unmatched share job_list.js / job_list.css card chrome.
 
-Does not touch a live MongoDB. Page source follows static_url() in the
-templates, so a missing <script> / <link> fails these assertions.
+Does not touch a live MongoDB. Page source follows static_url() and the ES
+module imports from each page entry, so a missing <link> or import fails
+these assertions.
 """
 from __future__ import annotations
 
@@ -29,11 +30,14 @@ SHARED_FUNCS = (
 JS = ROOT / "static" / "js"
 CSS = ROOT / "static" / "css"
 SHARED_JS = JS / "shared" / "job_list.js"
+HTML_JS = JS / "shared" / "html.js"
 SHARED_CSS = CSS / "shared" / "job_list.css"
 
 PAGE_SCRIPTS = {
     "index": (
         "shared/job_list.js",
+        "tracker/main.js",
+        "tracker/state.js",
         "tracker/overview.js",
         "tracker/flow.js",
         "tracker/cards.js",
@@ -47,7 +51,7 @@ PAGE_SCRIPTS = {
 
 
 def _function_defs(text: str) -> set[str]:
-    return set(re.findall(r"^(?:async )?function (\w+)", text, re.M))
+    return set(re.findall(r"^(?:export )?(?:async )?function (\w+)", text, re.M))
 
 
 class SharedCardChromeTests(unittest.TestCase):
@@ -62,14 +66,17 @@ class SharedCardChromeTests(unittest.TestCase):
         self.assertTrue((JS / "unmatched.js").is_file())
 
     def test_both_pages_load_job_list_assets(self):
-        index_html = (ROOT / "templates" / "index.html").read_text()
-        unmatched_html = (ROOT / "templates" / "unmatched.html").read_text()
-        for html in (index_html, unmatched_html):
+        shared_js = SHARED_JS.read_text()
+        for page in ("index", "unmatched"):
+            html = (ROOT / "templates" / f"{page}.html").read_text()
             self.assertIn("static_url('css/shared/job_list.css')", html)
-            self.assertIn("static_url('js/shared/job_list.js')", html)
+            # One module entry per page; job_list.js arrives through imports
+            self.assertEqual(html.count("module_entry("), 1, page)
+            self.assertNotIn('<script src=', html, page)
+            self.assertIn(shared_js, page_source(page), f"{page} never imports job_list.js")
 
     def test_page_source_includes_shared_helpers_once(self):
-        shared = SHARED_JS.read_text()
+        shared = SHARED_JS.read_text() + HTML_JS.read_text()
         for name in SHARED_FUNCS:
             self.assertIn(name, shared)
             index = page_source("index")
@@ -78,7 +85,7 @@ class SharedCardChromeTests(unittest.TestCase):
             self.assertEqual(unmatched.count(name), 1, f"unmatched duplicates {name}")
 
     def test_page_scripts_do_not_redefine_shared_helpers(self):
-        shared_names = _function_defs(SHARED_JS.read_text())
+        shared_names = _function_defs(SHARED_JS.read_text() + HTML_JS.read_text())
         for page, files in PAGE_SCRIPTS.items():
             for fname in files:
                 if fname.endswith("job_list.js"):
@@ -136,7 +143,7 @@ class SharedCardChromeTests(unittest.TestCase):
         self.assertIn('id="flowSection"', html)
         self.assertIn('id="weeklySection"', html)
         self.assertIn("function loadFlowStats", html)
-        self.assertIn("static_url('js/tracker/flow.js')", (ROOT / "templates" / "index.html").read_text())
+        self.assertIn("from './flow.js'", (JS / "tracker" / "index.js").read_text())
         self.assertIn("static_url('css/tracker/flow.css')", (ROOT / "templates" / "index.html").read_text())
 
     def test_overview_weekly_uses_theme_heat_ramp(self):

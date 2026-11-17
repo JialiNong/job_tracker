@@ -196,17 +196,21 @@ Split by **responsibility**, not by arbitrary line cuts. **Put related files in 
 | A page is a single script | Leave it at `static/js/<page>.js` — do not make a one-file folder |
 | Pure rules (dates, location labels, status) sit next to Mongo / Flask | Move them to a dependency-free module so unit tests need no mongod |
 
-Do not introduce a frontend framework. Tracker JS stays **classic scripts** (globals) because templates use `onclick="…"`. CSS “components” are shared classes in `static/css/shared/job_list.css`, not a component library.
+Do not introduce a frontend framework or a build step. Page JS is **native ES modules** (`import` / `export`, no bundler). CSS “components” are shared classes in `static/css/shared/job_list.css`, not a component library.
 
 After a split: grep the old names, point tests at the **implementing** module when you `patch` (a facade re-export does not intercept `from core.mongo.tracker import get_collection`), and keep `from core.db_mongo import …` working.
 
 ### Frontend
 
 - **Folders, not a flat pile.** Shared chrome goes in `static/js/shared/` and `static/css/shared/`. A page with more than one script/stylesheet gets `static/js/<page>/` and `static/css/<page>/`. A page that is still one file stays `static/js/<page>.js` (Timeouts, Log Job, Unmatched today).
-- Shared job-list chrome (score ring, row, channel chip, breakdown, toast, expand / sheet): `static/js/shared/job_list.js` + `static/css/shared/job_list.css`. Tracker and Unmatched both load that pair first. Shell (`shared/shell.js`) is also shared.
-- Tracker-only: `static/js/tracker/` (`overview.js`, `flow.js`, `cards.js`, `batch.js`, `timeline.js`, `card-actions.js`, `index.js`) and `static/css/tracker/` (`overview.css`, `flow.css`, `cards.css`, `index.css`).
+- **One module entry per page**: templates call `{{ module_entry('js/<entry>.js') }}` (from `_shell.html`, imported `with context`). It writes an import map so every module, including ones reached by `import`, gets its `?v=<mtime>` URL. Never add a plain `<script src>`.
+- **Inline handlers**: templates and card HTML still use `onclick="…"`. Those look names up on `window`, so each entry exposes exactly the functions they call with one `Object.assign(window, {…})` (Tracker: `tracker/main.js`). A function called from new inline HTML must be exported by its module and added to that list; everything else stays module-private.
+- **Shared state**: a scalar that more than one Tracker module reassigns lives on `state` in `tracker/state.js` (an imported binding cannot be assigned). Constants and shared Sets / maps are exported from there too.
+- **Escaping**: `shared/html.js` has `escHtml` (text and attribute values) and `safeUrl` (any job link that reaches an `href`; only http(s) or same-site paths pass). Never put `escHtml()` output inside a JS string in an inline handler: the browser decodes the entities before the JS runs. Pass data with `data-*` and read `this.dataset` instead.
+- Shared job-list chrome (score ring, row, channel chip, breakdown, toast, expand / sheet): `static/js/shared/job_list.js` + `static/css/shared/job_list.css`. Shell (`shared/shell.js`) is also shared.
+- Tracker-only: `static/js/tracker/` (`main.js` entry, `state.js`, `overview.js`, `flow.js`, `cards.js`, `batch.js`, `timeline.js`, `card-actions.js`, `index.js`) and `static/css/tracker/` (`overview.css`, `flow.css`, `cards.css`, `index.css`).
 - Phone vs desktop and `--phone-ctrl-h`: see **Web UI** above. After template/CSS/JS edits run `./scripts/check_ui.sh`.
-- Unit tests for JS helpers: `tests/js/` (Node) plus a thin `tests/test_*.py` wrapper. `page_source()` concatenates the template and every `static_url()` asset so a missing `<script>` fails.
+- Unit tests for JS helpers: `tests/js/` (Node) plus a thin `tests/test_*.py` wrapper. `page_source()` concatenates the template, every `static_url()` asset, and the module graph reached from the page's `module_entry()`, so a missing import fails.
 - `tests/e2e` is **data** (click, then assert Mongo). Overlay / viewport contracts stay in `check_ui.sh`.
 
 ### Backend

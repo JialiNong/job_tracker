@@ -4,61 +4,36 @@
 */
 "use strict";
 
-const fs = require("fs");
 const path = require("path");
-const vm = require("vm");
+const { pathToFileURL } = require("url");
 
 const ROOT = path.resolve(__dirname, "../..");
-const src = fs.readFileSync(path.join(ROOT, "static/js/shared/job_list.js"), "utf8");
 
+// job_list.js is an ES module that touches the DOM at import time: stub the
+// browser globals it reads, then import it (and ./html.js) for real.
 const media = { matches: false, addEventListener() {} };
-const document = {
-  querySelectorAll: () => [],
-  querySelector: () => null,
-  getElementById: () => null,
-  addEventListener() {},
-  createElement: () => ({
-    style: {},
-    classList: { toggle() {}, add() {}, remove() {} },
-    setAttribute() {},
-    addEventListener() {},
-    appendChild() {},
-  }),
-  body: { appendChild() {} },
-};
-const sandbox = {
+Object.assign(globalThis, {
   window: { matchMedia: () => media },
-  document,
+  document: {
+    querySelectorAll: () => [],
+    querySelector: () => null,
+    getElementById: () => null,
+    addEventListener() {},
+    createElement: () => ({
+      style: {},
+      classList: { toggle() {}, add() {}, remove() {} },
+      setAttribute() {},
+      addEventListener() {},
+      appendChild() {},
+    }),
+    body: { appendChild() {} },
+  },
   localStorage: { getItem: () => null, setItem() {} },
   location: { search: "", hostname: "test" },
   history: { replaceState() {} },
-  URL,
-  Date,
-  Number,
-  String,
-  Boolean,
-  Array,
-  Math,
-  Set,
-  Map,
-  JSON,
-  console,
-};
-vm.createContext(sandbox);
-vm.runInContext(src, sandbox);
+});
 
-const {
-  escHtml,
-  formatDate,
-  formatGroupDate,
-  formatApplicantsLabel,
-  scoreCls,
-  scoreRingHtml,
-  groupJobsByDate,
-  jobChannel,
-  jobViaText,
-  postedPillHtml,
-} = sandbox;
+const load = rel => import(pathToFileURL(path.join(ROOT, rel)).href);
 
 function eq(actual, expected, label) {
   const a = JSON.stringify(actual);
@@ -68,7 +43,32 @@ function eq(actual, expected, label) {
   }
 }
 
+async function main() {
+const { escHtml, safeUrl } = await load("static/js/shared/html.js");
+const {
+  formatDate,
+  formatGroupDate,
+  formatApplicantsLabel,
+  scoreCls,
+  scoreRingHtml,
+  groupJobsByDate,
+  jobChannel,
+  jobViaText,
+  postedPillHtml,
+} = await load("static/js/shared/job_list.js");
+
 eq(escHtml('<a href="x">'), "&lt;a href=&quot;x&quot;&gt;", "escHtml");
+eq(escHtml("it's"), "it&#39;s", "escHtml single quote");
+
+eq(safeUrl("https://jobs.example.com/1?a=b"), "https://jobs.example.com/1?a=b", "safeUrl https");
+eq(safeUrl("http://example.com/"), "http://example.com/", "safeUrl http");
+eq(safeUrl("/?company=Acme"), "/?company=Acme", "safeUrl same-site path");
+eq(safeUrl("javascript:alert(1)"), "#", "safeUrl javascript");
+eq(safeUrl("JavaScript://%0Aalert(1)"), "#", "safeUrl javascript comment trick");
+eq(safeUrl(" data:text/html,<b>x</b>"), "#", "safeUrl data");
+eq(safeUrl("//evil.example/x"), "#", "safeUrl protocol-relative");
+eq(safeUrl(""), "#", "safeUrl empty");
+eq(safeUrl(null, ""), "", "safeUrl custom fallback");
 
 eq(formatDate(new Date(2026, 10, 11)), "2026-11-11", "formatDate");
 eq(formatGroupDate("1999-01-01"), "1999-01-01", "formatGroupDate past");
@@ -120,3 +120,9 @@ if (!pill.includes("Posted") || !pill.includes("meta-pill")) {
 }
 
 console.log("ok job_list helpers");
+}
+
+main().catch(err => {
+  console.error(err);
+  process.exit(1);
+});

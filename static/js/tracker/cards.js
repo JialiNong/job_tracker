@@ -1,5 +1,11 @@
 /* Tracker job cards: HTML for one matched job and its details panel.
-   Classic script — functions stay global. Shared chrome is in job_list.js. */
+   ES module. Shared chrome is in ../shared/job_list.js. */
+import { escHtml, safeUrl } from '../shared/html.js';
+import { applicantsMetaPillHtml, BOARD_LABEL, channelChipHtml, formatApplicantsLabel, hasAiScore, jobViaText, ORIGIN_PILL, postedPillHtml, RECOMMENDED_BY_LABEL, renderBreakdown, rowApplicantsHtml, scoreRingHtml, showToast, SOURCE_BADGE } from '../shared/job_list.js';
+import { renderReplaceLinkBlock } from './card-actions.js';
+import { companyPageUrl } from './index.js';
+import { HIGHLIGHT_PRESETS, jobHighlights, selectedDeleteOnlyIds, selectedFetchIds, state, STATUS_LABEL } from './state.js';
+import { isAppliedLike, renderProgressBlock, statusPillHtml } from './timeline.js';
 function needsAiHint(job) {
   return Boolean(job.ai_pending) || !hasAiScore(job) || !job.summary;
 }
@@ -58,7 +64,7 @@ function renderOriginalDescription(job) {
       </details>`;
 }
 
-function normalizeHighlights(list) {
+export function normalizeHighlights(list) {
   if (!Array.isArray(list)) return [];
   const seen = new Set();
   const out = [];
@@ -74,7 +80,7 @@ function normalizeHighlights(list) {
   return out;
 }
 
-function highlightBadgesHtml(highlights) {
+export function highlightBadgesHtml(highlights) {
   if (!highlights.length) return '';
   return highlights.map(tag =>
     `<span class="highlight-badge" title="${escHtml(tag)}">★ ${escHtml(tag)}</span>`
@@ -150,7 +156,7 @@ function rowSubHtml(job) {
         </div>`;
 }
 
-function renderHighlightChips(highlights) {
+export function renderHighlightChips(highlights) {
   return highlights.map(tag => `
     <span class="hl-chip">
       ★ ${escHtml(tag)}
@@ -167,7 +173,7 @@ function renderHighlightsBlock(job) {
     const active = highlights.some(h => h.toLowerCase() === tag.toLowerCase());
     return `<button type="button" class="hl-preset${active ? ' active' : ''}"
               data-preset="${escHtml(tag)}"
-              onclick="addHighlightPreset('${id}', '${escHtml(tag)}')">${escHtml(tag)}</button>`;
+              onclick="addHighlightPreset('${id}', this.dataset.preset)">${escHtml(tag)}</button>`;
   }).join('');
   return `
     <div class="highlights-wrap" data-id="${id}" id="highlights-${id}" onclick="event.stopPropagation()">
@@ -184,7 +190,7 @@ function renderHighlightsBlock(job) {
 }
 
 /* ── Company history (other Tracker jobs at the same company) ────── */
-function companyHistoryStatus(item) {
+export function companyHistoryStatus(item) {
   const progress = item.progress || '';
   if (progress === 'rejected') return { label: 'Rejected', cls: 'st-rejected' };
   if (progress === 'screening') return { label: 'Screening', cls: 'st-screening' };
@@ -247,7 +253,7 @@ function renderCompanyHistory(job) {
 }
 
 /** Company name (click → filter to that company) + location. */
-function cardCompanyHtml(company, location) {
+export function cardCompanyHtml(company, location) {
   const name = String(company || '');
   const link = name
     ? `<button type="button" class="company-link" title="Add this company to the search filter"
@@ -285,7 +291,7 @@ function renderApplicantPositionBlock(job) {
     </div>`;
 }
 
-function setApplicantPositionUI(id, value) {
+export function setApplicantPositionUI(id, value) {
   const card = document.getElementById(`card-${id}`);
   if (!card) return;
   const input = card.querySelector('.applicant-pos-input');
@@ -308,7 +314,7 @@ function setApplicantPositionUI(id, value) {
   }
 }
 
-async function saveApplicantPosition(id, btn) {
+export async function saveApplicantPosition(id, btn) {
   const card = document.getElementById(`card-${id}`);
   const input = card && card.querySelector('.applicant-pos-input');
   if (!input) return;
@@ -333,7 +339,7 @@ async function saveApplicantPosition(id, btn) {
 }
 
 /* ── Render card ─────────────────────────────────────────────────── */
-function renderCard(job) {
+export function renderCard(job) {
   const status = job.status || 'pending';
   const aiHint = needsAiHint(job);
   const doSection = renderBreakdown("What you'll do", job.what_youll_do, { autoOpenGaps: true });
@@ -366,7 +372,7 @@ function renderCard(job) {
              data-missing="${missing ? '1' : '0'}"
              data-fetchable="${fetchable ? '1' : '0'}"
              ${isSelected ? 'checked' : ''}
-             ${fetchBatchRunning ? 'disabled' : ''}
+             ${state.fetchBatchRunning ? 'disabled' : ''}
              onchange="onCardFetchSelect(this)" />
     </label>`;
 
@@ -432,7 +438,7 @@ function renderCard(job) {
         ${sourcePillHtml(job)}
         ${originPillHtml(job)}
         ${recBadge}
-        ${job.matched_at ? `<span class="meta-pill" title="Matched on">Matched ${job.matched_at}</span>` : ''}
+        ${job.matched_at ? `<span class="meta-pill" title="Matched on">Matched ${escHtml(job.matched_at)}</span>` : ''}
         ${postedPillHtml(job)}
         ${applicantsMetaPillHtml(job)}
         ${applicantPosPillHtml(job)}
@@ -449,7 +455,7 @@ function renderCard(job) {
       ${renderReplaceLinkBlock(job)}
       <div class="card-actions-row">
         <a class="btn-apply ${isAppliedLike(status, job.application_timeline) ? 'btn-applied' : ''}"
-           href="${escHtml(job.link || '#')}" target="_blank" rel="noopener">
+           href="${escHtml(safeUrl(job.link))}" target="_blank" rel="noopener">
           ${isAppliedLike(status, job.application_timeline) ? 'View posting' : 'Apply'}
         </a>
         <button type="button" class="${runAiCls}" data-id="${job._id}"
@@ -477,7 +483,7 @@ function renderCard(job) {
   return card;
 }
 
-function renderQaItemHtml(item = {}) {
+export function renderQaItemHtml(item = {}) {
   const q = escHtml(item.question || '');
   const a = escHtml(item.answer || '');
   return `

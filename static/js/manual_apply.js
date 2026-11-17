@@ -1,5 +1,7 @@
-/* Log Job page (templates/manual_apply.html) script. Classic script, not a module:
-   inline onclick="..." handlers in the page call these globals. */
+/* Log Job page (templates/manual_apply.html) entry module.
+   Inline onclick="..." handlers call the functions exposed on window at the
+   bottom of this file. */
+import { escHtml } from './shared/html.js';
 let _pollTimer = null;
 let _knownLogLen = 0;
 let _allLogLines = [];
@@ -11,14 +13,13 @@ let _lastLookupKey = '';
 
 function colorLine(line) {
   const l = line.trim();
-  if (l.startsWith('✅') || l.includes('Saved to matched_jobs') || l.startsWith('Success')) return `<span class="ok">${esc(line)}</span>`;
-  if (l.includes('Already on Tracker') || l.includes('Already in DB') || l.startsWith('⏭️')) return `<span class="info">${esc(line)}</span>`;
-  if (l.startsWith('❌') || l.startsWith('✗') || l.includes('failed') || l.includes('Failed')) return `<span class="err">${esc(line)}</span>`;
-  if (l.startsWith('===') || l.startsWith('[') && l.includes('/')) return `<span class="head">${esc(line)}</span>`;
-  if (l.startsWith('🤖') || l.startsWith('✨') || l.startsWith('→') || l.startsWith('  →')) return `<span class="info">${esc(line)}</span>`;
-  return esc(line);
+  if (l.startsWith('✅') || l.includes('Saved to matched_jobs') || l.startsWith('Success')) return `<span class="ok">${escHtml(line)}</span>`;
+  if (l.includes('Already on Tracker') || l.includes('Already in DB') || l.startsWith('⏭️')) return `<span class="info">${escHtml(line)}</span>`;
+  if (l.startsWith('❌') || l.startsWith('✗') || l.includes('failed') || l.includes('Failed')) return `<span class="err">${escHtml(line)}</span>`;
+  if (l.startsWith('===') || l.startsWith('[') && l.includes('/')) return `<span class="head">${escHtml(line)}</span>`;
+  if (l.startsWith('🤖') || l.startsWith('✨') || l.startsWith('→') || l.startsWith('  →')) return `<span class="info">${escHtml(line)}</span>`;
+  return escHtml(line);
 }
-function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function normalizePastedUrl(raw) {
   let u = String(raw || '').trim();
@@ -63,11 +64,11 @@ function stageLabel(h) {
 
 function renderExistRows(hits) {
   return `<div class="exist-list">${hits.map(h => {
-    const title = esc(h.title || h.job_id || 'Job');
-    const company = h.company ? ` · ${esc(h.company)}` : '';
-    const where = esc(stageLabel(h));
+    const title = escHtml(h.title || h.job_id || 'Job');
+    const company = h.company ? ` · ${escHtml(h.company)}` : '';
+    const where = escHtml(stageLabel(h));
     const open = h.open_path
-      ? `<a class="btn-open" href="${esc(h.open_path)}">Open →</a>`
+      ? `<a class="btn-open" href="${escHtml(h.open_path)}">Open →</a>`
       : '';
     return `<div class="exist-row"><div><div>${title}${company}</div><div class="exist-meta">${where}</div></div>${open}</div>`;
   }).join('')}</div>`;
@@ -89,7 +90,7 @@ async function lookupUrls(urls, { autoOpen = true } = {}) {
     const data = await res.json();
     if (seq !== _lookupSeq) return null;
     if (!res.ok) {
-      setBanner('error', '' + (data.error || 'Lookup failed'));
+      setBanner('error', escHtml(data.error || 'Lookup failed'));
       return null;
     }
 
@@ -112,17 +113,17 @@ async function lookupUrls(urls, { autoOpen = true } = {}) {
       const hit = trackerHits[0];
       if (hit.needs_scrape || hit.details_missing || hit.ai_pending) {
         const open = hit.open_path
-          ? ` <a class="btn-open" href="${esc(hit.open_path)}">Open card →</a>`
+          ? ` <a class="btn-open" href="${escHtml(hit.open_path)}">Open card →</a>`
           : '';
         setBanner('info',
-          `Already on Tracker without details: <strong>${esc(hit.title || 'job')}</strong>` +
-          (hit.company ? ` · ${esc(hit.company)}` : '') +
+          `Already on Tracker without details: <strong>${escHtml(hit.title || 'job')}</strong>` +
+          (hit.company ? ` · ${escHtml(hit.company)}` : '') +
           ` — use <strong>Scrape &amp; Log</strong> to fetch + AI, or Run AI on the card.${open}`);
         return { hits, misses, results, trackerHits, promotableHits };
       }
       setBanner('success',
-        `Already in Tracker: <strong>${esc(hit.title || 'job')}</strong>` +
-        (hit.company ? ` · ${esc(hit.company)}` : '') +
+        `Already in Tracker: <strong>${escHtml(hit.title || 'job')}</strong>` +
+        (hit.company ? ` · ${escHtml(hit.company)}` : '') +
         ` — opening…`);
       if (hit.open_path) {
         setTimeout(() => { window.location.href = hit.open_path; }, 350);
@@ -146,7 +147,7 @@ async function lookupUrls(urls, { autoOpen = true } = {}) {
     return { hits, misses, results, trackerHits, promotableHits };
   } catch (e) {
     if (seq !== _lookupSeq) return null;
-    setBanner('error', 'Lookup error: ' + e.message);
+    setBanner('error', 'Lookup error: ' + escHtml(e.message));
     return null;
   }
 }
@@ -167,7 +168,7 @@ function scheduleLookup(autoOpen = false) {
   }, autoOpen ? 80 : 450);
 }
 
-function onStatusChange() {
+export function onStatusChange() {
   const status = document.getElementById('jobStatus').value;
   const dateGroup = document.getElementById('appliedDateGroup');
   if (status === 'applied') {
@@ -185,7 +186,7 @@ function todayIsoDate() {
   return `${yyyy}-${mm}-${dd}`;
 }
 
-function clearForm() {
+export function clearForm() {
   clearTimeout(_lookupTimer);
   _lookupTimer = null;
   _lookupSeq += 1;
@@ -230,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
   box.addEventListener('input', () => scheduleLookup(false));
 });
 
-async function submitUrls({ linkOnly = false } = {}) {
+export async function submitUrls({ linkOnly = false } = {}) {
   const raw = document.getElementById('urlBox').value.trim();
   if (!raw) { alert('Please enter at least one URL.'); return; }
 
@@ -302,7 +303,7 @@ async function submitUrls({ linkOnly = false } = {}) {
     });
     const data = await res.json();
     if (!res.ok) {
-      setBanner('error', '' + (data.error || 'Failed to start'));
+      setBanner('error', escHtml(data.error || 'Failed to start'));
       document.getElementById('submitBtn').disabled = false;
       document.getElementById('linkOnlyBtn').disabled = false;
       return;
@@ -310,7 +311,7 @@ async function submitUrls({ linkOnly = false } = {}) {
     // Start polling
     _pollTimer = setInterval(pollStatus, 1500);
   } catch(e) {
-    setBanner('error', 'Network error: ' + e.message);
+    setBanner('error', 'Network error: ' + escHtml(e.message));
     document.getElementById('submitBtn').disabled = false;
     document.getElementById('linkOnlyBtn').disabled = false;
   }
@@ -357,7 +358,7 @@ async function pollStatus() {
       if (data.fail_count > 0) parts.push(`${data.fail_count} failed`);
       if (data.done_count === 0 && (data.fail_count > 0 || hasFatal) && skipCount === 0) {
         const fatalLine = _allLogLines.find(l => /Fatal error|Cannot open Chrome/.test(l));
-        setBanner('error', `${fatalLine || `All ${data.fail_count || 1} URL(s) failed. Check the log above.`}`);
+        setBanner('error', fatalLine ? escHtml(fatalLine) : `All ${data.fail_count || 1} URL(s) failed. Check the log above.`);
       } else if (data.done_count === 0 && skipCount > 0 && data.fail_count === 0) {
         setBanner('error', `All ${skipCount} URL(s) already on Tracker — nothing saved.`);
       } else if (data.done_count === 0 && !parts.length) {
@@ -382,3 +383,8 @@ function setBanner(type, html) {
   el.className = 'status-banner ' + type;
   el.innerHTML = html;
 }
+
+// Inline onclick="..." handlers in the page look these up on window
+Object.assign(window, {
+  clearForm, onStatusChange, submitUrls,
+});

@@ -115,14 +115,15 @@ def api_manual_apply():
     urls = data.get("urls", [])
     if not isinstance(urls, list):
         return jsonify({"error": "urls must be a list"}), 400
-    from core.job_url import expand_short_job_url
+    from core.job_url import expand_short_job_url, is_http_url
 
     urls = [
         expand_short_job_url(u) or u.strip()
         for u in urls
         if isinstance(u, str) and u.strip()
     ]
-    urls = [u for u in urls if u]
+    # Saved links become clickable hrefs: only http(s) job URLs are kept
+    urls = [u for u in urls if u and is_http_url(u)]
     if not urls:
         return jsonify({"error": "No valid URLs provided"}), 400
 
