@@ -203,7 +203,7 @@ async function startSelectedChromeBatch(mode) {
   showToast(
     isAi
       ? 'Run AI for selected jobs — stored JDs go straight to AI; missing ones are scraped in debug Chrome'
-      : 'Fetching details for selected jobs — needs debug Chrome'
+      : 'Fetching details for selected jobs — Chrome may need a click; I wait, then scrape'
   );
   try {
     if ('Notification' in window && Notification.permission === 'default') {
@@ -290,7 +290,7 @@ async function fetchJobDetails(jobId, btn) {
   const originalLabel = btn.textContent;
   btn.disabled = true;
   btn.textContent = '⏳ Fetching…';
-  showToast('Fetching job details — needs debug Chrome');
+  showToast('Fetching job details — Chrome may need a click; I wait, then scrape');
 
   try {
     const res = await fetch(`/api/jobs/${jobId}/fetch-details`, { method: 'POST' });
@@ -355,7 +355,7 @@ async function runAiForJob(jobId, btn) {
     }
     showToast(startData.uses_stored_jd
       ? 'Run AI started — using the stored JD (no Chrome)'
-      : 'Run AI started — scraping the JD, needs debug Chrome');
+      : 'Run AI started — scraping the JD; click in Chrome if a login/captcha appears');
 
     const poll = async () => {
       try {

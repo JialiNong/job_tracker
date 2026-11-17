@@ -120,6 +120,16 @@ If Indeed’s tab/browser closes mid-run (`TargetClosedError`), the scraper reco
 
 Indeed pacing is slower and more human-like than LinkedIn: random think-time before each card click, hold-delay on click, longer rests between cards (~5–11s), pages (~35–80s), and keywords (~30–70s).
 
+### 2.2.2 Fetch details / Log Job page wait
+
+Tracker **Fetch details**, **Run AI** (when the card has no stored JD), and Log Job scrape open the posting in debug Chrome (`src/scrapers/job_page.py`). After `goto`:
+
+1. Wait 2–3 seconds so LinkedIn / Indeed / Glassdoor can paint
+2. If the job text is still not readable (login, cookie, captcha, “Show more”), Telegram asks you to click in the debug window
+3. When the posting becomes visible, Telegram confirms the click worked, then the scraper extracts (up to 2 minutes)
+
+A `goto` timeout no longer aborts the extract — the listing is often already on screen. Glassdoor stays `source=manual` but uses Glassdoor selectors first; trafilatura is the fallback. Indeed Fetch details no longer bails on a challenge page: it waits for you to finish the check, same as the wait above.
+
 ### 2.3 Standalone CLI (debug / partial runs)
 
 | Command | Purpose |
@@ -339,9 +349,10 @@ job_scraper/
 │   │   ├── agent_push.py        # POST /api/agent/jobs: save stubs, report Unmatched skips
 │   │   ├── scraper_utils.py     # title gates, Lingua, CDP helpers
 │   │   ├── challenge_wait.py    # Indeed captcha detect + auto-continue / Telegram resume
+│   │   ├── content_wait.py      # Fetch details: settle + wait for a click, Telegram when it worked
 │   │   ├── pipeline_lock.py     # Single-flight pidfile for scripts/run_jobs.sh
 │   │   └── dedup.py             # Cross-source duplicate check (company + title) for API sources
-│   ├── scrapers/                # Indeed / LinkedIn / Manual
+│   ├── scrapers/                # Indeed / LinkedIn / Manual (`job_page.py` = one-URL extract)
 │   ├── sources/                 # API sources: Arbeitnow / Bundesagentur / Adzuna / company ATS (run_sources.py)
 │   ├── matching/
 │   │   ├── ai_matcher.py        # match orchestration (`evaluate_job`)

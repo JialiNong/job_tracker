@@ -11,7 +11,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from scrapers.manual_apply_scraper import (  # noqa: E402
+from scrapers.job_page import (  # noqa: E402
     linkedin_view_url,
     scrape_linkedin_job,
 )
@@ -90,9 +90,11 @@ class ScrapeLinkedInJobTests(unittest.TestCase):
 
     def test_navigates_to_view_url_not_search_results(self):
         page = self._page()
-        with patch("scrapers.manual_apply_scraper._su") as su, patch(
+        with patch("scrapers.job_page._su") as su, patch(
             "scrapers.linkedin_scraper.extract_linkedin_description", return_value=JD
-        ), patch("scrapers.manual_apply_scraper.extract_linkedin_job_id", return_value=LI_ID):
+        ), patch("scrapers.job_page.extract_linkedin_job_id", return_value=LI_ID), patch(
+            "scrapers.job_page.wait_for_job_content", return_value="ready"
+        ):
             su.return_value.pause = lambda *a, **k: None
             su.return_value.safe_text = lambda loc, timeout=5000: loc._text
             job = scrape_linkedin_job(page, LI_URL)
@@ -112,9 +114,11 @@ class ScrapeLinkedInJobTests(unittest.TestCase):
             f"https://www.linkedin.com/jobs/search-results/"
             f"?currentJobId={LI_ID}&keywords=frontend&f_TPR=r86400"
         )
-        with patch("scrapers.manual_apply_scraper._su") as su, patch(
+        with patch("scrapers.job_page._su") as su, patch(
             "scrapers.linkedin_scraper.extract_linkedin_description", return_value=JD
-        ), patch("scrapers.manual_apply_scraper.extract_linkedin_job_id", return_value=LI_ID):
+        ), patch("scrapers.job_page.extract_linkedin_job_id", return_value=LI_ID), patch(
+            "scrapers.job_page.wait_for_job_content", return_value="ready"
+        ):
             su.return_value.pause = lambda *a, **k: None
             su.return_value.safe_text = lambda loc, timeout=5000: loc._text
             scrape_linkedin_job(page, search)
@@ -134,13 +138,15 @@ class ScrapeLinkedInJobTests(unittest.TestCase):
             raise TimeoutError("wait")
 
         page.wait_for_selector = boom
-        with patch("scrapers.manual_apply_scraper._su") as su, patch(
+        with patch("scrapers.job_page._su") as su, patch(
             "scrapers.linkedin_scraper.extract_linkedin_description",
             return_value="",
         ), patch(
-            "scrapers.manual_apply_scraper._extract_main_text_from_html",
+            "scrapers.job_page._extract_main_text_from_html",
             return_value=JD,
-        ), patch("scrapers.manual_apply_scraper.extract_linkedin_job_id", return_value=LI_ID):
+        ), patch("scrapers.job_page.extract_linkedin_job_id", return_value=LI_ID), patch(
+            "scrapers.job_page.wait_for_job_content", return_value="timeout"
+        ):
             su.return_value.pause = lambda *a, **k: None
             su.return_value.safe_text = lambda loc, timeout=5000: loc._text
             job = scrape_linkedin_job(page, LI_URL)
@@ -151,16 +157,18 @@ class ScrapeLinkedInJobTests(unittest.TestCase):
 
     def test_empty_page_returns_warning_not_none(self):
         page = FakePage({})
-        with patch("scrapers.manual_apply_scraper._su") as su, patch(
+        with patch("scrapers.job_page._su") as su, patch(
             "scrapers.linkedin_scraper.extract_linkedin_description",
             return_value="",
         ), patch(
-            "scrapers.manual_apply_scraper._extract_main_text_from_html",
+            "scrapers.job_page._extract_main_text_from_html",
             return_value="",
         ), patch(
-            "scrapers.manual_apply_scraper._fallback_page_text",
+            "scrapers.job_page._fallback_page_text",
             return_value="",
-        ), patch("scrapers.manual_apply_scraper.extract_linkedin_job_id", return_value=LI_ID):
+        ), patch("scrapers.job_page.extract_linkedin_job_id", return_value=LI_ID), patch(
+            "scrapers.job_page.wait_for_job_content", return_value="timeout"
+        ):
             su.return_value.pause = lambda *a, **k: None
             su.return_value.safe_text = lambda loc, timeout=5000: ""
             job = scrape_linkedin_job(page, LI_URL)
