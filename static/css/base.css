@@ -143,12 +143,14 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 600; letter-spacing: -0
   background: var(--bg);
 }
 .brand {
+  display: inline-flex; align-items: center; gap: .35em;
   font: 600 1.5rem/1.1 var(--f-display);
   letter-spacing: -0.03em;
   color: var(--text);
   text-decoration: none;
   padding: 4px 10px 0;
 }
+.brand-mark { width: 1.1em; height: 1.1em; flex: none; }
 .nav { display: flex; flex-direction: column; gap: 2px; }
 .nav a, .side-logout {
   display: flex; align-items: center; gap: 10px;
