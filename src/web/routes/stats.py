@@ -18,7 +18,7 @@ from core.db_mongo import (
     resolve_applied_at,
 )
 from web.flow import build_sankey, build_weekly_by_platform
-from web.stacks import build_stack_stats
+from web.stacks_cache import get_stack_stats, refresh_stack_stats
 from web.status import (
     GOT_INTERVIEW_FILTER,
     JOURNEY_INTERVIEW_STEPS,
@@ -56,18 +56,6 @@ FLOW_PROJECTION = {
     "updated_at": 1,
     "matched_at": 1,
 }
-
-# Stacks tab: the JD text is the input, plus what decides rejected / apply date.
-STACKS_PROJECTION = {
-    "title": 1,
-    "description": 1,
-    "status": 1,
-    "application_timeline": 1,
-    "applied_at": 1,
-    "updated_at": 1,
-    "matched_at": 1,
-}
-
 
 @bp.route("/api/stats")
 @login_required
@@ -174,10 +162,13 @@ def api_stats_stacks():
     Stacks tab: frontend / backend framework buckets and per-framework rows
     for every application, each with how many were rejected. Also returned
     for settled applications only (see web.stacks.SETTLED_AFTER_DAYS).
+
+    Served from the nightly cache (web.stacks_cache); ?refresh=1 recomputes
+    from every JD first (slow, the tab's Recompute button).
     """
-    collection = get_collection("matched_jobs")
-    jobs = list(collection.find(APPLICATION_QUERY, STACKS_PROJECTION))
-    return jsonify(build_stack_stats(jobs))
+    if request.args.get("refresh") == "1":
+        return jsonify(refresh_stack_stats())
+    return jsonify(get_stack_stats())
 
 
 @bp.route("/api/journey")

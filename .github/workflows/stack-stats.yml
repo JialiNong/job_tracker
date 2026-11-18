@@ -1,0 +1,39 @@
+# Nightly rebuild of the Tracker Stacks tab numbers (src/web/stacks_cache.py).
+#
+# Building them reads every applied job's full JD, which made the tab wait
+# several seconds on Render. The web app serves the stored copy instead; the
+# tab's Recompute button rebuilds it on demand. Needs the MONGO_URI secret
+# (already set for api-sources.yml).
+name: Stack stats cache
+
+on:
+  schedule:
+    # 22:47 UTC = 23:47 Berlin in winter, 00:47 in summer: after the day's applies.
+    - cron: "47 22 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: stack-stats
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TZ: Europe/Berlin  # "applied 30+ days ago" uses local wall clock
+      MONGO_URI: ${{ secrets.MONGO_URI }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install "pymongo>=4.6.0" "python-dotenv>=1.0.0"
+          pip install --no-deps -e .
+
+      - name: Rebuild Stacks cache
+        run: python -m web.stacks_cache
