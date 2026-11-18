@@ -1,4 +1,4 @@
-{% from "_shell.html" import fonts %}
+{% from "_shell.html" import fonts, icons with context %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,11 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - Job Tracker</title>
   {{ fonts() }}
+  {{ icons() }}
   <link rel="stylesheet" href="{{ static_url('css/base.css') }}" />
   <link rel="stylesheet" href="{{ static_url('css/login.css') }}" />
 </head>
 <body>
   <main class="login-container">
+    <img class="login-mark" src="{{ static_url('img/logo.svg') }}" alt="" width="56" height="56" />
     <h1 class="login-logo">Job Tracker</h1>
     <p class="subtitle">Sign in to see your applications.</p>
 

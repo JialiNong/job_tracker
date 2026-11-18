@@ -1,4 +1,4 @@
-{% from "_shell.html" import fonts, sidebar, module_entry with context %}
+{% from "_shell.html" import fonts, sidebar, module_entry, icons with context %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Log Job · Job Tracker</title>
   {{ fonts() }}
+  {{ icons() }}
   <link rel="stylesheet" href="{{ static_url('css/base.css') }}" />
   <link rel="stylesheet" href="{{ static_url('css/manual_apply.css') }}" />
 </head>

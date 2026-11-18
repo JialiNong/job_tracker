@@ -17,6 +17,8 @@ body {
   box-shadow: 0 12px 36px var(--shadow);
 }
 
+.login-mark { display: block; margin: 0 0 14px; }
+
 .login-logo {
   font: 600 1.85rem/1.1 var(--f-display);
   letter-spacing: -0.03em;
