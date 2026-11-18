@@ -8,6 +8,7 @@ from web.stacks import (
     NODE,
     NON_NODE,
     _FRONTEND_RE,
+    _TOOL_RE,
     _NODE_RE,
     _NON_NODE_RE,
     backend_bucket,
@@ -46,6 +47,23 @@ class MentionTests(unittest.TestCase):
         text = "Node.js with NestJS, Spring Boot, ASP.NET Core and Ruby on Rails"
         self.assertEqual(mentions(text, _NODE_RE), {"node", "nest"})
         self.assertEqual(mentions(text, _NON_NODE_RE), {"spring", "dotnet", "rails"})
+
+
+class ToolMentionTests(unittest.TestCase):
+    def test_database_spellings(self):
+        text = "Postgres or MySQL, MongoDB, Redis cache, MS SQL Server and Oracle Database"
+        self.assertEqual(mentions(text, _TOOL_RE["database"]),
+                         {"postgres", "mysql", "mongodb", "redis", "mssql", "oracle"})
+
+    def test_company_and_english_words_do_not_match(self):
+        text = "Oracle customers, render the UI, by railway, elastic teams, a sentry post"
+        for group in ("database", "deploy", "monitoring"):
+            self.assertEqual(mentions(text, _TOOL_RE[group]), set(), group)
+
+    def test_deploy_and_monitoring(self):
+        text = "Deploy to AWS (EKS) and Vercel via Docker; Datadog, Sentry and OpenTelemetry"
+        self.assertEqual(mentions(text, _TOOL_RE["deploy"]), {"aws", "kubernetes", "vercel", "docker"})
+        self.assertEqual(mentions(text, _TOOL_RE["monitoring"]), {"datadog", "sentry", "opentelemetry"})
 
 
 class BucketTests(unittest.TestCase):
@@ -101,6 +119,22 @@ class BuildTests(unittest.TestCase):
         jobs = [_job("NestJS"), _job("NestJS and Express"), _job("Express, NestJS")]
         rows = build_stack_stats(jobs, now=NOW)["all"]["node"]
         self.assertEqual([r["key"] for r in rows], ["nest", "express"])
+
+    def test_tool_rows_end_with_none(self):
+        jobs = [
+            _job("PostgreSQL on AWS", status="rejected"),
+            _job("PostgreSQL and Redis"),
+            _job("No tools here"),
+        ]
+        out = build_stack_stats(jobs, now=NOW)["all"]
+        db = [(r["key"], r["applied"], r["rejected"]) for r in out["database"]]
+        self.assertEqual(db, [("postgres", 2, 1), ("redis", 1, 0), ("none", 1, 0)])
+        self.assertEqual(out["database"][0]["label"], "PostgreSQL")
+        deploy = [(r["key"], r["applied"]) for r in out["deploy"]]
+        self.assertEqual(deploy, [("aws", 1), ("none", 2)])
+        # "none" row is kept even when every JD names a tool
+        self.assertEqual(build_stack_stats([_job("Datadog")], now=NOW)["all"]["monitoring"][-1],
+                         {"key": "none", "applied": 0, "rejected": 0})
 
 
 if __name__ == "__main__":
