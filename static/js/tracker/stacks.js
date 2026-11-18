@@ -1,8 +1,9 @@
 /* Tracker Stacks tab: frameworks named in each applied job's JD, grouped into
    frontend / backend buckets, plus databases, deployment platforms and
    monitoring tools, with how many of each group were rejected.
-   Data: /api/stats/stacks (web/stacks.py). Loaded the first time the tab
-   opens and again after Refresh while it is open.
+   Data: /api/stats/stacks, served from a nightly cache (web/stacks_cache.py).
+   Loaded the first time the tab opens and again after Refresh while it is
+   open; Recompute (?refresh=1) rebuilds the cache from every JD.
 
    Copy is bilingual on purpose (user request): English is the default, and
    the EN / 中文 toggle is remembered per browser. Framework names stay as
@@ -16,6 +17,10 @@ const COPY = {
   en: {
     loading: 'Loading…',
     failed: 'Could not load the stack breakdown. Press Refresh to try again.',
+    updated: (when) => `Updated ${when}`,
+    recompute: 'Recompute',
+    recomputing: 'Recomputing…',
+    recomputeTip: 'Numbers refresh every night. Recompute now to include today’s changes (reads every JD, takes a while).',
     totals: (a, r, p) => `<b>${a}</b> applications <span class="sep"></span> <b>${r}</b> rejected <span class="sep"></span> <b>${p}%</b> rejected overall`,
     rangeAll: 'All',
     rangeSettled: (d) => `Applied ${d}+ days ago`,
@@ -68,6 +73,10 @@ const COPY = {
   zh: {
     loading: '加载中…',
     failed: '技术栈分析加载失败，点 Refresh 重试。',
+    updated: (when) => `更新于 ${when}`,
+    recompute: '重新计算',
+    recomputing: '计算中…',
+    recomputeTip: '数据每晚自动更新。点这里立即重新计算，包含今天的改动（要读全部 JD，会慢一些）。',
     totals: (a, r, p) => `<b>${a}</b> 个投递 <span class="sep"></span> <b>${r}</b> 个被拒 <span class="sep"></span> 整体被拒率 <b>${p}%</b>`,
     rangeAll: '全部',
     rangeSettled: (d) => `投递满 ${d} 天`,
@@ -121,11 +130,21 @@ const COPY = {
 
 let data = null;
 let loading = null;
+let recomputing = false;
 let range = 'all';
 let lang = readLang();
 
 function readLang() {
   try { return localStorage.getItem(LANG_KEY) === 'zh' ? 'zh' : 'en'; } catch { return 'en'; }
+}
+
+function formatUpdated(iso) {
+  const d = iso ? new Date(iso) : null;
+  if (!d || Number.isNaN(d.getTime())) return '';
+  const today = new Date().toDateString() === d.toDateString();
+  return d.toLocaleString(lang === 'zh' ? 'zh-CN' : 'en-GB', today
+    ? { hour: '2-digit', minute: '2-digit' }
+    : { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 }
 
 const pct = (part, whole) => (whole ? Math.round((part / whole) * 100) : 0);
@@ -187,6 +206,13 @@ function render() {
     + `<span><i class="k-base"></i>${escHtml(t.keyBase)}</span>`;
   document.getElementById('stacksFoot').textContent = t.foot;
 
+  const when = formatUpdated(data?.computed_at);
+  document.getElementById('stacksUpdated').textContent = when ? t.updated(when) : '';
+  const recomputeBtn = document.getElementById('stacksRecompute');
+  recomputeBtn.textContent = recomputing ? t.recomputing : t.recompute;
+  recomputeBtn.title = t.recomputeTip;
+  recomputeBtn.disabled = recomputing || !!loading;
+
   const totals = document.getElementById('stacksTotals');
   const panels = root.querySelectorAll('.stacks-panel');
   if (!data) {
@@ -216,6 +242,23 @@ function bindControls() {
     try { localStorage.setItem(LANG_KEY, lang); } catch { /* private mode: keep it for this visit */ }
     render();
   });
+  root.querySelector('#stacksRecompute')?.addEventListener('click', recompute);
+}
+
+function fetchStacks(url) {
+  return fetch(url, { cache: 'no-store' })
+    .then(res => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); });
+}
+
+function recompute() {
+  if (recomputing || loading) return;
+  recomputing = true;
+  render();
+  // Keep the current numbers on screen if the rebuild fails
+  fetchStacks('/api/stats/stacks?refresh=1')
+    .then(json => { data = json; })
+    .catch(() => {})
+    .finally(() => { recomputing = false; render(); });
 }
 
 export function resetStackStats() {
@@ -226,8 +269,7 @@ export function loadStackStats() {
   bindControls();
   if (data) { render(); return Promise.resolve(); }
   if (loading) return loading;
-  loading = fetch('/api/stats/stacks', { cache: 'no-store' })
-    .then(res => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); })
+  loading = fetchStacks('/api/stats/stacks')
     .then(json => { data = json; })
     .catch(() => { data = null; })
     .finally(() => { loading = null; render(); });
