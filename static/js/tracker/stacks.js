@@ -1,5 +1,6 @@
 /* Tracker Stacks tab: frameworks named in each applied job's JD, grouped into
-   frontend / backend buckets, with how many of each group were rejected.
+   frontend / backend buckets, plus databases, deployment platforms and
+   monitoring tools, with how many of each group were rejected.
    Data: /api/stats/stacks (web/stacks.py). Loaded the first time the tab
    opens and again after Refresh while it is open.
 
@@ -49,6 +50,18 @@ const COPY = {
       },
       node: { title: 'Node.js frameworks', sub: 'a JD can name several, so rows add up to more than the total' },
       non_node: { title: 'Other backend frameworks', sub: 'small samples, compare them as a group' },
+      database: {
+        title: 'Databases', sub: 'a JD can name several',
+        rows: { none: ['No database named', ''] },
+      },
+      deploy: {
+        title: 'Cloud & deployment', sub: 'cloud providers, hosting platforms, containers',
+        rows: { none: ['No platform named', ''] },
+      },
+      monitoring: {
+        title: 'Monitoring & observability', sub: 'most JDs name none, so samples are small',
+        rows: { none: ['No monitoring tool named', ''] },
+      },
     },
     foot: 'Next.js and Nuxt count as Node.js, so frontend-only Next.js roles also land in “Node.js stack only”. This shows which stacks were rejected more often, not why: many rejections are about location, language or seniority.',
   },
@@ -89,6 +102,18 @@ const COPY = {
       },
       node: { title: 'Node 系框架', sub: '一个 JD 可能写多个，各行加起来会超过总数' },
       non_node: { title: '其他后端框架', sub: '样本很少，合起来看更可靠' },
+      database: {
+        title: '数据库', sub: '一个 JD 可能写多个',
+        rows: { none: ['没写数据库', ''] },
+      },
+      deploy: {
+        title: '云与部署平台', sub: '云厂商、托管平台、容器',
+        rows: { none: ['没写部署平台', ''] },
+      },
+      monitoring: {
+        title: '监控与可观测性', sub: '大多数 JD 不写，样本偏少',
+        rows: { none: ['没写监控工具', ''] },
+      },
     },
     foot: 'Next.js 和 Nuxt 算作 Node 系，所以纯前端的 Next.js 岗位也会算进“只要求 Node 系”。这里只能看出哪些技术栈被拒得多，看不出原因：很多拒信是因为地点、语言或年限。',
   },
