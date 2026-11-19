@@ -1,3 +1,4 @@
+import path from "node:path";
 import type { NextConfig } from "next";
 
 const config: NextConfig = {
@@ -6,6 +7,8 @@ const config: NextConfig = {
   // Native addon (Lingua language detection): loaded by Node at runtime, not bundled
   serverExternalPackages: ["@prospectbase/lingua"],
   poweredByHeader: false,
+  // The pnpm workspace root: server files are traced from here (packages/*)
+  outputFileTracingRoot: path.join(__dirname, "../.."),
   // React Compiler memoizes components and values automatically, so the code
   // does not need hand-written useMemo / useCallback
   experimental: { reactCompiler: true },
