@@ -10,6 +10,22 @@ import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE, type SessionData } from "@/lib/session";
 
 const PUBLIC_PATHS = ["/login", "/health", "/api/auth/login"];
+const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
+
+/**
+ * TRACKER_READ_ONLY=1 (the parallel week): the nightly Mongo -> Postgres
+ * sync replaces every table, so a change made here would be lost the next
+ * morning. Every write is refused; the old Tracker stays the place to edit.
+ */
+function readOnlyRefusal(req: NextRequest): NextResponse | null {
+  if (process.env.TRACKER_READ_ONLY !== "1") return null;
+  const { pathname } = req.nextUrl;
+  if (SAFE_METHODS.has(req.method) || !pathname.startsWith("/api/") || pathname === "/api/auth/login") return null;
+  return NextResponse.json(
+    { ok: false, error: "Read-only during the parallel week: make this change in the current Tracker" },
+    { status: 423 },
+  );
+}
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
@@ -17,6 +33,8 @@ export async function middleware(req: NextRequest) {
   if (pathname === "/login" && req.method === "POST") {
     return NextResponse.rewrite(new URL("/api/auth/login", req.url));
   }
+  const refused = readOnlyRefusal(req);
+  if (refused) return refused;
   if (PUBLIC_PATHS.includes(pathname) || pathname.startsWith("/api/agent/")) {
     return NextResponse.next();
   }

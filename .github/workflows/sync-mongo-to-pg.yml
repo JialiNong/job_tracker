@@ -1,0 +1,56 @@
+# Parallel week: copy the live Mongo data into the Neon Postgres database
+# every night, so the new Next.js app shows the same data as the Flask app.
+#
+# It REPLACES every Postgres table (packages/db/src/load.ts). After the
+# cutover Postgres is the live database: set the repository variable
+# MONGO_SYNC to "off" (or delete this file) before anyone writes to it.
+#
+# Secrets: MONGO_URI (already set for api-sources.yml), DIRECT_DATABASE_URL
+# (Neon, the direct connection string: one long transaction, no pooler).
+name: Sync Mongo to Postgres
+
+on:
+  schedule:
+    - cron: "37 1 * * *" # 02:37 Berlin in winter: after the evening's applies
+  workflow_dispatch:
+
+concurrency:
+  group: sync-mongo-to-pg
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    # Scheduled runs only while the variable says so; a manual run always works
+    if: github.event_name == 'workflow_dispatch' || vars.MONGO_SYNC == 'on'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TZ: Europe/Berlin
+      MONGO_URI: ${{ secrets.MONGO_URI }}
+      DATABASE_URL: ${{ secrets.DIRECT_DATABASE_URL }}
+      DIRECT_DATABASE_URL: ${{ secrets.DIRECT_DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check secrets
+        run: |
+          for v in MONGO_URI DIRECT_DATABASE_URL; do
+            if [ -z "${!v}" ]; then echo "::error::Secret $v is missing"; exit 1; fi
+          done
+
+      - name: Apply migrations
+        run: pnpm db migrate:deploy
+
+      - name: Copy Mongo into Postgres
+        # --quiet: counts only in the log; the full report (job data) stays on the runner
+        run: pnpm db from-mongo --quiet

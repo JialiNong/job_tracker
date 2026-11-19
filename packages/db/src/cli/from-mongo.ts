@@ -3,6 +3,7 @@
  *
  *   pnpm db from-mongo              # into DATABASE_URL (local docker by default)
  *   pnpm db from-mongo --dry-run    # transform + report only, write nothing
+ *   pnpm db from-mongo --quiet      # counts only in the log (CI: no job names or ids)
  *
  * Mongo is only read (find). Postgres tables are replaced in one
  * transaction (src/load.ts), so the command can run every day during the
@@ -35,13 +36,13 @@ function hostOf(url: string): string {
   }
 }
 
-function summarize(report: Report): string[] {
+function summarize(report: Report, quiet: boolean): string[] {
   return [
     `source:  ${Object.entries(report.source).map(([k, v]) => `${k} ${v}`).join(", ")}`,
     `rows:    ${Object.entries(report.rows).map(([k, v]) => `${k} ${v}`).join(", ")}`,
     `merged duplicate (source, job_id): ${report.duplicateKeysMerged.length}`,
     `merged posting_key duplicates:     ${report.postingKeyMerged.length}` +
-      report.postingKeyMerged.map((p) => `\n    ${p.postingKey}: kept ${p.kept}, dropped ${p.dropped.map((d) => `${d.job}${d.status ? ` (card ${d.status}, ${d.events} events${d.notes ? ", has notes" : ""})` : ""}`).join(", ")}`).join(""),
+      (quiet ? [] : report.postingKeyMerged).map((p) => `\n    ${p.postingKey}: kept ${p.kept}, dropped ${p.dropped.map((d) => `${d.job}${d.status ? ` (card ${d.status}, ${d.events} events${d.notes ? ", has notes" : ""})` : ""}`).join(", ")}`).join(""),
     `posting_key cleared (kept both):   ${report.postingKeyCleared.length}`,
     `tracker edits kept over scraped:   ${report.twinConflicts.length} fields on ${new Set(report.twinConflicts.map((c) => c.application)).size} cards`,
     `scraped company looks wrong:       ${report.scrapedCompanyLooksWrong.length}`,
@@ -56,14 +57,15 @@ function summarize(report: Report): string[] {
 
 async function main() {
   const dryRun = process.argv.includes("--dry-run");
+  const quiet = process.argv.includes("--quiet");
   const mongoUri = process.env.MONGO_URI;
   const pgUrl = process.env.DATABASE_URL;
   if (!mongoUri) throw new Error("MONGO_URI is not set (expected in the repo's .env)");
   if (!pgUrl) throw new Error("DATABASE_URL is not set (packages/db/.env)");
   const dbName = process.env.DATABASE_NAME || "job_scraper";
 
-  console.log(`Mongo   ${hostOf(mongoUri)} / ${dbName} (read only)`);
-  console.log(`Target  ${dryRun ? "(dry run, nothing written)" : hostOf(pgUrl)}`);
+  console.log(`Mongo   ${quiet ? "(hidden)" : hostOf(mongoUri)} / ${dbName} (read only)`);
+  console.log(`Target  ${dryRun ? "(dry run, nothing written)" : quiet ? "(hidden)" : hostOf(pgUrl)}`);
 
   const mongo = new MongoClient(mongoUri, { serverSelectionTimeoutMS: 10_000 });
   await mongo.connect();
@@ -75,7 +77,7 @@ async function main() {
   const started = Date.now();
   const { rows, report } = transform(source);
   console.log(`\nTransformed in ${Date.now() - started} ms`);
-  for (const line of summarize(report)) console.log(`  ${line}`);
+  for (const line of summarize(report, quiet)) console.log(`  ${line}`);
 
   let checks: Awaited<ReturnType<typeof verify>> = [];
   if (!dryRun) {
@@ -89,7 +91,8 @@ async function main() {
       await prisma.$disconnect();
     }
     console.log("\nChecks");
-    for (const c of checks) console.log(`  ${c.ok ? "ok  " : "FAIL"} ${c.name}: ${c.detail}`);
+    // Quiet: the examples in a detail name cards; keep only the leading count
+    for (const c of checks) console.log(`  ${c.ok ? "ok  " : "FAIL"} ${c.name}: ${quiet ? c.detail.split(", e.g.")[0] : c.detail}`);
   }
 
   const dir = resolve(pkg, "reports");
