@@ -17,7 +17,7 @@ const AGENTS = ["claude", "cursor", "gemini", "gpt"];
 const API_SOURCES = new Set(["ats", "arbeitsagentur", "arbeitnow", "adzuna"]);
 const ORIGINS = ["pipeline", "manual", "agent", "api"];
 export const IDENTITY_FIELDS = ["title", "company", "location"];
-const LINK_ONLY_TITLE_PREFIX = "(Link only)";
+export const LINK_ONLY_TITLE_PREFIX = "(Link only)";
 
 export function normalizeRecommendedBy(value: unknown): string {
   const key = String(value ?? "").trim().toLowerCase();
@@ -53,7 +53,8 @@ export function jobMissingDetails(job: Record<string, unknown>): boolean {
   return String(job.summary ?? "").trim() === "";
 }
 
-function linkNeedsRefetch(job: Record<string, unknown>): boolean {
+/** The posting link was replaced after the last details fetch. */
+export function linkNeedsRefetch(job: Record<string, unknown>): boolean {
   const replaced = toInstant(job.link_replaced_at);
   if (!replaced) return false;
   const fetched = toInstant(job.details_fetched_at);

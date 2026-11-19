@@ -26,6 +26,7 @@ import { Sidebar } from "./Sidebar";
 import { Toolbar } from "./Toolbar";
 import { TrackerContext } from "./TrackerContext";
 import { useFilters } from "./useFilters";
+import { useRunAi } from "./useRunAi";
 
 const SEARCH_DEBOUNCE_MS = 600; // wait until typing pauses
 const VIEWS = [
@@ -140,6 +141,33 @@ export function TrackerApp() {
     await invalidateTracker(client);
   };
 
+  // ── Run AI (one card, or the selection one after another) ─────────────
+  const runAi = useRunAi();
+  const selectMissing = async (kind: "missing" | "missing_ai") => {
+    setSelectMode(true);
+    try {
+      const { ids } = await api.fetchTargets(toQuery(filters, page), kind);
+      const onThisPage = new Set((data?.jobs ?? []).map((j) => j._id));
+      setSelected((prev) => new Set([...prev, ...ids]));
+      const elsewhere = ids.filter((id) => !onThisPage.has(id)).length;
+      const noun = kind === "missing" ? "missing-details" : "missing-AI";
+      toast(ids.length ? `${ids.length} ${noun} job(s) selected${elsewhere ? ` (${elsewhere} on other pages)` : ""}` : `No ${noun} jobs`);
+    } catch (err) {
+      toast((err as Error).message, "err");
+    }
+  };
+  const runAiSelected = () => {
+    const titles = new Map((data?.jobs ?? []).map((j) => [j._id, j.title]));
+    void runAi.runBatch([...selected].map((id) => ({ id, label: titles.get(id) ?? id }))).then(() => setSelected(new Set()));
+  };
+  const fetchSelected = async () => {
+    try {
+      await api.fetchDetailsBatch([...selected]);
+    } catch (err) {
+      toast((err as Error).message, "err", 5000);
+    }
+  };
+
   // ── Company filter (chips in the search box) ──────────────────────────
   const filterByCompany = (name: string) => {
     const company = name.trim();
@@ -168,6 +196,9 @@ export function TrackerApp() {
           if (on) next.add(id); else next.delete(id);
           return next;
         }),
+        runAi: (id) => void runAi.runOne(id),
+        isRunningAi: runAi.isRunning,
+        batchRunning: !!runAi.batch?.running,
       }}
     >
       <div className="app">
@@ -201,6 +232,8 @@ export function TrackerApp() {
               selectMode={selectMode} count={selected.size} busy={deleting}
               onSelectAll={() => setSelected(new Set((data?.jobs ?? []).map((j) => j._id)))}
               onClear={() => setSelected(new Set())} onDelete={deleteSelected}
+              onSelectMissing={(kind) => void selectMissing(kind)} onRunAi={runAiSelected} onFetch={() => void fetchSelected()}
+              batch={runAi.batch} banner={runAi.banner} onDismissBanner={runAi.dismissBanner}
             />
             <JobList
               jobs={data ? data.jobs : null} error={list.error?.message ?? ""} layout={layout} selectMode={selectMode}

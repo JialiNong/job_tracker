@@ -2,7 +2,9 @@ import type { NextConfig } from "next";
 
 const config: NextConfig = {
   // Workspace packages ship TypeScript source
-  transpilePackages: ["@tracker/core", "@tracker/db"],
+  transpilePackages: ["@tracker/core", "@tracker/db", "@tracker/matching"],
+  // Native addon (Lingua language detection): loaded by Node at runtime, not bundled
+  serverExternalPackages: ["@prospectbase/lingua"],
   poweredByHeader: false,
   // React Compiler memoizes components and values automatically, so the code
   // does not need hand-written useMemo / useCallback

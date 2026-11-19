@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "@prisma/client": "6.16.2",
+    "@prospectbase/lingua": "1.8.0",
     "@tanstack/react-query": "5.105.0",
     "@tracker/core": "workspace:*",
     "@tracker/db": "workspace:*",
+    "@tracker/matching": "workspace:*",
     "bcryptjs": "3.0.2",
     "iron-session": "8.0.4",
     "next": "15.3.4",

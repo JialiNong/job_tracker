@@ -13,6 +13,9 @@ importers:
       '@prisma/client':
         specifier: 6.16.2
         version: 6.16.2(prisma@6.16.2(typescript@5.8.3))(typescript@5.8.3)
+      '@prospectbase/lingua':
+        specifier: 1.8.0
+        version: 1.8.0
       '@tanstack/react-query':
         specifier: 5.105.0
         version: 5.105.0(@types/react@19.1.8)(react@19.1.0)
@@ -22,6 +25,9 @@ importers:
       '@tracker/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@tracker/matching':
+        specifier: workspace:*
+        version: link:../../packages/matching
       bcryptjs:
         specifier: 3.0.2
         version: 3.0.2
@@ -71,6 +77,9 @@ importers:
       '@prisma/client':
         specifier: 6.16.2
         version: 6.16.2(prisma@6.16.2(typescript@5.8.3))(typescript@5.8.3)
+      '@tracker/core':
+        specifier: workspace:*
+        version: link:../core
       bson:
         specifier: 6.10.4
         version: 6.10.4
@@ -90,6 +99,31 @@ importers:
       tsx:
         specifier: 4.20.3
         version: 4.20.3
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@22.15.30)(jiti@2.7.0)(tsx@4.20.3)
+
+  packages/matching:
+    dependencies:
+      '@prospectbase/lingua':
+        specifier: 1.8.0
+        version: 1.8.0
+      '@tracker/core':
+        specifier: workspace:*
+        version: link:../core
+      entities:
+        specifier: 9.0.0
+        version: 9.0.0
+      openai:
+        specifier: 7.47.0
+        version: 7.47.0
+    devDependencies:
+      '@types/node':
+        specifier: 22.15.30
+        version: 22.15.30
       typescript:
         specifier: 5.8.3
         version: 5.8.3
@@ -650,6 +684,34 @@ packages:
   '@prisma/get-platform@6.16.2':
     resolution: {integrity: sha512-U/P36Uke5wS7r1+omtAgJpEB94tlT4SdlgaeTc6HVTTT93pXj7zZ+B/cZnmnvjcNPfWddgoDx8RLjmQwqGDYyA==}
 
+  '@prospectbase/lingua-darwin-arm64@1.8.0':
+    resolution: {integrity: sha512-fqxLqHjl6LP8ahg/4S7XfViDRMtEeo5WTSzPvv2LP5sU6WOqOSsNPo2tSPgjV2edgtYOkOSTOAj+WzAOAG+aiw==}
+    engines: {node: '>= 20'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@prospectbase/lingua-linux-arm64-gnu@1.8.0':
+    resolution: {integrity: sha512-yBL+fxL7VgIV14re87eYTUGqPXhxecTexIyawiKBbRQvTTvy7Vb5nU40QvR/I+nZHlMpBSpEPfoyzUAnM7/VMA==}
+    engines: {node: '>= 20'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@prospectbase/lingua-linux-x64-gnu@1.8.0':
+    resolution: {integrity: sha512-Ycav6oU8S1MtbnxPdvGVx823b8Q7kw/6JMpOKUKfE0v39kJzY4ecU15vwtmq91hJpXNPbh91k1CxVwqLwIU2Iw==}
+    engines: {node: '>= 20'}
+    cpu: [x64]
+    os: [linux]
+
+  '@prospectbase/lingua-win32-x64-msvc@1.8.0':
+    resolution: {integrity: sha512-8nqdDCOo7InBTLe4vvgl1KmjXlB0EAaYxmu7AB9JNY/IfJsDdKnZIy/Ly/ntP951aiWZLeh4IfQaRWA1EayXvQ==}
+    engines: {node: '>= 20'}
+    cpu: [x64]
+    os: [win32]
+
+  '@prospectbase/lingua@1.8.0':
+    resolution: {integrity: sha512-EdvicCmFRRSBT3fZA7iiJnr2WH3ei6T9Xm/jEp+/3h2UlMN26y6V7wjNIqtS4IKk8osPz0SzfaQlumJz8lntJg==}
+    engines: {node: '>= 20'}
+
   '@rollup/rollup-android-arm-eabi@4.68.7':
     resolution: {integrity: sha512-ZL7MgOeMUiBum1bjzzyBotE3DuHVz+UUxcDVlLL7gpdhDM4RpjG4bZOIly7ensIcXw9jhWl7HTIIQ9KsgjykGQ==}
     cpu: [arm]
@@ -973,6 +1035,10 @@ packages:
     resolution: {integrity: sha512-i6UzDscO/XfAcNYD75CfICkmfLedpyPDdozrLMmQc5ORaQcdMoc21OnlEylMIqI7U8eniKrPMxxtj8k0vhmJhA==}
     engines: {node: '>=14'}
 
+  entities@9.0.0:
+    resolution: {integrity: sha512-oJFNDJg3kTPwAD1cNn2+WmUq4wFoo09npc3Ydf1D7ED4smRiWrsKnaLxykrTWgyGEcusc87P5dxlAleol9kpkg==}
+    engines: {node: '>=20.19.0'}
+
   es-module-lexer@1.7.0:
     resolution: {integrity: sha512-jEQoCwk8hyb2AZziIOLhDqpm5+2ww5uIE6lkO/6jcOCusfk6LhMHpXXfBLXTZ7Ydyt0j4VoUQv6uGNYbdW+kBA==}
 
@@ -1112,6 +1178,33 @@ packages:
 
   ohash@2.0.12:
     resolution: {integrity: sha512-65S/5gk9YSsaRjcyf7Nfa6h/d3E8/1gslpXfI4W7Dxn/oap8IKRuNT5VXkLQ1YFKIEg4apRY4Pj6aiwFzrDdmw==}
+
+  openai@7.47.0:
+    resolution: {integrity: sha512-BYa2RYgocAv9WjPUJmNu8fICuA1fFhkTBEpiR3sC5L1K6v8Hnhc8pcnQEhu8l/+W1XKA+JUaBa7HpT+AK1s77w==}
+    engines: {node: '>=22.0.0'}
+    peerDependencies:
+      '@aws-sdk/credential-provider-node': '>=3.972.0 <4'
+      '@smithy/hash-node': '>=4.3.0 <5'
+      '@smithy/signature-v4': '>=5.4.0 <6'
+      google-auth-library: '>=9.15.1 <12'
+      undici: '>=5 <9'
+      ws: ^8.21.0
+      zod: ^3.25 || ^4.0
+    peerDependenciesMeta:
+      '@aws-sdk/credential-provider-node':
+        optional: true
+      '@smithy/hash-node':
+        optional: true
+      '@smithy/signature-v4':
+        optional: true
+      google-auth-library:
+        optional: true
+      undici:
+        optional: true
+      ws:
+        optional: true
+      zod:
+        optional: true
 
   pathe@2.0.3:
     resolution: {integrity: sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==}
@@ -1701,6 +1794,25 @@ snapshots:
     dependencies:
       '@prisma/debug': 6.16.2
 
+  '@prospectbase/lingua-darwin-arm64@1.8.0':
+    optional: true
+
+  '@prospectbase/lingua-linux-arm64-gnu@1.8.0':
+    optional: true
+
+  '@prospectbase/lingua-linux-x64-gnu@1.8.0':
+    optional: true
+
+  '@prospectbase/lingua-win32-x64-msvc@1.8.0':
+    optional: true
+
+  '@prospectbase/lingua@1.8.0':
+    optionalDependencies:
+      '@prospectbase/lingua-darwin-arm64': 1.8.0
+      '@prospectbase/lingua-linux-arm64-gnu': 1.8.0
+      '@prospectbase/lingua-linux-x64-gnu': 1.8.0
+      '@prospectbase/lingua-win32-x64-msvc': 1.8.0
+
   '@rollup/rollup-android-arm-eabi@4.68.7':
     optional: true
 
@@ -1960,6 +2072,8 @@ snapshots:
 
   empathic@2.0.0: {}
 
+  entities@9.0.0: {}
+
   es-module-lexer@1.7.0: {}
 
   esbuild@0.25.12:
@@ -2122,6 +2236,8 @@ snapshots:
       tinyexec: 1.3.1
 
   ohash@2.0.12: {}
+
+  openai@7.47.0: {}
 
   pathe@2.0.3: {}
 
