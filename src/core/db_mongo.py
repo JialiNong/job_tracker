@@ -1,5 +1,10 @@
 """Mongo helpers. Keep importing from here: `from core.db_mongo import …`.
 
+TRACKER_STORE=postgres switches the five functions the browser scrapers
+save with (init_db, save_job, is_job_id_exists, increment_scraper_stat,
+save_timeout_job) to Postgres (core/pg_store.py). Set it only for the
+scraper processes after the cutover; everything else here stays on Mongo.
+
 Implementation lives in the `core.mongo` package (not a pile of mongo_*.py
 siblings). Location labels stay in `applied_location.py` — they do not talk
 to Mongo.
@@ -56,6 +61,17 @@ from core.mongo.tracker import (  # noqa: F401
     reapplied_count,
     resolve_applied_at,
 )
+
+import os as _os
+
+if _os.getenv("TRACKER_STORE", "").strip().lower() == "postgres":
+    from core.pg_store import (  # noqa: F401,F811
+        increment_scraper_stat,
+        init_db,
+        is_job_id_exists,
+        save_job,
+        save_timeout_job,
+    )
 
 
 if __name__ == "__main__":

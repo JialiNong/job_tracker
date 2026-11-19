@@ -1,0 +1,31 @@
+{
+  "name": "@tracker/pipeline",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./known-jobs": "./src/known-jobs.ts"
+  },
+  "scripts": {
+    "match": "tsx src/cli/match.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "sources": "tsx src/cli/sources.ts",
+    "scrape": "tsx src/cli/scrape.ts"
+  },
+  "dependencies": {
+    "@prospectbase/lingua": "1.8.0",
+    "@tracker/core": "workspace:*",
+    "@tracker/db": "workspace:*",
+    "@tracker/matching": "workspace:*",
+    "dotenv": "16.5.0",
+    "entities": "9.0.0",
+    "fast-xml-parser": "5.11.2"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.30",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3",
+    "vitest": "3.2.4"
+  }
+}

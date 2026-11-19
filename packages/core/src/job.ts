@@ -29,7 +29,8 @@ export function normalizeOrigin(value: unknown): string {
   return ORIGINS.includes(key) ? key : "";
 }
 
-const foundOrigin = (source: unknown) =>
+/** Origin of a job the automated pipeline found: "api" for the API sources, else "pipeline" (browser scrapers). */
+export const foundOrigin = (source: unknown): "api" | "pipeline" =>
   API_SOURCES.has(String(source ?? "").trim().toLowerCase()) ? "api" : "pipeline";
 
 /** Best guess for rows saved before `origin` existed. */
