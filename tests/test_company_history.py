@@ -203,8 +203,13 @@ class TrackerUiTests(unittest.TestCase):
         replace = js.find("${renderReplaceLinkBlock(job)}")
         agent = js.find("${renderAgentReason(job)}")
         local = js.find("${renderLocalAiBlock(")
+        tags = js.find("${fitTagsHtml(job)}")
         desc = js.find("${renderOriginalDescription(job)}")
-        self.assertTrue(0 < hist < progress < applicant < notes < replace < agent < local < desc)
+        highlights = js.find("${renderHighlightsBlock(job)}")
+        danger = js.find('class="card-danger-row"')
+        self.assertTrue(0 < hist < progress < applicant < notes < agent < local < tags < desc)
+        # Replace link is rarely used: last in the track column, before Delete
+        self.assertTrue(desc < highlights < replace < danger)
         self.assertNotIn("${countryPillHtml(job)}", js)
         header = js.split('class="card-header"', 1)[1].split("card-meta", 1)[0]
         self.assertNotIn("score-badge", header)

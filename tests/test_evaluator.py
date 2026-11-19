@@ -25,6 +25,8 @@ def labels(**over):
         "ai_product_work": False,
         "english_team": "true",
         "stack": "React, TypeScript",
+        "stack_matched": ["React", "TypeScript"],
+        "stack_missing": ["GraphQL"],
         "summary": "Frontend role.",
         "watch_outs": "none",
         "_usage": {"input_tokens": 1, "output_tokens": 1},
@@ -151,6 +153,15 @@ class ToAnalysisTests(unittest.TestCase):
         self.assertTrue(any("30 countries" in r for r in out["match_reasons"]))
         self.assertNotIn("_usage", out["job_labels"])
         self.assertEqual(out["red_flags"], [])
+        # Tracker fit tags read these straight from job_labels
+        self.assertEqual(out["job_labels"]["stack_matched"], ["React", "TypeScript"])
+        self.assertEqual(out["job_labels"]["stack_missing"], ["GraphQL"])
+
+    def test_schema_requires_every_property(self):
+        # OpenAI strict mode rejects a schema whose properties are not all required
+        self.assertEqual(
+            set(ev.JOB_SCHEMA["properties"]), set(ev.JOB_SCHEMA["required"])
+        )
 
     def test_gate_names_match_unmatched_filter(self):
         cases = {
@@ -169,6 +180,45 @@ class ToAnalysisTests(unittest.TestCase):
 
     def test_failed_call_returns_none(self):
         self.assertIsNone(ev.to_analysis({"score": None, "parts": []}))
+
+
+class StackGroundingTests(unittest.TestCase):
+    def test_drops_frameworks_the_posting_does_not_name(self):
+        # Real case: posting said only "JavaScript", model added the CV's frameworks
+        lb = {"stack_matched": ["JavaScript", "React", "Vue", "Angular", "Node.js"],
+              "stack_missing": ["Kafka", "Java"]}
+        ev.ground_stack_labels(lb, "Senior Product Engineer\nYou write JavaScript and run Kafka.")
+        self.assertEqual(lb["stack_matched"], ["JavaScript"])
+        self.assertEqual(lb["stack_missing"], ["Kafka"])
+
+    def test_spelling_variants_and_word_boundaries(self):
+        cases = [
+            ("Java", "We use JavaScript", False),
+            ("Go", "good engineers", False),
+            ("Golang", "Backend in Go.", True),
+            ("Node.js", "NodeJS services", True),
+            ("Vue", "Vue.js 3", True),
+            ("C", "C# only", False),
+            ("PostgreSQL", "Postgres", True),
+            ("Kubernetes", "k8s", True),
+            ("Express", "an expressive team", False),
+        ]
+        for term, text, want in cases:
+            self.assertEqual(ev.stack_term_in_text(term, text), want, (term, text))
+
+    def test_classify_job_grounds_model_output(self):
+        fake = labels(stack_matched=["React", "TypeScript"], stack_missing=["Vue"])
+        fake.pop("_usage")
+
+        class Resp:
+            output_text = __import__("json").dumps(fake)
+            usage = None
+
+        with patch.object(ev, "_client") as client:
+            client.return_value.responses.create.return_value = Resp()
+            out = ev.classify_job({"title": "FE", "description": "TypeScript only."}, cv="", rules="")
+        self.assertEqual(out["stack_matched"], ["TypeScript"])
+        self.assertEqual(out["stack_missing"], [])
 
 
 if __name__ == "__main__":

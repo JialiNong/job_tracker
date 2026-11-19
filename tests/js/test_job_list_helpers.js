@@ -55,6 +55,8 @@ const {
   jobChannel,
   jobViaText,
   postedPillHtml,
+  businessTags,
+  fitTagsHtml,
 } = await load("static/js/shared/job_list.js");
 
 eq(escHtml('<a href="x">'), "&lt;a href=&quot;x&quot;&gt;", "escHtml");
@@ -118,6 +120,22 @@ const pill = postedPillHtml({ posted_at: "2026-11-11" });
 if (!pill.includes("Posted") || !pill.includes("meta-pill")) {
   throw new Error("postedPillHtml missing pill markup");
 }
+
+// Fit tags: green matched, red missing, neutral business
+const tags = fitTagsHtml({
+  job_labels: { stack_matched: ["React", "react", "TypeScript"], stack_missing: ["<Go>"] },
+  company_profile: { vertical: "HR tech", product_type: "b2b_saas", markets: "europe", business: "Payroll" },
+});
+if ((tags.match(/fit-ok/g) || []).length !== 2) throw new Error("fit tags should dedupe matched stack");
+if (!tags.includes('&lt;Go&gt;') || tags.includes('<Go>')) throw new Error("fit tags should escape missing stack");
+if (!tags.includes("B2B SaaS") || !tags.includes("European customers")) throw new Error("business tags missing");
+eq(fitTagsHtml({}), "", "fit tags empty for unscored job");
+if (!fitTagsHtml({ job_labels: { stack: "React" } }).includes("Re-run AI")) {
+  throw new Error("legacy scored job should get a Re-run AI hint");
+}
+eq(fitTagsHtml({ job_labels: { stack_matched: [], stack_missing: [] } }), "", "no tags when lists are empty");
+eq(businessTags({ vertical: "unclear", markets: "unclear", product_type: "other" }), [], "unclear business adds no tags");
+eq(businessTags({ is_recruiter_for_other_company: true })[0].text, "Via recruiter", "recruiter tag");
 
 console.log("ok job_list helpers");
 }

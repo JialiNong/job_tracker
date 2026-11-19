@@ -165,6 +165,78 @@ export function renderBreakdown(title, section, { autoOpenGaps = false } = {}) {
     </details>`;
 }
 
+/* ── Fit tags: stack match + company business at a glance ───────── */
+
+const PRODUCT_TYPE_LABEL = {
+  b2b_saas: 'B2B SaaS',
+  b2c_ecommerce_marketplace: 'E-commerce / marketplace',
+  consumer_app: 'Consumer app',
+  fintech: 'Fintech',
+  other_software_product: 'Software product',
+  agency_consulting_outsourcing: 'Agency / consulting',
+  staffing_recruiter: 'Staffing / recruiter',
+  hardware_industrial_automotive: 'Hardware / industrial',
+  public_sector_research: 'Public sector / research',
+};
+const MARKETS_LABEL = {
+  global: 'Global customers',
+  europe: 'European customers',
+  dach: 'DACH customers',
+  germany_only: 'Germany-only customers',
+};
+
+function cleanList(value) {
+  if (!Array.isArray(value)) return [];
+  const seen = new Set();
+  return value
+    .map(v => String(v || '').trim())
+    .filter(v => v && !seen.has(v.toLowerCase()) && seen.add(v.toLowerCase()));
+}
+
+/** Business tags from the AI company lookup (no extra model call). */
+export function businessTags(profile) {
+  const p = profile && typeof profile === 'object' ? profile : {};
+  const tags = [];
+  const vertical = String(p.vertical || '').trim();
+  if (vertical && vertical.toLowerCase() !== 'unclear') tags.push({ text: vertical, title: p.business });
+  if (PRODUCT_TYPE_LABEL[p.product_type]) tags.push({ text: PRODUCT_TYPE_LABEL[p.product_type] });
+  if (MARKETS_LABEL[p.markets]) tags.push({ text: MARKETS_LABEL[p.markets], title: p.markets_detail });
+  if (p.is_recruiter_for_other_company) tags.push({ text: 'Via recruiter', warn: true });
+  return tags;
+}
+
+/**
+ * Tag strip under the AI result: green = stack the CV covers, red = stack
+ * the posting asks for that the CV lacks, neutral = company business.
+ * Jobs scored before stack_matched existed get a Re-run AI hint instead.
+ */
+export function fitTagsHtml(job) {
+  const labels = job && typeof job.job_labels === 'object' && job.job_labels ? job.job_labels : {};
+  const hasStackLists = Array.isArray(labels.stack_matched) || Array.isArray(labels.stack_missing);
+  const matched = cleanList(labels.stack_matched);
+  const missing = cleanList(labels.stack_missing);
+  const business = businessTags(job && job.company_profile);
+  const scored = Object.keys(labels).length > 0;
+  if (!matched.length && !missing.length && !business.length && !scored) return '';
+
+  const chip = (cls, t) => `<span class="fit-tag ${cls}"${t.title ? ` title="${escHtml(t.title)}"` : ''}>${escHtml(t.text)}</span>`;
+  const stackChips = [
+    ...matched.map(text => chip('fit-ok', { text, title: 'On your CV' })),
+    ...missing.map(text => chip('fit-gap', { text, title: 'Asked for, not on your CV' })),
+  ].join('');
+  let stackRow = '';
+  if (stackChips) {
+    stackRow = `<div class="fit-row"><span class="fit-label">Stack</span><div class="fit-chips">${stackChips}</div></div>`;
+  } else if (scored && !hasStackLists) {
+    stackRow = `<div class="fit-row"><span class="fit-label">Stack</span><span class="fit-hint">Re-run AI to see which stack you match</span></div>`;
+  }
+  const businessRow = business.length
+    ? `<div class="fit-row"><span class="fit-label">Business</span><div class="fit-chips">${business.map(t => chip(t.warn ? 'fit-warn' : 'fit-biz', t)).join('')}</div></div>`
+    : '';
+  if (!stackRow && !businessRow) return '';
+  return `<div class="fit-tags">${stackRow}${businessRow}</div>`;
+}
+
 /* ── Channel / via / applicants ──────────────────────────────────── */
 
 function jobHost(job) {
