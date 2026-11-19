@@ -1,0 +1,2263 @@
+{
+ "titles": [
+  {
+   "title": "Frontend Engineer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": true
+  },
+  {
+   "title": "Senior Frontend Engineer (m/w/d)",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": true
+  },
+  {
+   "title": "Full-Stack Engineer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": true
+  },
+  {
+   "title": "Fullstack Developer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Full Stack Engineer – Payments",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": true
+  },
+  {
+   "title": "Product Engineer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": true
+  },
+  {
+   "title": "Forward Deployed Engineer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": true
+  },
+  {
+   "title": "Software Engineer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Java Developer",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "JavaScript Developer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Senior Java Engineer",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Lead Frontend Engineer",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": true
+  },
+  {
+   "title": "Staff Engineer",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "DevOps Engineer",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Cloud Engineer",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Frontend Engineer – Cloud SaaS",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": true
+  },
+  {
+   "title": "VP Engineering",
+   "excluded": false,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Vice President of Product",
+   "excluded": false,
+   "api_excluded": true,
+   "on_topic": false,
+   "auto_pass": false
+  },
+  {
+   "title": "Director of Engineering",
+   "excluded": false,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "New Graduate Software Engineer",
+   "excluded": false,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Graduate Developer",
+   "excluded": false,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Software Engineering Internship",
+   "excluded": false,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Engineering Manager",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Werkstudent Frontend",
+   "excluded": false,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Praktikum Webentwicklung",
+   "excluded": false,
+   "api_excluded": true,
+   "on_topic": false,
+   "auto_pass": false
+  },
+  {
+   "title": "Ausbildung Fachinformatiker",
+   "excluded": false,
+   "api_excluded": true,
+   "on_topic": false,
+   "auto_pass": false
+  },
+  {
+   "title": "Apprentice Developer",
+   "excluded": false,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Softwareentwickler (m/w/d)",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": false,
+   "auto_pass": false
+  },
+  {
+   "title": "Web Developer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "React Developer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "TypeScript Engineer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Node.js Backend Developer",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "NodeJS Developer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Programmer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Sales Manager",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": false,
+   "auto_pass": false
+  },
+  {
+   "title": "Account Executive",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": false,
+   "auto_pass": false
+  },
+  {
+   "title": "Data Scientist",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": false,
+   "auto_pass": false
+  },
+  {
+   "title": "Qt/QML Simulation HMI Software Engineer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "UI Designer",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": false,
+   "auto_pass": false
+  },
+  {
+   "title": "Front-End Developer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Frontend-Entwickler",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Embedded Software Engineer",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "PHP Developer",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": ".NET Developer",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Python Engineer",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Go Developer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Mobile Engineer (iOS)",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "QA Engineer",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Site Reliability Engineer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Solutions Architect",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": false,
+   "auto_pass": false
+  },
+  {
+   "title": "",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": false,
+   "auto_pass": false
+  },
+  {
+   "title": "Ingénieur Frontend",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Product Manager",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": false,
+   "auto_pass": false
+  },
+  {
+   "title": "AI Engineer",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Platform Engineer",
+   "excluded": false,
+   "api_excluded": false,
+   "on_topic": true,
+   "auto_pass": false
+  },
+  {
+   "title": "Security Engineer",
+   "excluded": true,
+   "api_excluded": true,
+   "on_topic": true,
+   "auto_pass": false
+  }
+ ],
+ "dedup": [
+  {
+   "company": "Acme GmbH",
+   "title": "Frontend Engineer (m/w/d)",
+   "company_norm": "acme",
+   "title_norm": "frontend engineer",
+   "key": "acme|frontend engineer"
+  },
+  {
+   "company": "ACME",
+   "title": "Front-End Engineer",
+   "company_norm": "acme",
+   "title_norm": "frontend engineer",
+   "key": "acme|frontend engineer"
+  },
+  {
+   "company": "Müller & Co. KG",
+   "title": "Full Stack Developer (all genders)",
+   "company_norm": "müller",
+   "title_norm": "fullstack developer",
+   "key": "müller|fullstack developer"
+  },
+  {
+   "company": "Foo Technologies Inc.",
+   "title": "Software Engineer (f/m/x)",
+   "company_norm": "foo",
+   "title_norm": "software engineer",
+   "key": "foo|software engineer"
+  },
+  {
+   "company": "Bar (Germany) GmbH",
+   "title": "React Developer w/m/d",
+   "company_norm": "bar",
+   "title_norm": "react developer",
+   "key": "bar|react developer"
+  },
+  {
+   "company": "N26 Group",
+   "title": "Senior Frontend Engineer (gn*)",
+   "company_norm": "n26",
+   "title_norm": "senior frontend engineer",
+   "key": "n26|senior frontend engineer"
+  },
+  {
+   "company": "Zalando SE",
+   "title": "Software Engineer | Payments",
+   "company_norm": "zalando",
+   "title_norm": "software engineer payments",
+   "key": "zalando|software engineer payments"
+  },
+  {
+   "company": "SAP SE & Co. KGaA",
+   "title": "Developer (Mensch*)",
+   "company_norm": "sap",
+   "title_norm": "developer",
+   "key": "sap|developer"
+  },
+  {
+   "company": "",
+   "title": "Frontend Engineer",
+   "company_norm": "",
+   "title_norm": "frontend engineer",
+   "key": "|frontend engineer"
+  },
+  {
+   "company": "Acme",
+   "title": "",
+   "company_norm": "acme",
+   "title_norm": "",
+   "key": "acme|"
+  },
+  {
+   "company": "Delivery Hero",
+   "title": "Full-stack Engineer [m/w/d]",
+   "company_norm": "delivery hero",
+   "title_norm": "fullstack engineer",
+   "key": "delivery hero|fullstack engineer"
+  },
+  {
+   "company": "Bäckerei Schmidt haftungsbeschränkt",
+   "title": "Webentwickler (m|w|d)",
+   "company_norm": "bäckerei schmidt",
+   "title_norm": "webentwickler",
+   "key": "bäckerei schmidt|webentwickler"
+  },
+  {
+   "company": "C++ Shop Ltd",
+   "title": "C++ / C# Engineer",
+   "company_norm": "c++ shop",
+   "title_norm": "c++ c# engineer",
+   "key": "c++ shop|c++ c# engineer"
+  }
+ ],
+ "strict_location": [
+  {
+   "location": "",
+   "ok": true
+  },
+  {
+   "location": "Berlin",
+   "ok": true
+  },
+  {
+   "location": "Berlin, Germany",
+   "ok": true
+  },
+  {
+   "location": "Munich",
+   "ok": true
+  },
+  {
+   "location": "München",
+   "ok": true
+  },
+  {
+   "location": "Remote",
+   "ok": true
+  },
+  {
+   "location": "Remote (EU)",
+   "ok": true
+  },
+  {
+   "location": "Remote - Europe",
+   "ok": true
+  },
+  {
+   "location": "Remote, US",
+   "ok": false
+  },
+  {
+   "location": "Remote — Americas",
+   "ok": false
+  },
+  {
+   "location": "Austin, Texas",
+   "ok": false
+  },
+  {
+   "location": "London, UK",
+   "ok": false
+  },
+  {
+   "location": "Amsterdam",
+   "ok": false
+  },
+  {
+   "location": "Zurich, Switzerland",
+   "ok": false
+  },
+  {
+   "location": "Hybrid - Hamburg",
+   "ok": true
+  },
+  {
+   "location": "Deutschland",
+   "ok": true
+  },
+  {
+   "location": "Home office",
+   "ok": true
+  },
+  {
+   "location": "Work from home (DACH)",
+   "ok": true
+  },
+  {
+   "location": "Fully remote / Worldwide",
+   "ok": true
+  },
+  {
+   "location": "Walldorf",
+   "ok": true
+  },
+  {
+   "location": "Unterföhring",
+   "ok": true
+  },
+  {
+   "location": "Garching bei München",
+   "ok": true
+  },
+  {
+   "location": "Halle (Saale)",
+   "ok": true
+  },
+  {
+   "location": "Toronto, Canada · Remote",
+   "ok": false
+  },
+  {
+   "location": "Remote first",
+   "ok": true
+  },
+  {
+   "location": "Anywhere",
+   "ok": false
+  },
+  {
+   "location": "Vienna, Austria",
+   "ok": false
+  },
+  {
+   "location": "Leipzig · Remote",
+   "ok": true
+  },
+  {
+   "location": "EMEA",
+   "ok": false
+  },
+  {
+   "location": "New York",
+   "ok": false
+  }
+ ],
+ "arbeitnow": [
+  {
+   "item": {
+    "slug": "frontend-engineer-acme-123",
+    "title": " Frontend Engineer ",
+    "company_name": "Acme",
+    "location": "Berlin",
+    "url": "https://www.arbeitnow.com/jobs/companies/acme/frontend-engineer-acme-123",
+    "description": "<p>Build</p>",
+    "created_at": 1763460000,
+    "remote": false,
+    "tags": [
+     "React"
+    ],
+    "job_types": [
+     "full time"
+    ]
+   },
+   "job": {
+    "source": "arbeitnow",
+    "jobId": "frontend-engineer-acme-123",
+    "title": "Frontend Engineer",
+    "company": "Acme",
+    "location": "Berlin",
+    "link": "https://www.arbeitnow.com/jobs/companies/acme/frontend-engineer-acme-123",
+    "description": "<p>Build</p>",
+    "postedAt": "2025-11-18T10:00:00Z",
+    "remote": false,
+    "extra": {
+     "tags": [
+      "React"
+     ],
+     "jobTypes": [
+      "full time"
+     ]
+    },
+    "locationPolicy": "lenient"
+   }
+  },
+  {
+   "item": {
+    "slug": "remote-dev",
+    "title": "Developer",
+    "company_name": " Foo ",
+    "location": "",
+    "url": "https://x/remote-dev",
+    "description": "",
+    "created_at": null,
+    "remote": true
+   },
+   "job": {
+    "source": "arbeitnow",
+    "jobId": "remote-dev",
+    "title": "Developer",
+    "company": "Foo",
+    "location": "Remote",
+    "link": "https://x/remote-dev",
+    "description": "",
+    "postedAt": null,
+    "remote": true,
+    "extra": {
+     "tags": [],
+     "jobTypes": []
+    },
+    "locationPolicy": "lenient"
+   }
+  }
+ ],
+ "arbeitsagentur": [
+  {
+   "item": {
+    "referenznummer": "10001-1000000001-S",
+    "stellenangebotsTitel": "Softwareentwickler (m/w/d)",
+    "firma": "Acme GmbH",
+    "stellenlokationen": [
+     {
+      "adresse": {
+       "ort": "Leipzig",
+       "land": "Deutschland"
+      }
+     }
+    ],
+    "datumErsteVeroeffentlichung": "2026-11-18",
+    "homeofficemoeglich": false,
+    "externeURL": "https://acme.de/jobs/1",
+    "gehaltsspanneVon": 50000
+   },
+   "job": {
+    "source": "arbeitsagentur",
+    "jobId": "10001-1000000001-S",
+    "title": "Softwareentwickler (m/w/d)",
+    "company": "Acme GmbH",
+    "location": "Leipzig",
+    "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1000000001-S",
+    "description": "",
+    "postedAt": "2026-11-17T23:00:00Z",
+    "remote": false,
+    "extra": {
+     "externalUrl": "https://acme.de/jobs/1"
+    },
+    "locationPolicy": "none"
+   }
+  },
+  {
+   "item": {
+    "referenznummer": "10001-1000000002-S",
+    "stellenangebotsTitel": "Frontend Engineer",
+    "firma": "Bar",
+    "stellenlokationen": [],
+    "datumErsteVeroeffentlichung": "2026-11-17T09:30:00",
+    "homeofficemoeglich": true
+   },
+   "job": {
+    "source": "arbeitsagentur",
+    "jobId": "10001-1000000002-S",
+    "title": "Frontend Engineer",
+    "company": "Bar",
+    "location": "Remote",
+    "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1000000002-S",
+    "description": "",
+    "postedAt": "2026-11-17T08:30:00Z",
+    "remote": true,
+    "extra": {},
+    "locationPolicy": "none"
+   }
+  },
+  {
+   "item": {
+    "referenznummer": "10001-1000000003-S",
+    "stellenangebotsTitel": "Web Developer",
+    "firma": "Baz",
+    "stellenlokationen": [
+     {
+      "adresse": {
+       "ort": "Halle",
+       "land": "DEUTSCHLAND"
+      }
+     }
+    ],
+    "homeofficemoeglich": true
+   },
+   "job": {
+    "source": "arbeitsagentur",
+    "jobId": "10001-1000000003-S",
+    "title": "Web Developer",
+    "company": "Baz",
+    "location": "Halle (home office possible)",
+    "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1000000003-S",
+    "description": "",
+    "postedAt": null,
+    "remote": true,
+    "extra": {},
+    "locationPolicy": "none"
+   }
+  }
+ ],
+ "published_since": [
+  {
+   "days": 1,
+   "param": 1
+  },
+  {
+   "days": 2,
+   "param": 7
+  },
+  {
+   "days": 3,
+   "param": 7
+  },
+  {
+   "days": 7,
+   "param": 7
+  },
+  {
+   "days": 8,
+   "param": 14
+  },
+  {
+   "days": 14,
+   "param": 14
+  },
+  {
+   "days": 20,
+   "param": 28
+  },
+  {
+   "days": 28,
+   "param": 28
+  },
+  {
+   "days": 40,
+   "param": 28
+  }
+ ],
+ "adzuna": [
+  {
+   "item": {
+    "id": 4123,
+    "title": "Frontend Engineer",
+    "company": {
+     "display_name": "Acme"
+    },
+    "location": {
+     "display_name": "Berlin"
+    },
+    "redirect_url": "https://www.adzuna.de/land/ad/4123",
+    "description": "Teaser text",
+    "created": "2026-11-18T08:00:00Z",
+    "salary_min": 60000
+   },
+   "job": {
+    "source": "adzuna",
+    "jobId": "4123",
+    "title": "Frontend Engineer",
+    "company": "Acme",
+    "location": "Berlin",
+    "link": "https://www.adzuna.de/land/ad/4123",
+    "description": "",
+    "postedAt": "2026-11-18T08:00:00Z",
+    "remote": false,
+    "extra": {},
+    "locationPolicy": "none"
+   }
+  }
+ ],
+ "ats": [
+  {
+   "provider": "greenhouse",
+   "entry": {
+    "company": "Acme",
+    "provider": "greenhouse",
+    "slug": "acme"
+   },
+   "payload": {
+    "jobs": [
+     {
+      "id": 111,
+      "title": "Frontend Engineer",
+      "location": {
+       "name": "Berlin, Germany"
+      },
+      "absolute_url": "https://boards.greenhouse.io/acme/jobs/111",
+      "content": "&lt;p&gt;We build &amp;amp; ship&lt;/p&gt;",
+      "first_published": "2026-11-01T10:00:00-04:00"
+     },
+     {
+      "id": 112,
+      "title": "Designer",
+      "location": {},
+      "absolute_url": "https://g/112",
+      "updated_at": "2026-10-01T12:00:00Z"
+     }
+    ]
+   },
+   "jobs": [
+    {
+     "source": "ats",
+     "jobId": "greenhouse:acme:111",
+     "title": "Frontend Engineer",
+     "company": "Acme",
+     "location": "Berlin, Germany",
+     "link": "https://boards.greenhouse.io/acme/jobs/111",
+     "description": "<p>We build &amp; ship</p>",
+     "postedAt": "2026-11-01T14:00:00Z",
+     "remote": false,
+     "extra": {
+      "atsProvider": "greenhouse",
+      "atsSlug": "acme"
+     },
+     "locationPolicy": "strict"
+    },
+    {
+     "source": "ats",
+     "jobId": "greenhouse:acme:112",
+     "title": "Designer",
+     "company": "Acme",
+     "location": "",
+     "link": "https://g/112",
+     "description": "",
+     "postedAt": "2026-10-01T12:00:00Z",
+     "remote": false,
+     "extra": {
+      "atsProvider": "greenhouse",
+      "atsSlug": "acme"
+     },
+     "locationPolicy": "strict"
+    }
+   ]
+  },
+  {
+   "provider": "lever",
+   "entry": {
+    "company": "Acme",
+    "provider": "lever",
+    "slug": "acme"
+   },
+   "payload": [
+    {
+     "id": "abc",
+     "text": "Full Stack Engineer",
+     "categories": {
+      "allLocations": [
+       "Berlin",
+       "berlin",
+       "Munich"
+      ]
+     },
+     "workplaceType": "remote",
+     "lists": [
+      {
+       "text": "You",
+       "content": "<li>React</li>"
+      }
+     ],
+     "descriptionPlain": "Intro",
+     "additionalPlain": "Extra",
+     "hostedUrl": "https://jobs.lever.co/acme/abc",
+     "createdAt": 1762000000000,
+     "country": "DE"
+    },
+    {
+     "id": "def",
+     "text": "Engineer",
+     "categories": {
+      "location": "London"
+     },
+     "description": "<p>x</p>",
+     "hostedUrl": "https://jobs.lever.co/acme/def"
+    }
+   ],
+   "jobs": [
+    {
+     "source": "ats",
+     "jobId": "lever:acme:abc",
+     "title": "Full Stack Engineer",
+     "company": "Acme",
+     "location": "Berlin · Munich · Remote · DE",
+     "link": "https://jobs.lever.co/acme/abc",
+     "description": "Intro\n\nYou\n<li>React</li>\n\nExtra",
+     "postedAt": "2025-11-01T12:26:40Z",
+     "remote": true,
+     "extra": {
+      "atsProvider": "lever",
+      "atsSlug": "acme"
+     },
+     "locationPolicy": "strict"
+    },
+    {
+     "source": "ats",
+     "jobId": "lever:acme:def",
+     "title": "Engineer",
+     "company": "Acme",
+     "location": "London",
+     "link": "https://jobs.lever.co/acme/def",
+     "description": "<p>x</p>",
+     "postedAt": null,
+     "remote": false,
+     "extra": {
+      "atsProvider": "lever",
+      "atsSlug": "acme"
+     },
+     "locationPolicy": "strict"
+    }
+   ]
+  },
+  {
+   "provider": "ashby",
+   "entry": {
+    "company": "Acme",
+    "provider": "ashby",
+    "slug": "acme"
+   },
+   "payload": {
+    "jobs": [
+     {
+      "id": "u1",
+      "title": "Product Engineer",
+      "location": "Berlin",
+      "isListed": true,
+      "secondaryLocations": [
+       {
+        "location": "Hamburg"
+       }
+      ],
+      "address": {
+       "postalAddress": {
+        "addressCountry": "Germany"
+       }
+      },
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "jobUrl": "https://jobs.ashbyhq.com/acme/u1",
+      "descriptionHtml": "<p>Hi</p>",
+      "publishedAt": "2026-11-10T08:00:00.000+00:00"
+     },
+     {
+      "id": "u2",
+      "title": "Hidden",
+      "isListed": false,
+      "jobUrl": "https://x"
+     }
+    ]
+   },
+   "jobs": [
+    {
+     "source": "ats",
+     "jobId": "ashby:acme:u1",
+     "title": "Product Engineer",
+     "company": "Acme",
+     "location": "Berlin · Hamburg · Germany",
+     "link": "https://jobs.ashbyhq.com/acme/u1",
+     "description": "<p>Hi</p>",
+     "postedAt": "2026-11-10T08:00:00Z",
+     "remote": false,
+     "extra": {
+      "atsProvider": "ashby",
+      "atsSlug": "acme"
+     },
+     "locationPolicy": "strict"
+    }
+   ]
+  },
+  {
+   "provider": "personio",
+   "entry": {
+    "company": "Acme",
+    "provider": "personio",
+    "slug": "acme"
+   },
+   "payload": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<workzag-jobs><position><id>9001</id><office>Berlin</office><additionalOffices><office>Munich</office><office>berlin</office></additionalOffices>\n<name>Frontend Engineer</name><jobDescriptions><jobDescription><name>Your tasks &amp; role</name><value><![CDATA[<p>Build <b>things</b></p>]]></value></jobDescription>\n<jobDescription><name></name><value><![CDATA[<p>More</p>]]></value></jobDescription></jobDescriptions><createdAt>2026-11-05T09:00:00+00:00</createdAt></position>\n<position><id>9002</id><office>Leipzig</office><name>Backend Engineer</name><createdAt>2026-11-06</createdAt></position></workzag-jobs>",
+   "jobs": [
+    {
+     "source": "ats",
+     "jobId": "personio:acme:9001",
+     "title": "Frontend Engineer",
+     "company": "Acme",
+     "location": "Berlin · Munich",
+     "link": "https://acme.jobs.personio.de/job/9001?language=en",
+     "description": "<h3>Your tasks &amp; role</h3><p>Build <b>things</b></p>\n<p>More</p>",
+     "postedAt": "2026-11-05T09:00:00Z",
+     "remote": false,
+     "extra": {
+      "atsProvider": "personio",
+      "atsSlug": "acme"
+     },
+     "locationPolicy": "strict"
+    },
+    {
+     "source": "ats",
+     "jobId": "personio:acme:9002",
+     "title": "Backend Engineer",
+     "company": "Acme",
+     "location": "Leipzig",
+     "link": "https://acme.jobs.personio.de/job/9002?language=en",
+     "description": "",
+     "postedAt": "2026-11-05T23:00:00Z",
+     "remote": false,
+     "extra": {
+      "atsProvider": "personio",
+      "atsSlug": "acme"
+     },
+     "locationPolicy": "strict"
+    }
+   ]
+  },
+  {
+   "provider": "recruitee",
+   "entry": {
+    "company": "Acme",
+    "provider": "recruitee",
+    "slug": "acme"
+   },
+   "payload": {
+    "offers": [
+     {
+      "id": 77,
+      "title": "Web Developer",
+      "status": "published",
+      "remote": true,
+      "location": "Berlin, Germany",
+      "city": "Berlin",
+      "country": "Germany",
+      "careers_url": "https://acme.recruitee.com/o/web",
+      "description": "<p>D</p>",
+      "requirements": "<p>R</p>",
+      "published_at": "2026-10-28 13:28:31 UTC"
+     },
+     {
+      "id": 78,
+      "title": "Draft",
+      "status": "draft",
+      "careers_url": "https://x"
+     }
+    ]
+   },
+   "jobs": [
+    {
+     "source": "ats",
+     "jobId": "recruitee:acme:77",
+     "title": "Web Developer",
+     "company": "Acme",
+     "location": "Berlin, Germany · Berlin · Germany · Remote",
+     "link": "https://acme.recruitee.com/o/web",
+     "description": "<p>D</p>\n<p>R</p>",
+     "postedAt": "2026-10-28T13:28:31Z",
+     "remote": true,
+     "extra": {
+      "atsProvider": "recruitee",
+      "atsSlug": "acme"
+     },
+     "locationPolicy": "strict"
+    }
+   ]
+  },
+  {
+   "provider": "workable",
+   "entry": {
+    "company": "Acme",
+    "provider": "workable",
+    "slug": "acme"
+   },
+   "payload": {
+    "jobs": [
+     {
+      "shortcode": "W1",
+      "title": "Software Engineer",
+      "telecommuting": false,
+      "locations": [
+       {
+        "city": "Berlin",
+        "country": "Germany"
+       },
+       {
+        "city": "Hamburg",
+        "country": "Germany"
+       }
+      ],
+      "url": "https://apply.workable.com/acme/j/W1",
+      "description": "<p>W</p>",
+      "published_on": "2026-11-02"
+     },
+     {
+      "shortcode": "W2",
+      "title": "Engineer",
+      "telecommuting": true,
+      "city": "Paris",
+      "country": "France",
+      "shortlink": "https://apply.workable.com/j/W2",
+      "created_at": "2026-11-03"
+     }
+    ]
+   },
+   "jobs": [
+    {
+     "source": "ats",
+     "jobId": "workable:acme:W1",
+     "title": "Software Engineer",
+     "company": "Acme",
+     "location": "Berlin · Germany · Hamburg · Germany",
+     "link": "https://apply.workable.com/acme/j/W1",
+     "description": "<p>W</p>",
+     "postedAt": "2026-11-01T23:00:00Z",
+     "remote": false,
+     "extra": {
+      "atsProvider": "workable",
+      "atsSlug": "acme"
+     },
+     "locationPolicy": "strict"
+    },
+    {
+     "source": "ats",
+     "jobId": "workable:acme:W2",
+     "title": "Engineer",
+     "company": "Acme",
+     "location": "Paris · France · Remote",
+     "link": "https://apply.workable.com/j/W2",
+     "description": "",
+     "postedAt": "2026-11-02T23:00:00Z",
+     "remote": true,
+     "extra": {
+      "atsProvider": "workable",
+      "atsSlug": "acme"
+     },
+     "locationPolicy": "strict"
+    }
+   ]
+  }
+ ],
+ "ats_join": [
+  {
+   "parts": [
+    "Berlin",
+    "berlin",
+    " Munich ",
+    null,
+    ""
+   ],
+   "out": "Berlin · Munich"
+  },
+  {
+   "parts": [],
+   "out": ""
+  },
+  {
+   "parts": [
+    "Remote"
+   ],
+   "out": "Remote"
+  },
+  {
+   "parts": [
+    "A",
+    "B",
+    "a",
+    "Remote",
+    "remote"
+   ],
+   "out": "A · B · Remote"
+  }
+ ],
+ "digest_links": [
+  {
+   "job": {
+    "title": "Frontend Engineer",
+    "location": "Berlin",
+    "match_score": 8.5,
+    "source": "linkedin",
+    "link": "/jobs/view/1/",
+    "job_id": "4100000001",
+    "company": "Acme",
+    "status": "pending",
+    "special_match": false
+   },
+   "link": "https://www.linkedin.com/jobs/view/4100000001/"
+  },
+  {
+   "job": {
+    "title": "Web <Dev> & Co",
+    "location": "",
+    "match_score": 7,
+    "source": "ats",
+    "link": "https://boards.greenhouse.io/a/jobs/1",
+    "job_id": "greenhouse:a:1",
+    "company": "A & B \"Quotes\"",
+    "status": "applied",
+    "special_match": true
+   },
+   "link": "https://boards.greenhouse.io/a/jobs/1"
+  },
+  {
+   "job": {
+    "title": "",
+    "location": "Leipzig",
+    "match_score": 9.25,
+    "source": "indeed",
+    "link": "/viewjob?jk=abc",
+    "job_id": "",
+    "company": "",
+    "status": "unknown_status",
+    "special_match": false
+   },
+   "link": "https://www.indeed.com/viewjob?jk=abc"
+  },
+  {
+   "job": {
+    "title": "Product Engineer",
+    "location": "Remote",
+    "match_score": 7.0,
+    "source": "arbeitsagentur",
+    "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+    "job_id": "1",
+    "company": "Bund",
+    "status": "pending",
+    "special_match": false
+   },
+   "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1"
+  },
+  {
+   "job": {
+    "title": "Thing",
+    "location": "X",
+    "match_score": 7.5,
+    "source": "custom_source",
+    "link": "",
+    "job_id": "x",
+    "company": "C",
+    "status": "pending",
+    "special_match": false
+   },
+   "link": ""
+  }
+ ],
+ "digest_blocks": [
+  {
+   "index": 1,
+   "job": {
+    "title": "Frontend Engineer",
+    "location": "Berlin",
+    "match_score": 8.5,
+    "source": "linkedin",
+    "link": "/jobs/view/1/",
+    "job_id": "4100000001",
+    "company": "Acme",
+    "status": "pending",
+    "special_match": false
+   },
+   "block": "<b>1. Frontend Engineer</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>"
+  },
+  {
+   "index": 2,
+   "job": {
+    "title": "Web <Dev> & Co",
+    "location": "",
+    "match_score": 7,
+    "source": "ats",
+    "link": "https://boards.greenhouse.io/a/jobs/1",
+    "job_id": "greenhouse:a:1",
+    "company": "A & B \"Quotes\"",
+    "status": "applied",
+    "special_match": true
+   },
+   "block": "<b>2. Web &lt;Dev&gt; &amp; Co</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>"
+  },
+  {
+   "index": 3,
+   "job": {
+    "title": "",
+    "location": "Leipzig",
+    "match_score": 9.25,
+    "source": "indeed",
+    "link": "/viewjob?jk=abc",
+    "job_id": "",
+    "company": "",
+    "status": "unknown_status",
+    "special_match": false
+   },
+   "block": "<b>3. Untitled</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>"
+  },
+  {
+   "index": 4,
+   "job": {
+    "title": "Product Engineer",
+    "location": "Remote",
+    "match_score": 7.0,
+    "source": "arbeitsagentur",
+    "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+    "job_id": "1",
+    "company": "Bund",
+    "status": "pending",
+    "special_match": false
+   },
+   "block": "<b>4. Product Engineer</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>"
+  },
+  {
+   "index": 5,
+   "job": {
+    "title": "Thing",
+    "location": "X",
+    "match_score": 7.5,
+    "source": "custom_source",
+    "link": "",
+    "job_id": "x",
+    "company": "C",
+    "status": "pending",
+    "special_match": false
+   },
+   "block": "<b>5. Thing</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied"
+  }
+ ],
+ "digest_messages": [
+  {
+   "jobs": [
+    {
+     "title": "Frontend Engineer",
+     "location": "Berlin",
+     "match_score": 8.5,
+     "source": "linkedin",
+     "link": "/jobs/view/1/",
+     "job_id": "4100000001",
+     "company": "Acme",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Web <Dev> & Co",
+     "location": "",
+     "match_score": 7,
+     "source": "ats",
+     "link": "https://boards.greenhouse.io/a/jobs/1",
+     "job_id": "greenhouse:a:1",
+     "company": "A & B \"Quotes\"",
+     "status": "applied",
+     "special_match": true
+    },
+    {
+     "title": "",
+     "location": "Leipzig",
+     "match_score": 9.25,
+     "source": "indeed",
+     "link": "/viewjob?jk=abc",
+     "job_id": "",
+     "company": "",
+     "status": "unknown_status",
+     "special_match": false
+    },
+    {
+     "title": "Product Engineer",
+     "location": "Remote",
+     "match_score": 7.0,
+     "source": "arbeitsagentur",
+     "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+     "job_id": "1",
+     "company": "Bund",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Thing",
+     "location": "X",
+     "match_score": 7.5,
+     "source": "custom_source",
+     "link": "",
+     "job_id": "x",
+     "company": "C",
+     "status": "pending",
+     "special_match": false
+    }
+   ],
+   "label": "This run's matches",
+   "messages": [
+    "📋 This run's matches: <b>5</b>\n\n<b>1. Frontend Engineer</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>\n\n<b>2. Web &lt;Dev&gt; &amp; Co</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>\n\n<b>3. Untitled</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>\n\n<b>4. Product Engineer</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>\n\n<b>5. Thing</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied"
+   ]
+  },
+  {
+   "jobs": [
+    {
+     "title": "Job 0 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Berlin",
+     "match_score": 8.5,
+     "source": "linkedin",
+     "link": "/jobs/view/1/",
+     "job_id": "4100000001",
+     "company": "Acme",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "",
+     "match_score": 7,
+     "source": "ats",
+     "link": "https://boards.greenhouse.io/a/jobs/1",
+     "job_id": "greenhouse:a:1",
+     "company": "A & B \"Quotes\"",
+     "status": "applied",
+     "special_match": true
+    },
+    {
+     "title": "Job 2 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Leipzig",
+     "match_score": 9.25,
+     "source": "indeed",
+     "link": "/viewjob?jk=abc",
+     "job_id": "",
+     "company": "",
+     "status": "unknown_status",
+     "special_match": false
+    },
+    {
+     "title": "Job 3 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Remote",
+     "match_score": 7.0,
+     "source": "arbeitsagentur",
+     "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+     "job_id": "1",
+     "company": "Bund",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 4 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "X",
+     "match_score": 7.5,
+     "source": "custom_source",
+     "link": "",
+     "job_id": "x",
+     "company": "C",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 5 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Berlin",
+     "match_score": 8.5,
+     "source": "linkedin",
+     "link": "/jobs/view/1/",
+     "job_id": "4100000001",
+     "company": "Acme",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 6 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "",
+     "match_score": 7,
+     "source": "ats",
+     "link": "https://boards.greenhouse.io/a/jobs/1",
+     "job_id": "greenhouse:a:1",
+     "company": "A & B \"Quotes\"",
+     "status": "applied",
+     "special_match": true
+    },
+    {
+     "title": "Job 7 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Leipzig",
+     "match_score": 9.25,
+     "source": "indeed",
+     "link": "/viewjob?jk=abc",
+     "job_id": "",
+     "company": "",
+     "status": "unknown_status",
+     "special_match": false
+    },
+    {
+     "title": "Job 8 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Remote",
+     "match_score": 7.0,
+     "source": "arbeitsagentur",
+     "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+     "job_id": "1",
+     "company": "Bund",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 9 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "X",
+     "match_score": 7.5,
+     "source": "custom_source",
+     "link": "",
+     "job_id": "x",
+     "company": "C",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 10 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Berlin",
+     "match_score": 8.5,
+     "source": "linkedin",
+     "link": "/jobs/view/1/",
+     "job_id": "4100000001",
+     "company": "Acme",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 11 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "",
+     "match_score": 7,
+     "source": "ats",
+     "link": "https://boards.greenhouse.io/a/jobs/1",
+     "job_id": "greenhouse:a:1",
+     "company": "A & B \"Quotes\"",
+     "status": "applied",
+     "special_match": true
+    },
+    {
+     "title": "Job 12 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Leipzig",
+     "match_score": 9.25,
+     "source": "indeed",
+     "link": "/viewjob?jk=abc",
+     "job_id": "",
+     "company": "",
+     "status": "unknown_status",
+     "special_match": false
+    },
+    {
+     "title": "Job 13 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Remote",
+     "match_score": 7.0,
+     "source": "arbeitsagentur",
+     "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+     "job_id": "1",
+     "company": "Bund",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 14 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "X",
+     "match_score": 7.5,
+     "source": "custom_source",
+     "link": "",
+     "job_id": "x",
+     "company": "C",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 15 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Berlin",
+     "match_score": 8.5,
+     "source": "linkedin",
+     "link": "/jobs/view/1/",
+     "job_id": "4100000001",
+     "company": "Acme",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 16 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "",
+     "match_score": 7,
+     "source": "ats",
+     "link": "https://boards.greenhouse.io/a/jobs/1",
+     "job_id": "greenhouse:a:1",
+     "company": "A & B \"Quotes\"",
+     "status": "applied",
+     "special_match": true
+    },
+    {
+     "title": "Job 17 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Leipzig",
+     "match_score": 9.25,
+     "source": "indeed",
+     "link": "/viewjob?jk=abc",
+     "job_id": "",
+     "company": "",
+     "status": "unknown_status",
+     "special_match": false
+    },
+    {
+     "title": "Job 18 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Remote",
+     "match_score": 7.0,
+     "source": "arbeitsagentur",
+     "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+     "job_id": "1",
+     "company": "Bund",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 19 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "X",
+     "match_score": 7.5,
+     "source": "custom_source",
+     "link": "",
+     "job_id": "x",
+     "company": "C",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 20 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Berlin",
+     "match_score": 8.5,
+     "source": "linkedin",
+     "link": "/jobs/view/1/",
+     "job_id": "4100000001",
+     "company": "Acme",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 21 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "",
+     "match_score": 7,
+     "source": "ats",
+     "link": "https://boards.greenhouse.io/a/jobs/1",
+     "job_id": "greenhouse:a:1",
+     "company": "A & B \"Quotes\"",
+     "status": "applied",
+     "special_match": true
+    },
+    {
+     "title": "Job 22 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Leipzig",
+     "match_score": 9.25,
+     "source": "indeed",
+     "link": "/viewjob?jk=abc",
+     "job_id": "",
+     "company": "",
+     "status": "unknown_status",
+     "special_match": false
+    },
+    {
+     "title": "Job 23 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Remote",
+     "match_score": 7.0,
+     "source": "arbeitsagentur",
+     "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+     "job_id": "1",
+     "company": "Bund",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 24 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "X",
+     "match_score": 7.5,
+     "source": "custom_source",
+     "link": "",
+     "job_id": "x",
+     "company": "C",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 25 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Berlin",
+     "match_score": 8.5,
+     "source": "linkedin",
+     "link": "/jobs/view/1/",
+     "job_id": "4100000001",
+     "company": "Acme",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 26 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "",
+     "match_score": 7,
+     "source": "ats",
+     "link": "https://boards.greenhouse.io/a/jobs/1",
+     "job_id": "greenhouse:a:1",
+     "company": "A & B \"Quotes\"",
+     "status": "applied",
+     "special_match": true
+    },
+    {
+     "title": "Job 27 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Leipzig",
+     "match_score": 9.25,
+     "source": "indeed",
+     "link": "/viewjob?jk=abc",
+     "job_id": "",
+     "company": "",
+     "status": "unknown_status",
+     "special_match": false
+    },
+    {
+     "title": "Job 28 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Remote",
+     "match_score": 7.0,
+     "source": "arbeitsagentur",
+     "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+     "job_id": "1",
+     "company": "Bund",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 29 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "X",
+     "match_score": 7.5,
+     "source": "custom_source",
+     "link": "",
+     "job_id": "x",
+     "company": "C",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 30 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Berlin",
+     "match_score": 8.5,
+     "source": "linkedin",
+     "link": "/jobs/view/1/",
+     "job_id": "4100000001",
+     "company": "Acme",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 31 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "",
+     "match_score": 7,
+     "source": "ats",
+     "link": "https://boards.greenhouse.io/a/jobs/1",
+     "job_id": "greenhouse:a:1",
+     "company": "A & B \"Quotes\"",
+     "status": "applied",
+     "special_match": true
+    },
+    {
+     "title": "Job 32 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Leipzig",
+     "match_score": 9.25,
+     "source": "indeed",
+     "link": "/viewjob?jk=abc",
+     "job_id": "",
+     "company": "",
+     "status": "unknown_status",
+     "special_match": false
+    },
+    {
+     "title": "Job 33 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Remote",
+     "match_score": 7.0,
+     "source": "arbeitsagentur",
+     "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+     "job_id": "1",
+     "company": "Bund",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 34 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "X",
+     "match_score": 7.5,
+     "source": "custom_source",
+     "link": "",
+     "job_id": "x",
+     "company": "C",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 35 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Berlin",
+     "match_score": 8.5,
+     "source": "linkedin",
+     "link": "/jobs/view/1/",
+     "job_id": "4100000001",
+     "company": "Acme",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 36 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "",
+     "match_score": 7,
+     "source": "ats",
+     "link": "https://boards.greenhouse.io/a/jobs/1",
+     "job_id": "greenhouse:a:1",
+     "company": "A & B \"Quotes\"",
+     "status": "applied",
+     "special_match": true
+    },
+    {
+     "title": "Job 37 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Leipzig",
+     "match_score": 9.25,
+     "source": "indeed",
+     "link": "/viewjob?jk=abc",
+     "job_id": "",
+     "company": "",
+     "status": "unknown_status",
+     "special_match": false
+    },
+    {
+     "title": "Job 38 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Remote",
+     "match_score": 7.0,
+     "source": "arbeitsagentur",
+     "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+     "job_id": "1",
+     "company": "Bund",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 39 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "X",
+     "match_score": 7.5,
+     "source": "custom_source",
+     "link": "",
+     "job_id": "x",
+     "company": "C",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 40 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Berlin",
+     "match_score": 8.5,
+     "source": "linkedin",
+     "link": "/jobs/view/1/",
+     "job_id": "4100000001",
+     "company": "Acme",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 41 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "",
+     "match_score": 7,
+     "source": "ats",
+     "link": "https://boards.greenhouse.io/a/jobs/1",
+     "job_id": "greenhouse:a:1",
+     "company": "A & B \"Quotes\"",
+     "status": "applied",
+     "special_match": true
+    },
+    {
+     "title": "Job 42 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Leipzig",
+     "match_score": 9.25,
+     "source": "indeed",
+     "link": "/viewjob?jk=abc",
+     "job_id": "",
+     "company": "",
+     "status": "unknown_status",
+     "special_match": false
+    },
+    {
+     "title": "Job 43 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Remote",
+     "match_score": 7.0,
+     "source": "arbeitsagentur",
+     "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+     "job_id": "1",
+     "company": "Bund",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 44 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "X",
+     "match_score": 7.5,
+     "source": "custom_source",
+     "link": "",
+     "job_id": "x",
+     "company": "C",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 45 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Berlin",
+     "match_score": 8.5,
+     "source": "linkedin",
+     "link": "/jobs/view/1/",
+     "job_id": "4100000001",
+     "company": "Acme",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 46 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "",
+     "match_score": 7,
+     "source": "ats",
+     "link": "https://boards.greenhouse.io/a/jobs/1",
+     "job_id": "greenhouse:a:1",
+     "company": "A & B \"Quotes\"",
+     "status": "applied",
+     "special_match": true
+    },
+    {
+     "title": "Job 47 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Leipzig",
+     "match_score": 9.25,
+     "source": "indeed",
+     "link": "/viewjob?jk=abc",
+     "job_id": "",
+     "company": "",
+     "status": "unknown_status",
+     "special_match": false
+    },
+    {
+     "title": "Job 48 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Remote",
+     "match_score": 7.0,
+     "source": "arbeitsagentur",
+     "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+     "job_id": "1",
+     "company": "Bund",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 49 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "X",
+     "match_score": 7.5,
+     "source": "custom_source",
+     "link": "",
+     "job_id": "x",
+     "company": "C",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 50 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Berlin",
+     "match_score": 8.5,
+     "source": "linkedin",
+     "link": "/jobs/view/1/",
+     "job_id": "4100000001",
+     "company": "Acme",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 51 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "",
+     "match_score": 7,
+     "source": "ats",
+     "link": "https://boards.greenhouse.io/a/jobs/1",
+     "job_id": "greenhouse:a:1",
+     "company": "A & B \"Quotes\"",
+     "status": "applied",
+     "special_match": true
+    },
+    {
+     "title": "Job 52 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Leipzig",
+     "match_score": 9.25,
+     "source": "indeed",
+     "link": "/viewjob?jk=abc",
+     "job_id": "",
+     "company": "",
+     "status": "unknown_status",
+     "special_match": false
+    },
+    {
+     "title": "Job 53 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Remote",
+     "match_score": 7.0,
+     "source": "arbeitsagentur",
+     "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+     "job_id": "1",
+     "company": "Bund",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 54 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "X",
+     "match_score": 7.5,
+     "source": "custom_source",
+     "link": "",
+     "job_id": "x",
+     "company": "C",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 55 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Berlin",
+     "match_score": 8.5,
+     "source": "linkedin",
+     "link": "/jobs/view/1/",
+     "job_id": "4100000001",
+     "company": "Acme",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 56 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "",
+     "match_score": 7,
+     "source": "ats",
+     "link": "https://boards.greenhouse.io/a/jobs/1",
+     "job_id": "greenhouse:a:1",
+     "company": "A & B \"Quotes\"",
+     "status": "applied",
+     "special_match": true
+    },
+    {
+     "title": "Job 57 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Leipzig",
+     "match_score": 9.25,
+     "source": "indeed",
+     "link": "/viewjob?jk=abc",
+     "job_id": "",
+     "company": "",
+     "status": "unknown_status",
+     "special_match": false
+    },
+    {
+     "title": "Job 58 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Remote",
+     "match_score": 7.0,
+     "source": "arbeitsagentur",
+     "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+     "job_id": "1",
+     "company": "Bund",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 59 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "X",
+     "match_score": 7.5,
+     "source": "custom_source",
+     "link": "",
+     "job_id": "x",
+     "company": "C",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 60 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Berlin",
+     "match_score": 8.5,
+     "source": "linkedin",
+     "link": "/jobs/view/1/",
+     "job_id": "4100000001",
+     "company": "Acme",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 61 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "",
+     "match_score": 7,
+     "source": "ats",
+     "link": "https://boards.greenhouse.io/a/jobs/1",
+     "job_id": "greenhouse:a:1",
+     "company": "A & B \"Quotes\"",
+     "status": "applied",
+     "special_match": true
+    },
+    {
+     "title": "Job 62 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Leipzig",
+     "match_score": 9.25,
+     "source": "indeed",
+     "link": "/viewjob?jk=abc",
+     "job_id": "",
+     "company": "",
+     "status": "unknown_status",
+     "special_match": false
+    },
+    {
+     "title": "Job 63 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Remote",
+     "match_score": 7.0,
+     "source": "arbeitsagentur",
+     "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+     "job_id": "1",
+     "company": "Bund",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 64 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "X",
+     "match_score": 7.5,
+     "source": "custom_source",
+     "link": "",
+     "job_id": "x",
+     "company": "C",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 65 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Berlin",
+     "match_score": 8.5,
+     "source": "linkedin",
+     "link": "/jobs/view/1/",
+     "job_id": "4100000001",
+     "company": "Acme",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 66 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "",
+     "match_score": 7,
+     "source": "ats",
+     "link": "https://boards.greenhouse.io/a/jobs/1",
+     "job_id": "greenhouse:a:1",
+     "company": "A & B \"Quotes\"",
+     "status": "applied",
+     "special_match": true
+    },
+    {
+     "title": "Job 67 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Leipzig",
+     "match_score": 9.25,
+     "source": "indeed",
+     "link": "/viewjob?jk=abc",
+     "job_id": "",
+     "company": "",
+     "status": "unknown_status",
+     "special_match": false
+    },
+    {
+     "title": "Job 68 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "Remote",
+     "match_score": 7.0,
+     "source": "arbeitsagentur",
+     "link": "https://www.arbeitsagentur.de/jobsuche/jobdetail/1",
+     "job_id": "1",
+     "company": "Bund",
+     "status": "pending",
+     "special_match": false
+    },
+    {
+     "title": "Job 69 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "location": "X",
+     "match_score": 7.5,
+     "source": "custom_source",
+     "link": "",
+     "job_id": "x",
+     "company": "C",
+     "status": "pending",
+     "special_match": false
+    }
+   ],
+   "label": "Today's matches",
+   "messages": [
+    "📋 Today's matches: <b>70</b>\n\n<b>1. Job 0 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>\n\n<b>2. Job 1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>\n\n<b>3. Job 2 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>\n\n<b>4. Job 3 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>\n\n<b>5. Job 4 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied\n\n<b>6. Job 5 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>\n\n<b>7. Job 6 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>\n\n<b>8. Job 7 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>\n\n<b>9. Job 8 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>\n\n<b>10. Job 9 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied\n\n<b>11. Job 10 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>\n\n<b>12. Job 11 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>\n\n<b>13. Job 12 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>\n\n<b>14. Job 13 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>\n\n<b>15. Job 14 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied\n\n<b>16. Job 15 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>\n\n<b>17. Job 16 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>\n\n<b>18. Job 17 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>",
+    "📋 Today's matches: <b>70</b>\n\n<b>19. Job 18 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>\n\n<b>20. Job 19 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied\n\n<b>21. Job 20 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>\n\n<b>22. Job 21 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>\n\n<b>23. Job 22 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>\n\n<b>24. Job 23 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>\n\n<b>25. Job 24 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied\n\n<b>26. Job 25 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>\n\n<b>27. Job 26 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>\n\n<b>28. Job 27 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>\n\n<b>29. Job 28 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>\n\n<b>30. Job 29 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied\n\n<b>31. Job 30 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>\n\n<b>32. Job 31 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>\n\n<b>33. Job 32 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>\n\n<b>34. Job 33 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>\n\n<b>35. Job 34 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied\n\n<b>36. Job 35 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>",
+    "📋 Today's matches: <b>70</b>\n\n<b>37. Job 36 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>\n\n<b>38. Job 37 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>\n\n<b>39. Job 38 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>\n\n<b>40. Job 39 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied\n\n<b>41. Job 40 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>\n\n<b>42. Job 41 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>\n\n<b>43. Job 42 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>\n\n<b>44. Job 43 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>\n\n<b>45. Job 44 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied\n\n<b>46. Job 45 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>\n\n<b>47. Job 46 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>\n\n<b>48. Job 47 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>\n\n<b>49. Job 48 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>\n\n<b>50. Job 49 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied\n\n<b>51. Job 50 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>\n\n<b>52. Job 51 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>\n\n<b>53. Job 52 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>\n\n<b>54. Job 53 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>",
+    "📋 Today's matches: <b>70</b>\n\n<b>55. Job 54 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied\n\n<b>56. Job 55 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>\n\n<b>57. Job 56 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>\n\n<b>58. Job 57 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>\n\n<b>59. Job 58 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>\n\n<b>60. Job 59 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied\n\n<b>61. Job 60 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>\n\n<b>62. Job 61 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>\n\n<b>63. Job 62 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>\n\n<b>64. Job 63 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>\n\n<b>65. Job 64 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied\n\n<b>66. Job 65 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Berlin\n⭐ 8.5/10 · Linkedin\n🏷 Not Applied\n🔗 <a href=\"https://www.linkedin.com/jobs/view/4100000001/\">Open job</a>\n\n<b>67. Job 66 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 A &amp; B &quot;Quotes&quot;\n📍 N/A\n⭐ 7.0/10 · ATS\n★ Special Match\n🏷 Applied\n🔗 <a href=\"https://boards.greenhouse.io/a/jobs/1\">Open job</a>\n\n<b>68. Job 67 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 Leipzig\n⭐ 9.2/10 · Indeed\n🏷 unknown_status\n🔗 <a href=\"https://www.indeed.com/viewjob?jk=abc\">Open job</a>\n\n<b>69. Job 68 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n🏢 Bund\n📍 Remote\n⭐ 7.0/10 · Bundesagentur\n🏷 Not Applied\n🔗 <a href=\"https://www.arbeitsagentur.de/jobsuche/jobdetail/1\">Open job</a>\n\n<b>70. Job 69 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</b>\n📍 X\n⭐ 7.5/10 · Custom_Source\n🏷 Not Applied"
+   ]
+  }
+ ],
+ "summary_lines": [
+  {
+   "name": "arbeitnow",
+   "stats": {
+    "listed": 300,
+    "saved": 4,
+    "known": 20,
+    "german_filtered": 3,
+    "too_old": 2
+   },
+   "error": null,
+   "line": "• Arbeitnow API: 300 listed, 4 new saved, 20 already seen, 3 non-English, 2 posted >90d ago"
+  },
+  {
+   "name": "ats",
+   "stats": {
+    "listed": 50,
+    "would_save": 2,
+    "cross_source_duplicate": 1,
+    "not_germany": 10
+   },
+   "error": null,
+   "line": "• ATS: 50 listed, 2 new saved, 1 dup of other board, 10 outside DE"
+  },
+  {
+   "name": "adzuna",
+   "stats": {},
+   "error": "skipped — no API key (ADZUNA_APP_ID / ADZUNA_APP_KEY)",
+   "line": "• Adzuna API: skipped — no API key (ADZUNA_APP_ID / ADZUNA_APP_KEY)"
+  },
+  {
+   "name": "arbeitsagentur",
+   "stats": {},
+   "error": "HttpError: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+   "line": "⚠️ Bundesagentur: failed — HttpError: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  }
+ ]
+}

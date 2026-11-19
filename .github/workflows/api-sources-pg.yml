@@ -1,0 +1,82 @@
+# API job sources on the Next.js + Postgres stack (packages/pipeline).
+#
+# Manual only until the cutover: during the parallel week api-sources.yml
+# (Python + Mongo) keeps the daily schedule. At the cutover, move the
+# schedule here and remove it from api-sources.yml (docs/pipeline.md).
+name: API job sources (Postgres)
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "Posted within N days"
+        default: "1"
+      sources:
+        description: "Comma-separated: arbeitnow,arbeitsagentur,adzuna,ats"
+        default: "arbeitnow,arbeitsagentur,ats"
+
+concurrency:
+  group: api-sources-pg
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      TZ: Europe/Berlin
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      TELEGRAM_MESSAGE_THREAD_ID: ${{ secrets.TELEGRAM_MESSAGE_THREAD_ID }}
+      TELEGRAM_ALLOWED_USER_ID: ${{ secrets.TELEGRAM_ALLOWED_USER_ID }}
+      ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
+      ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
+      AI_MODEL: ${{ secrets.AI_MODEL }}
+      MATCH_THRESHOLD: ${{ secrets.MATCH_THRESHOLD }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check required secrets
+        env:
+          USER_PROFILE_MD: ${{ secrets.USER_PROFILE_MD }}
+        run: |
+          missing=0
+          for v in USER_PROFILE_MD DATABASE_URL OPENAI_API_KEY TELEGRAM_BOT_TOKEN TELEGRAM_CHAT_ID; do
+            val="${!v}"
+            if [ -n "$val" ]; then echo "OK      $v (${#val} chars)"
+            else echo "MISSING $v"; missing=1; fi
+          done
+          exit $missing
+
+      - name: Write the CV for the matcher
+        env:
+          USER_PROFILE_MD: ${{ secrets.USER_PROFILE_MD }}
+        run: printf '%s' "$USER_PROFILE_MD" > docs/user_profile.md
+
+      - name: Drop empty optional settings
+        # An unset secret arrives as "", which would override code defaults
+        run: |
+          for v in AI_MODEL MATCH_THRESHOLD TELEGRAM_MESSAGE_THREAD_ID; do
+            if [ -z "${!v}" ]; then echo "$v" >> unset_vars; fi
+          done
+          touch unset_vars
+
+      - name: Run API sources pipeline
+        env:
+          RUN_DAYS: ${{ github.event.inputs.days || '1' }}
+          RUN_SOURCES: ${{ github.event.inputs.sources || 'arbeitnow,arbeitsagentur,ats' }}
+        run: |
+          while read -r v; do [ -n "$v" ] && unset "$v"; done < unset_vars
+          pnpm pipeline sources --days "$RUN_DAYS" --sources "$RUN_SOURCES"

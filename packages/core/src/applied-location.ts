@@ -72,7 +72,8 @@ function titlePlace(name: string): string {
 
 const isCountryOrRegion = (token: string) => COUNTRY_ONLY.has(token) || REGION_ONLY.has(token);
 
-function cityInText(textLower: string): string | null {
+/** The canonical city when a known alias appears as a whole token. */
+export function cityInText(textLower: string): string | null {
   for (const [alias, canon] of CITY_ALIASES_BY_LEN) {
     if (new RegExp(`${NOT_WORD_BEHIND}${escapeRe(alias)}${NOT_WORD_AHEAD}`).test(textLower)) return canon;
   }

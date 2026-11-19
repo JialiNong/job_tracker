@@ -35,6 +35,8 @@ export interface MatchSummary {
   failed: number;
   gates: Record<string, number>;
   stoppedReason: string | null;
+  /** Tracker cards this run created (the Telegram digest lists them). */
+  matchedCardIds: string[];
 }
 
 /** The stored result for a job whose model call failed (mark_job_as_matched with score 0). */
@@ -59,7 +61,7 @@ export async function matchNewJobs(prisma: PrismaClient, opts: MatchOptions): Pr
     take: opts.limit,
     select: JOB_SELECT,
   });
-  const summary: MatchSummary = { found: jobs.length, analysed: 0, matched: 0, failed: 0, gates: {}, stoppedReason: null };
+  const summary: MatchSummary = { found: jobs.length, analysed: 0, matched: 0, failed: 0, gates: {}, stoppedReason: null, matchedCardIds: [] };
   log(`Found ${jobs.length} new jobs to analyze`);
   const cache = prismaCompanyCache(prisma);
 
@@ -94,6 +96,7 @@ export async function matchNewJobs(prisma: PrismaClient, opts: MatchOptions): Pr
     for (const reason of analysis.match_reasons) log(`  • ${reason.slice(0, 200)}`);
 
     const onTracker = analysis.match_score >= opts.threshold && !isBlockedMatchCompany(job.company) && !job.application;
+    const cardId = newRecordId();
     await prisma.$transaction(async (tx) => {
       await saveAnalysis(tx, {
         jobId: job.id, analysis, model, trigger: "pipeline", profileKey: profileKeyOf(analysis, job.company),
@@ -103,12 +106,13 @@ export async function matchNewJobs(prisma: PrismaClient, opts: MatchOptions): Pr
       if (onTracker) {
         const now = clockNow();
         await tx.application.create({
-          data: { id: newRecordId(), jobId: job.id, status: "pending", origin: foundOrigin(job.source), addedAt: now, updatedAt: now },
+          data: { id: cardId, jobId: job.id, status: "pending", origin: foundOrigin(job.source), addedAt: now, updatedAt: now },
         });
       }
     });
     if (onTracker) {
       summary.matched += 1;
+      summary.matchedCardIds.push(cardId);
       log(`✓ Saved matched job: ${job.title} (score: ${analysis.match_score})`);
     } else if (analysis.match_score >= opts.threshold) {
       log(job.application ? "Already on the Tracker" : `✗ Blocked company (${JSON.stringify(job.company)}) — not put on the Tracker`);
