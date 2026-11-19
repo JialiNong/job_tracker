@@ -1,0 +1,31 @@
+{
+ "body": {
+  "locations": [
+   {
+    "count": 12,
+    "name": "Berlin"
+   },
+   {
+    "count": 1,
+    "name": "Cologne"
+   },
+   {
+    "count": 1,
+    "name": "Remote"
+   },
+   {
+    "count": 1,
+    "name": "Munich"
+   },
+   {
+    "count": 1,
+    "name": "Hamburg"
+   }
+  ],
+  "total": 16
+ },
+ "request": {
+  "path": "/api/stats/locations"
+ },
+ "status": 200
+}

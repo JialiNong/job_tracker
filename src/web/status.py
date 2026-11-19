@@ -6,6 +6,8 @@ hydration, progress chips, and the fields PATCH /status and /timeline write.
 """
 import os
 from datetime import datetime
+
+from core import clock
 from typing import Optional
 
 from core.db_mongo import APPLIED_STATUSES
@@ -403,7 +405,7 @@ def _normalize_timeline(raw) -> list:
         step = item.get("step")
         if step not in TIMELINE_STEPS:
             continue
-        at = _parse_timeline_at(item.get("at")) or datetime.now()
+        at = _parse_timeline_at(item.get("at")) or clock.now()
         out.append({"step": step, "at": at})
     return _sort_timeline(out)
 
@@ -421,19 +423,19 @@ def _hydrate_timeline(job: dict) -> list:
     # Side-status jobs that were applied still show that progress.
     if job.get("applied_at") or status in APPLIED_STATUSES:
         at = job.get("applied_at") or job.get("updated_at") or job.get("matched_at")
-        seeded = [{"step": "applied", "at": at or datetime.now()}]
+        seeded = [{"step": "applied", "at": at or clock.now()}]
         if status == "rejected":
-            seeded.append({"step": "rejected", "at": job.get("updated_at") or at or datetime.now()})
+            seeded.append({"step": "rejected", "at": job.get("updated_at") or at or clock.now()})
         elif status == "offer":
-            seeded.append({"step": "offer", "at": job.get("updated_at") or at or datetime.now()})
+            seeded.append({"step": "offer", "at": job.get("updated_at") or at or clock.now()})
         elif status == "interview":
-            seeded.append({"step": "interview_1", "at": job.get("updated_at") or at or datetime.now()})
+            seeded.append({"step": "interview_1", "at": job.get("updated_at") or at or clock.now()})
         elif status == CANCELLED_TIMELINE_STEP:
-            when = job.get("updated_at") or at or datetime.now()
+            when = job.get("updated_at") or at or clock.now()
             seeded.append({"step": "interview_invite", "at": when})
             seeded.append({"step": CANCELLED_TIMELINE_STEP, "at": when})
         elif status == "screening":
-            seeded.append({"step": "screening", "at": job.get("updated_at") or at or datetime.now()})
+            seeded.append({"step": "screening", "at": job.get("updated_at") or at or clock.now()})
         return seeded
     return []
 

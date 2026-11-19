@@ -1,0 +1,61 @@
+{
+ "after": {
+  "/api/timeout-jobs": {
+   "body": {
+    "jobs": [],
+    "page": 1,
+    "pages": 1,
+    "total": 0
+   },
+   "status": 200
+  },
+  "/api/timeout-jobs?review_status=dismissed": {
+   "body": {
+    "jobs": [
+     {
+      "_id": "{timeout_jobs:1}",
+      "company": "Hooli Berlin",
+      "created_at": "2026-11-10 06:00",
+      "job_id": "4300000001",
+      "keyword": "frontend",
+      "link": "https://www.linkedin.com/jobs/view/4300000001/",
+      "location": "Berlin, Germany",
+      "reason": "detail_timeout",
+      "review_status": "dismissed",
+      "source": "linkedin",
+      "timeout_count": 2,
+      "title": "Frontend Engineer",
+      "updated_at": "2026-11-13 12:00"
+     },
+     {
+      "_id": "{timeout_jobs:2}",
+      "company": "Starling Apps",
+      "created_at": "2026-11-01 06:00",
+      "job_id": "4300000002",
+      "keyword": "react",
+      "link": "https://www.linkedin.com/jobs/view/4300000002/",
+      "location": "Remote",
+      "reason": "detail_timeout",
+      "review_status": "dismissed",
+      "source": "linkedin",
+      "timeout_count": 1,
+      "title": "React Developer",
+      "updated_at": "2026-11-02 06:00"
+     }
+    ],
+    "page": 1,
+    "pages": 1,
+    "total": 2
+   },
+   "status": 200
+  }
+ },
+ "body": {
+  "ok": true
+ },
+ "request": {
+  "method": "POST",
+  "path": "/api/timeout-jobs/{timeout_jobs:1}/dismiss"
+ },
+ "status": 200
+}

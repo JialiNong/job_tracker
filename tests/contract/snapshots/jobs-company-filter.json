@@ -1,0 +1,344 @@
+{
+ "body": {
+  "jobs": [
+   {
+    "_id": "{matched_jobs:21}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "167 applicants",
+    "application_qa": [],
+    "application_timeline": [],
+    "applied_at": null,
+    "can_fetch_details": false,
+    "company": "Granite Cloud",
+    "company_history": [
+     {
+      "_id": "{matched_jobs:18}",
+      "applicant_position": null,
+      "applied_at": "",
+      "last_step_at": "",
+      "matched_at": "2026-10-19",
+      "progress": "",
+      "source": "linkedin",
+      "status": "unsuitable",
+      "title": "Backend Engineer"
+     },
+     {
+      "_id": "{matched_jobs:13}",
+      "applicant_position": null,
+      "applied_at": "2026-09-24",
+      "last_step_at": "2026-09-30",
+      "matched_at": "2026-09-23",
+      "progress": "rejected",
+      "source": "linkedin",
+      "status": "rejected",
+      "title": "Full Stack Developer"
+     }
+    ],
+    "company_history_total": 2,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000021",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "React, Spring Boot",
+     "stack_fit": "strong",
+     "summary": "Product team working with React, Spring Boot."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000021/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on React, Spring Boot experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-11-05 09:21",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "prev_rejected",
+    "summary": "Fullstack balanced role on a React, Spring Boot stack.",
+    "title": "Frontend Engineer",
+    "updated_at": "2026-11-05 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, Spring Boot"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:18}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "146 applicants",
+    "application_qa": [],
+    "application_timeline": [],
+    "applied_at": null,
+    "can_fetch_details": false,
+    "company": "Granite Cloud",
+    "company_history": [
+     {
+      "_id": "{matched_jobs:21}",
+      "applicant_position": null,
+      "applied_at": "",
+      "last_step_at": "",
+      "matched_at": "2026-11-05",
+      "progress": "",
+      "source": "linkedin",
+      "status": "prev_rejected",
+      "title": "Frontend Engineer"
+     },
+     {
+      "_id": "{matched_jobs:13}",
+      "applicant_position": null,
+      "applied_at": "2026-09-24",
+      "last_step_at": "2026-09-30",
+      "matched_at": "2026-09-23",
+      "progress": "rejected",
+      "source": "linkedin",
+      "status": "rejected",
+      "title": "Full Stack Developer"
+     }
+    ],
+    "company_history_total": 2,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000018",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "Java, Spring Boot",
+     "stack_fit": "strong",
+     "summary": "Product team working with Java, Spring Boot."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000018/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on Java, Spring Boot experience matches the role"
+    ],
+    "match_score": 7.0,
+    "matched_at": "2026-10-19 09:18",
+    "missing_requirements": [
+     "Production experience with Kubernetes"
+    ],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "unsuitable",
+    "summary": "Fullstack balanced role on a Java, Spring Boot stack.",
+    "title": "Backend Engineer",
+    "updated_at": "2026-10-19 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Java, Spring Boot"
+     ],
+     "unmatched": [
+      "Kubernetes in production"
+     ]
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:13}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "111 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-09-24 10:00",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-09-30 18:00",
+      "label": "Rejected",
+      "step": "rejected"
+     }
+    ],
+    "applied_at": "2026-09-24 10:00",
+    "can_fetch_details": false,
+    "company": "Granite Cloud",
+    "company_history": [
+     {
+      "_id": "{matched_jobs:21}",
+      "applicant_position": null,
+      "applied_at": "",
+      "last_step_at": "",
+      "matched_at": "2026-11-05",
+      "progress": "",
+      "source": "linkedin",
+      "status": "prev_rejected",
+      "title": "Frontend Engineer"
+     },
+     {
+      "_id": "{matched_jobs:18}",
+      "applicant_position": null,
+      "applied_at": "",
+      "last_step_at": "",
+      "matched_at": "2026-10-19",
+      "progress": "",
+      "source": "linkedin",
+      "status": "unsuitable",
+      "title": "Backend Engineer"
+     }
+    ],
+    "company_history_total": 2,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000013",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "React, Spring Boot, Kotlin",
+     "stack_fit": "strong",
+     "summary": "Product team working with React, Spring Boot, Kotlin."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000013/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on React, Spring Boot, Kotlin experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-09-23 09:13",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "Wanted Java seniority.",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "rejected",
+    "summary": "Fullstack balanced role on a React, Spring Boot, Kotlin stack.",
+    "title": "Full Stack Developer",
+    "updated_at": "2026-09-24 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, Spring Boot, Kotlin"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   }
+  ],
+  "page": 1,
+  "page_size": 20,
+  "pages": 1,
+  "total": 3
+ },
+ "request": {
+  "path": "/api/jobs?status=all&country=all&company=Granite%20Cloud"
+ },
+ "status": 200
+}

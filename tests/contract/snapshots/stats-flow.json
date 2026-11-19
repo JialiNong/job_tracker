@@ -1,0 +1,226 @@
+{
+ "body": {
+  "sankey": {
+   "links": [
+    {
+     "source": "applied",
+     "target": "waiting",
+     "value": 7
+    },
+    {
+     "source": "applied",
+     "target": "screening",
+     "value": 1
+    },
+    {
+     "source": "applied",
+     "target": "interview",
+     "value": 4
+    },
+    {
+     "source": "interview",
+     "target": "round_2",
+     "value": 1
+    },
+    {
+     "source": "interview",
+     "target": "cancelled",
+     "value": 1
+    },
+    {
+     "source": "interview",
+     "target": "offer",
+     "value": 1
+    },
+    {
+     "source": "applied",
+     "target": "rejected",
+     "value": 3
+    },
+    {
+     "source": "interview",
+     "target": "rejected_1",
+     "value": 1
+    }
+   ],
+   "nodes": [
+    {
+     "column": 0,
+     "id": "applied",
+     "label": "Applied",
+     "tone": "applied",
+     "value": 15
+    },
+    {
+     "column": 1,
+     "id": "interview",
+     "label": "Interview",
+     "tone": "interview",
+     "value": 4
+    },
+    {
+     "column": 1,
+     "id": "screening",
+     "label": "Screening",
+     "tone": "screening",
+     "value": 1
+    },
+    {
+     "column": 1,
+     "id": "waiting",
+     "label": "Waiting",
+     "tone": "waiting",
+     "value": 7
+    },
+    {
+     "column": 1,
+     "id": "rejected",
+     "label": "Rejected",
+     "tone": "rejected",
+     "value": 3
+    },
+    {
+     "column": 2,
+     "id": "cancelled",
+     "label": "Interview cancelled",
+     "tone": "cancelled",
+     "value": 1
+    },
+    {
+     "column": 2,
+     "id": "rejected_1",
+     "label": "Round 1 rejected",
+     "tone": "rejected",
+     "value": 1
+    },
+    {
+     "column": 2,
+     "id": "round_2",
+     "label": "After round 2",
+     "tone": "interview",
+     "value": 1
+    },
+    {
+     "column": 2,
+     "id": "offer",
+     "label": "Offer",
+     "tone": "offer",
+     "value": 1
+    }
+   ],
+   "total": 15
+  },
+  "weekly": {
+   "totals": {
+    "indeed": 2,
+    "linkedin": 12,
+    "other": 2,
+    "total": 16
+   },
+   "weeks": [
+    {
+     "indeed": 0,
+     "linkedin": 1,
+     "other": 0,
+     "total": 1,
+     "week_start": "2026-08-10"
+    },
+    {
+     "indeed": 0,
+     "linkedin": 0,
+     "other": 0,
+     "total": 0,
+     "week_start": "2026-08-17"
+    },
+    {
+     "indeed": 0,
+     "linkedin": 2,
+     "other": 0,
+     "total": 2,
+     "week_start": "2026-08-24"
+    },
+    {
+     "indeed": 0,
+     "linkedin": 1,
+     "other": 0,
+     "total": 1,
+     "week_start": "2026-08-31"
+    },
+    {
+     "indeed": 1,
+     "linkedin": 0,
+     "other": 0,
+     "total": 1,
+     "week_start": "2026-09-07"
+    },
+    {
+     "indeed": 0,
+     "linkedin": 1,
+     "other": 1,
+     "total": 2,
+     "week_start": "2026-09-14"
+    },
+    {
+     "indeed": 0,
+     "linkedin": 1,
+     "other": 0,
+     "total": 1,
+     "week_start": "2026-09-21"
+    },
+    {
+     "indeed": 0,
+     "linkedin": 2,
+     "other": 0,
+     "total": 2,
+     "week_start": "2026-09-28"
+    },
+    {
+     "indeed": 0,
+     "linkedin": 1,
+     "other": 0,
+     "total": 1,
+     "week_start": "2026-10-05"
+    },
+    {
+     "indeed": 0,
+     "linkedin": 1,
+     "other": 0,
+     "total": 1,
+     "week_start": "2026-10-12"
+    },
+    {
+     "indeed": 0,
+     "linkedin": 0,
+     "other": 0,
+     "total": 0,
+     "week_start": "2026-10-19"
+    },
+    {
+     "indeed": 0,
+     "linkedin": 0,
+     "other": 0,
+     "total": 0,
+     "week_start": "2026-10-26"
+    },
+    {
+     "indeed": 1,
+     "linkedin": 1,
+     "other": 0,
+     "total": 2,
+     "week_start": "2026-11-02"
+    },
+    {
+     "indeed": 0,
+     "linkedin": 1,
+     "other": 1,
+     "total": 2,
+     "week_start": "2026-11-09"
+    }
+   ]
+  }
+ },
+ "request": {
+  "path": "/api/stats/flow"
+ },
+ "status": 200
+}

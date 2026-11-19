@@ -1,7 +1,7 @@
 """Known-job lookup across jobs / matched_jobs / timeout_jobs, plus timeout review."""
 from __future__ import annotations
 
-from datetime import datetime
+from core import clock
 
 from core.job_url import indeed_job_id_variants, posting_key, posting_key_fields
 from core.mongo.client import COLLECTION_NAME, TIMEOUT_JOBS_COLLECTION, get_db
@@ -188,7 +188,7 @@ def save_timeout_job(
     if db["matched_jobs"].find_one(id_query, {"_id": 1}):
         return False
 
-    now = datetime.now()
+    now = clock.now()
     col = db[TIMEOUT_JOBS_COLLECTION]
     existing = col.find_one(id_query)
     if existing and existing.get("review_status") == "added":

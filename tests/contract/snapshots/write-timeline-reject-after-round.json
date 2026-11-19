@@ -1,0 +1,373 @@
+{
+ "after": {
+  "/api/jobs/{matched_jobs:10}": {
+   "body": {
+    "_id": "{matched_jobs:10}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "90 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-10-09 10:00",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-10-16 09:00",
+      "label": "Invite",
+      "step": "interview_invite"
+     },
+     {
+      "at": "2026-10-20 14:00",
+      "label": "Round 1",
+      "step": "interview_1"
+     },
+     {
+      "at": "2026-11-12 18:00",
+      "label": "Rejected",
+      "step": "rejected"
+     }
+    ],
+    "applied_at": "2026-10-09 10:00",
+    "can_fetch_details": false,
+    "company": "Tidewater",
+    "company_history": [],
+    "company_history_total": 0,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000010",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "Next.js, tRPC, Prisma, PostgreSQL",
+     "stack_fit": "strong",
+     "summary": "Product team working with Next.js, tRPC, Prisma, PostgreSQL."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000010/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on Next.js, tRPC, Prisma, PostgreSQL experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-10-08 09:10",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "rejected",
+    "summary": "Fullstack balanced role on a Next.js, tRPC, Prisma, PostgreSQL stack.",
+    "title": "Full Stack Engineer",
+    "updated_at": "2026-11-13 12:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Next.js, tRPC, Prisma, PostgreSQL"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   "status": 200
+  },
+  "/api/stats/flow": {
+   "body": {
+    "sankey": {
+     "links": [
+      {
+       "source": "applied",
+       "target": "waiting",
+       "value": 7
+      },
+      {
+       "source": "applied",
+       "target": "screening",
+       "value": 1
+      },
+      {
+       "source": "applied",
+       "target": "interview",
+       "value": 4
+      },
+      {
+       "source": "interview",
+       "target": "rejected_1",
+       "value": 2
+      },
+      {
+       "source": "interview",
+       "target": "cancelled",
+       "value": 1
+      },
+      {
+       "source": "interview",
+       "target": "offer",
+       "value": 1
+      },
+      {
+       "source": "applied",
+       "target": "rejected",
+       "value": 3
+      }
+     ],
+     "nodes": [
+      {
+       "column": 0,
+       "id": "applied",
+       "label": "Applied",
+       "tone": "applied",
+       "value": 15
+      },
+      {
+       "column": 1,
+       "id": "interview",
+       "label": "Interview",
+       "tone": "interview",
+       "value": 4
+      },
+      {
+       "column": 1,
+       "id": "screening",
+       "label": "Screening",
+       "tone": "screening",
+       "value": 1
+      },
+      {
+       "column": 1,
+       "id": "waiting",
+       "label": "Waiting",
+       "tone": "waiting",
+       "value": 7
+      },
+      {
+       "column": 1,
+       "id": "rejected",
+       "label": "Rejected",
+       "tone": "rejected",
+       "value": 3
+      },
+      {
+       "column": 2,
+       "id": "cancelled",
+       "label": "Interview cancelled",
+       "tone": "cancelled",
+       "value": 1
+      },
+      {
+       "column": 2,
+       "id": "rejected_1",
+       "label": "Round 1 rejected",
+       "tone": "rejected",
+       "value": 2
+      },
+      {
+       "column": 2,
+       "id": "offer",
+       "label": "Offer",
+       "tone": "offer",
+       "value": 1
+      }
+     ],
+     "total": 15
+    },
+    "weekly": {
+     "totals": {
+      "indeed": 2,
+      "linkedin": 12,
+      "other": 2,
+      "total": 16
+     },
+     "weeks": [
+      {
+       "indeed": 0,
+       "linkedin": 1,
+       "other": 0,
+       "total": 1,
+       "week_start": "2026-08-10"
+      },
+      {
+       "indeed": 0,
+       "linkedin": 0,
+       "other": 0,
+       "total": 0,
+       "week_start": "2026-08-17"
+      },
+      {
+       "indeed": 0,
+       "linkedin": 2,
+       "other": 0,
+       "total": 2,
+       "week_start": "2026-08-24"
+      },
+      {
+       "indeed": 0,
+       "linkedin": 1,
+       "other": 0,
+       "total": 1,
+       "week_start": "2026-08-31"
+      },
+      {
+       "indeed": 1,
+       "linkedin": 0,
+       "other": 0,
+       "total": 1,
+       "week_start": "2026-09-07"
+      },
+      {
+       "indeed": 0,
+       "linkedin": 1,
+       "other": 1,
+       "total": 2,
+       "week_start": "2026-09-14"
+      },
+      {
+       "indeed": 0,
+       "linkedin": 1,
+       "other": 0,
+       "total": 1,
+       "week_start": "2026-09-21"
+      },
+      {
+       "indeed": 0,
+       "linkedin": 2,
+       "other": 0,
+       "total": 2,
+       "week_start": "2026-09-28"
+      },
+      {
+       "indeed": 0,
+       "linkedin": 1,
+       "other": 0,
+       "total": 1,
+       "week_start": "2026-10-05"
+      },
+      {
+       "indeed": 0,
+       "linkedin": 1,
+       "other": 0,
+       "total": 1,
+       "week_start": "2026-10-12"
+      },
+      {
+       "indeed": 0,
+       "linkedin": 0,
+       "other": 0,
+       "total": 0,
+       "week_start": "2026-10-19"
+      },
+      {
+       "indeed": 0,
+       "linkedin": 0,
+       "other": 0,
+       "total": 0,
+       "week_start": "2026-10-26"
+      },
+      {
+       "indeed": 1,
+       "linkedin": 1,
+       "other": 0,
+       "total": 2,
+       "week_start": "2026-11-02"
+      },
+      {
+       "indeed": 0,
+       "linkedin": 1,
+       "other": 1,
+       "total": 2,
+       "week_start": "2026-11-09"
+      }
+     ]
+    }
+   },
+   "status": 200
+  }
+ },
+ "body": {
+  "application_timeline": [
+   {
+    "at": "2026-10-09 10:00",
+    "label": "Applied",
+    "step": "applied"
+   },
+   {
+    "at": "2026-10-16 09:00",
+    "label": "Invite",
+    "step": "interview_invite"
+   },
+   {
+    "at": "2026-10-20 14:00",
+    "label": "Round 1",
+    "step": "interview_1"
+   },
+   {
+    "at": "2026-11-12 18:00",
+    "label": "Rejected",
+    "step": "rejected"
+   }
+  ],
+  "applied_at": "2026-10-09 10:00",
+  "ok": true,
+  "status": "rejected"
+ },
+ "request": {
+  "body": {
+   "timeline": [
+    {
+     "at": "2026-10-09 10:00",
+     "step": "applied"
+    },
+    {
+     "at": "2026-10-16 09:00",
+     "step": "interview_invite"
+    },
+    {
+     "at": "2026-10-20 14:00",
+     "step": "interview_1"
+    },
+    {
+     "at": "2026-11-12 18:00",
+     "step": "rejected"
+    }
+   ]
+  },
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:10}/timeline"
+ },
+ "status": 200
+}

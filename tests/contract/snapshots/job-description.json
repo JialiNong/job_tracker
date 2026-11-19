@@ -1,0 +1,9 @@
+{
+ "body": {
+  "description": "About the role. You will join a small product team and ship features end to end. Our stack: Vue, Nuxt, Node.js, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Nuxt, Node.js, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Nuxt, Node.js, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. "
+ },
+ "request": {
+  "path": "/api/jobs/{matched_jobs:2}/description"
+ },
+ "status": 200
+}

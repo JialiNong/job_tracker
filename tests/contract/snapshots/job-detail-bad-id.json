@@ -1,0 +1,9 @@
+{
+ "body": {
+  "error": "Invalid job ID"
+ },
+ "request": {
+  "path": "/api/jobs/not-an-id"
+ },
+ "status": 400
+}

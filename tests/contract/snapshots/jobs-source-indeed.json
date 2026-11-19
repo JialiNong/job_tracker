@@ -1,0 +1,399 @@
+{
+ "body": {
+  "jobs": [
+   {
+    "_id": "{matched_jobs:2}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "34 applicants",
+    "application_qa": [],
+    "application_timeline": [],
+    "applied_at": null,
+    "can_fetch_details": false,
+    "company": "Bluefin GmbH",
+    "company_history": [
+     {
+      "_id": "{matched_jobs:20}",
+      "applicant_position": null,
+      "applied_at": "2026-08-30",
+      "last_step_at": "2026-08-30",
+      "matched_at": "2026-08-29",
+      "progress": "applied",
+      "source": "linkedin",
+      "status": "closed_no_reply",
+      "title": "Full Stack Engineer"
+     }
+    ],
+    "company_history_total": 1,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [
+     "Hamburg"
+    ],
+    "job_id": "4100000002",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "Vue, Nuxt, Node.js, PostgreSQL",
+     "stack_fit": "strong",
+     "summary": "Product team working with Vue, Nuxt, Node.js, PostgreSQL."
+    },
+    "link": "https://de.indeed.com/viewjob?jk=0000000000000002",
+    "location": "Hamburg, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on Vue, Nuxt, Node.js, PostgreSQL experience matches the role"
+    ],
+    "match_score": 7.5,
+    "matched_at": "2026-11-12 09:02",
+    "missing_requirements": [
+     "Production experience with Kubernetes"
+    ],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "indeed",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "pending",
+    "summary": "Fullstack balanced role on a Vue, Nuxt, Node.js, PostgreSQL stack.",
+    "title": "Full Stack Developer",
+    "updated_at": "2026-11-12 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Vue, Nuxt, Node.js, PostgreSQL"
+     ],
+     "unmatched": [
+      "Kubernetes in production"
+     ]
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:24}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "188 applicants",
+    "application_qa": [],
+    "application_timeline": [],
+    "applied_at": null,
+    "can_fetch_details": false,
+    "company": "Larkspur",
+    "company_history": [
+     {
+      "_id": "{matched_jobs:4}",
+      "applicant_position": null,
+      "applied_at": "",
+      "last_step_at": "",
+      "matched_at": "2026-11-10",
+      "progress": "",
+      "source": "ats",
+      "status": "pending",
+      "title": "Product Engineer"
+     }
+    ],
+    "company_history_total": 1,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000024",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "React, NestJS",
+     "stack_fit": "strong",
+     "summary": "Product team working with React, NestJS."
+    },
+    "link": "https://de.indeed.com/viewjob?jk=0000000000000018",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on React, NestJS experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-11-09 09:24",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "indeed",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "duplicate",
+    "summary": "Fullstack balanced role on a React, NestJS stack.",
+    "title": "Frontend Engineer",
+    "updated_at": "2026-11-09 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, NestJS"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:6}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "62 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-11-04 15:00",
+      "label": "Applied",
+      "step": "applied"
+     }
+    ],
+    "applied_at": "2026-11-04 10:00",
+    "can_fetch_details": false,
+    "company": "Quill & Co",
+    "company_history": [],
+    "company_history_total": 0,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000006",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "Vue, Laravel, PHP",
+     "stack_fit": "strong",
+     "summary": "Product team working with Vue, Laravel, PHP."
+    },
+    "link": "https://de.indeed.com/viewjob?jk=0000000000000006",
+    "location": "Köln, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on Vue, Laravel, PHP experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-10-24 09:06",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "Referral from a former colleague.",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "indeed",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "applied",
+    "summary": "Fullstack balanced role on a Vue, Laravel, PHP stack.",
+    "title": "Software Engineer (Frontend)",
+    "updated_at": "2026-11-04 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Vue, Laravel, PHP"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:14}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "118 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-09-09 10:00",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-09-16 09:00",
+      "label": "Invite",
+      "step": "interview_invite"
+     },
+     {
+      "at": "2026-09-19 15:00",
+      "label": "Round 1",
+      "step": "interview_1"
+     },
+     {
+      "at": "2026-09-24 18:00",
+      "label": "Rejected",
+      "step": "rejected"
+     }
+    ],
+    "applied_at": "2026-09-09 10:00",
+    "can_fetch_details": false,
+    "company": "Ember Analytics",
+    "company_history": [],
+    "company_history_total": 0,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000014",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "Vue, Django, Python",
+     "stack_fit": "strong",
+     "summary": "Product team working with Vue, Django, Python."
+    },
+    "link": "https://de.indeed.com/viewjob?jk=000000000000000e",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on Vue, Django, Python experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-09-08 09:14",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "indeed",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "rejected",
+    "summary": "Fullstack balanced role on a Vue, Django, Python stack.",
+    "title": "Frontend Engineer",
+    "updated_at": "2026-09-09 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Vue, Django, Python"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   }
+  ],
+  "page": 1,
+  "page_size": 20,
+  "pages": 1,
+  "total": 4
+ },
+ "request": {
+  "path": "/api/jobs?status=all&country=all&source=indeed"
+ },
+ "status": 200
+}

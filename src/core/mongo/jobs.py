@@ -1,7 +1,7 @@
 """Scrape-store (`jobs`) writes: save, query, matcher write-back, scraper counters."""
 from __future__ import annotations
 
-from datetime import datetime
+from core import clock
 
 from pymongo import errors
 
@@ -23,7 +23,7 @@ def save_job(job_data):
     collection = db[COLLECTION_NAME]
     
     # Add creation timestamp
-    job_data["created_at"] = datetime.now()
+    job_data["created_at"] = clock.now()
     
     # Ensure required fields have default values
     job_data.setdefault("source", "linkedin")
@@ -185,7 +185,7 @@ def update_job_status(job_id, source, new_status):
     
     result = collection.update_one(
         {"job_id": job_id, "source": source},
-        {"$set": {"status": new_status, "updated_at": datetime.now()}}
+        {"$set": {"status": new_status, "updated_at": clock.now()}}
     )
     
     return result.modified_count > 0
@@ -210,7 +210,7 @@ def increment_scraper_stat(key: str, amount: int = 1) -> None:
     detail_timeout        – title passed, but the JD panel did not load in time
     """
     db = get_db()
-    now = datetime.now()
+    now = clock.now()
     today = now.strftime("%Y-%m-%d")
     db["scraper_stats"].update_one(
         {"_id": "global"},
@@ -265,8 +265,8 @@ def mark_job_as_matched(
     collection = db[COLLECTION_NAME]
 
     update_data = {
-        "matched_at": datetime.now(),
-        "updated_at": datetime.now(),
+        "matched_at": clock.now(),
+        "updated_at": clock.now(),
     }
 
     if match_score is not None:

@@ -1,0 +1,28 @@
+{
+ "body": {
+  "jobs": [
+   {
+    "_id": "{timeout_jobs:2}",
+    "company": "Starling Apps",
+    "created_at": "2026-11-01 06:00",
+    "job_id": "4300000002",
+    "keyword": "react",
+    "link": "https://www.linkedin.com/jobs/view/4300000002/",
+    "location": "Remote",
+    "reason": "detail_timeout",
+    "review_status": "dismissed",
+    "source": "linkedin",
+    "timeout_count": 1,
+    "title": "React Developer",
+    "updated_at": "2026-11-02 06:00"
+   }
+  ],
+  "page": 1,
+  "pages": 1,
+  "total": 1
+ },
+ "request": {
+  "path": "/api/timeout-jobs?review_status=dismissed"
+ },
+ "status": 200
+}

@@ -145,10 +145,95 @@ def seed(db):
     })
 
 
+class MongoStore:
+    """The throwaway database the e2e tests seed and check, current stack.
+
+    Tests never touch the driver directly: they call these methods, so the
+    Next.js + Postgres stack can plug in its own store with the same names
+    (set E2E_STORE=package.module:Class). Documents come back in the Tracker's
+    field names (job_id, status, application_timeline, ...).
+    """
+
+    def __init__(self):
+        self.mongo = Mongo()
+        self.db = self.mongo.db
+        self.uri = self.mongo.uri
+
+    def seed(self):
+        seed(self.db)
+
+    def tracker_job(self, job_oid):
+        return self.db.matched_jobs.find_one({"_id": job_oid})
+
+    def tracker_job_by_job_id(self, job_id):
+        return self.db.matched_jobs.find_one({"job_id": job_id})
+
+    def tracker_job_count(self) -> int:
+        return self.db.matched_jobs.count_documents({})
+
+    def set_tracker_fields(self, job_oid, fields: dict):
+        self.db.matched_jobs.update_one({"_id": job_oid}, {"$set": fields})
+
+    def scraped_job(self, job_id, source=None):
+        query = {"job_id": job_id}
+        if source:
+            query["source"] = source
+        return self.db.jobs.find_one(query)
+
+    def scraped_job_count(self, job_id) -> int:
+        return self.db.jobs.count_documents({"job_id": job_id})
+
+    def add_scraped_job(self, doc: dict):
+        self.db.jobs.insert_one(dict(doc))
+
+    def timeout_job(self, doc_oid):
+        return self.db.timeout_jobs.find_one({"_id": doc_oid})
+
+    def stop(self):
+        self.mongo.stop()
+
+
+def _load_store():
+    spec = os.getenv("E2E_STORE", "").strip()
+    if not spec:
+        return MongoStore()
+    module_name, _, cls_name = spec.partition(":")
+    import importlib
+    return getattr(importlib.import_module(module_name), cls_name)()
+
+
+class Stack:
+    """Store + server under test.
+
+    Default: MongoStore + the Flask app as a subprocess. With E2E_BASE_URL the
+    tests drive an already running server instead (it must use the store's
+    database); E2E_STORE picks the store implementation.
+    """
+
+    def __init__(self, extra_env: dict | None = None):
+        self.store = _load_store()
+        self.server = None
+        external = os.getenv("E2E_BASE_URL", "").strip()
+        try:
+            if external:
+                self.base = external.rstrip("/")
+            else:
+                self.server = Server(self.store.uri, extra_env=extra_env)
+                self.base = self.server.base
+        except Exception:
+            self.store.stop()
+            raise
+
+    def stop(self):
+        if self.server:
+            self.server.stop()
+        self.store.stop()
+
+
 class Server:
     """The real entry point (src/web/web_app.py) as a subprocess."""
 
-    def __init__(self, mongo_uri: str):
+    def __init__(self, mongo_uri: str, extra_env: dict | None = None):
         self.port = _free_port()
         self.base = f"http://127.0.0.1:{self.port}"
         self.env = {
@@ -164,6 +249,7 @@ class Server:
             "TELEGRAM_BOT_TOKEN": "",
             "TELEGRAM_CHAT_ID": "",
             "PYTHONUNBUFFERED": "1",
+            **(extra_env or {}),
         }
         check_isolated(self.env)
         self.log_path = os.path.join(tempfile.gettempdir(), f"job_scraper_e2e_server_{self.port}.log")

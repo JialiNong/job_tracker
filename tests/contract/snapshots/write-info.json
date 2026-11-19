@@ -1,0 +1,108 @@
+{
+ "after": {
+  "/api/jobs/{matched_jobs:25}": {
+   "body": {
+    "_id": "{matched_jobs:25}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": true,
+    "applicant_position": null,
+    "applicants": "195 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-11-11 20:00",
+      "label": "Applied",
+      "step": "applied"
+     }
+    ],
+    "applied_at": "2026-11-11 10:00",
+    "can_fetch_details": true,
+    "company": "Halden Robotics GmbH",
+    "company_history": [],
+    "company_history_total": 0,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": true,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "manual-0025",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "",
+     "stack_fit": "strong",
+     "summary": "Product team working with ."
+    },
+    "link": "https://jobs.example.com/manual/25",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "manually_logged": true,
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on  experience matches the role"
+    ],
+    "match_score": 0.0,
+    "matched_at": "2026-11-11 09:25",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "manual",
+    "recommend_reason": "",
+    "recommendation": "",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "manual",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "applied",
+    "summary": "",
+    "title": "Platform Engineer",
+    "updated_at": "2026-11-13 12:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with "
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   "status": 200
+  }
+ },
+ "body": {
+  "ok": true
+ },
+ "request": {
+  "body": {
+   "company": "Halden Robotics GmbH",
+   "title": " Platform Engineer "
+  },
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:25}/info"
+ },
+ "status": 200
+}

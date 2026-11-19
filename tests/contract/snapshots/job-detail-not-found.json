@@ -1,0 +1,9 @@
+{
+ "body": {
+  "error": "Job not found"
+ },
+ "request": {
+  "path": "/api/jobs/<new-id-1>"
+ },
+ "status": 404
+}

@@ -1,0 +1,200 @@
+{
+ "body": {
+  "jobs": [
+   {
+    "_id": "{matched_jobs:3}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "41 applicants",
+    "application_qa": [],
+    "application_timeline": [],
+    "applied_at": null,
+    "can_fetch_details": false,
+    "company": "Kestrel AG",
+    "company_history": [
+     {
+      "_id": "{matched_jobs:15}",
+      "applicant_position": null,
+      "applied_at": "2026-08-25",
+      "last_step_at": "2026-09-04",
+      "matched_at": "2026-08-24",
+      "progress": "rejected",
+      "source": "linkedin",
+      "status": "rejected",
+      "title": "Web Developer"
+     }
+    ],
+    "company_history_total": 1,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "arbeitsagentur-0003",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "Angular, Spring Boot, Java",
+     "stack_fit": "strong",
+     "summary": "Product team working with Angular, Spring Boot, Java."
+    },
+    "link": "https://jobs.example.com/arbeitsagentur/3",
+    "location": "München",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on Angular, Spring Boot, Java experience matches the role"
+    ],
+    "match_score": 7.0,
+    "matched_at": "2026-11-11 09:03",
+    "missing_requirements": [
+     "Production experience with Kubernetes"
+    ],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "api",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "arbeitsagentur",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "pending",
+    "summary": "Fullstack balanced role on a Angular, Spring Boot, Java stack.",
+    "title": "Senior Software Engineer",
+    "updated_at": "2026-11-11 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Angular, Spring Boot, Java"
+     ],
+     "unmatched": [
+      "Kubernetes in production"
+     ]
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:8}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "76 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-09-19 14:00",
+      "label": "Applied",
+      "step": "applied"
+     }
+    ],
+    "applied_at": "2026-09-19 10:00",
+    "can_fetch_details": false,
+    "company": "Pinecrest",
+    "company_history": [],
+    "company_history_total": 0,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "remote",
+    "country_label": "Remote",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "arbeitnow-0008",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "React, React Native, Expo",
+     "stack_fit": "strong",
+     "summary": "Product team working with React, React Native, Expo."
+    },
+    "link": "https://jobs.example.com/arbeitnow/8",
+    "location": "Remote (Europe)",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on React, React Native, Expo experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-09-18 09:08",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "api",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "arbeitnow",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "applied",
+    "summary": "Fullstack balanced role on a React, React Native, Expo stack.",
+    "title": "React Developer",
+    "updated_at": "2026-09-19 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, React Native, Expo"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   }
+  ],
+  "page": 1,
+  "page_size": 20,
+  "pages": 1,
+  "total": 2
+ },
+ "request": {
+  "path": "/api/jobs?status=all&country=all&origin=api"
+ },
+ "status": 200
+}

@@ -1,0 +1,15 @@
+{
+ "body": {
+  "error": "Unauthorized"
+ },
+ "request": {
+  "body": {
+   "jobs": [
+    "https://www.linkedin.com/jobs/view/4500000001/"
+   ]
+  },
+  "method": "POST",
+  "path": "/api/agent/jobs"
+ },
+ "status": 401
+}

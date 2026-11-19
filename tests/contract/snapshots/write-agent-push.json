@@ -1,0 +1,117 @@
+{
+ "after": {
+  "/api/jobs?status=all&country=all&q=ML%20Engineer": {
+   "body": {
+    "jobs": [
+     {
+      "_id": "<new-id-1>",
+      "agent_recommend_reason": "",
+      "agent_recommended_by": "",
+      "ai_pending": true,
+      "applicant_position": null,
+      "applicants": "",
+      "application_qa": [],
+      "application_timeline": [],
+      "can_fetch_details": true,
+      "company": "",
+      "company_history": [],
+      "company_profile": {},
+      "country": "germany",
+      "country_label": "Germany",
+      "created_at": "2026-11-13 11:00",
+      "details_missing": true,
+      "disqualification_reason": "",
+      "highlights": [],
+      "job_id": "4500000001",
+      "job_labels": {},
+      "link": "https://www.linkedin.com/jobs/view/4500000001/",
+      "location": "",
+      "manual_fields": [
+       "title"
+      ],
+      "manually_logged": true,
+      "match_gate": "",
+      "match_reasons": [
+       "Link-only save — AI pending"
+      ],
+      "match_score": null,
+      "matched_at": "2026-11-13 11:00",
+      "missing_requirements": [],
+      "needs_refetch": false,
+      "nice_to_have_matches": [],
+      "notes": "",
+      "origin": "agent",
+      "recommend_reason": "fits",
+      "recommendation": "",
+      "recommended_by": "claude",
+      "red_flags": [],
+      "source": "linkedin",
+      "special_match": false,
+      "special_match_reasons": [],
+      "status": "pending",
+      "summary": "Link saved without scrape/AI. Use Run AI on Tracker when Chrome is available.",
+      "title": "ML Engineer",
+      "updated_at": "2026-11-13 11:00",
+      "what_theyre_looking_for": {
+       "matched": [],
+       "unmatched": []
+      },
+      "what_youll_do": {
+       "matched": [],
+       "unmatched": []
+      }
+     }
+    ],
+    "page": 1,
+    "page_size": 20,
+    "pages": 1,
+    "total": 1
+   },
+   "status": 200
+  },
+  "/api/unmatched-jobs?agent_recommended=1": {
+   "body": {
+    "jobs": [],
+    "page": 1,
+    "page_size": 20,
+    "pages": 1,
+    "threshold": 7.0,
+    "total": 0
+   },
+   "status": 200
+  }
+ },
+ "body": {
+  "already_on_tracker": 0,
+  "awaiting_match": 0,
+  "below_threshold": 0,
+  "below_threshold_jobs": [],
+  "failed": 0,
+  "recommended_by": "claude",
+  "saved": 1,
+  "skipped": 0,
+  "timeout": 0,
+  "urls": {
+   "existing": [],
+   "failed": [],
+   "ok": [
+    "https://www.linkedin.com/jobs/view/4500000001/"
+   ],
+   "skipped": []
+  }
+ },
+ "request": {
+  "body": {
+   "jobs": [
+    {
+     "reason": "fits",
+     "title": "ML Engineer",
+     "url": "https://www.linkedin.com/jobs/view/4500000001/"
+    }
+   ]
+  },
+  "method": "POST",
+  "path": "/api/agent/jobs"
+ },
+ "status": 200
+}

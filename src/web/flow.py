@@ -9,6 +9,8 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 from datetime import date, datetime, timedelta
 
+from core import clock
+
 from core.db_mongo import resolve_applied_at
 from web.status import (
     CANCELLED_TIMELINE_STEP,
@@ -135,7 +137,7 @@ def _naive(value) -> datetime | None:
 
 def _is_upcoming(value, now: datetime) -> bool:
     dt = _naive(value)
-    now_n = _naive(now) or datetime.now()
+    now_n = _naive(now) or clock.now()
     return bool(dt and dt > now_n)
 
 
@@ -152,7 +154,7 @@ def classify_flow_sink(job: dict, now: datetime | None = None) -> str:
     it. Closed · No Reply without an interview counts as Waiting — it is the
     same "no response" bucket, just marked closed.
     """
-    now = _naive(now) or datetime.now()
+    now = _naive(now) or clock.now()
     events = _events_after_reapply(job)
     last = events[-1]["step"] if events else "applied"
     steps = [e["step"] for e in events]
@@ -200,7 +202,7 @@ def build_sankey(jobs: list, now: datetime | None = None) -> dict:
     they only restart which slice of the timeline counts. Zero-value nodes
     are omitted so an empty Offer slot does not draw.
     """
-    now = now or datetime.now()
+    now = now or clock.now()
     link_counts: Counter = Counter()
     sink_counts: Counter = Counter()
     for job in jobs:
@@ -269,7 +271,7 @@ def build_weekly_by_platform(jobs: list, today: date | None = None) -> dict:
         return {"weeks": [], "totals": {**totals, "total": 0}}
 
     start = min(buckets)
-    end = week_monday(today or date.today()) or start
+    end = week_monday(today or clock.today()) or start
     if end < start:
         end = start
 

@@ -15,6 +15,8 @@ from __future__ import annotations
 import threading
 from datetime import datetime, timedelta, timezone
 
+from core import clock
+
 from core.db_mongo import APPLICATION_QUERY, get_collection
 from web.stacks import build_stack_stats
 
@@ -55,7 +57,7 @@ def refresh_stack_stats() -> dict:
     Concurrent callers share one run: a second caller waits for the first and
     then returns what it stored instead of reading every JD again.
     """
-    started = datetime.now(timezone.utc)
+    started = clock.now(timezone.utc)
     with _refresh_lock:
         cache = get_collection(CACHE_COLLECTION)
         doc = cache.find_one({"_id": CACHE_ID})
@@ -64,7 +66,7 @@ def refresh_stack_stats() -> dict:
         jobs = list(get_collection("matched_jobs").find(APPLICATION_QUERY, STACKS_PROJECTION))
         doc = {
             "_id": CACHE_ID,
-            "computed_at": datetime.now(timezone.utc),
+            "computed_at": clock.now(timezone.utc),
             "data": build_stack_stats(jobs),
         }
         cache.replace_one({"_id": CACHE_ID}, doc, upsert=True)
@@ -90,7 +92,7 @@ def get_stack_stats(now: datetime | None = None) -> dict:
     doc = get_collection(CACHE_COLLECTION).find_one({"_id": CACHE_ID})
     if not doc:
         return refresh_stack_stats()
-    now = now or datetime.now(timezone.utc)
+    now = now or clock.now(timezone.utc)
     if now - _as_utc(doc["computed_at"]) > MAX_AGE:
         _refresh_in_background()
     return _response(doc)

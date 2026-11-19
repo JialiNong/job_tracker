@@ -1,0 +1,27 @@
+{
+ "body": {
+  "ids": [
+   "{matched_jobs:25}",
+   "{matched_jobs:4}"
+  ],
+  "jobs": [
+   {
+    "details_missing": true,
+    "id": "{matched_jobs:25}",
+    "title": "Software Engineer"
+   },
+   {
+    "details_missing": false,
+    "id": "{matched_jobs:4}",
+    "title": "Product Engineer"
+   }
+  ],
+  "limit": 80,
+  "missing_only": false,
+  "total": 2
+ },
+ "request": {
+  "path": "/api/fetch-details/ids?status=all&country=all"
+ },
+ "status": 200
+}

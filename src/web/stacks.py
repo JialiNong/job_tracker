@@ -11,6 +11,8 @@ from __future__ import annotations
 import re
 from datetime import datetime, timedelta
 
+from core import clock
+
 from core.db_mongo import resolve_applied_at
 
 # A rejection needs time to arrive: "settled" applications are at least this
@@ -221,7 +223,7 @@ def _summary(rows):
 
 def build_stack_stats(jobs, now: datetime | None = None) -> dict:
     """Counts for every application and for settled ones (applied 30+ days ago)."""
-    now = now or datetime.now()
+    now = now or clock.now()
     cutoff = now - timedelta(days=SETTLED_AFTER_DAYS)
     rows = []
     for job in jobs:

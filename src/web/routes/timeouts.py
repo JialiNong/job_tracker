@@ -1,6 +1,8 @@
 """Timeouts page: title-qualified cards whose JD timed out during scrape."""
 from datetime import datetime
 
+from core import clock
+
 from bson import ObjectId
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
@@ -71,7 +73,7 @@ def api_timeout_match(doc_id: str):
     source = doc.get("source") or ""
     matched_col = get_collection("matched_jobs")
     existing = matched_col.find_one({"job_id": jid, "source": source})
-    now = datetime.now()
+    now = clock.now()
 
     if not existing:
         matched_col.insert_one({
@@ -144,7 +146,7 @@ def api_timeout_dismiss(doc_id: str):
     col = get_collection("timeout_jobs")
     result = col.update_one(
         {"_id": oid},
-        {"$set": {"review_status": "dismissed", "updated_at": datetime.now()}},
+        {"$set": {"review_status": "dismissed", "updated_at": clock.now()}},
     )
     if result.matched_count == 0:
         return jsonify({"error": "Timeout job not found"}), 404
