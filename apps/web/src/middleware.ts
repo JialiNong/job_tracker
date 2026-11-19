@@ -34,7 +34,11 @@ export async function middleware(req: NextRequest) {
   if (pathname.startsWith("/api/")) {
     return NextResponse.json({ error: "Login required" }, { status: 401 });
   }
-  const login = new URL("/login", req.url);
+  // Middleware needs an absolute Location. Build it from the Host header the
+  // browser sent: req.url can name another host (next dev says "localhost"
+  // for 127.0.0.1), and the session cookie would not follow the redirect.
+  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? req.nextUrl.host;
+  const login = new URL("/login", `${req.nextUrl.protocol}//${host}`);
   if (pathname !== "/") login.searchParams.set("next", pathname + req.nextUrl.search);
   return NextResponse.redirect(login);
 }

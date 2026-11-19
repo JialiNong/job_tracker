@@ -53,3 +53,4 @@ packages/db/reports/
 apps/web/.next/
 apps/web/public/static/
 apps/web/next-env.d.ts
+*.tsbuildinfo

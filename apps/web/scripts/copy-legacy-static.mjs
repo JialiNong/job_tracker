@@ -10,5 +10,5 @@ const repo = resolve(here, "../../..");
 const out = resolve(here, "../public/static");
 rmSync(out, { recursive: true, force: true });
 mkdirSync(out, { recursive: true });
-for (const dir of ["css", "img"]) cpSync(resolve(repo, "static", dir), resolve(out, dir), { recursive: true });
-console.log("copied static/css and static/img into apps/web/public/static");
+for (const dir of ["css", "img", "js"]) cpSync(resolve(repo, "static", dir), resolve(out, dir), { recursive: true });
+console.log("copied static/css, static/img and static/js into apps/web/public/static");
