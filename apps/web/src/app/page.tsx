@@ -2,8 +2,8 @@
  * The Tracker page. A server component that only sets up the stylesheets and
  * the client providers; TrackerApp does the rest in the browser.
  */
-import { DialogProvider } from "@/components/ui/Dialog";
-import { ToastProvider } from "@/components/ui/Toast";
+import { Suspense } from "react";
+import { Providers } from "@/components/Providers";
 import { TrackerApp } from "@/components/tracker/TrackerApp";
 
 export const metadata = { title: "Job Tracker" };
@@ -26,11 +26,12 @@ export default function TrackerPage() {
   return (
     <>
       {STYLES.map((href) => <link key={href} rel="stylesheet" href={href} precedence="page" />)}
-      <ToastProvider>
-        <DialogProvider>
+      <Providers>
+        {/* useSearchParams (filters live in the URL) needs a Suspense boundary */}
+        <Suspense>
           <TrackerApp />
-        </DialogProvider>
-      </ToastProvider>
+        </Suspense>
+      </Providers>
     </>
   );
 }

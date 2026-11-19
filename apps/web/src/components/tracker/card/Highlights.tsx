@@ -1,47 +1,53 @@
 "use client";
 /**
- * Manual highlight tags (★ Leipzig …). Shown at once, saved in the
- * background, rolled back if the save fails.
+ * Manual highlight tags (★ Leipzig …). Optimistic: the new tags show at once
+ * (written into the cached card), and are rolled back if the save fails.
  */
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/tracker/api";
 import { HIGHLIGHT_PRESETS, MAX_HIGHLIGHTS, normalizeHighlights } from "@/lib/tracker/format";
+import { invalidateTracker, trackerKeys, updateCachedJob } from "@/lib/tracker/queries";
 
-interface Props {
-  jobId: string;
-  highlights: string[];
-  onChange: (next: string[]) => void;
-}
-
-export function Highlights({ jobId, highlights, onChange }: Props) {
+export function Highlights({ jobId, highlights }: { jobId: string; highlights: string[] }) {
   const toast = useToast();
+  const client = useQueryClient();
   const [input, setInput] = useState("");
   const has = (tag: string) => highlights.some((h) => h.toLowerCase() === tag.toLowerCase());
 
-  const persist = async (next: string[], before: string[], success: string, failure: string) => {
-    onChange(next);
-    try {
-      const data = await api.setHighlights(jobId, next);
-      onChange(normalizeHighlights(data.highlights));
-      toast(success);
-    } catch {
-      onChange(before);
+  const save = useMutation({
+    mutationFn: ({ next }: { next: string[]; success: string; failure: string }) => api.setHighlights(jobId, next),
+    onMutate: async ({ next }) => {
+      await client.cancelQueries({ queryKey: trackerKeys.all }); // an older refetch must not overwrite this
+      const before = highlights;
+      updateCachedJob(client, jobId, (job) => ({ ...job, highlights: next }));
+      return { before };
+    },
+    onError: (_err, { failure }, context) => {
+      if (context) updateCachedJob(client, jobId, (job) => ({ ...job, highlights: context.before }));
       toast(failure, "err");
-    }
-  };
+    },
+    onSuccess: (data, { success }) => {
+      updateCachedJob(client, jobId, (job) => ({ ...job, highlights: normalizeHighlights(data.highlights) }));
+      toast(success);
+    },
+    onSettled: () => invalidateTracker(client), // the Highlights filter may now exclude this card
+  });
 
   const add = (raw: string) => {
     const tag = raw.trim().slice(0, 40);
     if (!tag) return;
     if (has(tag)) return toast("Already highlighted", "err");
     if (highlights.length >= MAX_HIGHLIGHTS) return toast(`At most ${MAX_HIGHLIGHTS} highlights`, "err");
-    void persist([...highlights, tag], highlights, `★ ${tag}`, "Highlight save failed");
+    save.mutate({ next: [...highlights, tag], success: `★ ${tag}`, failure: "Highlight save failed" });
   };
 
-  const remove = (tag: string) =>
-    void persist(highlights.filter((h) => h.toLowerCase() !== tag.toLowerCase()), highlights,
-      "Highlight removed", "Highlight remove failed");
+  const remove = (tag: string) => save.mutate({
+    next: highlights.filter((h) => h.toLowerCase() !== tag.toLowerCase()),
+    success: "Highlight removed",
+    failure: "Highlight remove failed",
+  });
 
   const addFromInput = () => {
     add(input);

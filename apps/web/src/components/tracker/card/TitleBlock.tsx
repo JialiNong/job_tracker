@@ -1,17 +1,15 @@
 "use client";
 /** Card title, company (click = filter by it) and location, with an inline editor. */
 import { useRef, useState } from "react";
-import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/tracker/api";
 import { viaText } from "@/lib/tracker/format";
+import { useTrackerWrite } from "@/lib/tracker/queries";
 import type { Job } from "@/lib/tracker/types";
 import { useTracker } from "../TrackerContext";
 
 export function TitleBlock({ job }: { job: Job }) {
   const tracker = useTracker();
-  const toast = useToast();
   const [editing, setEditing] = useState(false);
-  const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ title: job.title, company: job.company, location: job.location });
   const titleInput = useRef<HTMLInputElement>(null);
   const via = viaText(job);
@@ -22,19 +20,9 @@ export function TitleBlock({ job }: { job: Job }) {
     requestAnimationFrame(() => titleInput.current?.select());
   };
 
-  const save = async () => {
-    setSaving(true);
-    try {
-      await api.setInfo(job._id, form);
-      setEditing(false);
-      await tracker.afterWrite(job._id);
-      toast("Job info updated");
-    } catch (err) {
-      toast(`Update failed: ${(err as Error).message}`, "err");
-    } finally {
-      setSaving(false);
-    }
-  };
+  const save = useTrackerWrite((info: typeof form) => api.setInfo(job._id, info), {
+    success: "Job info updated", failure: "Update failed",
+  });
 
   const field = (name: keyof typeof form, placeholder: string, ref?: typeof titleInput) => (
     <input
@@ -70,7 +58,12 @@ export function TitleBlock({ job }: { job: Job }) {
           {field("location", "Location")}
         </div>
         <div className="info-action-row">
-          <button className="info-save-btn" disabled={saving} onClick={save}>{saving ? "⏳" : "✓ Save"}</button>
+          <button
+            className="info-save-btn" disabled={save.isPending}
+            onClick={() => save.mutate(form, { onSuccess: () => setEditing(false) })}
+          >
+            {save.isPending ? "⏳" : "✓ Save"}
+          </button>
           <button className="info-cancel-btn" onClick={() => setEditing(false)}>✕ Cancel</button>
         </div>
       </div>

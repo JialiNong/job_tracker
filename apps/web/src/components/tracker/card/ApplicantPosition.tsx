@@ -1,29 +1,20 @@
 "use client";
 /** "Applicant # when I applied" (LinkedIn shows the count right after you apply). */
 import { useState } from "react";
-import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/tracker/api";
+import { useTrackerWrite } from "@/lib/tracker/queries";
 import type { Job } from "@/lib/tracker/types";
-import { useTracker } from "../TrackerContext";
 import { useSavedFlash } from "./useSavedFlash";
 
 export function ApplicantPosition({ job }: { job: Job }) {
-  const tracker = useTracker();
-  const toast = useToast();
   const [value, setValue] = useState(job.applicant_position ? String(job.applicant_position) : "");
   const [saved, flash] = useSavedFlash();
+  const write = useTrackerWrite((raw: string) => api.setApplicantPosition(job._id, raw), {
+    success: (data) => (data.applicant_position ? `Saved: applicant #${data.applicant_position}` : "Applicant # cleared"),
+    failure: "Not saved",
+  });
   if (job.source.toLowerCase() !== "linkedin" && !job.applicant_position) return null;
-
-  const save = async () => {
-    try {
-      const data = await api.setApplicantPosition(job._id, value.trim());
-      flash();
-      toast(data.applicant_position ? `Saved: applicant #${data.applicant_position}` : "Applicant # cleared");
-      await tracker.afterWrite(job._id);
-    } catch (err) {
-      toast((err as Error).message, "err");
-    }
-  };
+  const save = () => write.mutate(value.trim(), { onSuccess: flash });
 
   return (
     <div className="applicant-pos-wrap" onClick={(e) => e.stopPropagation()}>

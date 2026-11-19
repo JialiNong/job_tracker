@@ -1,9 +1,9 @@
 "use client";
 /**
  * Application progress: the timeline track, "+ Step" buttons, Undo, and the
- * "Other" side status. Every change is one API write, then the card reloads
- * from the server (TrackerContext.afterWrite), so the pill, the Apply button
- * and the counts all follow the saved data.
+ * "Other" side status. Every change is one API write; then the list and the
+ * counts refetch (useTrackerWrite), so the pill, the Apply button and the
+ * chips all follow the saved data.
  */
 import { Fragment } from "react";
 import { SIDE_STATUSES, statusFromTimeline } from "@tracker/core/status";
@@ -11,12 +11,12 @@ import { useDialog } from "@/components/ui/Dialog";
 import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/tracker/api";
 import { STATUS_LABEL } from "@/lib/tracker/format";
+import { useTrackerWrite } from "@/lib/tracker/queries";
 import {
   TIMELINE_LABEL, initialTimeFor, lineClass, nextActions, nodeTime, sortTimeline, stepClass,
   stepPrompt, timelineWithStep, toInputValue,
 } from "@/lib/tracker/timeline";
 import type { Job, TimelineItem } from "@/lib/tracker/types";
-import { useTracker } from "../TrackerContext";
 
 const SIDE_OPTIONS: [string, string][] = [
   ["unsuitable", "Unsuitable"],
@@ -29,7 +29,6 @@ const SIDE_OPTIONS: [string, string][] = [
 ];
 
 export function ProgressBlock({ job }: { job: Job }) {
-  const tracker = useTracker();
   const dialog = useDialog();
   const toast = useToast();
   const id = job._id;
@@ -37,14 +36,17 @@ export function ProgressBlock({ job }: { job: Job }) {
   const sideValue = SIDE_STATUSES.includes(job.status) ? job.status : "";
 
   /** Send a whole timeline; refuse to call it saved if the server dropped a step. */
-  const saveTimeline = async (next: TimelineItem[]) => {
+  const saveTimeline = useTrackerWrite(async ({ next }: { next: TimelineItem[]; done: string }) => {
     const sent = sortTimeline(next).map(({ step, at }) => ({ step, at }));
     const saved = await api.setTimeline(id, sent);
-    if ((saved.application_timeline ?? []).length < sent.length) {
-      throw new Error("The server did not keep every step");
-    }
-    await tracker.afterWrite(id);
-  };
+    if ((saved.application_timeline ?? []).length < sent.length) throw new Error("The server did not keep every step");
+    return saved;
+  }, { success: (_saved, { done }) => done, failure: "Progress not saved" });
+
+  const setStatus = useTrackerWrite((status: string) => api.setStatus(id, status), {
+    success: (_r, status) => `Status updated to "${STATUS_LABEL[status] ?? status}"`,
+    failure: "Status update failed",
+  });
 
   const addStep = async (step: string) => {
     const label = TIMELINE_LABEL[step] ?? step;
@@ -52,12 +54,7 @@ export function ProgressBlock({ job }: { job: Job }) {
       title: `Record: ${label}`, hint: stepPrompt(step), initial: initialTimeFor(step, timeline),
     });
     if (!at) return;
-    try {
-      await saveTimeline(timelineWithStep(timeline, step, at));
-      toast(`Recorded ${label} · ${at}`);
-    } catch (err) {
-      toast(`Failed to update progress: ${(err as Error).message}`, "err");
-    }
+    saveTimeline.mutate({ next: timelineWithStep(timeline, step, at), done: `Recorded ${label} · ${at}` });
   };
 
   const editStep = async (index: number) => {
@@ -68,15 +65,10 @@ export function ProgressBlock({ job }: { job: Job }) {
       title: `Edit time: ${label}`, hint: "Update the date and time for this step", initial: toInputValue(event.at),
     });
     if (!at) return;
-    try {
-      await saveTimeline(timeline.map((e, i) => (i === index ? { ...e, at } : e)));
-      toast(`Updated ${label} · ${at}`);
-    } catch {
-      toast("Failed to update time", "err");
-    }
+    saveTimeline.mutate({ next: timeline.map((e, i) => (i === index ? { ...e, at } : e)), done: `Updated ${label} · ${at}` });
   };
 
-  const undo = async () => {
+  const undo = () => {
     if (!timeline.length) return;
     // A side-status job keeps its Applied record; only later steps can be undone
     if (sideValue && timeline.length === 1 && timeline[0]!.step === "applied") {
@@ -84,25 +76,13 @@ export function ProgressBlock({ job }: { job: Job }) {
       return;
     }
     const removed = timeline[timeline.length - 1]!;
-    try {
-      await saveTimeline(timeline.slice(0, -1));
-      toast(`↩ Undid ${TIMELINE_LABEL[removed.step] ?? removed.step}`);
-    } catch {
-      toast("Undo failed", "err");
-    }
+    saveTimeline.mutate({ next: timeline.slice(0, -1), done: `↩ Undid ${TIMELINE_LABEL[removed.step] ?? removed.step}` });
   };
 
-  const setSide = async (value: string) => {
+  const setSide = (value: string) => {
     // "—" goes back to the status the timeline gives
     const status = value || statusFromTimeline(timeline, "");
-    if (!status) return;
-    try {
-      await api.setStatus(id, status);
-      await tracker.afterWrite(id);
-      toast(`Status updated to "${STATUS_LABEL[status] ?? status}"`);
-    } catch {
-      toast("Status update failed", "err");
-    }
+    if (status) setStatus.mutate(status);
   };
 
   return (

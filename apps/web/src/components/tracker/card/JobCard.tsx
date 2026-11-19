@@ -1,14 +1,13 @@
 "use client";
 /**
  * One Tracker card: the row, and the details panel when expanded. The list
- * decides which card is open (one at a time); highlights live here because
- * both the row and the panel show them.
+ * decides which card is open (one at a time).
  */
-import { useEffect, useState } from "react";
 import { useDialog } from "@/components/ui/Dialog";
 import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/tracker/api";
 import { needsAi, normalizeHighlights, safeUrl } from "@/lib/tracker/format";
+import { useTrackerWrite } from "@/lib/tracker/queries";
 import { isAppliedLike } from "@/lib/tracker/timeline";
 import type { Job } from "@/lib/tracker/types";
 import { useTracker } from "../TrackerContext";
@@ -36,9 +35,8 @@ interface Props {
 
 export function JobCard({ job, expanded, onToggle, onClose, flash }: Props) {
   const tracker = useTracker();
-  const [highlights, setHighlights] = useState(() => normalizeHighlights(job.highlights));
-  // A reload from the server (after any write) brings the saved tags
-  useEffect(() => setHighlights(normalizeHighlights(job.highlights)), [job.highlights]);
+  // Read straight from the cached card: a highlight edit updates the cache optimistically
+  const highlights = normalizeHighlights(job.highlights);
   const selected = tracker.isSelected(job._id);
 
   const className = ["card", "has-fetch-select",
@@ -58,18 +56,13 @@ export function JobCard({ job, expanded, onToggle, onClose, flash }: Props) {
       </label>
       <CardRow job={job} highlights={highlights} expanded={expanded} onToggle={onToggle} />
       {expanded ? (
-        <CardBody job={job} highlights={highlights} setHighlights={setHighlights} onClose={onClose} />
+        <CardBody job={job} highlights={highlights} onClose={onClose} />
       ) : null}
     </div>
   );
 }
 
-function CardBody({ job, highlights, setHighlights, onClose }: {
-  job: Job;
-  highlights: string[];
-  setHighlights: (next: string[]) => void;
-  onClose: () => void;
-}) {
+function CardBody({ job, highlights, onClose }: { job: Job; highlights: string[]; onClose: () => void }) {
   const applied = isAppliedLike(job.status, job.application_timeline);
   return (
     <div className="card-body" id={`body-${job._id}`} role="region" aria-label="Job details">
@@ -105,7 +98,7 @@ function CardBody({ job, highlights, setHighlights, onClose }: {
         </div>
         <div className="card-split-track">
           <ApplicationQa job={job} />
-          <Highlights jobId={job._id} highlights={highlights} onChange={setHighlights} />
+          <Highlights jobId={job._id} highlights={highlights} />
           <ReplaceLink job={job} />
           <div className="card-danger-row">
             <DeleteButton job={job} />
@@ -148,12 +141,10 @@ function PipelineButtons({ job }: { job: Job }) {
 }
 
 function DeleteButton({ job }: { job: Job }) {
-  const tracker = useTracker();
   const dialog = useDialog();
-  const toast = useToast();
-  const [busy, setBusy] = useState(false);
+  const remove = useTrackerWrite(() => api.deleteJob(job._id), { success: "Job deleted", failure: "Delete failed" });
 
-  const remove = async (e: React.MouseEvent) => {
+  const confirmAndDelete = async (e: React.MouseEvent) => {
     e.stopPropagation();
     const ok = await dialog.confirm({
       title: "Delete this job?",
@@ -162,21 +153,14 @@ function DeleteButton({ job }: { job: Job }) {
       confirmLabel: "Delete",
       danger: true,
     });
-    if (!ok) return;
-    setBusy(true);
-    try {
-      await api.deleteJob(job._id);
-      tracker.removeCard(job._id);
-      tracker.refreshStats();
-      toast("Job deleted");
-    } catch (err) {
-      setBusy(false);
-      toast((err as Error).message || "Delete failed", "err");
-    }
+    if (ok) remove.mutate(undefined);
   };
 
   return (
-    <button type="button" className="delete-job-btn" disabled={busy} onClick={remove} title="Delete this job permanently">
+    <button
+      type="button" className="delete-job-btn" disabled={remove.isPending} onClick={confirmAndDelete}
+      title="Delete this job permanently"
+    >
       Delete job
     </button>
   );
