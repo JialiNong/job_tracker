@@ -7,8 +7,10 @@ prints where what the frontend reads differs (consumer_fields.json, null =
 missing key, the same rule as the contract snapshots). Nothing is written:
 only GET requests.
 
-    LIVE_USERNAME=... LIVE_PASSWORD=... python3 tests/contract/compare_live.py \\
-        --old https://job-tracker-web.onrender.com --new https://<your-app>.vercel.app
+    python3 tests/contract/compare_live.py --old https://<render-app>.onrender.com --new https://<your-app>.vercel.app
+
+The username comes from LIVE_USERNAME or TRACKER_USERNAME in the repo .env;
+the password from LIVE_PASSWORD, else it is asked for (not echoed).
 
 Run it after the nightly Mongo -> Postgres sync (both sides then hold the
 same data). Differences right after a change in the old app are expected
@@ -17,7 +19,9 @@ until the next sync.
 from __future__ import annotations
 
 import argparse
+import getpass
 import json
+import re
 import os
 import sys
 from pathlib import Path
@@ -68,10 +72,14 @@ def main() -> int:
     ap.add_argument("--new", required=True, help="Next.js app base URL")
     ap.add_argument("-k", dest="only", help="only paths containing this text")
     args = ap.parse_args()
-    user, password = os.getenv("LIVE_USERNAME", ""), os.getenv("LIVE_PASSWORD", "")
-    if not user or not password:
-        print("Set LIVE_USERNAME and LIVE_PASSWORD (the Tracker login, same on both apps)")
+    user = os.getenv("LIVE_USERNAME", "")
+    if not user and (HERE.parents[1] / ".env").exists():
+        m = re.search(r"^TRACKER_USERNAME=(.*)$", (HERE.parents[1] / ".env").read_text(encoding="utf-8"), re.M)
+        user = m.group(1).strip().strip("'\"") if m else ""
+    if not user:
+        print("Set LIVE_USERNAME (the Tracker login, same on both apps)")
         return 2
+    password = os.getenv("LIVE_PASSWORD") or getpass.getpass(f"Tracker password for {user}: ")
 
     job_fields = frozenset(json.loads((HERE / "consumer_fields.json").read_text(encoding="utf-8"))["job"])
     old, new = Client(args.old), Client(args.new)
