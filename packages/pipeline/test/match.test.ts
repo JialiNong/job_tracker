@@ -130,6 +130,19 @@ describe("matchNewJobs", () => {
     expect(b.currentAnalysis).toMatchObject({ matchGate: "blocked_company" });
   });
 
+  it("keeps a high-scoring posting scraped long ago on Unmatched (e.g. LinkedIn 'Viewed' rows)", async () => {
+    const old = await addPosting("Old Frontend Engineer", { scrapedAt: new Date(Date.now() - 40 * 86_400_000) });
+    const fresh = await addPosting("Fresh Frontend Engineer", { scrapedAt: new Date(Date.now() - 6 * 86_400_000) });
+    const { client } = fakeClient({});
+    const summary = await run(client);
+    const o = await state(old);
+    expect(o.analysisState).toBe("done");
+    expect(o.currentAnalysis!.matchScore).toBeGreaterThanOrEqual(7); // scored like any other job
+    expect(o.application).toBeNull(); // but not one of today's matches
+    expect((await state(fresh)).application).not.toBeNull();
+    expect(summary.matchedCardIds).toHaveLength(1);
+  });
+
   it("only takes the requested source and limit", async () => {
     await addPosting("One");
     await addPosting("Two");
