@@ -1,0 +1,23 @@
+{
+  "name": "@tracker/matching",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@prospectbase/lingua": "1.8.0",
+    "@tracker/core": "workspace:*",
+    "entities": "9.0.0",
+    "openai": "7.47.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.30",
+    "typescript": "5.8.3",
+    "vitest": "3.2.4"
+  }
+}

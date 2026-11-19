@@ -326,6 +326,17 @@ class TrackerE2E(unittest.TestCase):
         self.page.click(f"button.btn-save[data-id='{PENDING_ID}']")
         wait_for(lambda: self.job(PENDING_ID)["notes"] == "Recruiter call on Friday", "notes saved")
 
+    @unittest.skipUnless(os.getenv("E2E_FAKE_OPENAI"), "Next.js only: Run AI against tests/e2e/fake_openai.py")
+    def test_run_ai_scores_card_from_stored_jd(self):
+        self.open_card(PENDING_ID)
+        card = self.page.locator(f"#card-{PENDING_ID}")
+        card.locator(".btn-run-ai").click()
+        expect(self.page.locator("#toast")).to_contain_text("AI done score")
+        job = self.ctx.request.get(f"{self.base}/api/jobs/{PENDING_ID}").json()
+        self.assertEqual(job["summary"], "E2E fake AI summary")
+        # The card shows the new result without a reload
+        expect(card.locator(".card-summary").first).to_contain_text("E2E fake AI summary")
+
     def test_edit_job_info(self):
         self.open_card(PENDING_ID)
         card = self.page.locator(f"#card-{PENDING_ID}")

@@ -61,6 +61,14 @@ details, serialization) are also checked one level down:
 `tests/contract/build_rule_cases.py` records the Python answers in
 `rule_cases.json`, and `packages/core/test/parity.test.ts` must give the same.
 
+The AI matcher has its own set: `tests/contract/build_matching_cases.py`
+(needs lingua; run with `PYTHONPATH=src`) records `matching_cases.json` from
+synthetic inputs only: HTML to text, JD quality, the English-only gate
+(Lingua on both sides), stack grounding, scoring, the stored analysis, and
+whole `evaluate()` runs on recorded model answers, including the exact
+requests sent to OpenAI. `packages/matching` replays them
+(`test/parity.test.ts`, `test/flow.test.ts`).
+
 What the new stack has to provide to run against these snapshots:
 
 1. The same routes, request bodies and JSON shapes.
@@ -71,7 +79,7 @@ What the new stack has to provide to run against these snapshots:
 
 ## 2. Browser e2e — `tests/e2e/`
 
-24 tests click through the real pages. They no longer call the Mongo driver:
+25 tests click through the real pages. They no longer call the Mongo driver:
 all seeding and checks go through a store object in `harness.py`
 (`MongoStore`: `seed`, `tracker_job`, `scraped_job`, `timeout_job`, ...).
 
@@ -85,13 +93,17 @@ The new stack adds a store class with the same method names over Postgres:
 
 ```bash
 pnpm db:up
-./scripts/run_e2e_next.sh -k login -k tracker_shows -k status_chip -k record_ -k backfill \
-  -k undo -k side_status -k save_notes -k edit_job -k replace_posting -k delete_card -k stored_javascript
+./scripts/run_e2e_next.sh
 ```
 
-Status on 2026-11-19 (phase 2c): the React Tracker page passes all 16 login
-and Jobs tests. Unmatched, Timeouts, Log Job, the agent API and the
-Overview / Stacks tabs are phase 3, so their 8 tests still run on Flask only.
+`run_e2e_next.sh` also starts `tests/e2e/fake_openai.py`, a local stand-in
+for the OpenAI API, and points the app at it (`OPENAI_BASE_URL`) with a
+synthetic CV (`tests/e2e/fake_cv.md`), so the Run AI test runs the real
+route, SDK and Lingua gate with no key, cost or data leaving the machine.
+That test is skipped on Flask.
+
+Status on 2026-11-19 (phase 3): all 25 tests pass on Next.js + Postgres;
+on Flask 24 pass and the Run AI test is skipped.
 
 ## Fixed in the Flask app while building the contracts
 

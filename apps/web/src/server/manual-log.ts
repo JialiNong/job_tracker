@@ -15,6 +15,7 @@ import {
   formatBerlinDate,
 } from "@tracker/core";
 import type { Prisma, PrismaClient } from "@tracker/db/client";
+import { PLAYWRIGHT_UNAVAILABLE } from "@/lib/local-only";
 import { AGENTS } from "./agent";
 import { lookupKnownJob, openPath } from "./known-jobs";
 import { saveLinkOnly } from "./link-only";
@@ -106,7 +107,7 @@ export async function startManualLog(prisma: PrismaClient, body: Record<string, 
   const appliedAt = parseAppliedDate(body.applied_date);
   if (appliedAt === "invalid") return bad("Invalid applied_date format, expected YYYY-MM-DD");
   if (mode === "scrape") {
-    return { status: 503, body: { ok: false, error: "Playwright not available on this server, run locally" } };
+    return { status: 503, body: { ok: false, error: PLAYWRIGHT_UNAVAILABLE } };
   }
 
   const current = await prisma.statsCache.findUnique({ where: { key: CACHE_KEY } });

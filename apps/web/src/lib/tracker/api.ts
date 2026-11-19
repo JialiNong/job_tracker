@@ -31,10 +31,45 @@ export const send = <T>(method: string, path: string, body?: unknown) =>
     body: body === undefined ? undefined : JSON.stringify(body),
   });
 
+/** POST /api/jobs/<id>/run-ai answer (also the body of a 4xx/5xx). */
+export interface RunAiResult {
+  ok: boolean;
+  error: string | null;
+  match_score: number | null;
+  match_gate?: string;
+  gate_reason?: string;
+  used_stored_jd?: boolean;
+  needs_local_scrape?: boolean;
+  title?: string;
+}
+
+/** Like request(), but a failed run comes back as a result (batches report it per job, they do not stop). */
+async function runAiRequest(id: string): Promise<RunAiResult> {
+  try {
+    const res = await fetch(`/api/jobs/${id}/run-ai`, { method: "POST", cache: "no-store" });
+    const data = (await res.json().catch(() => ({}))) as Partial<RunAiResult>;
+    if (res.ok && data.ok) return data as RunAiResult;
+    return { ...data, ok: false, error: data.error || `Run AI failed (HTTP ${res.status})`, match_score: null };
+  } catch (err) {
+    return { ok: false, error: (err as Error).message || "Network error", match_score: null };
+  }
+}
+
 export const api = {
   listJobs: (params: URLSearchParams, signal?: AbortSignal) =>
     request<JobPage>(`/api/jobs?${params}`, { signal }),
   getJob: (id: string) => request<Job>(`/api/jobs/${id}`),
+  runAi: runAiRequest,
+  fetchDetails: (id: string) => send<{ ok: boolean }>("POST", `/api/jobs/${id}/fetch-details`),
+  fetchDetailsBatch: (ids: string[]) => send<{ ok: boolean }>("POST", "/api/fetch-details/batch", { ids }),
+  /** Cards across all pages for the list filters: kind "missing" (no JD) or "missing_ai" (no AI result). */
+  fetchTargets: (params: URLSearchParams, kind: "missing" | "missing_ai") => {
+    const q = new URLSearchParams(params);
+    q.delete("page");
+    q.delete("page_size");
+    q.set(kind, "1");
+    return request<{ ids: string[]; total: number }>(`/api/fetch-details/ids?${q}`);
+  },
   getDescription: (id: string) => request<{ description: string }>(`/api/jobs/${id}/description`),
   stats: () => request<Stats>("/api/stats"),
   daily: (days: number) => request<{ days: DayStats[] }>(`/api/stats/daily?days=${days}`),

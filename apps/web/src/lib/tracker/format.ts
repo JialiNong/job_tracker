@@ -35,6 +35,21 @@ export const ORIGIN_PILL: Record<string, { label: string; title: string }> = {
   pipeline: { label: "Scraper", title: "Found by the LinkedIn / Indeed scraper" },
   manual: { label: "Log job", title: "Logged by hand via Log Job" },
 };
+/** Why Run AI stopped before scoring (match_gate). */
+export const GATE_LABELS: Record<string, string> = {
+  german: "German required",
+  stack: "Non-JS backend required",
+  leadership: "Leadership role",
+  not_web_dev: "Not web development",
+  backend_heavy: "Backend-heavy",
+  too_many_years: "Too many years required",
+  contract_or_location: "Contract type / location",
+  blocked_company: "Blocked company",
+  empty_desc: "Empty JD",
+  incomplete_desc: "Unusable JD",
+  non_english: "Not English",
+  ai_ml: "AI/ML role",
+};
 export const HIGHLIGHT_PRESETS = ["Leipzig", "Chinese+"];
 export const MAX_HIGHLIGHTS = 8;
 

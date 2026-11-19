@@ -110,28 +110,37 @@ function CardBody({ job, highlights, onClose }: { job: Job; highlights: string[]
 }
 
 /**
- * Run AI / Fetch job details need the pipeline (OpenAI, Chrome), which moves
- * to the new stack in phase 3 together with the task-state redesign.
+ * Run AI runs on the server when the card has a complete stored JD. Fetch
+ * job details needs the browser scraper, which runs on your computer; the
+ * server says so.
  */
 function PipelineButtons({ job }: { job: Job }) {
   const toast = useToast();
-  const notYet = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    toast("Run AI / Fetch details are not on the new backend yet — use the current Tracker", "err", 4000);
-  };
+  const tracker = useTracker();
+  const running = tracker.isRunningAi(job._id);
   const aiPending = needsAi(job);
+  const fetchDetails = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      await api.fetchDetails(job._id);
+    } catch (err) {
+      toast((err as Error).message, "err", 5000);
+    }
+  };
   return (
     <>
       <button
-        type="button" className={aiPending ? "btn-run-ai ai-pending-btn" : "btn-run-ai"} onClick={notYet}
-        title="Run AI matching — uses the stored JD when it is complete, otherwise scrapes the job page in Chrome first"
+        type="button" className={aiPending ? "btn-run-ai ai-pending-btn" : "btn-run-ai"}
+        disabled={running || tracker.batchRunning}
+        onClick={(e) => { e.stopPropagation(); tracker.runAi(job._id); }}
+        title="Run AI matching on the stored job description"
       >
-        {aiPending ? "Run AI" : "Re-run AI"}
+        {running ? "⏳ Running…" : aiPending ? "Run AI" : "Re-run AI"}
       </button>
       {job.details_missing || job.can_fetch_details ? (
         <button
-          type="button" className="btn-fetch-details" onClick={notYet}
-          title="Scrape title, company, location, and description (no AI matching)"
+          type="button" className="btn-fetch-details" onClick={fetchDetails}
+          title="Scrape title, company, location, and description (no AI matching) — runs on your computer"
         >
           Fetch job details
         </button>
