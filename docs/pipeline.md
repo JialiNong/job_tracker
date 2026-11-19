@@ -60,8 +60,10 @@ PYTHONPATH=src python3 scripts/tools/export_pipeline_config.py
    `scripts/run_jobs.sh` (cron / launchd).
 2. GitHub: add the `DATABASE_URL` secret, move the schedule from
    `api-sources.yml` to `api-sources-pg.yml`.
-3. The Telegram bot (`src/tg/bot.py`) still reads Mongo: port or retire it
-   before switching Mongo off.
+3. Telegram bot (`src/tg/bot.py`, stays Python): set `TRACKER_PIPELINE=postgres`
+   so `/jobs` starts `pnpm pipeline scrape` instead of `scripts/run_jobs.sh`
+   (same arguments). The bot itself does not read Mongo; the Indeed
+   "Continue" button works through a local flag file either way.
 
 Tests: `packages/pipeline` (parity with `tests/contract/pipeline_cases.json`,
 plus ingest and matcher runs on `tracker_test`), `tests/test_pg_store.py`.

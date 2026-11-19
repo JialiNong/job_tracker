@@ -26,7 +26,13 @@ from tg.client import telegram_send_kwargs  # noqa: E402
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 ALLOWED_USER_ID = int(os.getenv("TELEGRAM_ALLOWED_USER_ID"))
 
-PIPELINE_SCRIPT = "./scripts/run_jobs.sh"
+# /jobs runs this. TRACKER_PIPELINE=postgres (after the cutover) runs the
+# Postgres pipeline instead (docs/pipeline.md); same arguments, same lock.
+PIPELINE_COMMAND = (
+    ["pnpm", "pipeline", "scrape"]
+    if os.getenv("TRACKER_PIPELINE", "").strip().lower() == "postgres"
+    else ["./scripts/run_jobs.sh"]
+)
 INDEED_DAY_CHOICES = INDEED_CONFIG["fromage_choices"]
 
 # Prevent overlapping pipeline runs (they share one debug Chrome)
@@ -103,7 +109,7 @@ async def test(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def _run_pipeline(
     bot,
-    script: str,
+    script: list[str],
     done_text: str,
     script_args: list[str] | None = None,
 ) -> None:
@@ -116,7 +122,7 @@ async def _run_pipeline(
     global _pipeline_running
     status_text = done_text
     try:
-        cmd = ["caffeinate", "-i", script, *(script_args or [])]
+        cmd = ["caffeinate", "-i", *script, *(script_args or [])]
         process = await asyncio.create_subprocess_exec(
             *cmd,
             cwd=str(PROJECT_DIR),
@@ -144,7 +150,7 @@ async def _start_pipeline(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE,
     *,
-    script: str,
+    script: list[str],
     started_text: str,
     done_text: str,
     script_args: list[str] | None = None,
@@ -263,7 +269,7 @@ async def jobs(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await _start_pipeline(
         update,
         context,
-        script=PIPELINE_SCRIPT,
+        script=PIPELINE_COMMAND,
         script_args=script_args,
         started_text=(
             f"🚀 Started — Indeed and LinkedIn are scraping in parallel, "
