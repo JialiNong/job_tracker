@@ -10079,6 +10079,3493 @@
    "replacement_error": null
   }
  ],
+ "applied_locations": [
+  {
+   "raw": "Berlin",
+   "name": "Berlin",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "berlin-kreuzberg",
+   "name": "Berlin",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Kreuzberg",
+   "name": "Berlin",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "10407 Berlin",
+   "name": "Berlin",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Kastanienallee 97, 10435 Berlin",
+   "name": "Berlin",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "München",
+   "name": "Munich",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Muenchen, Bavaria",
+   "name": "Munich",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Munich (Hybrid)",
+   "name": "Munich",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Greater Munich Metropolitan Area",
+   "name": "Munich",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Frankfurt Rhine-Main Metropolitan Area",
+   "name": "Frankfurt",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Frankfurt am Main",
+   "name": "Frankfurt",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Pullach near Munich",
+   "name": "Pullach",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Gilching near Munich",
+   "name": "Gilching",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Bavaria near Munich",
+   "name": "Munich",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Köln",
+   "name": "Cologne",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Stuttgart, Ulm or Berlin",
+   "name": "Stuttgart",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Neu-Ulm",
+   "name": "Neu-Ulm",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Remote",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "remote (Germany)",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Remote - Germany | UK",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Remote, UK",
+   "name": "Remote",
+   "germany_or_remote": false
+  },
+  {
+   "raw": "Homeoffice",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "100% Remote",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Germany",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Deutschland (Remote)",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "European Union (Remote)",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "EMEA",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "DACH",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Europe",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "European Remote",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Amsterdam, Netherlands",
+   "name": "Amsterdam",
+   "germany_or_remote": false
+  },
+  {
+   "raw": "London, United Kingdom",
+   "name": "London",
+   "germany_or_remote": false
+  },
+  {
+   "raw": "Wien",
+   "name": "Wien",
+   "germany_or_remote": false
+  },
+  {
+   "raw": "Zürich",
+   "name": "Zürich",
+   "germany_or_remote": false
+  },
+  {
+   "raw": "Manching",
+   "name": "Manching",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Hauptstraße 5",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Gilching, Bavaria",
+   "name": "Gilching",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "bad homburg",
+   "name": "Bad Homburg",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Böblingen",
+   "name": "Böblingen",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Boeblingen",
+   "name": "Böblingen",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Düsseldorf / Köln",
+   "name": "Düsseldorf",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Hamburg • Remote",
+   "name": "Hamburg",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Leipzig, Saxony",
+   "name": "Leipzig",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Dresden (On-site)",
+   "name": "Dresden",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Essen",
+   "name": "Essen",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "New York, USA",
+   "name": "New York",
+   "germany_or_remote": false
+  },
+  {
+   "raw": "us",
+   "name": "Us",
+   "germany_or_remote": false
+  },
+  {
+   "raw": "Toronto",
+   "name": "Toronto",
+   "germany_or_remote": false
+  },
+  {
+   "raw": "",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "   ",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Somewhere-nice town",
+   "name": "Somewhere-Nice Town",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Ulm",
+   "name": "Ulm",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "nrw",
+   "name": "Remote",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Frankfurt (Oder)",
+   "name": "Frankfurt",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Hybrid in Berlin",
+   "name": "Berlin",
+   "germany_or_remote": true
+  },
+  {
+   "raw": "Berlin or Remote",
+   "name": "Berlin",
+   "germany_or_remote": true
+  }
+ ],
+ "flow": {
+  "now": "2026-11-13T12:00:00",
+  "jobs": [
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "applied",
+     "application_timeline": []
+    },
+    "sink": "waiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "closed_no_reply",
+     "application_timeline": []
+    },
+    "sink": "waiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "interview",
+     "application_timeline": []
+    },
+    "sink": "round_1",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "offer",
+     "application_timeline": []
+    },
+    "sink": "offer",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "rejected",
+     "application_timeline": []
+    },
+    "sink": "rejected",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      }
+     ]
+    },
+    "sink": "waiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      }
+     ]
+    },
+    "sink": "waiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      }
+     ]
+    },
+    "sink": "waiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      }
+     ]
+    },
+    "sink": "waiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      }
+     ]
+    },
+    "sink": "waiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "screening",
+       "at": "2026-10-05T09:00:00"
+      }
+     ]
+    },
+    "sink": "screening",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "screening",
+       "at": "2026-10-05T09:00:00"
+      }
+     ]
+    },
+    "sink": "screening",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "screening",
+       "at": "2026-10-05T09:00:00"
+      }
+     ]
+    },
+    "sink": "screening",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "screening",
+       "at": "2026-10-05T09:00:00"
+      }
+     ]
+    },
+    "sink": "screening",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "screening",
+       "at": "2026-10-05T09:00:00"
+      }
+     ]
+    },
+    "sink": "screening",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-05T09:00:00"
+      }
+     ]
+    },
+    "sink": "rejected",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-05T09:00:00"
+      }
+     ]
+    },
+    "sink": "rejected",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-05T09:00:00"
+      }
+     ]
+    },
+    "sink": "rejected",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-05T09:00:00"
+      }
+     ]
+    },
+    "sink": "rejected",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-05T09:00:00"
+      }
+     ]
+    },
+    "sink": "rejected",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      }
+     ]
+    },
+    "sink": "awaiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      }
+     ]
+    },
+    "sink": "awaiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      }
+     ]
+    },
+    "sink": "awaiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      }
+     ]
+    },
+    "sink": "awaiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      }
+     ]
+    },
+    "sink": "awaiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_1",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "round_1",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_1",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "round_1",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_1",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "round_1",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_1",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "round_1",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_1",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "round_1",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_1",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "round_1_upcoming",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_1",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "round_1_upcoming",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_1",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "round_1_upcoming",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_1",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "round_1_upcoming",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_1",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "round_1_upcoming",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_2",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "round_2",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_2",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "round_2",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_2",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "round_2",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_2",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "round_2",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_2",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "round_2",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_final",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "later_upcoming",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_final",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "later_upcoming",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_final",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "later_upcoming",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_final",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "later_upcoming",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_final",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "later_upcoming",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_1",
+       "at": "2026-10-09T15:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "rejected_1",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_1",
+       "at": "2026-10-09T15:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "rejected_1",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_1",
+       "at": "2026-10-09T15:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "rejected_1",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_1",
+       "at": "2026-10-09T15:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "rejected_1",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_1",
+       "at": "2026-10-09T15:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "rejected_1",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "rejected_invite",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "rejected_invite",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "rejected_invite",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "rejected_invite",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "rejected_invite",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_cancelled",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "cancelled",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_cancelled",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "cancelled",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_cancelled",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "cancelled",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_cancelled",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "cancelled",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "interview_cancelled",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "cancelled",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "screening",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "awaiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "screening",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "awaiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "screening",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "awaiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "screening",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "awaiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "screening",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "awaiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_final",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "offer",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "offer",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_final",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "offer",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "offer",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_final",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "offer",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "offer",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_final",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "offer",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "offer",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "interview_final",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "offer",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "offer",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "reapplied",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "waiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 1
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "reapplied",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "waiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 1
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "reapplied",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "waiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 1
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "reapplied",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "waiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 1
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "ats",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "reapplied",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "waiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 1
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "reapplied",
+       "at": "2026-10-09T15:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "awaiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 1
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "reapplied",
+       "at": "2026-10-09T15:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "awaiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 1
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "reapplied",
+       "at": "2026-10-09T15:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "awaiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 1
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "reapplied",
+       "at": "2026-10-09T15:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "awaiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 1
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "linkedin",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "reapplied",
+       "at": "2026-10-09T15:00:00"
+      },
+      {
+       "step": "interview_invite",
+       "at": "2026-11-20T11:00:00"
+      }
+     ]
+    },
+    "sink": "awaiting",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 1
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "applied",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "offer",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "rejected",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "closed_no_reply",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "offer",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "rejected",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "interview",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "offer",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "rejected",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "offer",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "offer",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "rejected",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   },
+   {
+    "input": {
+     "applied_at": "2026-10-01T10:00:00",
+     "updated_at": "2026-10-05T09:00:00",
+     "matched_at": "2026-10-01T10:00:00",
+     "source": "indeed",
+     "status": "rejected",
+     "application_timeline": [
+      {
+       "step": "applied",
+       "at": "2026-10-01T10:00:00"
+      },
+      {
+       "step": "offer",
+       "at": "2026-10-05T09:00:00"
+      },
+      {
+       "step": "rejected",
+       "at": "2026-10-09T15:00:00"
+      }
+     ]
+    },
+    "sink": "rejected",
+    "applied_at": "2026-10-01T10:00:00",
+    "reapplied": 0
+   }
+  ],
+  "sankey": {
+   "total": 85,
+   "nodes": [
+    {
+     "id": "applied",
+     "label": "Applied",
+     "column": 0,
+     "tone": "applied",
+     "value": 85
+    },
+    {
+     "id": "interview",
+     "label": "Interview",
+     "column": 1,
+     "tone": "interview",
+     "value": 57
+    },
+    {
+     "id": "screening",
+     "label": "Screening",
+     "column": 1,
+     "tone": "screening",
+     "value": 5
+    },
+    {
+     "id": "waiting",
+     "label": "Waiting",
+     "column": 1,
+     "tone": "waiting",
+     "value": 12
+    },
+    {
+     "id": "rejected",
+     "label": "Rejected",
+     "column": 1,
+     "tone": "rejected",
+     "value": 11
+    },
+    {
+     "id": "awaiting",
+     "label": "Awaiting interview",
+     "column": 2,
+     "tone": "interview",
+     "value": 15
+    },
+    {
+     "id": "cancelled",
+     "label": "Interview cancelled",
+     "column": 2,
+     "tone": "cancelled",
+     "value": 5
+    },
+    {
+     "id": "round_1_upcoming",
+     "label": "Round 1 upcoming",
+     "column": 2,
+     "tone": "interview",
+     "value": 5
+    },
+    {
+     "id": "round_1",
+     "label": "After round 1",
+     "column": 2,
+     "tone": "interview",
+     "value": 6
+    },
+    {
+     "id": "rejected_invite",
+     "label": "Invite rejected",
+     "column": 2,
+     "tone": "rejected",
+     "value": 5
+    },
+    {
+     "id": "rejected_1",
+     "label": "Round 1 rejected",
+     "column": 2,
+     "tone": "rejected",
+     "value": 5
+    },
+    {
+     "id": "round_2",
+     "label": "After round 2",
+     "column": 2,
+     "tone": "interview",
+     "value": 5
+    },
+    {
+     "id": "later_upcoming",
+     "label": "Later round upcoming",
+     "column": 2,
+     "tone": "interview",
+     "value": 5
+    },
+    {
+     "id": "offer",
+     "label": "Offer",
+     "column": 2,
+     "tone": "offer",
+     "value": 6
+    }
+   ],
+   "links": [
+    {
+     "source": "applied",
+     "target": "waiting",
+     "value": 12
+    },
+    {
+     "source": "applied",
+     "target": "interview",
+     "value": 57
+    },
+    {
+     "source": "interview",
+     "target": "round_1",
+     "value": 6
+    },
+    {
+     "source": "interview",
+     "target": "offer",
+     "value": 6
+    },
+    {
+     "source": "applied",
+     "target": "rejected",
+     "value": 11
+    },
+    {
+     "source": "applied",
+     "target": "screening",
+     "value": 5
+    },
+    {
+     "source": "interview",
+     "target": "awaiting",
+     "value": 15
+    },
+    {
+     "source": "interview",
+     "target": "round_1_upcoming",
+     "value": 5
+    },
+    {
+     "source": "interview",
+     "target": "round_2",
+     "value": 5
+    },
+    {
+     "source": "interview",
+     "target": "later_upcoming",
+     "value": 5
+    },
+    {
+     "source": "interview",
+     "target": "rejected_1",
+     "value": 5
+    },
+    {
+     "source": "interview",
+     "target": "rejected_invite",
+     "value": 5
+    },
+    {
+     "source": "interview",
+     "target": "cancelled",
+     "value": 5
+    }
+   ]
+  },
+  "weekly": {
+   "weeks": [
+    {
+     "week_start": "2026-09-28",
+     "linkedin": 30,
+     "indeed": 30,
+     "other": 25,
+     "total": 85
+    },
+    {
+     "week_start": "2026-10-05",
+     "linkedin": 5,
+     "indeed": 0,
+     "other": 5,
+     "total": 10
+    },
+    {
+     "week_start": "2026-10-12",
+     "linkedin": 0,
+     "indeed": 0,
+     "other": 0,
+     "total": 0
+    },
+    {
+     "week_start": "2026-10-19",
+     "linkedin": 0,
+     "indeed": 0,
+     "other": 0,
+     "total": 0
+    },
+    {
+     "week_start": "2026-10-26",
+     "linkedin": 0,
+     "indeed": 0,
+     "other": 0,
+     "total": 0
+    },
+    {
+     "week_start": "2026-11-02",
+     "linkedin": 0,
+     "indeed": 0,
+     "other": 0,
+     "total": 0
+    },
+    {
+     "week_start": "2026-11-09",
+     "linkedin": 0,
+     "indeed": 0,
+     "other": 0,
+     "total": 0
+    }
+   ],
+   "totals": {
+    "linkedin": 35,
+    "indeed": 30,
+    "other": 30,
+    "total": 95
+   }
+  }
+ },
+ "stacks": {
+  "jobs": [
+   {
+    "title": "Frontend Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "pending",
+    "matched_at": "2026-11-13T09:01:00",
+    "updated_at": "2026-11-13T11:00:00",
+    "applied_at": null,
+    "application_timeline": []
+   },
+   {
+    "title": "Full Stack Developer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Vue, Nuxt, Node.js, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Nuxt, Node.js, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Nuxt, Node.js, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "pending",
+    "matched_at": "2026-11-12T09:02:00",
+    "updated_at": "2026-11-12T11:00:00",
+    "applied_at": null,
+    "application_timeline": []
+   },
+   {
+    "title": "Senior Software Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Angular, Spring Boot, Java. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, Spring Boot, Java. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, Spring Boot, Java. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "pending",
+    "matched_at": "2026-11-11T09:03:00",
+    "updated_at": "2026-11-11T11:00:00",
+    "applied_at": null,
+    "application_timeline": []
+   },
+   {
+    "title": "Product Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS, GraphQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS, GraphQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS, GraphQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "pending",
+    "matched_at": "2026-11-10T09:04:00",
+    "updated_at": "2026-11-10T11:00:00",
+    "applied_at": null,
+    "application_timeline": []
+   },
+   {
+    "title": "Frontend Developer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Redux, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Redux, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Redux, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "applied",
+    "matched_at": "2026-10-24T09:05:00",
+    "updated_at": "2026-11-09T11:00:00",
+    "applied_at": "2026-11-09T10:00:00",
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": "2026-11-09T10:00:00"
+     }
+    ]
+   },
+   {
+    "title": "Software Engineer (Frontend)",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Vue, Laravel, PHP. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Laravel, PHP. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Laravel, PHP. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "applied",
+    "matched_at": "2026-10-24T09:06:00",
+    "updated_at": "2026-11-04T11:00:00",
+    "applied_at": "2026-11-04T10:00:00",
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": "2026-11-04T15:00:00"
+     }
+    ]
+   },
+   {
+    "title": "Full Stack Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Node.js, Express, MongoDB. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Node.js, Express, MongoDB. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Node.js, Express, MongoDB. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "applied",
+    "matched_at": "2026-10-03T09:07:00",
+    "updated_at": "2026-10-04T11:00:00",
+    "applied_at": "2026-10-04T10:00:00",
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": "2026-10-04T09:00:00"
+     }
+    ]
+   },
+   {
+    "title": "React Developer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, React Native, Expo. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, React Native, Expo. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, React Native, Expo. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "applied",
+    "matched_at": "2026-09-18T09:08:00",
+    "updated_at": "2026-09-19T11:00:00",
+    "applied_at": "2026-09-19T10:00:00",
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": "2026-09-19T14:00:00"
+     }
+    ]
+   },
+   {
+    "title": "Frontend Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Django. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Django. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Django. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "screening",
+    "matched_at": "2026-10-13T09:09:00",
+    "updated_at": "2026-10-14T11:00:00",
+    "applied_at": "2026-10-14T10:00:00",
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": "2026-10-14T10:00:00"
+     },
+     {
+      "step": "screening",
+      "at": "2026-10-19T16:00:00"
+     },
+     {
+      "step": "screening_done",
+      "at": "2026-10-22T11:00:00"
+     }
+    ]
+   },
+   {
+    "title": "Full Stack Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Next.js, tRPC, Prisma, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Next.js, tRPC, Prisma, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Next.js, tRPC, Prisma, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "interview",
+    "matched_at": "2026-10-08T09:10:00",
+    "updated_at": "2026-10-09T11:00:00",
+    "applied_at": "2026-10-09T10:00:00",
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": "2026-10-09T10:00:00"
+     },
+     {
+      "step": "interview_invite",
+      "at": "2026-10-16T09:00:00"
+     },
+     {
+      "step": "interview_1",
+      "at": "2026-10-20T14:00:00"
+     },
+     {
+      "step": "interview_2",
+      "at": "2026-10-26T15:00:00"
+     }
+    ]
+   },
+   {
+    "title": "Software Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Angular, .NET, C#. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, .NET, C#. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, .NET, C#. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "interview_cancelled",
+    "matched_at": "2026-09-28T09:11:00",
+    "updated_at": "2026-09-29T11:00:00",
+    "applied_at": "2026-09-29T10:00:00",
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": "2026-09-29T10:00:00"
+     },
+     {
+      "step": "interview_invite",
+      "at": "2026-10-06T09:00:00"
+     },
+     {
+      "step": "interview_cancelled",
+      "at": "2026-10-08T12:00:00"
+     }
+    ]
+   },
+   {
+    "title": "Frontend Lead",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Next.js, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Next.js, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Next.js, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "offer",
+    "matched_at": "2026-09-13T09:12:00",
+    "updated_at": "2026-09-14T11:00:00",
+    "applied_at": "2026-09-14T10:00:00",
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": "2026-09-14T10:00:00"
+     },
+     {
+      "step": "interview_invite",
+      "at": "2026-09-22T09:00:00"
+     },
+     {
+      "step": "interview_1",
+      "at": "2026-09-26T11:00:00"
+     },
+     {
+      "step": "interview_final",
+      "at": "2026-10-04T15:00:00"
+     },
+     {
+      "step": "offer",
+      "at": "2026-10-11T17:00:00"
+     }
+    ]
+   },
+   {
+    "title": "Full Stack Developer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot, Kotlin. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot, Kotlin. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot, Kotlin. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "rejected",
+    "matched_at": "2026-09-23T09:13:00",
+    "updated_at": "2026-09-24T11:00:00",
+    "applied_at": "2026-09-24T10:00:00",
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": "2026-09-24T10:00:00"
+     },
+     {
+      "step": "rejected",
+      "at": "2026-09-30T18:00:00"
+     }
+    ]
+   },
+   {
+    "title": "Frontend Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Vue, Django, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Django, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Django, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "rejected",
+    "matched_at": "2026-09-08T09:14:00",
+    "updated_at": "2026-09-09T11:00:00",
+    "applied_at": "2026-09-09T10:00:00",
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": "2026-09-09T10:00:00"
+     },
+     {
+      "step": "interview_invite",
+      "at": "2026-09-16T09:00:00"
+     },
+     {
+      "step": "interview_1",
+      "at": "2026-09-19T15:00:00"
+     },
+     {
+      "step": "rejected",
+      "at": "2026-09-24T18:00:00"
+     }
+    ]
+   },
+   {
+    "title": "Web Developer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Angular, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "rejected",
+    "matched_at": "2026-08-24T09:15:00",
+    "updated_at": "2026-08-25T11:00:00",
+    "applied_at": "2026-08-25T10:00:00",
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": "2026-08-25T10:00:00"
+     },
+     {
+      "step": "rejected",
+      "at": "2026-09-04T09:00:00"
+     }
+    ]
+   },
+   {
+    "title": "Software Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React or Vue, Node.js or Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React or Vue, Node.js or Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React or Vue, Node.js or Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "rejected",
+    "matched_at": "2026-09-03T09:16:00",
+    "updated_at": "2026-09-04T11:00:00",
+    "applied_at": "2026-09-04T10:00:00",
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": "2026-09-04T10:00:00"
+     },
+     {
+      "step": "rejected",
+      "at": "2026-09-12T09:00:00"
+     }
+    ]
+   },
+   {
+    "title": "Frontend Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "applied",
+    "matched_at": "2026-08-14T09:17:00",
+    "updated_at": "2026-08-15T11:00:00",
+    "applied_at": "2026-08-15T10:00:00",
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": "2026-08-15T10:00:00"
+     },
+     {
+      "step": "rejected",
+      "at": "2026-08-25T09:00:00"
+     },
+     {
+      "step": "reapplied",
+      "at": "2026-11-03T11:00:00"
+     }
+    ]
+   },
+   {
+    "title": "Backend Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "unsuitable",
+    "matched_at": "2026-10-19T09:18:00",
+    "updated_at": "2026-10-19T11:00:00",
+    "applied_at": null,
+    "application_timeline": []
+   },
+   {
+    "title": "Frontend Developer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Tailwind. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Tailwind. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Tailwind. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "closed",
+    "matched_at": "2026-10-17T09:19:00",
+    "updated_at": "2026-10-17T11:00:00",
+    "applied_at": null,
+    "application_timeline": []
+   },
+   {
+    "title": "Full Stack Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Vue, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "closed_no_reply",
+    "matched_at": "2026-08-29T09:20:00",
+    "updated_at": "2026-08-30T11:00:00",
+    "applied_at": "2026-08-30T10:00:00",
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": "2026-08-30T10:00:00"
+     }
+    ]
+   },
+   {
+    "title": "Frontend Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "prev_rejected",
+    "matched_at": "2026-11-05T09:21:00",
+    "updated_at": "2026-11-05T11:00:00",
+    "applied_at": null,
+    "application_timeline": []
+   },
+   {
+    "title": "React Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, FastAPI, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, FastAPI, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, FastAPI, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "too_many_questions",
+    "matched_at": "2026-11-07T09:22:00",
+    "updated_at": "2026-11-07T11:00:00",
+    "applied_at": null,
+    "application_timeline": []
+   },
+   {
+    "title": "Frontend Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "repost",
+    "matched_at": "2026-11-08T09:23:00",
+    "updated_at": "2026-11-08T11:00:00",
+    "applied_at": null,
+    "application_timeline": []
+   },
+   {
+    "title": "Frontend Engineer",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "status": "duplicate",
+    "matched_at": "2026-11-09T09:24:00",
+    "updated_at": "2026-11-09T11:00:00",
+    "applied_at": null,
+    "application_timeline": []
+   },
+   {
+    "title": "Software Engineer",
+    "description": "",
+    "status": "applied",
+    "matched_at": "2026-11-11T09:25:00",
+    "updated_at": "2026-11-11T11:00:00",
+    "applied_at": "2026-11-11T10:00:00",
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": "2026-11-11T20:00:00"
+     }
+    ]
+   },
+   {
+    "title": "Platform",
+    "description": "We run Node.js and Spring Boot on AWS (EKS) with Datadog and PostgreSQL.",
+    "status": "applied",
+    "applied_at": "2026-09-01T10:00:00"
+   },
+   {
+    "title": "Platform",
+    "description": "React Native app, Firebase, Sentry; deploy to Vercel. C# services on Azure.",
+    "status": "applied",
+    "applied_at": "2026-09-01T10:00:00"
+   },
+   {
+    "title": "Platform",
+    "description": "ASP.NET Core, SQL Server, T-SQL, Grafana + Prometheus, K8s on GCP.",
+    "status": "applied",
+    "applied_at": "2026-09-01T10:00:00"
+   },
+   {
+    "title": "Platform",
+    "description": "Express, Fastify and Hono. Redis, Mongo. Fly.io and Render.com. OTel.",
+    "status": "applied",
+    "applied_at": "2026-09-01T10:00:00"
+   },
+   {
+    "title": "Platform",
+    "description": "Reactive streams, nextjs-like, not React. spring onboarding. Express interest.",
+    "status": "applied",
+    "applied_at": "2026-09-01T10:00:00"
+   }
+  ],
+  "now": "2026-11-13T12:00:00",
+  "output": {
+   "settled_after_days": 30,
+   "all": {
+    "applied": 30,
+    "rejected": 5,
+    "frontend": [
+     {
+      "key": "react",
+      "applied": 16,
+      "rejected": 2
+     },
+     {
+      "key": "vue",
+      "applied": 4,
+      "rejected": 1
+     },
+     {
+      "key": "angular",
+      "applied": 3,
+      "rejected": 1
+     },
+     {
+      "key": "multi",
+      "applied": 1,
+      "rejected": 1
+     },
+     {
+      "key": "none",
+      "applied": 6,
+      "rejected": 0
+     }
+    ],
+    "backend": [
+     {
+      "key": "node",
+      "applied": 13,
+      "rejected": 1
+     },
+     {
+      "key": "non_node",
+      "applied": 11,
+      "rejected": 2
+     },
+     {
+      "key": "both",
+      "applied": 2,
+      "rejected": 1
+     },
+     {
+      "key": "none",
+      "applied": 4,
+      "rejected": 1
+     }
+    ],
+    "node": [
+     {
+      "key": "node",
+      "label": "Node.js",
+      "applied": 8,
+      "rejected": 2
+     },
+     {
+      "key": "next",
+      "label": "Next.js",
+      "applied": 5,
+      "rejected": 0
+     },
+     {
+      "key": "express",
+      "label": "Express",
+      "applied": 3,
+      "rejected": 0
+     },
+     {
+      "key": "nest",
+      "label": "NestJS",
+      "applied": 2,
+      "rejected": 0
+     },
+     {
+      "key": "nuxt",
+      "label": "Nuxt",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "trpc",
+      "label": "tRPC",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "fastify",
+      "label": "Fastify",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "hono",
+      "label": "Hono",
+      "applied": 1,
+      "rejected": 0
+     }
+    ],
+    "non_node": [
+     {
+      "key": "spring",
+      "label": "Spring / Spring Boot",
+      "applied": 6,
+      "rejected": 2
+     },
+     {
+      "key": "dotnet",
+      "label": ".NET / ASP.NET",
+      "applied": 3,
+      "rejected": 0
+     },
+     {
+      "key": "django",
+      "label": "Django",
+      "applied": 2,
+      "rejected": 1
+     },
+     {
+      "key": "fastapi",
+      "label": "FastAPI",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "laravel",
+      "label": "Laravel",
+      "applied": 1,
+      "rejected": 0
+     }
+    ],
+    "database": [
+     {
+      "key": "postgres",
+      "label": "PostgreSQL",
+      "applied": 3,
+      "rejected": 0
+     },
+     {
+      "key": "mongodb",
+      "label": "MongoDB",
+      "applied": 2,
+      "rejected": 0
+     },
+     {
+      "key": "redis",
+      "label": "Redis",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "mssql",
+      "label": "SQL Server",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "firebase",
+      "label": "Firebase / Firestore",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "none",
+      "applied": 23,
+      "rejected": 5
+     }
+    ],
+    "deploy": [
+     {
+      "key": "kubernetes",
+      "label": "Kubernetes",
+      "applied": 2,
+      "rejected": 0
+     },
+     {
+      "key": "aws",
+      "label": "AWS",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "gcp",
+      "label": "Google Cloud",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "azure",
+      "label": "Azure",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "vercel",
+      "label": "Vercel",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "flyio",
+      "label": "Fly.io",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "render",
+      "label": "Render",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "none",
+      "applied": 26,
+      "rejected": 5
+     }
+    ],
+    "monitoring": [
+     {
+      "key": "datadog",
+      "label": "Datadog",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "sentry",
+      "label": "Sentry",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "grafana",
+      "label": "Grafana",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "prometheus",
+      "label": "Prometheus",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "opentelemetry",
+      "label": "OpenTelemetry",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "none",
+      "applied": 26,
+      "rejected": 5
+     }
+    ]
+   },
+   "settled": {
+    "applied": 17,
+    "rejected": 5,
+    "frontend": [
+     {
+      "key": "react",
+      "applied": 8,
+      "rejected": 2
+     },
+     {
+      "key": "vue",
+      "applied": 2,
+      "rejected": 1
+     },
+     {
+      "key": "angular",
+      "applied": 2,
+      "rejected": 1
+     },
+     {
+      "key": "multi",
+      "applied": 1,
+      "rejected": 1
+     },
+     {
+      "key": "none",
+      "applied": 4,
+      "rejected": 0
+     }
+    ],
+    "backend": [
+     {
+      "key": "node",
+      "applied": 7,
+      "rejected": 1
+     },
+     {
+      "key": "non_node",
+      "applied": 6,
+      "rejected": 2
+     },
+     {
+      "key": "both",
+      "applied": 2,
+      "rejected": 1
+     },
+     {
+      "key": "none",
+      "applied": 2,
+      "rejected": 1
+     }
+    ],
+    "node": [
+     {
+      "key": "node",
+      "label": "Node.js",
+      "applied": 6,
+      "rejected": 2
+     },
+     {
+      "key": "next",
+      "label": "Next.js",
+      "applied": 3,
+      "rejected": 0
+     },
+     {
+      "key": "express",
+      "label": "Express",
+      "applied": 3,
+      "rejected": 0
+     },
+     {
+      "key": "trpc",
+      "label": "tRPC",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "fastify",
+      "label": "Fastify",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "hono",
+      "label": "Hono",
+      "applied": 1,
+      "rejected": 0
+     }
+    ],
+    "non_node": [
+     {
+      "key": "spring",
+      "label": "Spring / Spring Boot",
+      "applied": 3,
+      "rejected": 2
+     },
+     {
+      "key": "dotnet",
+      "label": ".NET / ASP.NET",
+      "applied": 3,
+      "rejected": 0
+     },
+     {
+      "key": "django",
+      "label": "Django",
+      "applied": 2,
+      "rejected": 1
+     }
+    ],
+    "database": [
+     {
+      "key": "postgres",
+      "label": "PostgreSQL",
+      "applied": 2,
+      "rejected": 0
+     },
+     {
+      "key": "mongodb",
+      "label": "MongoDB",
+      "applied": 2,
+      "rejected": 0
+     },
+     {
+      "key": "redis",
+      "label": "Redis",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "mssql",
+      "label": "SQL Server",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "firebase",
+      "label": "Firebase / Firestore",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "none",
+      "applied": 11,
+      "rejected": 5
+     }
+    ],
+    "deploy": [
+     {
+      "key": "kubernetes",
+      "label": "Kubernetes",
+      "applied": 2,
+      "rejected": 0
+     },
+     {
+      "key": "aws",
+      "label": "AWS",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "gcp",
+      "label": "Google Cloud",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "azure",
+      "label": "Azure",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "vercel",
+      "label": "Vercel",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "flyio",
+      "label": "Fly.io",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "render",
+      "label": "Render",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "none",
+      "applied": 13,
+      "rejected": 5
+     }
+    ],
+    "monitoring": [
+     {
+      "key": "datadog",
+      "label": "Datadog",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "sentry",
+      "label": "Sentry",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "grafana",
+      "label": "Grafana",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "prometheus",
+      "label": "Prometheus",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "opentelemetry",
+      "label": "OpenTelemetry",
+      "applied": 1,
+      "rejected": 0
+     },
+     {
+      "key": "none",
+      "applied": 13,
+      "rejected": 5
+     }
+    ]
+   }
+  }
+ },
  "timeline_updates": [
   {
    "kind": "timeline",
