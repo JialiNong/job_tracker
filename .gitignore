@@ -43,3 +43,8 @@ evals/results/
 # Runtime logs and local screenshots
 logs/
 artifacts/
+
+# Node (Next.js + Postgres rewrite)
+node_modules/
+packages/*/dist/
+packages/db/reports/

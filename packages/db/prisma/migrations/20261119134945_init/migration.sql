@@ -1,6 +1,3 @@
--- CreateSchema
-CREATE SCHEMA IF NOT EXISTS "public";
-
 -- CreateEnum
 CREATE TYPE "public"."ApplicationStatus" AS ENUM ('pending', 'applied', 'screening', 'interview', 'interview_cancelled', 'offer', 'rejected', 'unsuitable', 'closed', 'closed_no_reply', 'prev_rejected', 'too_many_questions', 'repost', 'duplicate');
 
@@ -239,4 +236,3 @@ ALTER TABLE "public"."applications" ADD CONSTRAINT "applications_job_id_fkey" FO
 
 -- AddForeignKey
 ALTER TABLE "public"."application_events" ADD CONSTRAINT "application_events_application_id_fkey" FOREIGN KEY ("application_id") REFERENCES "public"."applications"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-

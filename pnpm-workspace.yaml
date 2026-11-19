@@ -1,0 +1,10 @@
+# Next.js + Postgres rewrite (see docs/pg-schema.md). The Python app in src/
+# keeps running on Mongo until the cutover.
+packages:
+  - "packages/*"
+  - "apps/*"
+onlyBuiltDependencies:
+  - "@prisma/client"
+  - "@prisma/engines"
+  - prisma
+  - esbuild
