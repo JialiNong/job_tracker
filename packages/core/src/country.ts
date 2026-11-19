@@ -3,6 +3,8 @@
  * `country` field first, then the first pattern matching the free-text
  * location, then Germany (the scrapers search Germany).
  */
+import { pyRegex } from "./pyregex.js";
+
 export const REMOTE = "remote";
 export const OTHER = "other";
 export const DEFAULT_COUNTRY = "germany";
@@ -62,22 +64,7 @@ const RAW: [string, string, string][] = [
     + "|european economic area|emea|europe|eu)\\b"],
 ];
 
-/**
- * Python's \b counts any Unicode letter as a word character; JavaScript's only
- * ASCII. A \b before a token becomes "no word char behind", after it "no word
- * char ahead".
- */
-function unicodeBoundaries(pattern: string): string {
-  return pattern.replace(/\\b/g, (_m, offset: number, whole: string) => {
-    const next = whole[offset + 2] ?? "";
-    const startsToken = /[\p{L}\p{N}_[(]/u.test(next);
-    return startsToken ? "(?<![\\p{L}\\p{N}_])" : "(?![\\p{L}\\p{N}_])";
-  });
-}
-
-export const COUNTRIES = RAW.map(([key, label, pattern]) => ({
-  key, label, re: new RegExp(unicodeBoundaries(pattern), "iu"),
-}));
+export const COUNTRIES = RAW.map(([key, label, pattern]) => ({ key, label, re: pyRegex(pattern, true) }));
 export const COUNTRY_LABELS: Record<string, string> = Object.fromEntries(COUNTRIES.map((c) => [c.key, c.label]));
 
 export function countryFromLocation(location: unknown): string | null {

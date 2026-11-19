@@ -175,3 +175,32 @@ export function hydrateTimeline(job: TrackerJob): TimelineEvent[] {
   } else if (status === "screening") seeded.push({ step: "screening", at: later });
   return seeded;
 }
+
+/**
+ * The first apply date: the Applied step, else applied_at, else (for an
+ * applied-like status without either) updated_at / matched_at. Same rules as
+ * core/mongo/tracker.py resolve_applied_at (Journey, heatmap, weekly bars).
+ */
+export function resolveAppliedAt(job: TrackerJob): Date | null {
+  for (const e of timelineOf(job)) {
+    if (e?.step !== "applied") continue;
+    const at = toInstant(e.at);
+    if (at) return at;
+  }
+  const applied = toInstant(job.applied_at);
+  if (applied) return applied;
+  if ((APPLIED_STATUSES as readonly string[]).includes(job.status || "")) {
+    return toInstant(job.updated_at || job.matched_at || null);
+  }
+  return null;
+}
+
+/** Reapplied steps: each one is another application. */
+export const reappliedCount = (job: TrackerJob) => timelineOf(job).filter((e) => e?.step === "reapplied").length;
+
+/** Counts as an application (funnel, Journey, Locations): applied date, applied-like status, or any timeline step. */
+export function isApplication(job: TrackerJob): boolean {
+  return !!job.applied_at
+    || (APPLIED_STATUSES as readonly string[]).includes(job.status || "")
+    || timelineOf(job).length > 0;
+}

@@ -21,7 +21,9 @@ os.environ.setdefault("TRACKER_FIXED_NOW", "2026-11-13T12:00")
 
 from bson import json_util  # noqa: E402
 
+from core.applied_location import is_germany_or_remote, normalize_applied_location  # noqa: E402
 from core.country import COUNTRY_LABELS, job_country  # noqa: E402
+from core.db_mongo import reapplied_count, resolve_applied_at  # noqa: E402
 from core.job_origin import infer_origin  # noqa: E402
 from core.job_url import (  # noqa: E402
     canonical_job_link,
@@ -35,7 +37,9 @@ from core.job_url import (  # noqa: E402
     resolve_job_id,
 )
 from core.manual_log import can_fetch_details, job_missing_details  # noqa: E402
+from web.flow import build_sankey, build_weekly_by_platform, classify_flow_sink  # noqa: E402
 from web.serialize import _normalize_link, _serialize, company_history_item  # noqa: E402
+from web.stacks import build_stack_stats  # noqa: E402
 from web.status import (  # noqa: E402
     PROGRESS_STAGES,
     SIDE_STATUSES,
@@ -165,6 +169,47 @@ URLS = [
 ]
 
 
+APPLIED_LOCATIONS = [
+    "Berlin", "berlin-kreuzberg", "Kreuzberg", "10407 Berlin", "Kastanienallee 97, 10435 Berlin",
+    "München", "Muenchen, Bavaria", "Munich (Hybrid)", "Greater Munich Metropolitan Area",
+    "Frankfurt Rhine-Main Metropolitan Area", "Frankfurt am Main", "Pullach near Munich",
+    "Gilching near Munich", "Bavaria near Munich", "Köln", "Stuttgart, Ulm or Berlin", "Neu-Ulm",
+    "Remote", "remote (Germany)", "Remote - Germany | UK", "Remote, UK", "Homeoffice", "100% Remote",
+    "Germany", "Deutschland (Remote)", "European Union (Remote)", "EMEA", "DACH", "Europe",
+    "European Remote", "Amsterdam, Netherlands", "London, United Kingdom", "Wien", "Zürich",
+    "Manching", "Hauptstraße 5", "Gilching, Bavaria", "bad homburg", "Böblingen", "Boeblingen",
+    "Düsseldorf / Köln", "Hamburg • Remote", "Leipzig, Saxony", "Dresden (On-site)", "Essen",
+    "New York, USA", "us", "Toronto", "", "   ", "Somewhere-nice town", "Ulm", "nrw",
+    "Frankfurt (Oder)", "Hybrid in Berlin", "Berlin or Remote",
+]
+
+
+def flow_scenarios():
+    a, b, c, e = d("2026-10-01T10:00:00"), d("2026-10-05T09:00:00"), d("2026-10-09T15:00:00"), d("2026-11-20T11:00:00")
+    base = {"applied_at": a, "updated_at": b, "matched_at": a, "source": "linkedin"}
+    shapes = [
+        [], [("applied", a)], [("applied", a), ("screening", b)], [("applied", a), ("rejected", b)],
+        [("applied", a), ("interview_invite", b)], [("applied", a), ("interview_invite", b), ("interview_1", c)],
+        [("applied", a), ("interview_invite", b), ("interview_1", e)],
+        [("applied", a), ("interview_invite", b), ("interview_2", c)], [("applied", a), ("interview_final", e)],
+        [("applied", a), ("interview_invite", b), ("interview_1", c), ("rejected", e)],
+        [("applied", a), ("interview_invite", b), ("rejected", c)],
+        [("applied", a), ("interview_invite", b), ("interview_cancelled", c)],
+        [("applied", a), ("interview_invite", b), ("screening", c)],
+        [("applied", a), ("interview_final", b), ("offer", c)],
+        [("applied", a), ("rejected", b), ("reapplied", c)],
+        [("applied", a), ("rejected", b), ("reapplied", c), ("interview_invite", e)],
+        [("applied", a), ("offer", b), ("rejected", c)],
+    ]
+    out = []
+    for i, steps in enumerate(shapes):
+        for status in ("applied", "closed_no_reply", "interview", "offer", "rejected"):
+            job = {**base, "status": status, "source": ["linkedin", "indeed", "ats"][i % 3],
+                   "application_timeline": [{"step": s, "at": t} for s, t in steps]}
+            out.append(job)
+    return out
+
+
 def timeline_scenarios():
     a, b, c, e = d("2026-10-01T10:00:00"), d("2026-10-05T09:00:00"), d("2026-10-09T15:00:00"), d("2026-10-12T11:00:00")
     base = {"applied_at": a, "updated_at": b, "matched_at": a}
@@ -270,6 +315,32 @@ def main():
 
     history = [{"input": to_jsonable(j), "output": to_jsonable(company_history_item(j))} for j in tracker[:6]]
 
+    locations = [{"raw": raw, "name": normalize_applied_location(raw),
+                  "germany_or_remote": is_germany_or_remote(raw)} for raw in APPLIED_LOCATIONS]
+
+    flow_now = d("2026-11-13T12:00:00")
+    flow_jobs = flow_scenarios()
+    flow = {
+        "now": wall(flow_now),
+        "jobs": [{"input": to_jsonable(j), "sink": classify_flow_sink(j, now=flow_now),
+                  "applied_at": wall(resolve_applied_at(j)), "reapplied": reapplied_count(j)} for j in flow_jobs],
+        "sankey": build_sankey(flow_jobs, now=flow_now),
+        "weekly": build_weekly_by_platform(flow_jobs, today=flow_now.date()),
+    }
+
+    stack_jobs = [{**{k: v for k, v in j.items() if k in ("title", "description", "status", "application_timeline",
+                                                       "applied_at", "updated_at", "matched_at")}}
+                  for j in [*tracker, *[{"title": "Platform", "description": t, "status": "applied",
+                                         "applied_at": d("2026-09-01T10:00:00")} for t in (
+                      "We run Node.js and Spring Boot on AWS (EKS) with Datadog and PostgreSQL.",
+                      "React Native app, Firebase, Sentry; deploy to Vercel. C# services on Azure.",
+                      "ASP.NET Core, SQL Server, T-SQL, Grafana + Prometheus, K8s on GCP.",
+                      "Express, Fastify and Hono. Redis, Mongo. Fly.io and Render.com. OTel.",
+                      "Reactive streams, nextjs-like, not React. spring onboarding. Express interest.",
+                  )]]]
+    stacks = {"jobs": to_jsonable(stack_jobs), "now": wall(flow_now),
+              "output": build_stack_stats(stack_jobs, now=flow_now)}
+
     urls = []
     for raw in URLS:
         norm = normalize_pasted_job_url(raw)
@@ -294,6 +365,9 @@ def main():
         "origins": origins,
         "history": history,
         "urls": urls,
+        "applied_locations": locations,
+        "flow": flow,
+        "stacks": stacks,
         "timeline_updates": timeline_scenarios(),
     }
     (HERE / "rule_cases.json").write_text(json.dumps(out, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
