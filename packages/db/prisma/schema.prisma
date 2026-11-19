@@ -1,0 +1,295 @@
+// Job Tracker on PostgreSQL — DRAFT for review (phase 1).
+// Rationale for every decision: docs/pg-schema.md. Each "D<n>" below points there.
+//
+// Mongo -> Postgres
+//   jobs + matched_jobs  -> jobs (one posting) + applications (Tracker card)
+//   AI fields            -> job_analyses (every run; jobs.current_analysis_id = latest)
+//   application_timeline -> application_events
+//   timeout_jobs         -> scrape_timeouts
+//   scraper_stats        -> scraper_daily_stats + scraper_totals
+//   company_profiles     -> company_profiles
+//   stats_cache          -> stats_cache
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL") // pooled (serverless functions)
+  directUrl = env("DIRECT_DATABASE_URL") // direct (migrations, pipeline)
+}
+
+// ── Closed vocabularies the code branches on (D6) ───────────────────────────
+
+enum ApplicationStatus {
+  pending
+  applied
+  screening
+  interview
+  interview_cancelled
+  offer
+  rejected
+  // side statuses: hide the card, keep the application record
+  unsuitable
+  closed
+  closed_no_reply
+  prev_rejected
+  too_many_questions
+  repost
+  duplicate
+}
+
+enum TimelineStep {
+  applied
+  reapplied
+  screening
+  screening_done
+  interview_invite
+  interview_1
+  interview_2
+  interview_3
+  interview_final
+  interview_cancelled
+  rejected
+  offer
+}
+
+enum Origin {
+  pipeline // browser scrapers
+  api // API sources (GitHub Actions)
+  manual // Log Job
+  agent // pushed by an AI agent
+}
+
+// Replaces jobs.status = "new" (queue marker) and ai_pending, and holds the
+// Run AI lock that used to live in process memory (D7).
+enum AnalysisState {
+  none // scraped, never analysed
+  pending // saved link-only, waiting for Run AI
+  running // Run AI in progress (lock; see analysis_started_at)
+  done
+  failed
+}
+
+// ── A job posting, whether or not it reached the Tracker (D1, D2) ───────────
+
+model Job {
+  id         String @id @db.Char(24) // Mongo ObjectId hex, kept (D3)
+  source     String // linkedin, indeed, ats, arbeitnow, arbeitsagentur, adzuna, manual, ...
+  externalId String @map("external_id") // the source's own id (Mongo: job_id)
+
+  link        String  @default("")
+  externalUrl String? @map("external_url")
+  title       String  @default("")
+  company     String  @default("")
+  location    String  @default("")
+  description String  @default("")
+  applicants  String  @default("") // raw text, e.g. "47 applicants"
+
+  postingKey  String?  @unique @map("posting_key") // same posting across sources = one job (D8)
+  dedupKey    String?  @map("dedup_key") // title + company as scraped; not recomputed on manual edits (D1)
+  atsProvider String?  @map("ats_provider")
+  atsSlug     String?  @map("ats_slug")
+  remote      Boolean?
+  tags        String[] @default([])
+  jobTypes    String[] @default([]) @map("job_types")
+  keyword     String? // search keyword that found it
+  runId       String?  @map("run_id")
+
+  // Fields the user typed by hand; a re-scrape must not overwrite them
+  manualFields String[] @default([]) @map("manual_fields")
+
+  // Description health (pipeline)
+  descriptionQuality       String?   @map("description_quality")
+  descriptionQualityReason String?   @map("description_quality_reason")
+  descriptionEmpty         Boolean   @default(false) @map("description_empty")
+  descriptionIncomplete    Boolean   @default(false) @map("description_incomplete")
+  descriptionClearedAt     DateTime? @map("description_cleared_at") @db.Timestamptz(3)
+  needsRefetch             Boolean   @default(false) @map("needs_refetch")
+  detailsFetchedAt         DateTime? @map("details_fetched_at") @db.Timestamptz(3)
+  linkReplacedAt           DateTime? @map("link_replaced_at") @db.Timestamptz(3)
+
+  postedAt  DateTime? @map("posted_at") @db.Timestamptz(3)
+  scrapedAt DateTime  @default(now()) @map("scraped_at") @db.Timestamptz(3) // Mongo: created_at
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  // ── AI analysis: every run is a row in job_analyses; this points at the latest (D2) ──
+  analysisState     AnalysisState @default(none) @map("analysis_state")
+  analysisStartedAt DateTime?     @map("analysis_started_at") @db.Timestamptz(3) // Run AI lock (D7)
+  currentAnalysisId BigInt?       @unique @map("current_analysis_id")
+  currentAnalysis   JobAnalysis?  @relation("CurrentAnalysis", fields: [currentAnalysisId], references: [id], onDelete: SetNull)
+  analyses          JobAnalysis[] @relation("AnalysisHistory")
+
+  // Unmatched page
+  userStatus           String?   @map("user_status") // "watchlist" = Can Apply
+  agentRecommendedBy   String?   @map("agent_recommended_by")
+  agentRecommendedAt   DateTime? @map("agent_recommended_at") @db.Timestamptz(3)
+  agentRecommendReason String?   @map("agent_recommend_reason")
+
+  application Application?
+
+  @@unique([source, externalId])
+  @@index([analysisState])
+  @@index([dedupKey])
+  @@map("jobs")
+}
+
+// ── One AI analysis run of a job (D2, D4) ───────────────────────────────────
+
+model JobAnalysis {
+  id    BigInt @id @default(autoincrement())
+  jobId String @map("job_id") @db.Char(24)
+  job   Job    @relation("AnalysisHistory", fields: [jobId], references: [id], onDelete: Cascade)
+
+  analyzedAt    DateTime @default(now()) @map("analyzed_at") @db.Timestamptz(3) // Mongo: matched_at
+  trigger       String? // pipeline, run_ai, agent, migration
+  model         String? // e.g. the OpenAI model id
+  promptVersion String?  @map("prompt_version")
+
+  // Filtered / sorted on: columns (D4)
+  matchScore             Float?  @map("match_score") @db.Real
+  matchGate              String? @map("match_gate") // scored, hard_fail, ...
+  recommendation         String?
+  summary                String?
+  disqualificationReason String? @map("disqualification_reason")
+
+  // Only shown: match_reasons, missing_requirements, red_flags,
+  // nice_to_have_matches, what_youll_do, what_theyre_looking_for,
+  // special_match(_reasons), requirement_extract, job_labels,
+  // low_confidence, grounded_in_description
+  details Json @default("{}")
+
+  // The company profile this run used, by the key it was looked up with (D13)
+  companyKey String?         @map("company_key")
+  company    CompanyProfile? @relation(fields: [companyKey], references: [key], onDelete: SetNull)
+
+  currentFor Job? @relation("CurrentAnalysis")
+
+  @@index([jobId, analyzedAt(sort: Desc)])
+  @@index([matchScore])
+  @@index([analyzedAt(sort: Desc)])
+  @@map("job_analyses")
+}
+
+// ── A card on the Tracker (D1) ──────────────────────────────────────────────
+
+model Application {
+  id    String @id @db.Char(24) // = old matched_jobs _id (D3)
+  jobId String @unique @map("job_id") @db.Char(24)
+  job   Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  status ApplicationStatus @default(pending)
+  origin Origin            @default(pipeline)
+
+  // Kept in step with events in the same transaction (D5)
+  appliedAt DateTime? @map("applied_at") @db.Timestamptz(3)
+
+  notes             String   @default("")
+  highlights        String[] @default([])
+  applicationQa     Json     @default("[]") @map("application_qa") // [{question, answer}]
+  applicantPosition Int?     @map("applicant_position")
+  country           String? // user override of the detected country
+
+  recommendedBy   String? @map("recommended_by") // cursor, claude, ...
+  recommendReason String? @map("recommend_reason")
+  manuallyLogged  Boolean @default(false) @map("manually_logged")
+  manuallyApplied Boolean @default(false) @map("manually_applied")
+  fromUnmatched   Boolean @default(false) @map("from_unmatched")
+
+  addedAt   DateTime @default(now()) @map("added_at") @db.Timestamptz(3) // Mongo: matched_jobs.matched_at
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  events ApplicationEvent[]
+
+  @@index([status, appliedAt(sort: Desc)])
+  @@index([addedAt(sort: Desc)])
+  @@map("applications")
+}
+
+model ApplicationEvent {
+  id            BigInt       @id @default(autoincrement())
+  applicationId String       @map("application_id") @db.Char(24)
+  application   Application  @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  step          TimelineStep
+  at            DateTime     @db.Timestamptz(3)
+  createdAt     DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([applicationId, at])
+  @@index([step, at])
+  @@map("application_events")
+}
+
+// ── Pipeline bookkeeping ────────────────────────────────────────────────────
+
+model ScrapeTimeout {
+  id               String    @id @db.Char(24)
+  source           String
+  externalId       String    @map("external_id")
+  link             String    @default("")
+  title            String    @default("")
+  company          String    @default("")
+  location         String    @default("")
+  keyword          String?
+  reason           String    @default("detail_timeout")
+  reviewStatus     String    @default("open") @map("review_status") // open, added, dismissed
+  timeoutCount     Int       @default(1) @map("timeout_count")
+  addedToTrackerAt DateTime? @map("added_to_tracker_at") @db.Timestamptz(3)
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@unique([source, externalId])
+  @@index([reviewStatus])
+  @@map("scrape_timeouts")
+}
+
+// One row per scraping day (Berlin calendar day). Feeds the heatmap.
+model ScraperDailyStat {
+  day                DateTime @id @db.Date
+  titlePassedClicked Int      @default(0) @map("title_passed_clicked")
+  germanFiltered     Int      @default(0) @map("german_filtered")
+  aiTitleFiltered    Int      @default(0) @map("ai_title_filtered")
+  detailTimeout      Int      @default(0) @map("detail_timeout")
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@map("scraper_daily_stats")
+}
+
+// All-time counters, older than the daily rows (D9). Single row, id = 1.
+model ScraperTotals {
+  id                 Int      @id @default(1)
+  titlePassedClicked Int      @default(0) @map("title_passed_clicked")
+  germanFiltered     Int      @default(0) @map("german_filtered")
+  aiTitleFiltered    Int      @default(0) @map("ai_title_filtered")
+  detailTimeout      Int      @default(0) @map("detail_timeout")
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@map("scraper_totals")
+}
+
+// AI company research, cached by normalised company name.
+model CompanyProfile {
+  key                        String        @id // company_key(): lower-cased, legal suffixes and punctuation dropped
+  business                   String        @default("")
+  productType                String        @default("") @map("product_type")
+  vertical                   String        @default("")
+  markets                    String        @default("")
+  marketsDetail              String        @default("") @map("markets_detail")
+  isRecruiterForOtherCompany Boolean       @default(false) @map("is_recruiter_for_other_company")
+  sources                    Json          @default("[]")
+  model                      String?
+  usage                      Json?
+  cachedAt                   DateTime      @default(now()) @map("cached_at") @db.Timestamptz(3)
+  analyses                   JobAnalysis[]
+
+  @@map("company_profiles")
+}
+
+// Small computed payloads (today: the Stacks tab).
+model StatsCache {
+  key        String   @id
+  data       Json
+  computedAt DateTime @map("computed_at") @db.Timestamptz(3)
+
+  @@map("stats_cache")
+}

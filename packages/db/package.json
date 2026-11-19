@@ -1,0 +1,30 @@
+{
+  "name": "@tracker/db",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "prisma generate",
+    "migrate:dev": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "from-mongo": "tsx src/cli/from-mongo.ts",
+    "contract:seed": "tsx src/cli/seed-fixture.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
+  },
+  "dependencies": {
+    "@prisma/client": "6.16.2",
+    "bson": "6.10.4",
+    "dotenv": "16.5.0",
+    "mongodb": "6.17.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.30",
+    "prisma": "6.16.2",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3",
+    "vitest": "3.2.4"
+  }
+}

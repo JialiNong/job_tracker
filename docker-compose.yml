@@ -1,0 +1,23 @@
+# Local Postgres for the rewrite. Not used by the Python app.
+#   pnpm db:up      start (data kept in the pgdata volume)
+#   pnpm db:down    stop
+# Databases: tracker_dev (migrated real data), tracker_test (contract / e2e fixtures).
+services:
+  postgres:
+    image: postgres:16.9-alpine
+    environment:
+      POSTGRES_USER: tracker
+      POSTGRES_PASSWORD: tracker
+      POSTGRES_DB: tracker_dev
+    ports:
+      - "127.0.0.1:54329:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./packages/db/docker-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tracker -d tracker_dev"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+volumes:
+  pgdata:
