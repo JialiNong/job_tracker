@@ -29,7 +29,9 @@
 .option-input:focus { border-color: var(--accent); }
 .option-text { cursor: text; min-width: 160px; }
 .identity-row .option-group { flex: 1 1 180px; }
-.option-hint { font-size: .8rem; color: var(--muted); }
+/* Inline hint on the label line, so it never adds height below the input
+   and the options row stays aligned (the row bottom-aligns its fields). */
+.label-hint { font-weight: 400; opacity: .8; }
 #appliedDateGroup { display: none; flex-direction: column; gap: 5px; }
 #appliedDateGroup.visible { display: flex; }
 
