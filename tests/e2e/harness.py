@@ -107,6 +107,10 @@ def _matched(oid, title, company, **extra):
         "match_score": 8.0, "summary": f"{title} summary", "status": "pending",
         "matched_at": now, "applied_at": None, "application_timeline": [],
         "notes": "", "application_qa": [], "highlights": [], "origin": "pipeline",
+        "job_labels": {"stack": "Node.js, TypeScript", "stack_matched": ["Node.js", "TypeScript"],
+                       "stack_missing": ["Kafka"]},
+        "company_profile": {"business": f"{company} sells logistics software.", "vertical": "Logistics",
+                            "product_type": "b2b_saas", "markets": "europe"},
     }
     doc.update(extra)
     return doc

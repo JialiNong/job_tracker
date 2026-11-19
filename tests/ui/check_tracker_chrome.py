@@ -693,6 +693,31 @@ def run_desktop(page, base, run: Runner):
     page.wait_for_timeout(350)
     m = js_metrics(page)
     run.shot(page, "desktop-details.png")
+    tags = page.evaluate("""() => {
+      const body = document.querySelector('.card.expanded .card-body');
+      const t = body && body.querySelector('.fit-tags');
+      const desc = body && body.querySelector('.job-description');
+      const track = body && body.querySelector('.card-split-track');
+      const kids = track ? [...track.children].map(el => el.className) : [];
+      if (t) t.scrollIntoView({ block: 'center' });
+      return {
+        ok: t ? t.querySelectorAll('.fit-ok').length : 0,
+        gap: t ? t.querySelectorAll('.fit-gap').length : 0,
+        biz: t ? t.querySelectorAll('.fit-biz').length : 0,
+        beforeDesc: !!(t && desc && (t.compareDocumentPosition(desc) & Node.DOCUMENT_POSITION_FOLLOWING)),
+        replaceIdx: kids.findIndex(c => c.includes('replace-link-wrap')),
+        highlightsIdx: kids.findIndex(c => c.includes('highlights-wrap')),
+        dangerIdx: kids.findIndex(c => c.includes('card-danger-row')),
+      };
+    }""")
+    page.wait_for_timeout(150)
+    run.shot(page, "desktop-fit-tags.png")
+    run.check("desktop details: fit tags (green stack, red gap, business) above the JD",
+              tags["ok"] == 2 and tags["gap"] == 1 and tags["biz"] == 3 and tags["beforeDesc"],
+              f"tags={tags}")
+    run.check("desktop details: replace link sits after highlights, before Delete",
+              0 <= tags["highlightsIdx"] < tags["replaceIdx"] < tags["dangerIdx"],
+              f"tags={tags}")
     run.check("desktop details: side drawer, no mask, page unlocked",
               m["expanded"] and m["bodyTop"] == "0px" and m["panelScrimHidden"] and not m["lock"],
               f"top={m['bodyTop']} scrimHidden={m['panelScrimHidden']} lock={m['lock']}")

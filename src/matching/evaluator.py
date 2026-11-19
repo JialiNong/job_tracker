@@ -99,6 +99,8 @@ JOB_SCHEMA = {
         "ai_product_work": {"type": "boolean"},
         "english_team": {"type": "string", "enum": ["true", "false", "unclear"]},
         "stack": {"type": "string"},
+        "stack_matched": {"type": "array", "items": {"type": "string"}},
+        "stack_missing": {"type": "array", "items": {"type": "string"}},
         "summary": {"type": "string"},
         "watch_outs": {"type": "string"},
     },
@@ -116,6 +118,8 @@ JOB_SCHEMA = {
         "ai_product_work",
         "english_team",
         "stack",
+        "stack_matched",
+        "stack_missing",
         "summary",
         "watch_outs",
     ],
@@ -212,6 +216,68 @@ def _usage(resp) -> Dict:
     }
 
 
+# Spellings a posting may use for the same technology (all lowercase).
+_STACK_ALIASES = {
+    "postgresql": ["postgres"],
+    "postgres": ["postgresql"],
+    "kubernetes": ["k8s"],
+    "golang": ["go"],
+    "javascript": ["js"],
+    "amazon web services": ["aws"],
+    "aws": ["amazon web services"],
+    "google cloud": ["gcp"],
+    "gcp": ["google cloud"],
+    "ci/cd": ["ci / cd", "cicd", "continuous integration"],
+}
+
+
+def _stack_variants(term: str) -> set:
+    """Lowercase spellings to look for: the term, its /-parts, minus .js, plus aliases."""
+    base = re.sub(r"\(.*?\)", " ", term.lower()).strip()
+    parts = {base} | {p.strip() for p in base.split("/") if p.strip()} if base else set()
+    out = set()
+    for part in parts:
+        out.add(part)
+        stem = re.sub(r"\.?js$", "", part).strip()
+        if stem and stem != part:
+            out.add(stem)
+        out.update(_STACK_ALIASES.get(part, []))
+    return {v for v in out if v}
+
+
+def stack_term_in_text(term: str, text: str) -> bool:
+    """
+    True when the posting names this technology. Word boundaries keep "Java"
+    from matching "JavaScript" and "Go" from matching "good"; a .js / JS
+    suffix and spaces / dots / dashes inside the name are optional.
+    """
+    haystack = (text or "").lower()
+    for variant in _stack_variants(term):
+        body = r"[\s.\-]?".join(re.escape(tok) for tok in re.split(r"[\s.\-]+", variant) if tok)
+        if not body:
+            continue
+        if re.search(rf"(?<![a-z0-9+#]){body}(?:\.?js)?(?![a-z0-9+#])", haystack):
+            return True
+    return False
+
+
+def ground_stack_labels(labels: Dict, text: str) -> None:
+    """
+    Drop stack tags the posting does not name. The model sometimes copies the
+    CV's frameworks (React / Vue / Angular) when a posting only says
+    "JavaScript"; the Tracker must never show a technology the JD lacks.
+    """
+    for key in ("stack_matched", "stack_missing"):
+        items = labels.get(key)
+        if not isinstance(items, list):
+            continue
+        kept = [t for t in items if isinstance(t, str) and stack_term_in_text(t, text)]
+        dropped = [t for t in items if t not in kept]
+        if dropped:
+            print(f"  ⚠ dropped {key} not in the posting: {', '.join(map(str, dropped))}")
+        labels[key] = kept
+
+
 def classify_job(
     job: Dict,
     cv: Optional[str] = None,
@@ -258,6 +324,7 @@ Location: {scrub_bullet_location(job.get('location') or '') or 'N/A'}
     try:
         resp = _client().responses.create(**kwargs)
         labels = json.loads(resp.output_text)
+        ground_stack_labels(labels, f"{job.get('title') or ''}\n{description}")
         labels["_usage"] = _usage(resp)
         labels["_model"] = model
         return labels

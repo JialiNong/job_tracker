@@ -30,7 +30,7 @@
 }
 
 /* Match column: identity → company history → progress (applicant # + notes) → AI → original JD.
-   Track column: Q&A / highlights. */
+   Track column: Q&A / highlights / replace link (rarely used, so last). */
 .card-split {
   display: flex;
   flex-direction: column;
@@ -268,6 +268,62 @@
   padding-left: 16px;
   line-height: 1.6;
 }
+
+/* Fit tags: green = stack on the CV, red = stack gap, neutral = company business */
+.fit-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.fit-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+.fit-label {
+  flex: none;
+  width: 64px;
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.fit-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+.fit-tag {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: .76rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.fit-tag.fit-ok {
+  color: var(--success);
+  background: color-mix(in srgb, var(--success) 12%, var(--surface));
+  border-color: color-mix(in srgb, var(--success) 35%, transparent);
+}
+.fit-tag.fit-gap {
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 10%, var(--surface));
+  border-color: color-mix(in srgb, var(--danger) 35%, transparent);
+}
+.fit-tag.fit-biz {
+  color: var(--text);
+  background: var(--surface2);
+  border-color: var(--border);
+}
+.fit-tag.fit-warn {
+  color: var(--warning);
+  background: color-mix(in srgb, var(--warning) 10%, var(--surface));
+  border-color: color-mix(in srgb, var(--warning) 35%, transparent);
+}
+.fit-hint { font-size: .76rem; color: var(--muted); }
 
 /* Original job description (list / expanded body) */
 .job-description {
@@ -797,7 +853,6 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding-top: 10px;
   font-size: .78rem;
 }
 .replace-link-wrap .rl-row {

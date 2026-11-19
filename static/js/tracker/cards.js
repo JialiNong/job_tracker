@@ -1,7 +1,7 @@
 /* Tracker job cards: HTML for one matched job and its details panel.
    ES module. Shared chrome is in ../shared/job_list.js. */
 import { escHtml, safeUrl } from '../shared/html.js';
-import { applicantsMetaPillHtml, BOARD_LABEL, channelChipHtml, formatApplicantsLabel, hasAiScore, jobViaText, ORIGIN_PILL, postedPillHtml, RECOMMENDED_BY_LABEL, renderBreakdown, rowApplicantsHtml, scoreRingHtml, showToast, SOURCE_BADGE } from '../shared/job_list.js';
+import { applicantsMetaPillHtml, BOARD_LABEL, channelChipHtml, fitTagsHtml, formatApplicantsLabel, hasAiScore, jobViaText, ORIGIN_PILL, postedPillHtml, RECOMMENDED_BY_LABEL, renderBreakdown, rowApplicantsHtml, scoreRingHtml, showToast, SOURCE_BADGE } from '../shared/job_list.js';
 import { renderReplaceLinkBlock } from './card-actions.js';
 import { companyPageUrl } from './index.js';
 import { HIGHLIGHT_PRESETS, jobHighlights, selectedDeleteOnlyIds, selectedFetchIds, state, STATUS_LABEL } from './state.js';
@@ -452,7 +452,6 @@ export function renderCard(job) {
       ${renderNotesBlock(job)}
       </div>
 
-      ${renderReplaceLinkBlock(job)}
       <div class="card-actions-row">
         <a class="btn-apply ${isAppliedLike(status, job.application_timeline) ? 'btn-applied' : ''}"
            href="${escHtml(safeUrl(job.link))}" target="_blank" rel="noopener">
@@ -468,11 +467,13 @@ export function renderCard(job) {
 
       ${renderAgentReason(job)}
       ${renderLocalAiBlock(job, doSection, lookingSection, matchReasons)}
+      ${fitTagsHtml(job)}
       ${renderOriginalDescription(job)}
       </div>
         <div class="card-split-track">
           ${renderApplicationQa(job)}
           ${renderHighlightsBlock(job)}
+          ${renderReplaceLinkBlock(job)}
           <div class="card-danger-row">
             <button type="button" class="delete-job-btn" onclick="event.stopPropagation(); deleteMatchedJob('${job._id}', this)" title="Delete this job permanently">Delete job</button>
           </div>

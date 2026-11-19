@@ -62,5 +62,15 @@ is still usable.
 - `ai_product_work`: true when the role builds LLM / AI features into a product (not ML research).
 - `english_team`: true / false / unclear from the posting.
 
+`stack_matched` / `stack_missing`: only technologies (languages, frameworks, databases, cloud,
+tools) that the posting itself names, written the way the posting spells them. Never take a
+technology from the CV or from the examples in these rules: if the posting only says
+"JavaScript", the answer is "JavaScript", not React / Vue / Angular. No concepts such as
+"system design", "observability" or "data modeling".
+- `stack_matched`: those the CV also shows, at most 8, most important first.
+- `stack_missing`: those the posting requires or clearly expects that the CV does not show, at
+  most 8. Leave out tools the posting only says the company uses, and nice-to-haves. Empty list
+  when nothing is missing.
+
 `summary`: two short sentences on what the job is and why it does or does not fit.
 `watch_outs`: one honest gap, or "none".
