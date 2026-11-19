@@ -12,6 +12,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { PanelScrim, useEscapeClose, useLayout } from "@/components/list/listChrome";
 import { useDialog } from "@/components/ui/Dialog";
 import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/tracker/api";
@@ -22,7 +23,7 @@ import { JobList } from "./JobList";
 import { OverviewView } from "./overview/OverviewView";
 import { StacksView } from "./StacksView";
 import { Sidebar } from "./Sidebar";
-import { type Layout, Toolbar } from "./Toolbar";
+import { Toolbar } from "./Toolbar";
 import { TrackerContext } from "./TrackerContext";
 import { useFilters } from "./useFilters";
 
@@ -83,6 +84,7 @@ export function TrackerApp() {
 
   // ── Open card and the ?open=<id> deep link ────────────────────────────
   const [expandedId, setExpandedId] = useState("");
+  const closeCard = () => setExpandedId("");
   const [flashId, setFlashId] = useState("");
   const [openId] = useState(() => searchParams.get("open") ?? ""); // read once, then dropped from the URL
   const openHandled = useRef(false);
@@ -102,33 +104,10 @@ export function TrackerApp() {
     toast("Opened matched job");
   }, [openId, onPage, list.data, pinnedQuery.data, pinnedQuery.error, dropParam, toast]);
 
-  // Esc closes the open card (not while typing, a dialog, or the filter popover is up)
-  useEffect(() => {
-    if (!expandedId) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") return;
-      if (document.querySelector(".tl-modal-backdrop")) return;
-      const pop = document.getElementById("filterPop");
-      if (pop && !pop.hidden) return;
-      if (["input", "textarea", "select"].includes((document.activeElement?.tagName ?? "").toLowerCase())) return;
-      setExpandedId("");
-    };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [expandedId]);
+  useEscapeClose(!!expandedId, closeCard);
 
   // ── Layout (remembered per browser) ───────────────────────────────────
-  const [layout, setLayoutState] = useState<Layout>("compact");
-  useEffect(() => {
-    try {
-      if (localStorage.getItem("jobLayout") === "cards") setLayoutState("cards");
-    } catch { /* storage blocked: keep the default */ }
-  }, []);
-  const setLayout = (next: Layout) => {
-    setLayoutState(next);
-    setExpandedId("");
-    try { localStorage.setItem("jobLayout", next); } catch { /* ignore */ }
-  };
+  const [layout, setLayout] = useLayout(closeCard);
 
   // ── Select jobs ───────────────────────────────────────────────────────
   const [selectMode, setSelectMode] = useState(false);
@@ -246,35 +225,7 @@ export function TrackerApp() {
           <StacksView open={view === "stacks"} />
         </main>
       </div>
-      <PanelScrim open={!!expandedId} onClose={() => setExpandedId("")} />
+      <PanelScrim open={!!expandedId} onClose={closeCard} />
     </TrackerContext>
   );
-}
-
-/**
- * Below 1080px the details panel is a sheet over the list: a scrim behind it
- * closes it, and the page behind does not scroll (html.ui-lock).
- */
-function PanelScrim({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const [stacked, setStacked] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 1080px)");
-    const update = () => setStacked(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
-  const show = open && stacked;
-  useEffect(() => {
-    if (!show) return;
-    const y = window.scrollY;
-    document.documentElement.classList.add("ui-lock");
-    document.body.style.top = `-${y}px`;
-    return () => {
-      document.documentElement.classList.remove("ui-lock");
-      document.body.style.top = "";
-      window.scrollTo(0, y);
-    };
-  }, [show]);
-  return <div id="panelScrim" className="panel-scrim" hidden={!show} role="button" aria-label="Close details" onClick={onClose} />;
 }

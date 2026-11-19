@@ -15,7 +15,7 @@ export interface Journey {
   tracks: { job_id: string; company: string; title: string; status: string; steps: JourneyStep[] }[];
 }
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
+export async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(path, { cache: "no-store", ...init });
   const data = await res.json().catch(() => ({}));
   if (!res.ok || (data && data.ok === false)) {
@@ -24,7 +24,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return data as T;
 }
 
-const send = <T>(method: string, path: string, body?: unknown) =>
+export const send = <T>(method: string, path: string, body?: unknown) =>
   request<T>(path, {
     method,
     headers: body === undefined ? undefined : { "Content-Type": "application/json" },

@@ -105,23 +105,48 @@
  },
  {
   "name": "unmatched",
-  "path": "/api/unmatched-jobs"
+  "path": "/api/unmatched-jobs",
+  "drop_keys": [
+   "status",
+   "origin"
+  ],
+  "drop_keys_why": "Flask returns the raw Mongo posting: status 'unmatched' (no card, so no Tracker status) and origin inferred as 'manual' (a Flask bug). The Unmatched page reads neither."
  },
  {
   "name": "unmatched-watchlist",
-  "path": "/api/unmatched-jobs?user_status=watchlist"
+  "path": "/api/unmatched-jobs?user_status=watchlist",
+  "drop_keys": [
+   "status",
+   "origin"
+  ],
+  "drop_keys_why": "Flask returns the raw Mongo posting: status 'unmatched' (no card, so no Tracker status) and origin inferred as 'manual' (a Flask bug). The Unmatched page reads neither."
  },
  {
   "name": "unmatched-hard-fail",
-  "path": "/api/unmatched-jobs?match_gate=hard_fail"
+  "path": "/api/unmatched-jobs?match_gate=hard_fail",
+  "drop_keys": [
+   "status",
+   "origin"
+  ],
+  "drop_keys_why": "Flask returns the raw Mongo posting: status 'unmatched' (no card, so no Tracker status) and origin inferred as 'manual' (a Flask bug). The Unmatched page reads neither."
  },
  {
   "name": "unmatched-search",
-  "path": "/api/unmatched-jobs?q=php"
+  "path": "/api/unmatched-jobs?q=php",
+  "drop_keys": [
+   "status",
+   "origin"
+  ],
+  "drop_keys_why": "Flask returns the raw Mongo posting: status 'unmatched' (no card, so no Tracker status) and origin inferred as 'manual' (a Flask bug). The Unmatched page reads neither."
  },
  {
   "name": "unmatched-detail",
-  "path": "/api/unmatched-jobs/{jobs:26}"
+  "path": "/api/unmatched-jobs/{jobs:26}",
+  "drop_keys": [
+   "status",
+   "origin"
+  ],
+  "drop_keys_why": "Flask returns the raw Mongo posting: status 'unmatched' (no card, so no Tracker status) and origin inferred as 'manual' (a Flask bug). The Unmatched page reads neither."
  },
  {
   "name": "timeouts-open",
@@ -337,7 +362,16 @@
   "after": [
    "/api/unmatched-jobs/{jobs:26}",
    "/api/jobs?status=pending&country=all"
-  ]
+  ],
+  "drop_keys": [
+   "status",
+   "origin",
+   "company_profile",
+   "job_labels",
+   "match_gate",
+   "user_status"
+  ],
+  "drop_keys_why": "Flask returns the raw Mongo posting: status 'unmatched' (no card, so no Tracker status) and origin inferred as 'manual' (a Flask bug). The Unmatched page reads neither. Flask copied only some posting fields to the new card; on Postgres the card shares the posting, so it also shows the gate, labels and company profile."
  },
  {
   "name": "write-timeout-add",
@@ -389,7 +423,12 @@
   "after": [
    "/api/jobs?status=all&country=all&q=wayne",
    "/api/manual-apply/status"
-  ]
+  ],
+  "drop_keys": [
+   "log",
+   "log_total"
+  ],
+  "drop_keys_why": "The run log is free text for people, not part of the contract; the counts are."
  },
  {
   "name": "write-agent-push-unauthorized",
@@ -423,7 +462,12 @@
   "after": [
    "/api/unmatched-jobs?agent_recommended=1",
    "/api/jobs?status=all&country=all&q=ML%20Engineer"
-  ]
+  ],
+  "drop_keys": [
+   "matched_at",
+   "company_history_total"
+  ],
+  "drop_keys_why": "Flask stamps link-only cards with utcnow(), one hour early in Berlin. Flask omits company_history_total when no card on the page has a company; the page reads a missing total as 0."
  },
  {
   "name": "write-timeline-unknown-step",

@@ -11,6 +11,7 @@ Any uncaught JavaScript error on a page fails the test.
 from __future__ import annotations
 
 import os
+import re
 import time
 import unittest
 
@@ -457,7 +458,8 @@ class TrackerE2E(unittest.TestCase):
         # Counts come from the saver's results; the log streams via ?since=
         expect(self.page.locator("#logCounter")).to_have_text("1 saved, 0 skipped, 0 failed")
         expect(self.page.locator("#statusBanner")).to_contain_text("1 saved as Not Applied")
-        expect(self.page.locator("#logBody")).to_contain_text("Saved to matched_jobs")
+        # Log wording differs between the Flask and Next.js apps; both name the save
+        expect(self.page.locator("#logBody")).to_contain_text(re.compile(r"Saved to (matched_jobs|the Tracker)"))
 
     def test_agent_api_requires_token_and_saves(self):
         url = "https://www.linkedin.com/jobs/view/4500000001/"

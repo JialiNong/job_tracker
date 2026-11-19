@@ -3,13 +3,18 @@ import { fitTags, hasAiScore } from "@/lib/tracker/format";
 import type { BreakdownSection, Job } from "@/lib/tracker/types";
 import { ScoreRing } from "./ScoreRing";
 
-function Breakdown({ title, section }: { title: string; section: BreakdownSection | null }) {
+export function Breakdown({ title, section, openGaps = true }: {
+  title: string;
+  section: BreakdownSection | null | undefined;
+  /** Start open when something is missing (the Tracker); Unmatched starts closed. */
+  openGaps?: boolean;
+}) {
   const matched = section?.matched ?? [];
   const unmatched = section?.unmatched ?? [];
   if (!matched.length && !unmatched.length) return null;
   return (
     // Open by default when something is missing: the gaps are what matter
-    <details className="breakdown" open={unmatched.length > 0}>
+    <details className="breakdown" open={openGaps && unmatched.length > 0}>
       <summary>
         <span>{title}</span>
         <span className="bd-count">{matched.length}/{matched.length + unmatched.length} matched</span>

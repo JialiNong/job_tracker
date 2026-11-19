@@ -96,3 +96,27 @@ export function countryFilterKeys(group: string | null | undefined): string[] | 
   if (group in COUNTRY_LABELS) return [group];
   return null;
 }
+
+// Extra spellings an agent may send in the explicit `country` field (country.py _COUNTRY_ALIASES)
+const COUNTRY_ALIASES: Record<string, string> = {
+  de: "germany", nl: "netherlands", at: "austria", ch: "switzerland", fr: "france", be: "belgium",
+  lu: "luxembourg", es: "spain", pt: "portugal", it: "italy", gb: "uk", uk: "uk", ie: "ireland",
+  dk: "denmark", se: "sweden", no: "norway", fi: "finland", is: "iceland", ee: "estonia", lv: "latvia",
+  lt: "lithuania", pl: "poland", cz: "czechia", sk: "slovakia", hu: "hungary", ro: "romania",
+  bg: "bulgaria", gr: "greece", hr: "croatia", si: "slovenia", rs: "serbia", mt: "malta", cy: "cyprus",
+  "czech republic": "czechia", "the netherlands": "netherlands",
+  remote: REMOTE, "global remote": REMOTE, "remote (global)": REMOTE, "remote (europe)": REMOTE,
+  "remote (eu)": REMOTE, worldwide: REMOTE, europe: REMOTE, eu: REMOTE, emea: REMOTE, anywhere: REMOTE,
+  "outside europe": OTHER, other: OTHER,
+};
+
+/** An agent-supplied country (key, name, ISO code, or "Helsinki, Finland") -> a stored key, or "". */
+export function normalizeCountry(value: unknown): string {
+  const text = String(value ?? "").trim();
+  if (!text) return "";
+  const low = text.toLowerCase();
+  if (low in COUNTRY_LABELS) return low;
+  for (const [key, label] of Object.entries(COUNTRY_LABELS)) if (low === label.toLowerCase()) return key;
+  if (low in COUNTRY_ALIASES) return COUNTRY_ALIASES[low]!;
+  return countryFromLocation(text) ?? "";
+}
