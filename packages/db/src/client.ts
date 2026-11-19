@@ -11,4 +11,5 @@ export const prisma = globalForPrisma.trackerPrisma ?? new PrismaClient();
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.trackerPrisma = prisma;
 
-export type { CompanyProfile, Prisma, PrismaClient } from "@prisma/client";
+export { Prisma } from "@prisma/client";
+export type { CompanyProfile, PrismaClient } from "@prisma/client";

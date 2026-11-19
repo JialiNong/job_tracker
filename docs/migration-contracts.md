@@ -44,8 +44,12 @@ Against the Next.js app (`apps/web`, local Postgres `tracker_test`):
 
 ```bash
 pnpm db:up
-./scripts/run_contract_next.sh -k health,stats,jobs-,job-detail,job-description --exclude stats-
+./scripts/run_contract_next.sh -k health,stats,jobs-,job-detail,job-description,write-status,write-timeline,write-notes,write-highlights,write-application-qa,write-applicant-position,write-info,write-replace-link,write-delete,write-batch-delete --exclude stats-
 ```
+
+Status on 2026-11-19 (phase 2b): every Jobs-page case passes (41) except
+`write-timeline-reject-after-round`, whose follow-up read of
+`/api/stats/flow` belongs to the Overview tab (phase 3).
 
 It starts `next dev` with `apps/web/.env.contract` (test credentials, the
 pinned clock, `TZ=UTC` so dates cannot depend on the server's zone), seeds

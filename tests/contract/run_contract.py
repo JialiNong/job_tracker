@@ -255,6 +255,12 @@ def diff_summary(expected, actual, path="$", out=None, limit=12):
     out = out if out is not None else []
     if len(out) >= limit:
         return out
+    numbers = (int, float)
+    if isinstance(expected, numbers) and isinstance(actual, numbers) and not isinstance(expected, bool) \
+            and not isinstance(actual, bool):
+        if expected != actual:
+            out.append(f"{path}: {expected} != {actual}")
+        return out
     if type(expected) is not type(actual):
         out.append(f"{path}: {json.dumps(expected)[:80]} != {json.dumps(actual)[:80]}")
     elif isinstance(expected, dict):
