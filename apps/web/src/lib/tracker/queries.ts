@@ -23,6 +23,9 @@ export const trackerKeys = {
   page: (query: string) => ["jobs", query] as const,
   job: (id: string) => ["job", id] as const,
   stats: ["stats"] as const,
+  /** Overview charts: refetched after writes like the counts */
+  overview: ["overview"] as const,
+  stacks: ["stacks"] as const,
 };
 
 export function useJobPage(query: URLSearchParams) {
@@ -43,12 +46,38 @@ export function useJob(id: string) {
   return useQuery({ queryKey: trackerKeys.job(id), queryFn: () => api.getJob(id), enabled: !!id, retry: false });
 }
 
-/** Refetch everything the Tracker shows: list pages, single cards, counts. */
+/** Overview charts. Only fetched while the Overview tab is open (`enabled`). */
+export function useOverview(enabled: boolean) {
+  const opts = { enabled, staleTime: 30_000 };
+  return {
+    daily: useQuery({ queryKey: [...trackerKeys.overview, "daily"], queryFn: () => api.daily(92), ...opts }), // ~3 months
+    locations: useQuery({ queryKey: [...trackerKeys.overview, "locations"], queryFn: api.locations, ...opts }),
+    flow: useQuery({ queryKey: [...trackerKeys.overview, "flow"], queryFn: api.flow, ...opts }),
+    journey: useQuery({ queryKey: [...trackerKeys.overview, "journey"], queryFn: api.journey, ...opts }),
+  };
+}
+
+/** Stacks numbers (served from the server-side cache). */
+export function useStacks(enabled: boolean) {
+  return useQuery({ queryKey: trackerKeys.stacks, queryFn: () => api.stacks(), enabled, staleTime: 60_000 });
+}
+
+/** Rebuild the Stacks numbers from every JD; the current numbers stay shown until then. */
+export function useRecomputeStacks() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: () => api.stacks(true),
+    onSuccess: (data) => client.setQueryData(trackerKeys.stacks, data),
+  });
+}
+
+/** Refetch everything the Tracker shows: list pages, single cards, counts, charts. */
 export function invalidateTracker(client: QueryClient) {
   return Promise.all([
     client.invalidateQueries({ queryKey: trackerKeys.all }),
     client.invalidateQueries({ queryKey: ["job"] }),
     client.invalidateQueries({ queryKey: trackerKeys.stats }),
+    client.invalidateQueries({ queryKey: trackerKeys.overview }),
   ]);
 }
 
