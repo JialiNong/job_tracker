@@ -16,3 +16,4 @@ openai>=1.0.0
 flask>=3.0.0
 flask-login>=0.6.3
 bcrypt>=4.1.0
+psycopg[binary]==3.2.9  # TRACKER_STORE=postgres: scrapers write to Postgres (core/pg_store.py)

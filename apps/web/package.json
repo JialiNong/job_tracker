@@ -17,6 +17,7 @@
     "@tracker/core": "workspace:*",
     "@tracker/db": "workspace:*",
     "@tracker/matching": "workspace:*",
+    "@tracker/pipeline": "workspace:*",
     "bcryptjs": "3.0.2",
     "iron-session": "8.0.4",
     "next": "15.3.4",

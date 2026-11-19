@@ -28,6 +28,9 @@ importers:
       '@tracker/matching':
         specifier: workspace:*
         version: link:../../packages/matching
+      '@tracker/pipeline':
+        specifier: workspace:*
+        version: link:../../packages/pipeline
       bcryptjs:
         specifier: 3.0.2
         version: 3.0.2
@@ -124,6 +127,34 @@ importers:
       '@types/node':
         specifier: 22.15.30
         version: 22.15.30
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@22.15.30)(jiti@2.7.0)(tsx@4.20.3)
+
+  packages/pipeline:
+    dependencies:
+      '@tracker/core':
+        specifier: workspace:*
+        version: link:../core
+      '@tracker/db':
+        specifier: workspace:*
+        version: link:../db
+      '@tracker/matching':
+        specifier: workspace:*
+        version: link:../matching
+      dotenv:
+        specifier: 16.5.0
+        version: 16.5.0
+    devDependencies:
+      '@types/node':
+        specifier: 22.15.30
+        version: 22.15.30
+      tsx:
+        specifier: 4.20.3
+        version: 4.20.3
       typescript:
         specifier: 5.8.3
         version: 5.8.3

@@ -1,0 +1,25 @@
+{
+  "name": "@tracker/pipeline",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "match": "tsx src/cli/match.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@tracker/core": "workspace:*",
+    "@tracker/db": "workspace:*",
+    "@tracker/matching": "workspace:*",
+    "dotenv": "16.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.30",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3",
+    "vitest": "3.2.4"
+  }
+}

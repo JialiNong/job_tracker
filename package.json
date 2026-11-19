@@ -2,10 +2,13 @@
   "name": "job-tracker",
   "private": true,
   "packageManager": "pnpm@10.13.1",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose down",
-    "db": "pnpm --filter @tracker/db"
+    "db": "pnpm --filter @tracker/db",
+    "pipeline": "pnpm --filter @tracker/pipeline"
   }
 }

@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const config: NextConfig = {
   // Workspace packages ship TypeScript source
-  transpilePackages: ["@tracker/core", "@tracker/db", "@tracker/matching"],
+  transpilePackages: ["@tracker/core", "@tracker/db", "@tracker/matching", "@tracker/pipeline"],
   // Native addon (Lingua language detection): loaded by Node at runtime, not bundled
   serverExternalPackages: ["@prospectbase/lingua"],
   poweredByHeader: false,
