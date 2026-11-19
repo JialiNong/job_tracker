@@ -4,7 +4,7 @@
  * `await askTime({...})` -> "YYYY-MM-DD HH:MM" or null. Same markup and
  * classes as the old page (.tl-modal-backdrop / .tl-modal / .tl-confirm).
  */
-import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, use, useEffect, useRef, useState, type ReactNode } from "react";
 import { fromInputValue, nowInputValue } from "@/lib/tracker/timeline";
 
 interface ConfirmOptions {
@@ -34,10 +34,10 @@ const DialogContext = createContext<DialogApi | null>(null);
 export function DialogProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState<Open | null>(null);
 
-  const confirm = useCallback((options: ConfirmOptions) =>
-    new Promise<boolean>((resolve) => setOpen({ kind: "confirm", options, resolve })), []);
-  const askTime = useCallback((options: TimeOptions) =>
-    new Promise<string | null>((resolve) => setOpen({ kind: "time", options, resolve })), []);
+  const confirm = (options: ConfirmOptions) =>
+    new Promise<boolean>((resolve) => setOpen({ kind: "confirm", options, resolve }));
+  const askTime = (options: TimeOptions) =>
+    new Promise<string | null>((resolve) => setOpen({ kind: "time", options, resolve }));
 
   const close = (value: boolean | string | null) => {
     if (!open) return;
@@ -47,16 +47,16 @@ export function DialogProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <DialogContext.Provider value={{ confirm, askTime }}>
+    <DialogContext value={{ confirm, askTime }}>
       {children}
       {open?.kind === "confirm" && <ConfirmDialog options={open.options} onClose={close} />}
       {open?.kind === "time" && <TimeDialog options={open.options} onClose={close} />}
-    </DialogContext.Provider>
+    </DialogContext>
   );
 }
 
 export function useDialog(): DialogApi {
-  const api = useContext(DialogContext);
+  const api = use(DialogContext);
   if (!api) throw new Error("useDialog needs <DialogProvider>");
   return api;
 }

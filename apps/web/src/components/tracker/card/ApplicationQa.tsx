@@ -1,43 +1,37 @@
 "use client";
 /** Questions asked in the application form and the answers given. */
 import { useState } from "react";
-import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/tracker/api";
+import { useTrackerWrite } from "@/lib/tracker/queries";
 import type { Job } from "@/lib/tracker/types";
 import { useSavedFlash } from "./useSavedFlash";
 
 interface Pair {
-  key: number;
+  key: string; // stable React key for a row being edited (rows have no id of their own)
   question: string;
   answer: string;
 }
 
-let nextKey = 0;
-const pair = (question = "", answer = ""): Pair => ({ key: nextKey++, question, answer });
+const pair = (question = "", answer = ""): Pair => ({ key: crypto.randomUUID(), question, answer });
 
 export function ApplicationQa({ job }: { job: Job }) {
-  const toast = useToast();
   const [items, setItems] = useState<Pair[]>(() =>
     job.application_qa.length ? job.application_qa.map((qa) => pair(qa.question, qa.answer)) : [pair()]);
   const [saved, flash] = useSavedFlash();
 
-  const update = (key: number, change: Partial<Pair>) =>
+  const update = (key: string, change: Partial<Pair>) =>
     setItems((list) => list.map((p) => (p.key === key ? { ...p, ...change } : p)));
   // Removing the last pair leaves one empty pair to type into
-  const remove = (key: number) =>
+  const remove = (key: string) =>
     setItems((list) => (list.length > 1 ? list.filter((p) => p.key !== key) : [pair()]));
 
-  const save = async () => {
-    const qa = items.map((p) => ({ question: p.question.trim(), answer: p.answer.trim() }))
-      .filter((p) => p.question || p.answer);
-    try {
-      await api.setApplicationQa(job._id, qa);
-      flash();
-      toast("Application Q&A saved");
-    } catch {
-      toast("Q&A save failed", "err");
-    }
-  };
+  const write = useTrackerWrite((qa: { question: string; answer: string }[]) => api.setApplicationQa(job._id, qa), {
+    success: "Application Q&A saved", failure: "Q&A save failed", noRefetch: true,
+  });
+  const save = () => write.mutate(
+    items.map((p) => ({ question: p.question.trim(), answer: p.answer.trim() })).filter((p) => p.question || p.answer),
+    { onSuccess: flash },
+  );
 
   return (
     <div className="qa-wrap">

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@prisma/client": "6.16.2",
+    "@tanstack/react-query": "5.105.0",
     "@tracker/core": "workspace:*",
     "@tracker/db": "workspace:*",
     "bcryptjs": "3.0.2",
@@ -24,6 +25,7 @@
     "@types/node": "22.15.30",
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
+    "babel-plugin-react-compiler": "1.0.0",
     "typescript": "5.8.3"
   }
 }

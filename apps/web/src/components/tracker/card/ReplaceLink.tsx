@@ -3,31 +3,22 @@
 import { useState } from "react";
 import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/tracker/api";
+import { useTrackerWrite } from "@/lib/tracker/queries";
 import type { Job } from "@/lib/tracker/types";
-import { useTracker } from "../TrackerContext";
 import { useSavedFlash } from "./useSavedFlash";
 
 export function ReplaceLink({ job }: { job: Job }) {
-  const tracker = useTracker();
   const toast = useToast();
   const [link, setLink] = useState(job.link);
-  const [busy, setBusy] = useState(false);
   const [saved, flash] = useSavedFlash();
-
-  const save = async () => {
+  const write = useTrackerWrite((raw: string) => api.replaceLink(job._id, raw), {
+    success: (data) => (data.unchanged ? "Link is already this URL" : "Link updated — Fetch job details to scrape the new page"),
+    failure: "Not updated",
+  });
+  const save = () => {
     const raw = link.trim();
     if (!raw) return toast("Paste a job URL", "err");
-    setBusy(true);
-    try {
-      const data = await api.replaceLink(job._id, raw);
-      flash();
-      toast(data.unchanged ? "Link is already this URL" : "Link updated — Fetch job details to scrape the new page");
-      await tracker.afterWrite(job._id);
-    } catch (err) {
-      toast((err as Error).message || "Update failed", "err");
-    } finally {
-      setBusy(false);
-    }
+    write.mutate(raw, { onSuccess: flash });
   };
 
   return (
@@ -40,8 +31,8 @@ export function ReplaceLink({ job }: { job: Job }) {
           onChange={(e) => setLink(e.target.value)}
           onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); save(); } }}
         />
-        <button type="button" className="btn-save" disabled={busy} onClick={save}>
-          {busy ? "⏳" : saved ? "Saved ✓" : "Save"}
+        <button type="button" className="btn-save" disabled={write.isPending} onClick={save}>
+          {write.isPending ? "⏳" : saved ? "Saved ✓" : "Save"}
         </button>
       </div>
       <span className="rl-hint">If the original posting is closed, paste the live company-page URL, save, then Fetch job details.</span>
