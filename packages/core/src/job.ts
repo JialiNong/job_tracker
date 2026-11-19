@@ -190,3 +190,47 @@ export const LINK_ONLY_ANALYSIS = Object.freeze({
   job_labels: {},
   company_profile: {},
 });
+
+/** What a card added from the Timeouts page shows until it is scraped (timeouts.py). */
+export const TIMEOUT_STUB_ANALYSIS = Object.freeze({
+  match_score: null,
+  recommendation: "",
+  special_match: false,
+  special_match_reasons: [] as string[],
+  disqualification_reason: "",
+  match_reasons: ["Manually added after scrape timeout"],
+  missing_requirements: [] as string[],
+  red_flags: [] as string[],
+  nice_to_have_matches: [] as string[],
+  summary: "",
+  what_youll_do: { matched: [] as string[], unmatched: [] as string[] },
+  what_theyre_looking_for: { matched: [] as string[], unmatched: [] as string[] },
+});
+
+/** "(Link only) LinkedIn 4100…": the title of a card saved from a URL alone. */
+export function linkOnlyTitle(url: string, source: string, jobId: string): string {
+  if (source === "linkedin" && jobId) return `(Link only) LinkedIn ${jobId}`;
+  if (source === "indeed" && jobId) return `(Link only) Indeed ${jobId}`;
+  let short = (url ?? "").trim();
+  if (short.length > 72) short = `${short.slice(0, 69)}…`;
+  return `(Link only) ${short || "job"}`;
+}
+
+const IDENTITY_MAX_LEN: Record<string, number> = { title: 200, company: 160, location: 200 };
+
+/** User-typed title / company / location for Log Job: whitespace collapsed, capped; empty ones dropped. */
+export function normalizeManualIdentity(title?: unknown, company?: unknown, location?: unknown) {
+  const values: Record<string, string> = {};
+  for (const [field, raw] of [["title", title], ["company", company], ["location", location]] as const) {
+    let text = String(raw ?? "").split(/\s+/).filter(Boolean).join(" ");
+    if (text.length > IDENTITY_MAX_LEN[field]!) text = text.slice(0, IDENTITY_MAX_LEN[field]).trimEnd();
+    if (text) values[field] = text;
+  }
+  return { values, manualFields: Object.keys(values) };
+}
+
+/** Agent's "why this job fits": trimmed, max 1000 characters. */
+export function normalizeRecommendReason(value: unknown): string {
+  const text = String(value ?? "").trim();
+  return text.length > 1000 ? text.slice(0, 1000).trimEnd() : text;
+}

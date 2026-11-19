@@ -18,7 +18,7 @@
  * derived progress as a column on write and move the filters to SQL.
  */
 import {
-  LINK_ONLY_ANALYSIS, berlinDayBounds, companyGroupKey, companyHistoryItem, countryFilterKeys,
+  LINK_ONLY_ANALYSIS, TIMEOUT_STUB_ANALYSIS, berlinDayBounds, companyGroupKey, companyHistoryItem, countryFilterKeys,
   jobCountry, matchesStatusFilter, normalizeOrigin, serializeJob, type TrackerJob,
 } from "@tracker/core";
 import type { CompanyProfile, Prisma, PrismaClient } from "@tracker/db/client";
@@ -184,7 +184,7 @@ function profileFields(profile: CompanyProfile | null) {
 }
 
 /** Postgres rows -> the card shape the serialization rules expect. */
-export function toTrackerJob(row: FullRow): TrackerJob & Record<string, unknown> {
+export function toTrackerJob(row: FullRow, fromTimeout = false): TrackerJob & Record<string, unknown> {
   const { job } = row;
   const analysis = job.currentAnalysis;
   const details = (analysis?.details ?? {}) as Record<string, unknown>;
@@ -198,7 +198,9 @@ export function toTrackerJob(row: FullRow): TrackerJob & Record<string, unknown>
       ...details,
       company_profile: profileFields(analysis.company),
     }
-    : job.analysisState === "pending" ? { ...LINK_ONLY_ANALYSIS } : {};
+    : job.analysisState === "pending" ? { ...LINK_ONLY_ANALYSIS }
+    // Added from the Timeouts page and not scraped since: the "added after scrape timeout" placeholder
+    : fromTimeout ? { ...TIMEOUT_STUB_ANALYSIS } : {};
   return {
     _id: row.id,
     job_id: job.externalId,
@@ -253,12 +255,26 @@ function attachCompanyHistory(
   });
 }
 
+/** source + job id of the cards without an AI result that were added from the Timeouts page. */
+async function timeoutAddedKeys(prisma: PrismaClient, rows: FullRow[]): Promise<Set<string>> {
+  const bare = rows.filter((r) => !r.job.currentAnalysis && r.job.analysisState !== "pending");
+  if (!bare.length) return new Set();
+  const hits = await prisma.scrapeTimeout.findMany({
+    where: { reviewStatus: "added", OR: bare.map((r) => ({ source: r.job.source, externalId: r.job.externalId })) },
+    select: { source: true, externalId: true },
+  });
+  return new Set(hits.map((t) => `${t.source}\u0000${t.externalId}`));
+}
+
 async function serializePage(prisma: PrismaClient, ids: string[], all: LightCard[]) {
   if (!ids.length) return [];
   const rows = await prisma.application.findMany({ where: { id: { in: ids } }, include: FULL_INCLUDE });
   const byId = new Map(rows.map((r) => [r.id, r]));
   const ordered = ids.map((id) => byId.get(id)).filter((r): r is FullRow => !!r);
-  return attachCompanyHistory(ordered.map((r) => serializeJob(toTrackerJob(r))), all);
+  const fromTimeout = await timeoutAddedKeys(prisma, ordered);
+  return attachCompanyHistory(
+    ordered.map((r) => serializeJob(toTrackerJob(r, fromTimeout.has(`${r.job.source}\u0000${r.job.externalId}`)))), all,
+  );
 }
 
 // ── Entry points ────────────────────────────────────────────────────────────

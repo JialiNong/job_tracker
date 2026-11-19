@@ -1,9 +1,10 @@
 "use client";
 /** Search (with company chips), the Filters popover, and the list toggles above the job list. */
 import { useEffect, useRef, useState } from "react";
+import { type Layout, LayoutToggle } from "@/components/list/listChrome";
 import { type Filters, changedFilterCount } from "./filters";
 
-export type Layout = "compact" | "cards";
+export type { Layout };
 
 interface Props {
   filters: Filters;
@@ -71,17 +72,7 @@ export function Toolbar(props: Props) {
       >
         {props.selectMode ? "Done selecting" : "Select jobs"}
       </button>
-      <div className="layout-toggle" id="layoutToggle">
-        {(["compact", "cards"] as const).map((mode) => (
-          <button
-            key={mode} type="button" data-layout={mode} className={props.layout === mode ? "active" : undefined}
-            title={mode === "compact" ? "List with a details panel" : "Cards: score, title, company, location — tap for a details sheet"}
-            onClick={() => props.onLayout(mode)}
-          >
-            {mode === "compact" ? "List" : "Cards"}
-          </button>
-        ))}
-      </div>
+      <LayoutToggle layout={props.layout} onLayout={props.onLayout} />
       {filters.appliedOn ? (
         <span className="company-filter-chip" id="appliedFilterChip" title="Jobs applied or reapplied on this day">
           Applied <span className="cfc-name" id="appliedFilterName">{filters.appliedOn}</span>

@@ -1,6 +1,7 @@
 "use client";
 /** Page navigation plus the status chips with their counts (markup from templates/_shell.html). */
 import { useState } from "react";
+import { PageNav } from "@/components/shell/PageNav";
 import type { Stats } from "@/lib/tracker/types";
 
 interface Chip {
@@ -50,24 +51,7 @@ export function Sidebar({ stats, status, onStatus, showStatuses }: Props) {
 
   return (
     <aside className="side">
-      <a className="brand" href="/"><img className="brand-mark" src="/static/img/logo.svg" alt="" />Job Tracker</a>
-      <nav className="nav" aria-label="Pages">
-        <a href="/" aria-current="page">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 9h18M8 14h8" /></svg>Tracker
-        </a>
-        {/* From the Tracker the other pages open in a new tab so the list stays put */}
-        <a href="/manual-apply" target="_blank" rel="noopener" title="Opens in a new tab">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>Log a job
-        </a>
-        <a href="/timeouts" target="_blank" rel="noopener" title="Opens in a new tab">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 8v4l3 2" /></svg>Timeouts
-          <b className="nav-count" id="timeoutNavCount">{stats ? stats.timeouts : ""}</b>
-        </a>
-        <a href="/unmatched" target="_blank" rel="noopener" title="Opens in a new tab">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h6" /></svg>Unmatched
-          <b className="nav-count" id="unmatchedNavCount">{stats ? stats.unmatched : ""}</b>
-        </a>
-      </nav>
+      <PageNav active="tracker" counts={stats} />
       <div className="side-extra" hidden={!showStatuses}>
         <div className="side-label">Status</div>
         <div className={expanded ? "stats-bar stats-expanded" : "stats-bar"} id="statsBar">

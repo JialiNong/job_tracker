@@ -327,7 +327,11 @@ def main() -> int:
             if not snap.exists():
                 failed.append((case["name"], ["no snapshot (run with --update)"]))
                 continue
-            expected = consumer_view(json.loads(snap.read_text(encoding="utf-8")), job_fields)
+            stored = json.loads(snap.read_text(encoding="utf-8"))
+            # drop_keys also applies to snapshots written before the key was dropped
+            for key in case.get("drop_keys", []):
+                _drop(stored, key)
+            expected = consumer_view(stored, job_fields)
             actual = consumer_view(result, job_fields)
             if expected != actual:
                 failed.append((case["name"], diff_summary(expected, actual)))
