@@ -4,6 +4,10 @@
  * (analysis_state = none), newest first. A score at or above the cut-off
  * puts the posting on the Tracker; below it stays on Unmatched.
  *
+ * A posting scraped more than STALE_DAYS before it is scored (e.g. the
+ * LinkedIn "Viewed" rows Python never scored) stays on Unmatched even with a
+ * high score: it is not one of today's matches; Can apply still adds it.
+ *
  * A failed model call is stored as a score-0 "score_failed" analysis so
  * the job is not retried forever (as in Python). Out of credits stops the
  * run: the remaining jobs wait for the next one.
@@ -17,6 +21,9 @@ import {
 import { prismaCompanyCache, profileKeyOf, saveAnalysis } from "./analysis-store.js";
 import { newRecordId } from "./ids.js";
 
+/** Older postings than this (scraped -> scored) do not go onto the Tracker automatically. */
+export const STALE_DAYS = 7;
+
 export interface MatchOptions {
   client: LlmClient;
   cv: string;
@@ -26,6 +33,8 @@ export interface MatchOptions {
   source?: string;
   limit?: number;
   log?: (line: string) => void;
+  /** Defaults to STALE_DAYS. */
+  staleDays?: number;
 }
 
 export interface MatchSummary {
@@ -49,7 +58,7 @@ const FAILED_ANALYSIS: Analysis = {
 };
 
 const JOB_SELECT = {
-  id: true, source: true, title: true, company: true, location: true, description: true,
+  id: true, source: true, title: true, company: true, location: true, description: true, scrapedAt: true,
   application: { select: { id: true } },
 } satisfies Prisma.JobSelect;
 
@@ -95,7 +104,9 @@ export async function matchNewJobs(prisma: PrismaClient, opts: MatchOptions): Pr
     if (analysis.disqualification_reason) log(`  ⚠ ${analysis.disqualification_reason.slice(0, 200)}`);
     for (const reason of analysis.match_reasons) log(`  • ${reason.slice(0, 200)}`);
 
-    const onTracker = analysis.match_score >= opts.threshold && !isBlockedMatchCompany(job.company) && !job.application;
+    const ageDays = (Date.now() - job.scrapedAt.getTime()) / 86_400_000;
+    const stale = ageDays > (opts.staleDays ?? STALE_DAYS);
+    const onTracker = analysis.match_score >= opts.threshold && !isBlockedMatchCompany(job.company) && !job.application && !stale;
     const cardId = newRecordId();
     await prisma.$transaction(async (tx) => {
       await saveAnalysis(tx, {
@@ -115,7 +126,9 @@ export async function matchNewJobs(prisma: PrismaClient, opts: MatchOptions): Pr
       summary.matchedCardIds.push(cardId);
       log(`✓ Saved matched job: ${job.title} (score: ${analysis.match_score})`);
     } else if (analysis.match_score >= opts.threshold) {
-      log(job.application ? "Already on the Tracker" : `✗ Blocked company (${JSON.stringify(job.company)}) — not put on the Tracker`);
+      log(job.application ? "Already on the Tracker"
+        : stale ? `✗ Scraped ${Math.floor(ageDays)} days ago — kept on Unmatched (Can apply adds it)`
+        : `✗ Blocked company (${JSON.stringify(job.company)}) — not put on the Tracker`);
     } else {
       log(`✗ Below threshold (${opts.threshold}); kept on Unmatched`);
     }

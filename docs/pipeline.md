@@ -43,6 +43,13 @@ PYTHONPATH=src python3 scripts/tools/export_pipeline_config.py
 
 ## Differences from the Python pipeline
 
+- LinkedIn jobs whose card said "Viewed" are scored. Python only scored
+  `status: "new"` rows, and the scraper's own earlier click (a timeout, a
+  language skip) is enough to mark a card "Viewed", so good jobs were
+  silently never scored. A posting scraped more than 7 days before it is
+  scored (`STALE_DAYS`, e.g. the 58 old "Viewed" rows at the cutover) goes to
+  Unmatched, not the Tracker, even with a high score.
+
 - Telegram "this run's matches": Python tagged Tracker rows with a run id;
   the matcher now returns the cards it created and the digest lists those.
 - Posting dates with a zone offset are stored as the real instant (Python
