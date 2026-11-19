@@ -69,7 +69,9 @@ def api_stats():
         # Slim projection: progress chips use timeline / applied_at, not status alone
         return list(collection.find(
             {},
-            {"_id": 0, "status": 1, "applied_at": 1, "application_timeline.step": 1},
+            # Timeline dates matter: the chip uses the latest-dated step, like the
+            # list filter (a Reapplied after a Rejected is Applied, not Rejected).
+            {"_id": 0, "status": 1, "applied_at": 1, "application_timeline": 1},
         ))
 
     # The five reads are independent and each costs a round trip to Atlas:

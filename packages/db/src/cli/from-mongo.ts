@@ -48,6 +48,7 @@ function summarize(report: Report): string[] {
     `applied_at != first applied event: ${report.appliedAtMismatch.length}`,
     `profiles recreated from snapshots: ${report.profilesRecreated.length}`,
     `analyses without a profile:        ${report.analysesWithoutProfile.length}`,
+    `extra AI runs kept from scraped copy: ${report.extraAnalysisRuns.length}`,
     `cards without a scraped twin:      ${report.matchedWithoutJob.length}`,
     `unknown values:                    ${report.unknownValues.length}`,
   ];

@@ -1,0 +1,45 @@
+/**
+ * Every page and API route needs a login, except the login itself, /health,
+ * and the agent API (which checks its own bearer token).
+ *
+ * POST /login is rewritten to the route handler; GET /login is the page.
+ * (A page and a route handler cannot share one path in the App Router.)
+ */
+import { unsealData } from "iron-session";
+import { NextResponse, type NextRequest } from "next/server";
+import { SESSION_COOKIE, type SessionData } from "@/lib/session";
+
+const PUBLIC_PATHS = ["/login", "/health", "/api/auth/login"];
+
+export async function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl;
+
+  if (pathname === "/login" && req.method === "POST") {
+    return NextResponse.rewrite(new URL("/api/auth/login", req.url));
+  }
+  if (PUBLIC_PATHS.includes(pathname) || pathname.startsWith("/api/agent/")) {
+    return NextResponse.next();
+  }
+
+  const sealed = req.cookies.get(SESSION_COOKIE)?.value;
+  if (sealed) {
+    try {
+      const session = await unsealData<SessionData>(sealed, { password: process.env.SESSION_SECRET ?? "" });
+      if (session.user) return NextResponse.next();
+    } catch {
+      // tampered or expired cookie: treated as logged out
+    }
+  }
+
+  if (pathname.startsWith("/api/")) {
+    return NextResponse.json({ error: "Login required" }, { status: 401 });
+  }
+  const login = new URL("/login", req.url);
+  if (pathname !== "/") login.searchParams.set("next", pathname + req.nextUrl.search);
+  return NextResponse.redirect(login);
+}
+
+export const config = {
+  // Skip Next.js internals and static files
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:css|js|svg|png|ico)$).*)"],
+};

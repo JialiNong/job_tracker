@@ -33,6 +33,30 @@ How a run stays deterministic:
   during a case become `<new-id-1>`, `<new-id-2>` in order of appearance.
   Object keys are sorted.
 
+What gets compared: snapshots keep the full Flask output, but a comparison
+looks only at what the frontend can observe. Job objects are cut to the
+fields the UI reads (`tests/contract/consumer_fields.json`, from a grep of
+`static/js`), and a `null` value counts the same as a missing key (Flask
+returns raw Mongo documents, where both mean "not set"). Internal fields
+such as `run_id` or `dedup_key` are not part of the contract.
+
+Against the Next.js app (`apps/web`, local Postgres `tracker_test`):
+
+```bash
+pnpm db:up
+./scripts/run_contract_next.sh -k health,stats,jobs-,job-detail,job-description --exclude stats-
+```
+
+It starts `next dev` with `apps/web/.env.contract` (test credentials, the
+pinned clock, `TZ=UTC` so dates cannot depend on the server's zone), seeds
+`tracker_test` through `pnpm db contract:seed` before every write case, and
+stops the server afterwards.
+
+Pure rules (status from timeline, chips, filters, country, origin, missing
+details, serialization) are also checked one level down:
+`tests/contract/build_rule_cases.py` records the Python answers in
+`rule_cases.json`, and `packages/core/test/parity.test.ts` must give the same.
+
 What the new stack has to provide to run against these snapshots:
 
 1. The same routes, request bodies and JSON shapes.
@@ -53,6 +77,13 @@ E2E_STORE=pg_store:PostgresStore E2E_BASE_URL=http://127.0.0.1:3000 ./scripts/ru
 ```
 
 The new stack adds a store class with the same method names over Postgres.
+
+## Fixed in the Flask app while building the contracts
+
+- Chip counts sorted timeline steps without their dates (the projection
+  fetched `application_timeline.step` only), so a Reapplied after a Rejected
+  counted as Rejected on the chip but Applied in the list. `/api/stats` now
+  reads the dated timeline.
 
 ## Known issue found while pinning the clock
 

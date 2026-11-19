@@ -21,6 +21,9 @@ import json
 from datetime import datetime, timedelta
 from pathlib import Path
 
+from core.manual_log import stub_ai_pending_analysis
+from matching.evaluator import company_key
+
 HERE = Path(__file__).resolve().parent
 FIXTURE_NOW = datetime(2026, 11, 13, 12, 0)  # a Friday
 
@@ -38,7 +41,16 @@ def at(days_ago: float, hour: int = 10, minute: int = 0) -> dict:
     return {"$date": when.strftime("%Y-%m-%dT%H:%M:%SZ")}
 
 
-def ai_fields(score: float, frameworks: str, role: str = "fullstack_balanced") -> dict:
+def profile_for(company: str) -> dict:
+    """The company research the pipeline caches; jobs carry the same text (as on Atlas)."""
+    return {
+        "business": f"{company} sells a B2B SaaS tool for small logistics companies.",
+        "product_type": "b2b_saas", "vertical": "Logistics software",
+        "markets": "europe", "markets_detail": "Customers in Germany and Austria.",
+    }
+
+
+def ai_fields(score: float, frameworks: str, company: str, role: str = "fullstack_balanced") -> dict:
     return {
         "match_score": score,
         "recommendation": "Yes" if score >= 7 else ("Maybe" if score >= 5 else "No"),
@@ -64,11 +76,7 @@ def ai_fields(score: float, frameworks: str, role: str = "fullstack_balanced") -
             "ai_product_work": False, "english_team": "true", "stack": frameworks,
             "summary": f"Product team working with {frameworks}.",
         },
-        "company_profile": {
-            "business": "Sells a B2B SaaS tool for small logistics companies.",
-            "product_type": "b2b_saas", "vertical": "Logistics software",
-            "markets": "europe", "markets_detail": "Customers in Germany and Austria.",
-        },
+        "company_profile": profile_for(company),
     }
 
 
@@ -101,7 +109,7 @@ def matched(n: int, title: str, company: str, frameworks: str, *, score: float =
             {"step": step, "at": at(days, hour)} for step, days, hour in steps
         ],
     }
-    doc.update(ai_fields(score, frameworks))
+    doc.update(ai_fields(score, frameworks, company))
     doc.update(extra)
     return doc
 
@@ -169,9 +177,11 @@ def build() -> dict:
     add(matched(23, "Frontend Engineer", "Northwind Labs", "React, TypeScript, Next.js", status="repost", matched_days=5))
     add(matched(24, "Frontend Engineer", "Larkspur", "React, NestJS", status="duplicate", matched_days=4, source="indeed"))
     # Manually logged, link only (AI still pending)
-    add(matched(25, "Software Engineer", "Halden Robotics", "", status="applied", source="manual", origin="manual",
-                applied_days=2, matched_days=2, steps=[("applied", 2, 20)], manually_logged=True,
-                ai_pending=True, description="", match_score=0.0, recommendation="", summary=""))
+    link_only = matched(25, "Software Engineer", "Halden Robotics", "", status="applied", source="manual",
+                        origin="manual", applied_days=2, matched_days=2, steps=[("applied", 2, 20)],
+                        manually_logged=True, ai_pending=True, description="")
+    link_only.update(stub_ai_pending_analysis())  # what Save Link Only stores
+    add(link_only)
 
     jobs = []
     for m in mj:
@@ -194,7 +204,7 @@ def build() -> dict:
             "description": description("Java, Spring, PostgreSQL"), "created_at": at(n - 95, 8),
             "matched_at": at(n - 95, 8, 30), "status": "unmatched", "applicants": "80 applicants",
         }
-        doc.update(ai_fields(score, "Java, Spring, PostgreSQL", role="backend_heavy"))
+        doc.update(ai_fields(score, "Java, Spring, PostgreSQL", company, role="backend_heavy"))
         doc["match_gate"] = gate
         if user_status:
             doc["user_status"] = user_status
@@ -221,10 +231,15 @@ def build() -> dict:
         stats.append({"_id": f"daily_{d}", "date": d, "title_passed_clicked": clicked,
                       "german_filtered": german, "ai_title_filtered": clicked // 2, "updated_at": at(days, 20)})
 
-    profiles = [{"_id": "northwind labs", "business": "Route planning SaaS for small fleets.",
-                 "product_type": "b2b_saas", "vertical": "Logistics software", "markets": "europe",
-                 "markets_detail": "Germany, Austria, Switzerland.", "is_recruiter_for_other_company": False,
-                 "sources": [], "cached_at": at(20)}]
+    # One cached profile per analysed company, keyed like matching.evaluator.company_key
+    profiles, seen = [], set()
+    for doc in [*mj, *jobs]:
+        key = company_key(doc.get("company"))
+        if not key or key in seen or not doc.get("company_profile"):
+            continue
+        seen.add(key)
+        profiles.append({"_id": key, **profile_for(doc["company"]), "is_recruiter_for_other_company": False,
+                         "sources": [], "cached_at": doc["matched_at"]})
 
     return {
         "now": FIXTURE_NOW.strftime("%Y-%m-%dT%H:%M:%S"),

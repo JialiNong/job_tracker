@@ -10,7 +10,7 @@
    "body": {
     "by_status": {
      "active": 18,
-     "applied": 6,
+     "applied": 7,
      "closed": 1,
      "closed_no_reply": 1,
      "got_interview": 4,
@@ -19,7 +19,7 @@
      "offer": 1,
      "pending": 4,
      "prev_rejected": 1,
-     "rejected": 5,
+     "rejected": 4,
      "repost": 1,
      "screening": 1,
      "too_many_questions": 1,

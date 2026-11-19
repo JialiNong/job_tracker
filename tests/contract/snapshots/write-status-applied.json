@@ -45,7 +45,7 @@
     ],
     "company_history_total": 2,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Northwind Labs sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -118,7 +118,7 @@
    "body": {
     "by_status": {
      "active": 18,
-     "applied": 7,
+     "applied": 8,
      "closed": 1,
      "closed_no_reply": 1,
      "duplicate": 1,
@@ -128,7 +128,7 @@
      "offer": 1,
      "pending": 3,
      "prev_rejected": 1,
-     "rejected": 5,
+     "rejected": 4,
      "repost": 1,
      "screening": 1,
      "too_many_questions": 1,

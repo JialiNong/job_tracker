@@ -47,6 +47,7 @@ SNAPSHOTS = HERE / "snapshots"
 TZ = "Europe/Berlin"  # wall clock the app (and GitHub Actions) runs on
 
 OID_RE = re.compile(r"\b[0-9a-f]{24}\b")
+CONSUMER_FIELDS = HERE / "consumer_fields.json"
 
 
 # ── Fixture lookups ──────────────────────────────────────────────────────────
@@ -224,6 +225,22 @@ def run_case(client: Client, case: dict, ids) -> dict:
     return norm(out)
 
 
+def consumer_view(value, job_fields: frozenset):
+    """What the frontend can observe: job objects cut to the fields it reads,
+    and null treated the same as a missing key (the Flask app returns raw Mongo
+    documents, where a key can be absent or None for the same meaning)."""
+    if isinstance(value, list):
+        return [consumer_view(v, job_fields) for v in value]
+    if isinstance(value, dict):
+        is_job = "_id" in value and "application_timeline" in value
+        return {
+            k: consumer_view(v, job_fields)
+            for k, v in value.items()
+            if v is not None and (not is_job or k in job_fields)
+        }
+    return value
+
+
 def _drop(value, key):
     if isinstance(value, dict):
         value.pop(key, None)
@@ -263,7 +280,8 @@ def main() -> int:
     ap.add_argument("--update", action="store_true", help="rewrite snapshots instead of comparing")
     ap.add_argument("--base-url", help="check an already running server instead of the Flask app")
     ap.add_argument("--seed-cmd", help="with --base-url: command that loads fixture.json into its DB")
-    ap.add_argument("-k", dest="only", help="run cases whose name contains this text")
+    ap.add_argument("-k", dest="only", help="run cases whose name contains this text (comma-separate several)")
+    ap.add_argument("--exclude", help="skip cases whose name contains this text (comma-separate several)")
     args = ap.parse_args()
     if args.base_url and not args.seed_cmd:
         ap.error("--base-url needs --seed-cmd")
@@ -272,9 +290,14 @@ def main() -> int:
 
     fixture = load_fixture()
     ids = fixture_ids(fixture)
+    job_fields = frozenset(json.loads(CONSUMER_FIELDS.read_text(encoding="utf-8"))["job"])
     cases = json.loads(CASES_PATH.read_text(encoding="utf-8"))
     if args.only:
-        cases = [c for c in cases if args.only in c["name"]]
+        wanted = [w for w in args.only.split(",") if w]
+        cases = [c for c in cases if any(w in c["name"] for w in wanted)]
+    if args.exclude:
+        unwanted = [w for w in args.exclude.split(",") if w]
+        cases = [c for c in cases if not any(w in c["name"] for w in unwanted)]
 
     target = ExternalTarget(args.base_url, args.seed_cmd) if args.base_url else FlaskTarget(fixture)
     failed, written = [], 0
@@ -298,9 +321,10 @@ def main() -> int:
             if not snap.exists():
                 failed.append((case["name"], ["no snapshot (run with --update)"]))
                 continue
-            expected = json.loads(snap.read_text(encoding="utf-8"))
-            if expected != result:
-                failed.append((case["name"], diff_summary(expected, result)))
+            expected = consumer_view(json.loads(snap.read_text(encoding="utf-8")), job_fields)
+            actual = consumer_view(result, job_fields)
+            if expected != actual:
+                failed.append((case["name"], diff_summary(expected, actual)))
             else:
                 print(f"  ok   {case['name']}")
     finally:
