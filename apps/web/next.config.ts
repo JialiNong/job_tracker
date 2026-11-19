@@ -6,6 +6,9 @@ const config: NextConfig = {
   transpilePackages: ["@tracker/core", "@tracker/db", "@tracker/matching", "@tracker/pipeline"],
   // Native addon (Lingua language detection): loaded by Node at runtime, not bundled
   serverExternalPackages: ["@prospectbase/lingua"],
+  // Its Linux binary is 277 MB, over Vercel's 250 MB function limit: left out
+  // of the Vercel deployment, where Run AI answers "runs locally" (run-ai.ts)
+  ...(process.env.VERCEL ? { outputFileTracingExcludes: { "*": ["**/@prospectbase/lingua*/**"] } } : {}),
   poweredByHeader: false,
   // The pnpm workspace root: server files are traced from here (packages/*)
   outputFileTracingRoot: path.join(__dirname, "../.."),

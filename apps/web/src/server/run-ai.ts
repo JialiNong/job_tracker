@@ -18,7 +18,8 @@ import {
   type LlmClient, OutOfCreditsError, assessJobDescription, createOpenAiClient,
   evaluate, inferJobMetadata, modelSettings, stripHtml, toAnalysis,
 } from "@tracker/matching";
-import { loadMatchingDocs, prismaCompanyCache, profileKeyOf, saveAnalysis } from "@tracker/pipeline";
+import { prismaCompanyCache, profileKeyOf, saveAnalysis } from "@tracker/pipeline/analysis-store";
+import { loadMatchingDocs } from "@tracker/pipeline/docs";
 import { matchThreshold } from "./stats";
 
 const STALE_LOCK_MS = 10 * 60_000;
@@ -63,7 +64,14 @@ async function fillIdentity(client: LlmClient, job: Posting, log: (l: string) =>
   return identity;
 }
 
+/**
+ * On Vercel the Lingua language model (277 MB) does not fit a function, so
+ * it is left out of the deployment (next.config.ts) and Run AI runs locally.
+ */
+export const RUN_AI_LOCAL_ONLY = "Run AI runs on your computer (the language model is too large for the hosted app)";
+
 export async function runAiOnCard(prisma: PrismaClient, cardId: string, client?: LlmClient): Promise<Result> {
+  if (process.env.VERCEL && !client) return { status: 503, body: { ok: false, error: RUN_AI_LOCAL_ONLY, match_score: null } };
   const card = await prisma.application.findUnique({ where: { id: cardId }, select: CARD_SELECT });
   if (!card) return { status: 404, body: { error: "Job not found" } };
   const job = card.job;

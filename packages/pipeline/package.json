@@ -4,6 +4,9 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./analysis-store": "./src/analysis-store.ts",
+    "./docs": "./src/docs.ts",
+    "./ids": "./src/ids.ts",
     "./known-jobs": "./src/known-jobs.ts"
   },
   "scripts": {
