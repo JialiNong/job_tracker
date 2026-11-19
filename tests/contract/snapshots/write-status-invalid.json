@@ -1,0 +1,13 @@
+{
+ "body": {
+  "error": "Invalid status. Allowed: ['pending', 'applied', 'screening', 'rejected', 'interview', 'interview_cancelled', 'offer', 'unsuitable', 'closed', 'closed_no_reply', 'prev_rejected', 'too_many_questions', 'repost', 'duplicate']"
+ },
+ "request": {
+  "body": {
+   "status": "hired"
+  },
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:1}/status"
+ },
+ "status": 400
+}

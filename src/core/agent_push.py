@@ -8,7 +8,7 @@ did not."
 """
 from __future__ import annotations
 
-from datetime import datetime
+from core import clock
 
 from bson import ObjectId
 
@@ -79,7 +79,7 @@ def stamp_agent_recommendation(hit: dict, recommended_by, reason=None) -> bool:
         return False
     fields = {
         "agent_recommended_by": rec,
-        "agent_recommended_at": datetime.now(),
+        "agent_recommended_at": clock.now(),
     }
     blurb = normalize_recommend_reason(reason)
     if blurb:

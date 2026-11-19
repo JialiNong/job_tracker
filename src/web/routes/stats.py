@@ -2,6 +2,8 @@
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
+from core import clock
+
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
@@ -232,7 +234,7 @@ def api_journey():
         # Backfill old flat interview/offer status without detailed timeline
         if not any(s["step"] in JOURNEY_INTERVIEW_STEPS for s in steps):
             if job.get("status") == "interview":
-                at = _parse_timeline_at(job.get("updated_at") or applied_at) or datetime.now()
+                at = _parse_timeline_at(job.get("updated_at") or applied_at) or clock.now()
                 steps.append({
                     "step": "interview_invite",
                     "label": TIMELINE_STEPS["interview_invite"],
@@ -241,7 +243,7 @@ def api_journey():
                     "_dt": at,
                 })
             elif job.get("status") == "offer":
-                at = _parse_timeline_at(job.get("updated_at") or applied_at) or datetime.now()
+                at = _parse_timeline_at(job.get("updated_at") or applied_at) or clock.now()
                 steps.append({
                     "step": "offer",
                     "label": TIMELINE_STEPS["offer"],
@@ -272,7 +274,7 @@ def api_journey():
     for t in tracks:
         t.pop("_sort", None)
 
-    today_dt = datetime.now()
+    today_dt = clock.now()
     today = today_dt.strftime("%Y-%m-%d")
     start_date = first_applied.strftime("%Y-%m-%d") if first_applied else today
 

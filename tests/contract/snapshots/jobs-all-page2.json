@@ -1,0 +1,1035 @@
+{
+ "body": {
+  "jobs": [
+   {
+    "_id": "{matched_jobs:5}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": 12,
+    "applicants": "55 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-11-09 10:00",
+      "label": "Applied",
+      "step": "applied"
+     }
+    ],
+    "applied_at": "2026-11-09 10:00",
+    "can_fetch_details": false,
+    "company": "Ostara Health",
+    "company_history": [
+     {
+      "_id": "{matched_jobs:17}",
+      "applicant_position": null,
+      "applied_at": "2026-08-15",
+      "last_step_at": "2026-11-03",
+      "matched_at": "2026-08-14",
+      "progress": "applied",
+      "source": "linkedin",
+      "status": "applied",
+      "title": "Frontend Engineer"
+     }
+    ],
+    "company_history_total": 1,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000005",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "React, Redux, Node.js",
+     "stack_fit": "strong",
+     "summary": "Product team working with React, Redux, Node.js."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000005/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on React, Redux, Node.js experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-10-24 09:05",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "posted_at": "2026-11-07",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "applied",
+    "summary": "Fullstack balanced role on a React, Redux, Node.js stack.",
+    "title": "Frontend Developer",
+    "updated_at": "2026-11-09 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, Redux, Node.js"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:18}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "146 applicants",
+    "application_qa": [],
+    "application_timeline": [],
+    "applied_at": null,
+    "can_fetch_details": false,
+    "company": "Granite Cloud",
+    "company_history": [
+     {
+      "_id": "{matched_jobs:21}",
+      "applicant_position": null,
+      "applied_at": "",
+      "last_step_at": "",
+      "matched_at": "2026-11-05",
+      "progress": "",
+      "source": "linkedin",
+      "status": "prev_rejected",
+      "title": "Frontend Engineer"
+     },
+     {
+      "_id": "{matched_jobs:13}",
+      "applicant_position": null,
+      "applied_at": "2026-09-24",
+      "last_step_at": "2026-09-30",
+      "matched_at": "2026-09-23",
+      "progress": "rejected",
+      "source": "linkedin",
+      "status": "rejected",
+      "title": "Full Stack Developer"
+     }
+    ],
+    "company_history_total": 2,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000018",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "Java, Spring Boot",
+     "stack_fit": "strong",
+     "summary": "Product team working with Java, Spring Boot."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000018/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on Java, Spring Boot experience matches the role"
+    ],
+    "match_score": 7.0,
+    "matched_at": "2026-10-19 09:18",
+    "missing_requirements": [
+     "Production experience with Kubernetes"
+    ],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "unsuitable",
+    "summary": "Fullstack balanced role on a Java, Spring Boot stack.",
+    "title": "Backend Engineer",
+    "updated_at": "2026-10-19 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Java, Spring Boot"
+     ],
+     "unmatched": [
+      "Kubernetes in production"
+     ]
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:19}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "153 applicants",
+    "application_qa": [],
+    "application_timeline": [],
+    "applied_at": null,
+    "can_fetch_details": false,
+    "company": "Copperleaf",
+    "company_history": [],
+    "company_history_total": 0,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000019",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "React, Tailwind",
+     "stack_fit": "strong",
+     "summary": "Product team working with React, Tailwind."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000019/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on React, Tailwind experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-10-17 09:19",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "closed",
+    "summary": "Fullstack balanced role on a React, Tailwind stack.",
+    "title": "Frontend Developer",
+    "updated_at": "2026-10-17 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, Tailwind"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:9}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "83 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-10-14 10:00",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-10-19 16:00",
+      "label": "Screening",
+      "step": "screening"
+     },
+     {
+      "at": "2026-10-22 11:00",
+      "label": "Submitted",
+      "step": "screening_done"
+     }
+    ],
+    "applied_at": "2026-10-14 10:00",
+    "can_fetch_details": false,
+    "company": "Halcyon Pay",
+    "company_history": [],
+    "company_history_total": 0,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000009",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "React, TypeScript, Django",
+     "stack_fit": "strong",
+     "summary": "Product team working with React, TypeScript, Django."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000009/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on React, TypeScript, Django experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-10-13 09:09",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "screening",
+    "summary": "Fullstack balanced role on a React, TypeScript, Django stack.",
+    "title": "Frontend Engineer",
+    "updated_at": "2026-10-14 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, TypeScript, Django"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:10}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "90 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-10-09 10:00",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-10-16 09:00",
+      "label": "Invite",
+      "step": "interview_invite"
+     },
+     {
+      "at": "2026-10-20 14:00",
+      "label": "Round 1",
+      "step": "interview_1"
+     },
+     {
+      "at": "2026-10-26 15:00",
+      "label": "Round 2",
+      "step": "interview_2"
+     }
+    ],
+    "applied_at": "2026-10-09 10:00",
+    "can_fetch_details": false,
+    "company": "Tidewater",
+    "company_history": [],
+    "company_history_total": 0,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000010",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "Next.js, tRPC, Prisma, PostgreSQL",
+     "stack_fit": "strong",
+     "summary": "Product team working with Next.js, tRPC, Prisma, PostgreSQL."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000010/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on Next.js, tRPC, Prisma, PostgreSQL experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-10-08 09:10",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "interview",
+    "summary": "Fullstack balanced role on a Next.js, tRPC, Prisma, PostgreSQL stack.",
+    "title": "Full Stack Engineer",
+    "updated_at": "2026-10-09 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Next.js, tRPC, Prisma, PostgreSQL"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:7}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "69 applicants",
+    "application_qa": [
+     {
+      "answer": "The product and the TypeScript stack.",
+      "question": "Why this role?"
+     }
+    ],
+    "application_timeline": [
+     {
+      "at": "2026-10-04 09:00",
+      "label": "Applied",
+      "step": "applied"
+     }
+    ],
+    "applied_at": "2026-10-04 10:00",
+    "can_fetch_details": false,
+    "company": "Northwind Labs",
+    "company_history": [
+     {
+      "_id": "{matched_jobs:1}",
+      "applicant_position": null,
+      "applied_at": "",
+      "last_step_at": "",
+      "matched_at": "2026-11-13",
+      "progress": "",
+      "source": "linkedin",
+      "status": "pending",
+      "title": "Frontend Engineer"
+     },
+     {
+      "_id": "{matched_jobs:23}",
+      "applicant_position": null,
+      "applied_at": "",
+      "last_step_at": "",
+      "matched_at": "2026-11-08",
+      "progress": "",
+      "source": "linkedin",
+      "status": "repost",
+      "title": "Frontend Engineer"
+     }
+    ],
+    "company_history_total": 2,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000007",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "React, Node.js, Express, MongoDB",
+     "stack_fit": "strong",
+     "summary": "Product team working with React, Node.js, Express, MongoDB."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000007/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on React, Node.js, Express, MongoDB experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-10-03 09:07",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "applied",
+    "summary": "Fullstack balanced role on a React, Node.js, Express, MongoDB stack.",
+    "title": "Full Stack Engineer",
+    "updated_at": "2026-10-04 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, Node.js, Express, MongoDB"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:11}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "97 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-09-29 10:00",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-10-06 09:00",
+      "label": "Invite",
+      "step": "interview_invite"
+     },
+     {
+      "at": "2026-10-08 12:00",
+      "label": "Cancelled",
+      "step": "interview_cancelled"
+     }
+    ],
+    "applied_at": "2026-09-29 10:00",
+    "can_fetch_details": false,
+    "company": "Marlow Systems",
+    "company_history": [],
+    "company_history_total": 0,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000011",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "Angular, .NET, C#",
+     "stack_fit": "strong",
+     "summary": "Product team working with Angular, .NET, C#."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000011/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on Angular, .NET, C# experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-09-28 09:11",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "interview_cancelled",
+    "summary": "Fullstack balanced role on a Angular, .NET, C# stack.",
+    "title": "Software Engineer",
+    "updated_at": "2026-09-29 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Angular, .NET, C#"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:13}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "111 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-09-24 10:00",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-09-30 18:00",
+      "label": "Rejected",
+      "step": "rejected"
+     }
+    ],
+    "applied_at": "2026-09-24 10:00",
+    "can_fetch_details": false,
+    "company": "Granite Cloud",
+    "company_history": [
+     {
+      "_id": "{matched_jobs:21}",
+      "applicant_position": null,
+      "applied_at": "",
+      "last_step_at": "",
+      "matched_at": "2026-11-05",
+      "progress": "",
+      "source": "linkedin",
+      "status": "prev_rejected",
+      "title": "Frontend Engineer"
+     },
+     {
+      "_id": "{matched_jobs:18}",
+      "applicant_position": null,
+      "applied_at": "",
+      "last_step_at": "",
+      "matched_at": "2026-10-19",
+      "progress": "",
+      "source": "linkedin",
+      "status": "unsuitable",
+      "title": "Backend Engineer"
+     }
+    ],
+    "company_history_total": 2,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000013",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "React, Spring Boot, Kotlin",
+     "stack_fit": "strong",
+     "summary": "Product team working with React, Spring Boot, Kotlin."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000013/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on React, Spring Boot, Kotlin experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-09-23 09:13",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "Wanted Java seniority.",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "rejected",
+    "summary": "Fullstack balanced role on a React, Spring Boot, Kotlin stack.",
+    "title": "Full Stack Developer",
+    "updated_at": "2026-09-24 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, Spring Boot, Kotlin"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:8}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "76 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-09-19 14:00",
+      "label": "Applied",
+      "step": "applied"
+     }
+    ],
+    "applied_at": "2026-09-19 10:00",
+    "can_fetch_details": false,
+    "company": "Pinecrest",
+    "company_history": [],
+    "company_history_total": 0,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "remote",
+    "country_label": "Remote",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "arbeitnow-0008",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "React, React Native, Expo",
+     "stack_fit": "strong",
+     "summary": "Product team working with React, React Native, Expo."
+    },
+    "link": "https://jobs.example.com/arbeitnow/8",
+    "location": "Remote (Europe)",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on React, React Native, Expo experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-09-18 09:08",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "api",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "arbeitnow",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "applied",
+    "summary": "Fullstack balanced role on a React, React Native, Expo stack.",
+    "title": "React Developer",
+    "updated_at": "2026-09-19 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, React Native, Expo"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:12}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "104 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-09-14 10:00",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-09-22 09:00",
+      "label": "Invite",
+      "step": "interview_invite"
+     },
+     {
+      "at": "2026-09-26 11:00",
+      "label": "Round 1",
+      "step": "interview_1"
+     },
+     {
+      "at": "2026-10-04 15:00",
+      "label": "Final",
+      "step": "interview_final"
+     },
+     {
+      "at": "2026-10-11 17:00",
+      "label": "Offer",
+      "step": "offer"
+     }
+    ],
+    "applied_at": "2026-09-14 10:00",
+    "can_fetch_details": false,
+    "company": "Saffron Studio",
+    "company_history": [],
+    "company_history_total": 0,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [
+     "Dream team"
+    ],
+    "job_id": "4100000012",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "React, Next.js, Node.js",
+     "stack_fit": "strong",
+     "summary": "Product team working with React, Next.js, Node.js."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000012/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on React, Next.js, Node.js experience matches the role"
+    ],
+    "match_score": 9.5,
+    "matched_at": "2026-09-13 09:12",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "offer",
+    "summary": "Fullstack balanced role on a React, Next.js, Node.js stack.",
+    "title": "Frontend Lead",
+    "updated_at": "2026-09-14 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, Next.js, Node.js"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   }
+  ],
+  "page": 2,
+  "page_size": 10,
+  "pages": 3,
+  "total": 25
+ },
+ "request": {
+  "path": "/api/jobs?status=all&country=all&page=2&page_size=10"
+ },
+ "status": 200
+}

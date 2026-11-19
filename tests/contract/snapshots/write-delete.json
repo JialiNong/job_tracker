@@ -1,0 +1,56 @@
+{
+ "after": {
+  "/api/jobs/{matched_jobs:24}": {
+   "body": {
+    "error": "Job not found"
+   },
+   "status": 404
+  },
+  "/api/stats": {
+   "body": {
+    "by_status": {
+     "active": 18,
+     "applied": 6,
+     "closed": 1,
+     "closed_no_reply": 1,
+     "got_interview": 4,
+     "interview": 1,
+     "interview_cancelled": 1,
+     "offer": 1,
+     "pending": 4,
+     "prev_rejected": 1,
+     "rejected": 5,
+     "repost": 1,
+     "screening": 1,
+     "too_many_questions": 1,
+     "unsuitable": 1
+    },
+    "funnel": {
+     "ai_matched": 24,
+     "ai_unmatched": 4,
+     "applied": 16,
+     "german_filtered": 410,
+     "interviewed": 4,
+     "offer": 1,
+     "title_clicked": 640
+    },
+    "timeouts": 1,
+    "total": 24,
+    "unmatched": 4
+   },
+   "status": 200
+  }
+ },
+ "body": {
+  "company": "Larkspur",
+  "deleted_jobs": 1,
+  "deleted_matched": 1,
+  "ok": true,
+  "title": "Frontend Engineer"
+ },
+ "request": {
+  "method": "DELETE",
+  "path": "/api/jobs/{matched_jobs:24}"
+ },
+ "status": 200
+}

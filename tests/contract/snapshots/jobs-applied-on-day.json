@@ -1,0 +1,115 @@
+{
+ "body": {
+  "jobs": [
+   {
+    "_id": "{matched_jobs:5}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": 12,
+    "applicants": "55 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-11-09 10:00",
+      "label": "Applied",
+      "step": "applied"
+     }
+    ],
+    "applied_at": "2026-11-09 10:00",
+    "can_fetch_details": false,
+    "company": "Ostara Health",
+    "company_history": [
+     {
+      "_id": "{matched_jobs:17}",
+      "applicant_position": null,
+      "applied_at": "2026-08-15",
+      "last_step_at": "2026-11-03",
+      "matched_at": "2026-08-14",
+      "progress": "applied",
+      "source": "linkedin",
+      "status": "applied",
+      "title": "Frontend Engineer"
+     }
+    ],
+    "company_history_total": 1,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000005",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "React, Redux, Node.js",
+     "stack_fit": "strong",
+     "summary": "Product team working with React, Redux, Node.js."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000005/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on React, Redux, Node.js experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-10-24 09:05",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "posted_at": "2026-11-07",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "applied",
+    "summary": "Fullstack balanced role on a React, Redux, Node.js stack.",
+    "title": "Frontend Developer",
+    "updated_at": "2026-11-09 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, Redux, Node.js"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   }
+  ],
+  "page": 1,
+  "page_size": 20,
+  "pages": 1,
+  "total": 1
+ },
+ "request": {
+  "path": "/api/jobs?status=all&country=all&applied_on=2026-11-09"
+ },
+ "status": 200
+}

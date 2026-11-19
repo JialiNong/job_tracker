@@ -8,6 +8,8 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from core import clock
+
 from core.db_mongo import (
     APPLIED_STATUSES,
     get_collection,
@@ -310,7 +312,7 @@ def mark_tracker_job_applied(
     if not job:
         return "missing"
 
-    now = datetime.now()
+    now = clock.now()
     t = applied_date or now
     already_applied = bool(job.get("applied_at")) or job.get("status") in APPLIED_STATUSES
     rec = normalize_recommended_by(recommended_by)
@@ -365,7 +367,7 @@ def stamp_recommended_by(job_id: str, source: str, recommended_by) -> bool:
         return False
     result = col.update_one(
         {"_id": job["_id"]},
-        {"$set": {"recommended_by": rec, "updated_at": datetime.now()}},
+        {"$set": {"recommended_by": rec, "updated_at": clock.now()}},
     )
     return result.matched_count > 0
 
@@ -385,7 +387,7 @@ def stamp_manual_identity(job_id: str, source: str, identity: dict | None) -> bo
     job = col.find_one(query)
     if not job:
         return False
-    now = datetime.now()
+    now = clock.now()
     fields = {**values, "updated_at": now}
     prev = [f for f in (job.get("manual_fields") or []) if f in IDENTITY_FIELDS]
     extra = [f for f in (identity.get("manual_fields") or []) if f in IDENTITY_FIELDS]
@@ -428,7 +430,7 @@ def force_save_manual_job(
     jobs_col = get_collection("jobs")
     matched_col = get_collection("matched_jobs")
 
-    now = datetime.utcnow()
+    now = clock.utcnow()
     t = (applied_date or now) if status == "applied" else now
     job_id = job["job_id"]
     source = job["source"]
@@ -599,7 +601,7 @@ def apply_scraped_details(job: dict) -> dict:
     """
     jobs_col = get_collection("jobs")
     matched_col = get_collection("matched_jobs")
-    now = datetime.utcnow()
+    now = clock.utcnow()
     job_id = job.get("job_id")
     source = job.get("source")
     patch = {

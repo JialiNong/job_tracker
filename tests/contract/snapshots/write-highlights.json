@@ -1,0 +1,128 @@
+{
+ "after": {
+  "/api/jobs/{matched_jobs:2}": {
+   "body": {
+    "_id": "{matched_jobs:2}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "34 applicants",
+    "application_qa": [],
+    "application_timeline": [],
+    "applied_at": null,
+    "can_fetch_details": false,
+    "company": "Bluefin GmbH",
+    "company_history": [
+     {
+      "_id": "{matched_jobs:20}",
+      "applicant_position": null,
+      "applied_at": "2026-08-30",
+      "last_step_at": "2026-08-30",
+      "matched_at": "2026-08-29",
+      "progress": "applied",
+      "source": "linkedin",
+      "status": "closed_no_reply",
+      "title": "Full Stack Engineer"
+     }
+    ],
+    "company_history_total": 1,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [
+     "Hamburg",
+     "Remote ok"
+    ],
+    "job_id": "4100000002",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "Vue, Nuxt, Node.js, PostgreSQL",
+     "stack_fit": "strong",
+     "summary": "Product team working with Vue, Nuxt, Node.js, PostgreSQL."
+    },
+    "link": "https://de.indeed.com/viewjob?jk=0000000000000002",
+    "location": "Hamburg, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on Vue, Nuxt, Node.js, PostgreSQL experience matches the role"
+    ],
+    "match_score": 7.5,
+    "matched_at": "2026-11-12 09:02",
+    "missing_requirements": [
+     "Production experience with Kubernetes"
+    ],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "indeed",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "pending",
+    "summary": "Fullstack balanced role on a Vue, Nuxt, Node.js, PostgreSQL stack.",
+    "title": "Full Stack Developer",
+    "updated_at": "2026-11-13 12:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Vue, Nuxt, Node.js, PostgreSQL"
+     ],
+     "unmatched": [
+      "Kubernetes in production"
+     ]
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   "status": 200
+  }
+ },
+ "body": {
+  "highlights": [
+   "Hamburg",
+   "Remote ok"
+  ],
+  "ok": true
+ },
+ "request": {
+  "body": {
+   "highlights": [
+    "Hamburg",
+    "  Remote ok ",
+    "Hamburg",
+    ""
+   ]
+  },
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:2}/highlights"
+ },
+ "status": 200
+}

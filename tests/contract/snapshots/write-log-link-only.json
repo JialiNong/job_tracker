@@ -1,0 +1,124 @@
+{
+ "after": {
+  "/api/jobs?status=all&country=all&q=wayne": {
+   "body": {
+    "jobs": [
+     {
+      "_id": "<new-id-1>",
+      "agent_recommend_reason": "",
+      "agent_recommended_by": "",
+      "ai_pending": true,
+      "applicant_position": null,
+      "applicants": "",
+      "application_qa": [],
+      "application_timeline": [
+       {
+        "at": "2026-11-12 00:00",
+        "label": "Applied",
+        "step": "applied"
+       }
+      ],
+      "applied_at": "2026-11-12 00:00",
+      "can_fetch_details": true,
+      "company": "Wayne Enterprises",
+      "company_history": [],
+      "company_history_total": 0,
+      "company_profile": {},
+      "country": "germany",
+      "country_label": "Germany",
+      "created_at": "2026-11-12 00:00",
+      "details_missing": true,
+      "disqualification_reason": "",
+      "highlights": [],
+      "job_id": "4400000001",
+      "job_labels": {},
+      "link": "https://www.linkedin.com/jobs/view/4400000001/",
+      "location": "",
+      "manual_fields": [
+       "title",
+       "company"
+      ],
+      "manually_applied": true,
+      "manually_logged": true,
+      "match_gate": "",
+      "match_reasons": [
+       "Link-only save — AI pending"
+      ],
+      "match_score": null,
+      "matched_at": "2026-11-12 00:00",
+      "missing_requirements": [],
+      "needs_refetch": false,
+      "nice_to_have_matches": [],
+      "notes": "",
+      "origin": "manual",
+      "recommend_reason": "",
+      "recommendation": "",
+      "recommended_by": "",
+      "red_flags": [],
+      "source": "linkedin",
+      "special_match": false,
+      "special_match_reasons": [],
+      "status": "applied",
+      "summary": "Link saved without scrape/AI. Use Run AI on Tracker when Chrome is available.",
+      "title": "Data Engineer",
+      "updated_at": "2026-11-12 00:00",
+      "what_theyre_looking_for": {
+       "matched": [],
+       "unmatched": []
+      },
+      "what_youll_do": {
+       "matched": [],
+       "unmatched": []
+      }
+     }
+    ],
+    "page": 1,
+    "page_size": 20,
+    "pages": 1,
+    "total": 1
+   },
+   "status": 200
+  },
+  "/api/manual-apply/status": {
+   "body": {
+    "done_count": 1,
+    "fail_count": 0,
+    "log": [
+     "🔗 Link-only save — 1 URL(s) as applied (no scrape / no AI)…",
+     "============================================================",
+     "[1/1] https://www.linkedin.com/jobs/view/4400000001/",
+     "  ✅ Saved to matched_jobs (status=applied, applied_at=2026-11-12, link-only, AI pending)",
+     "============================================================",
+     "✅ Success : 1",
+     "⏭️  Skipped : 0 (already on Tracker)",
+     "❌ Failed  : 0"
+    ],
+    "log_total": 8,
+    "running": false,
+    "skip_count": 0
+   },
+   "status": 200
+  }
+ },
+ "body": {
+  "job_status": "applied",
+  "mode": "link_only",
+  "status": "started",
+  "total": 1
+ },
+ "request": {
+  "body": {
+   "applied_date": "2026-11-12",
+   "company": "Wayne Enterprises",
+   "mode": "link_only",
+   "status": "applied",
+   "title": "Data Engineer",
+   "urls": [
+    "https://www.linkedin.com/jobs/view/4400000001/"
+   ]
+  },
+  "method": "POST",
+  "path": "/api/manual-apply"
+ },
+ "status": 200
+}

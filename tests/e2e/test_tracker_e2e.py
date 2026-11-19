@@ -4,11 +4,13 @@ Browser E2E tests for the Job Tracker web UI.
 Run:  ./scripts/run_e2e.sh      (or: python3 -m unittest discover -s tests/e2e -v)
 
 Each test starts from the same seeded throwaway database (see harness.py),
-clicks through the real pages in headless Chrome, then checks MongoDB.
+clicks through the real pages in headless Chrome, then checks the database
+through the harness store (no driver calls in the tests themselves).
 Any uncaught JavaScript error on a page fails the test.
 """
 from __future__ import annotations
 
+import os
 import time
 import unittest
 
@@ -21,11 +23,9 @@ from harness import (
     TIMEOUT_ID,
     UNMATCHED_ID,
     USERNAME,
-    Mongo,
-    Server,
+    Stack,
     find_mongod,
     launch_browser,
-    seed,
 )
 
 try:
@@ -48,18 +48,13 @@ def wait_for(check, what: str, timeout: float = 10.0):
 
 
 @unittest.skipIf(sync_playwright is None, "playwright is not installed")
-@unittest.skipIf(find_mongod() is None, "mongod is not installed")
+@unittest.skipIf(not os.getenv("E2E_STORE") and find_mongod() is None, "mongod is not installed")
 class TrackerE2E(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.mongo = Mongo()
-        cls.db = cls.mongo.db
-        try:
-            cls.server = Server(cls.mongo.uri)
-        except Exception:
-            cls.mongo.stop()
-            raise
-        cls.base = cls.server.base
+        cls.stack = Stack()
+        cls.store = cls.stack.store
+        cls.base = cls.stack.base
         cls.pw = sync_playwright().start()
         cls.browser = launch_browser(cls.pw)
         # Log in once; every test reuses the session cookie
@@ -77,11 +72,10 @@ class TrackerE2E(unittest.TestCase):
     def tearDownClass(cls):
         cls.browser.close()
         cls.pw.stop()
-        cls.server.stop()
-        cls.mongo.stop()
+        cls.stack.stop()
 
     def setUp(self):
-        seed(self.db)
+        self.store.seed()
         self.js_errors = []
         self.ctx = self.browser.new_context(storage_state=self.auth_state)
         self.ctx.set_default_timeout(UI_TIMEOUT_MS)
@@ -105,7 +99,7 @@ class TrackerE2E(unittest.TestCase):
         self.page.click(".tl-modal .tl-confirm")
 
     def job(self, oid):
-        return self.db.matched_jobs.find_one({"_id": oid})
+        return self.store.tracker_job(oid)
 
     def settled_chip_counts(self, *statuses) -> dict:
         """
@@ -341,7 +335,7 @@ class TrackerE2E(unittest.TestCase):
 
     def test_replace_posting_link(self):
         pending = self.job(PENDING_ID)
-        self.db.jobs.insert_one({
+        self.store.add_scraped_job({
             "job_id": pending["job_id"],
             "source": "linkedin",
             "title": pending["title"],
@@ -357,7 +351,7 @@ class TrackerE2E(unittest.TestCase):
         self.assertEqual(job["link"], new_url)
         self.assertIsNotNone(job.get("link_replaced_at"))
         self.assertEqual(job.get("posting_key"), "ashby:0f1e2d3c-4b5a-6978-8a9b-0c1d2e3f4a5b")
-        twin = self.db.jobs.find_one({"job_id": job["job_id"], "source": "manual"})
+        twin = self.store.scraped_job(job["job_id"], "manual")
         self.assertIsNotNone(twin)
         self.assertEqual(twin["link"], new_url)
         expect(card.locator(".btn-apply")).to_have_attribute("href", new_url)
@@ -369,18 +363,18 @@ class TrackerE2E(unittest.TestCase):
         self.confirm_modal()
         expect(self.page.locator(f"#card-{DELETE_ID}")).to_have_count(0)
         wait_for(lambda: self.job(DELETE_ID) is None, "matched_jobs doc deleted")
-        self.assertIsNone(self.db.jobs.find_one({"job_id": "4100000003"}))
+        self.assertIsNone(self.store.scraped_job("4100000003"))
         self.assertIsNotNone(self.job(PENDING_ID), "other cards must stay")
 
     def test_stored_javascript_link_and_html_title_stay_inert(self):
         # A link / title saved before ingest validation, or from a third-party
         # API, must not run script on the Tracker. (LinkedIn links are rebuilt
         # from job_id by the server, so use an ATS job.)
-        self.db.matched_jobs.update_one({"_id": PENDING_ID}, {"$set": {
+        self.store.set_tracker_fields(PENDING_ID, {
             "source": "ats",
             "link": "javascript://%0Awindow.__xss=1",
             "title": '<img src=x onerror="window.__xss=1">',
-        }})
+        })
         self.open_card(PENDING_ID)
         card = self.page.locator(f"#card-{PENDING_ID}")
         expect(card.locator(".btn-apply")).to_have_attribute("href", "#")
@@ -411,7 +405,7 @@ class TrackerE2E(unittest.TestCase):
         expect(self.page.locator("#jobGrid .card")).to_have_count(0)
         expect(self.page.get_by_text("No Unmatched Jobs")).to_be_visible()
         self.assertEqual(
-            self.db.jobs.count_documents({"job_id": "4200000001"}),
+            self.store.scraped_job_count("4200000001"),
             1,
             "search must not delete the unmatched job",
         )
@@ -420,7 +414,7 @@ class TrackerE2E(unittest.TestCase):
         self.page.goto(f"{self.base}/unmatched?open={UNMATCHED_ID}")
         self.page.select_option(f"select.status-select[data-id='{UNMATCHED_ID}']", "watchlist")
         copied = wait_for(
-            lambda: self.db.matched_jobs.find_one({"job_id": "4200000001"}),
+            lambda: self.store.tracker_job_by_job_id("4200000001"),
             "unmatched job copied to matched_jobs",
         )
         self.assertEqual(copied["status"], "pending")
@@ -432,9 +426,9 @@ class TrackerE2E(unittest.TestCase):
         self.page.locator(f".card[data-id='{TIMEOUT_ID}']").get_by_role(
             "button", name="Add as Not Applied"
         ).click()
-        wait_for(lambda: self.db.matched_jobs.find_one({"job_id": "4300000001"}), "timeout job on Tracker")
+        wait_for(lambda: self.store.tracker_job_by_job_id("4300000001"), "timeout job on Tracker")
         wait_for(
-            lambda: self.db.timeout_jobs.find_one({"_id": TIMEOUT_ID})["review_status"] == "added",
+            lambda: self.store.timeout_job(TIMEOUT_ID)["review_status"] == "added",
             "timeout marked added",
         )
 
@@ -444,7 +438,7 @@ class TrackerE2E(unittest.TestCase):
         self.page.fill("#urlBox", url)
         expect(self.page.get_by_text("Already on Tracker").first).to_be_visible()
         expect(self.page.get_by_text("Backend Engineer")).to_be_visible()
-        self.assertEqual(self.db.matched_jobs.count_documents({}), 3)
+        self.assertEqual(self.store.tracker_job_count(), 3)
 
     def test_log_job_link_only(self):
         url = "https://www.linkedin.com/jobs/view/4400000001/"
@@ -454,7 +448,7 @@ class TrackerE2E(unittest.TestCase):
         self.page.fill("#jobCompany", "Wayne Enterprises")
         self.page.click("#linkOnlyBtn")
         saved = wait_for(
-            lambda: self.db.matched_jobs.find_one({"job_id": "4400000001"}),
+            lambda: self.store.tracker_job_by_job_id("4400000001"),
             "link-only job saved",
         )
         self.assertEqual(saved["title"], "Data Engineer")
@@ -476,7 +470,7 @@ class TrackerE2E(unittest.TestCase):
                       headers={"Authorization": f"Bearer {AGENT_TOKEN}"})
         self.assertEqual(ok.status, 200, ok.text())
         self.assertEqual(ok.json()["saved"], 1)
-        self.assertIsNotNone(self.db.matched_jobs.find_one({"job_id": "4500000001"}))
+        self.assertIsNotNone(self.store.tracker_job_by_job_id("4500000001"))
 
     # ── every page loads without JS errors ───────────────────────────────
 

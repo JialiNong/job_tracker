@@ -1,0 +1,280 @@
+{
+ "body": {
+  "all": {
+   "applied": 15,
+   "backend": [
+    {
+     "applied": 6,
+     "key": "node",
+     "rejected": 1
+    },
+    {
+     "applied": 5,
+     "key": "non_node",
+     "rejected": 2
+    },
+    {
+     "applied": 1,
+     "key": "both",
+     "rejected": 1
+    },
+    {
+     "applied": 3,
+     "key": "none",
+     "rejected": 1
+    }
+   ],
+   "database": [
+    {
+     "applied": 1,
+     "key": "postgres",
+     "label": "PostgreSQL",
+     "rejected": 0
+    },
+    {
+     "applied": 1,
+     "key": "mongodb",
+     "label": "MongoDB",
+     "rejected": 0
+    },
+    {
+     "applied": 13,
+     "key": "none",
+     "rejected": 5
+    }
+   ],
+   "deploy": [
+    {
+     "applied": 15,
+     "key": "none",
+     "rejected": 5
+    }
+   ],
+   "frontend": [
+    {
+     "applied": 8,
+     "key": "react",
+     "rejected": 2
+    },
+    {
+     "applied": 3,
+     "key": "vue",
+     "rejected": 1
+    },
+    {
+     "applied": 2,
+     "key": "angular",
+     "rejected": 1
+    },
+    {
+     "applied": 1,
+     "key": "multi",
+     "rejected": 1
+    },
+    {
+     "applied": 1,
+     "key": "none",
+     "rejected": 0
+    }
+   ],
+   "monitoring": [
+    {
+     "applied": 15,
+     "key": "none",
+     "rejected": 5
+    }
+   ],
+   "node": [
+    {
+     "applied": 6,
+     "key": "node",
+     "label": "Node.js",
+     "rejected": 2
+    },
+    {
+     "applied": 2,
+     "key": "next",
+     "label": "Next.js",
+     "rejected": 0
+    },
+    {
+     "applied": 1,
+     "key": "express",
+     "label": "Express",
+     "rejected": 0
+    },
+    {
+     "applied": 1,
+     "key": "trpc",
+     "label": "tRPC",
+     "rejected": 0
+    }
+   ],
+   "non_node": [
+    {
+     "applied": 2,
+     "key": "spring",
+     "label": "Spring / Spring Boot",
+     "rejected": 2
+    },
+    {
+     "applied": 2,
+     "key": "django",
+     "label": "Django",
+     "rejected": 1
+    },
+    {
+     "applied": 1,
+     "key": "laravel",
+     "label": "Laravel",
+     "rejected": 0
+    },
+    {
+     "applied": 1,
+     "key": "dotnet",
+     "label": ".NET / ASP.NET",
+     "rejected": 0
+    }
+   ],
+   "rejected": 5
+  },
+  "computed_at": "2026-11-13T11:00:00Z",
+  "settled": {
+   "applied": 12,
+   "backend": [
+    {
+     "applied": 5,
+     "key": "node",
+     "rejected": 1
+    },
+    {
+     "applied": 4,
+     "key": "non_node",
+     "rejected": 2
+    },
+    {
+     "applied": 1,
+     "key": "both",
+     "rejected": 1
+    },
+    {
+     "applied": 2,
+     "key": "none",
+     "rejected": 1
+    }
+   ],
+   "database": [
+    {
+     "applied": 1,
+     "key": "postgres",
+     "label": "PostgreSQL",
+     "rejected": 0
+    },
+    {
+     "applied": 1,
+     "key": "mongodb",
+     "label": "MongoDB",
+     "rejected": 0
+    },
+    {
+     "applied": 10,
+     "key": "none",
+     "rejected": 5
+    }
+   ],
+   "deploy": [
+    {
+     "applied": 12,
+     "key": "none",
+     "rejected": 5
+    }
+   ],
+   "frontend": [
+    {
+     "applied": 7,
+     "key": "react",
+     "rejected": 2
+    },
+    {
+     "applied": 2,
+     "key": "vue",
+     "rejected": 1
+    },
+    {
+     "applied": 2,
+     "key": "angular",
+     "rejected": 1
+    },
+    {
+     "applied": 1,
+     "key": "multi",
+     "rejected": 1
+    },
+    {
+     "applied": 0,
+     "key": "none",
+     "rejected": 0
+    }
+   ],
+   "monitoring": [
+    {
+     "applied": 12,
+     "key": "none",
+     "rejected": 5
+    }
+   ],
+   "node": [
+    {
+     "applied": 5,
+     "key": "node",
+     "label": "Node.js",
+     "rejected": 2
+    },
+    {
+     "applied": 2,
+     "key": "next",
+     "label": "Next.js",
+     "rejected": 0
+    },
+    {
+     "applied": 1,
+     "key": "express",
+     "label": "Express",
+     "rejected": 0
+    },
+    {
+     "applied": 1,
+     "key": "trpc",
+     "label": "tRPC",
+     "rejected": 0
+    }
+   ],
+   "non_node": [
+    {
+     "applied": 2,
+     "key": "spring",
+     "label": "Spring / Spring Boot",
+     "rejected": 2
+    },
+    {
+     "applied": 2,
+     "key": "django",
+     "label": "Django",
+     "rejected": 1
+    },
+    {
+     "applied": 1,
+     "key": "dotnet",
+     "label": ".NET / ASP.NET",
+     "rejected": 0
+    }
+   ],
+   "rejected": 5
+  },
+  "settled_after_days": 30
+ },
+ "request": {
+  "path": "/api/stats/stacks"
+ },
+ "status": 200
+}

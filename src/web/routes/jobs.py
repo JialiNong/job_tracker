@@ -1,5 +1,5 @@
 """Tracker cards (matched_jobs): list, read, edit, delete."""
-from datetime import datetime
+from core import clock
 
 from bson import ObjectId
 from flask import Blueprint, jsonify, request
@@ -101,7 +101,7 @@ def api_update_status(job_id: str):
     if not job:
         return jsonify({"error": "Job not found"}), 404
 
-    now = datetime.now()
+    now = clock.now()
     update_fields = _status_update_fields(job, new_status, now)
 
     collection.update_one({"_id": oid}, {"$set": update_fields})
@@ -139,7 +139,7 @@ def api_update_timeline(job_id: str):
     if not job:
         return jsonify({"error": "Job not found"}), 404
 
-    now = datetime.now()
+    now = clock.now()
     update_fields = _timeline_update_fields(job, timeline, now)
     new_status = update_fields["status"]
     timeline = update_fields["application_timeline"]
@@ -176,7 +176,7 @@ def api_update_notes(job_id: str):
     collection = get_collection("matched_jobs")
     result = collection.update_one(
         {"_id": ObjectId(job_id)},
-        {"$set": {"notes": notes, "updated_at": datetime.now()}}
+        {"$set": {"notes": notes, "updated_at": clock.now()}}
     )
 
     if result.matched_count == 0:
@@ -218,7 +218,7 @@ def api_update_highlights(job_id: str):
     collection = get_collection("matched_jobs")
     result = collection.update_one(
         {"_id": oid},
-        {"$set": {"highlights": cleaned, "updated_at": datetime.now()}},
+        {"$set": {"highlights": cleaned, "updated_at": clock.now()}},
     )
 
     if result.matched_count == 0:
@@ -254,7 +254,7 @@ def api_update_application_qa(job_id: str):
     collection = get_collection("matched_jobs")
     result = collection.update_one(
         {"_id": oid},
-        {"$set": {"application_qa": cleaned, "updated_at": datetime.now()}},
+        {"$set": {"application_qa": cleaned, "updated_at": clock.now()}},
     )
 
     if result.matched_count == 0:
@@ -280,7 +280,7 @@ def api_update_applicant_position(job_id: str):
     collection = get_collection("matched_jobs")
     result = collection.update_one(
         {"_id": oid},
-        {"$set": {"applicant_position": value, "updated_at": datetime.now()}},
+        {"$set": {"applicant_position": value, "updated_at": clock.now()}},
     )
     if result.matched_count == 0:
         return jsonify({"error": "Job not found"}), 404
@@ -334,7 +334,7 @@ def api_replace_job_link(job_id: str):
             msg = f"This URL is already stored as another job ({title})"
         return jsonify({"error": msg}), 409
 
-    now = datetime.utcnow()
+    now = clock.utcnow()
     set_fields = {
         "link": fields["link"],
         "source": fields["source"],
@@ -392,7 +392,7 @@ def api_update_job_info(job_id: str):
     except Exception:
         return jsonify({"error": "Invalid job ID"}), 400
 
-    update_fields["updated_at"] = datetime.now()
+    update_fields["updated_at"] = clock.now()
     collection = get_collection("matched_jobs")
     result = collection.update_one({"_id": oid}, {"$set": update_fields})
 

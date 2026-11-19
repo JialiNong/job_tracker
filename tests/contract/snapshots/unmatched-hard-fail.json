@@ -1,0 +1,98 @@
+{
+ "body": {
+  "jobs": [
+   {
+    "_id": "{jobs:28}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "80 applicants",
+    "application_qa": [],
+    "application_timeline": [],
+    "can_fetch_details": false,
+    "company": "Stadtwerke Nord",
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "created_at": "2026-11-05 08:00",
+    "details_missing": false,
+    "disqualification_reason": "Backend language other than JavaScript required",
+    "highlights": [],
+    "job_id": "4100000103",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "other_required",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "backend_heavy",
+     "seniority": "mid",
+     "stack": "Java, Spring, PostgreSQL",
+     "stack_fit": "weak",
+     "summary": "Product team working with Java, Spring, PostgreSQL."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000103/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "hard_fail",
+    "match_reasons": [
+     "Hands-on Java, Spring, PostgreSQL experience matches the role"
+    ],
+    "match_score": 2.0,
+    "matched_at": "2026-11-05 08:30",
+    "missing_requirements": [
+     "Production experience with Kubernetes"
+    ],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "manual",
+    "recommend_reason": "",
+    "recommendation": "No",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "unmatched",
+    "summary": "Backend heavy role on a Java, Spring, PostgreSQL stack.",
+    "title": "Frontend Developer (German C1)",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Java, Spring, PostgreSQL"
+     ],
+     "unmatched": [
+      "Kubernetes in production"
+     ]
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   }
+  ],
+  "page": 1,
+  "page_size": 20,
+  "pages": 1,
+  "threshold": 7.0,
+  "total": 1
+ },
+ "request": {
+  "path": "/api/unmatched-jobs?match_gate=hard_fail"
+ },
+ "status": 200
+}

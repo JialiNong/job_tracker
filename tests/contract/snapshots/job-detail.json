@@ -1,0 +1,122 @@
+{
+ "body": {
+  "_id": "{matched_jobs:7}",
+  "agent_recommend_reason": "",
+  "agent_recommended_by": "",
+  "ai_pending": false,
+  "applicant_position": null,
+  "applicants": "69 applicants",
+  "application_qa": [
+   {
+    "answer": "The product and the TypeScript stack.",
+    "question": "Why this role?"
+   }
+  ],
+  "application_timeline": [
+   {
+    "at": "2026-10-04 09:00",
+    "label": "Applied",
+    "step": "applied"
+   }
+  ],
+  "applied_at": "2026-10-04 10:00",
+  "can_fetch_details": false,
+  "company": "Northwind Labs",
+  "company_history": [
+   {
+    "_id": "{matched_jobs:1}",
+    "applicant_position": null,
+    "applied_at": "",
+    "last_step_at": "",
+    "matched_at": "2026-11-13",
+    "progress": "",
+    "source": "linkedin",
+    "status": "pending",
+    "title": "Frontend Engineer"
+   },
+   {
+    "_id": "{matched_jobs:23}",
+    "applicant_position": null,
+    "applied_at": "",
+    "last_step_at": "",
+    "matched_at": "2026-11-08",
+    "progress": "",
+    "source": "linkedin",
+    "status": "repost",
+    "title": "Frontend Engineer"
+   }
+  ],
+  "company_history_total": 2,
+  "company_profile": {
+   "business": "Sells a B2B SaaS tool for small logistics companies.",
+   "markets": "europe",
+   "markets_detail": "Customers in Germany and Austria.",
+   "product_type": "b2b_saas",
+   "vertical": "Logistics software"
+  },
+  "country": "germany",
+  "country_label": "Germany",
+  "details_missing": false,
+  "disqualification_reason": "",
+  "highlights": [],
+  "job_id": "4100000007",
+  "job_labels": {
+   "ai_product_work": false,
+   "backend_language_ask": "js_only",
+   "description_usable": true,
+   "english_team": "true",
+   "german_evidence": "",
+   "german_required": false,
+   "hard_fail": false,
+   "hard_fail_evidence": "",
+   "hard_fail_kind": "none",
+   "role_type": "fullstack_balanced",
+   "seniority": "mid",
+   "stack": "React, Node.js, Express, MongoDB",
+   "stack_fit": "strong",
+   "summary": "Product team working with React, Node.js, Express, MongoDB."
+  },
+  "link": "https://www.linkedin.com/jobs/view/4100000007/",
+  "location": "Berlin, Germany",
+  "manual_fields": [],
+  "match_gate": "scored",
+  "match_reasons": [
+   "Hands-on React, Node.js, Express, MongoDB experience matches the role"
+  ],
+  "match_score": 8.0,
+  "matched_at": "2026-10-03 09:07",
+  "missing_requirements": [],
+  "nice_to_have_matches": [
+   "Docker (listed as nice to have)"
+  ],
+  "notes": "",
+  "origin": "pipeline",
+  "recommend_reason": "",
+  "recommendation": "Yes",
+  "recommended_by": "",
+  "red_flags": [],
+  "source": "linkedin",
+  "special_match": false,
+  "special_match_reasons": [],
+  "status": "applied",
+  "summary": "Fullstack balanced role on a React, Node.js, Express, MongoDB stack.",
+  "title": "Full Stack Engineer",
+  "updated_at": "2026-10-04 11:00",
+  "what_theyre_looking_for": {
+   "matched": [
+    "3+ years with React, Node.js, Express, MongoDB"
+   ],
+   "unmatched": []
+  },
+  "what_youll_do": {
+   "matched": [
+    "Build product features end to end"
+   ],
+   "unmatched": []
+  }
+ },
+ "request": {
+  "path": "/api/jobs/{matched_jobs:7}"
+ },
+ "status": 200
+}

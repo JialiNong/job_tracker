@@ -1,0 +1,3017 @@
+{
+ "now": "2026-11-13T12:00:00",
+ "collections": {
+  "matched_jobs": [
+   {
+    "_id": {
+     "$oid": "64a000000000000000000001"
+    },
+    "title": "Frontend Engineer",
+    "company": "Northwind Labs",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000001/",
+    "job_id": "4100000001",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "27 applicants",
+    "status": "pending",
+    "matched_at": {
+     "$date": "2026-11-13T09:01:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-11-13T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": null,
+    "application_timeline": [],
+    "match_score": 8.5,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on React, TypeScript, Next.js experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a React, TypeScript, Next.js stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, TypeScript, Next.js"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript, Next.js",
+     "summary": "Product team working with React, TypeScript, Next.js."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000002"
+    },
+    "title": "Full Stack Developer",
+    "company": "Bluefin GmbH",
+    "location": "Hamburg, Germany",
+    "link": "https://de.indeed.com/viewjob?jk=0000000000000002",
+    "job_id": "4100000002",
+    "source": "indeed",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Vue, Nuxt, Node.js, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Nuxt, Node.js, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Nuxt, Node.js, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "34 applicants",
+    "status": "pending",
+    "matched_at": {
+     "$date": "2026-11-12T09:02:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-11-12T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [
+     "Hamburg"
+    ],
+    "applied_at": null,
+    "application_timeline": [],
+    "match_score": 7.5,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on Vue, Nuxt, Node.js, PostgreSQL experience matches the role"
+    ],
+    "missing_requirements": [
+     "Production experience with Kubernetes"
+    ],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a Vue, Nuxt, Node.js, PostgreSQL stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Vue, Nuxt, Node.js, PostgreSQL"
+     ],
+     "unmatched": [
+      "Kubernetes in production"
+     ]
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "Vue, Nuxt, Node.js, PostgreSQL",
+     "summary": "Product team working with Vue, Nuxt, Node.js, PostgreSQL."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000003"
+    },
+    "title": "Senior Software Engineer",
+    "company": "Kestrel AG",
+    "location": "München",
+    "link": "https://jobs.example.com/arbeitsagentur/3",
+    "job_id": "arbeitsagentur-0003",
+    "source": "arbeitsagentur",
+    "origin": "api",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Angular, Spring Boot, Java. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, Spring Boot, Java. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, Spring Boot, Java. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "41 applicants",
+    "status": "pending",
+    "matched_at": {
+     "$date": "2026-11-11T09:03:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-11-11T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": null,
+    "application_timeline": [],
+    "match_score": 7.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on Angular, Spring Boot, Java experience matches the role"
+    ],
+    "missing_requirements": [
+     "Production experience with Kubernetes"
+    ],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a Angular, Spring Boot, Java stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Angular, Spring Boot, Java"
+     ],
+     "unmatched": [
+      "Kubernetes in production"
+     ]
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "Angular, Spring Boot, Java",
+     "summary": "Product team working with Angular, Spring Boot, Java."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000004"
+    },
+    "title": "Product Engineer",
+    "company": "Larkspur",
+    "location": "Remote (Germany)",
+    "link": "https://jobs.example.com/ats/4",
+    "job_id": "ats-0004",
+    "source": "ats",
+    "origin": "agent",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS, GraphQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS, GraphQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS, GraphQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "48 applicants",
+    "status": "pending",
+    "matched_at": {
+     "$date": "2026-11-10T09:04:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-11-10T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": null,
+    "application_timeline": [],
+    "match_score": 9.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on React, NestJS, GraphQL experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a React, NestJS, GraphQL stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, NestJS, GraphQL"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, NestJS, GraphQL",
+     "summary": "Product team working with React, NestJS, GraphQL."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    },
+    "recommended_by": "cursor",
+    "recommend_reason": "Fullstack TypeScript with product focus"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000005"
+    },
+    "title": "Frontend Developer",
+    "company": "Ostara Health",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000005/",
+    "job_id": "4100000005",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Redux, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Redux, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Redux, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "55 applicants",
+    "status": "applied",
+    "matched_at": {
+     "$date": "2026-10-24T09:05:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-11-09T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": {
+     "$date": "2026-11-09T10:00:00Z"
+    },
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": {
+       "$date": "2026-11-09T10:00:00Z"
+      }
+     }
+    ],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on React, Redux, Node.js experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a React, Redux, Node.js stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, Redux, Node.js"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, Redux, Node.js",
+     "summary": "Product team working with React, Redux, Node.js."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    },
+    "applicant_position": 12,
+    "posted_at": {
+     "$date": "2026-11-07T10:00:00Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000006"
+    },
+    "title": "Software Engineer (Frontend)",
+    "company": "Quill & Co",
+    "location": "Köln, Germany",
+    "link": "https://de.indeed.com/viewjob?jk=0000000000000006",
+    "job_id": "4100000006",
+    "source": "indeed",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Vue, Laravel, PHP. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Laravel, PHP. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Laravel, PHP. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "62 applicants",
+    "status": "applied",
+    "matched_at": {
+     "$date": "2026-10-24T09:06:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-11-04T11:00:00Z"
+    },
+    "notes": "Referral from a former colleague.",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": {
+     "$date": "2026-11-04T10:00:00Z"
+    },
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": {
+       "$date": "2026-11-04T15:00:00Z"
+      }
+     }
+    ],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on Vue, Laravel, PHP experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a Vue, Laravel, PHP stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Vue, Laravel, PHP"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "Vue, Laravel, PHP",
+     "summary": "Product team working with Vue, Laravel, PHP."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000007"
+    },
+    "title": "Full Stack Engineer",
+    "company": "Northwind Labs",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000007/",
+    "job_id": "4100000007",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Node.js, Express, MongoDB. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Node.js, Express, MongoDB. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Node.js, Express, MongoDB. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "69 applicants",
+    "status": "applied",
+    "matched_at": {
+     "$date": "2026-10-03T09:07:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-10-04T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [
+     {
+      "question": "Why this role?",
+      "answer": "The product and the TypeScript stack."
+     }
+    ],
+    "highlights": [],
+    "applied_at": {
+     "$date": "2026-10-04T10:00:00Z"
+    },
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": {
+       "$date": "2026-10-04T09:00:00Z"
+      }
+     }
+    ],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on React, Node.js, Express, MongoDB experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a React, Node.js, Express, MongoDB stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, Node.js, Express, MongoDB"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, Node.js, Express, MongoDB",
+     "summary": "Product team working with React, Node.js, Express, MongoDB."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000008"
+    },
+    "title": "React Developer",
+    "company": "Pinecrest",
+    "location": "Remote (Europe)",
+    "link": "https://jobs.example.com/arbeitnow/8",
+    "job_id": "arbeitnow-0008",
+    "source": "arbeitnow",
+    "origin": "api",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, React Native, Expo. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, React Native, Expo. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, React Native, Expo. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "76 applicants",
+    "status": "applied",
+    "matched_at": {
+     "$date": "2026-09-18T09:08:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-09-19T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": {
+     "$date": "2026-09-19T10:00:00Z"
+    },
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": {
+       "$date": "2026-09-19T14:00:00Z"
+      }
+     }
+    ],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on React, React Native, Expo experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a React, React Native, Expo stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, React Native, Expo"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, React Native, Expo",
+     "summary": "Product team working with React, React Native, Expo."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000009"
+    },
+    "title": "Frontend Engineer",
+    "company": "Halcyon Pay",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000009/",
+    "job_id": "4100000009",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Django. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Django. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Django. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "83 applicants",
+    "status": "screening",
+    "matched_at": {
+     "$date": "2026-10-13T09:09:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-10-14T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": {
+     "$date": "2026-10-14T10:00:00Z"
+    },
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": {
+       "$date": "2026-10-14T10:00:00Z"
+      }
+     },
+     {
+      "step": "screening",
+      "at": {
+       "$date": "2026-10-19T16:00:00Z"
+      }
+     },
+     {
+      "step": "screening_done",
+      "at": {
+       "$date": "2026-10-22T11:00:00Z"
+      }
+     }
+    ],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on React, TypeScript, Django experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a React, TypeScript, Django stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, TypeScript, Django"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript, Django",
+     "summary": "Product team working with React, TypeScript, Django."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000000a"
+    },
+    "title": "Full Stack Engineer",
+    "company": "Tidewater",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000010/",
+    "job_id": "4100000010",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Next.js, tRPC, Prisma, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Next.js, tRPC, Prisma, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Next.js, tRPC, Prisma, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "90 applicants",
+    "status": "interview",
+    "matched_at": {
+     "$date": "2026-10-08T09:10:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-10-09T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": {
+     "$date": "2026-10-09T10:00:00Z"
+    },
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": {
+       "$date": "2026-10-09T10:00:00Z"
+      }
+     },
+     {
+      "step": "interview_invite",
+      "at": {
+       "$date": "2026-10-16T09:00:00Z"
+      }
+     },
+     {
+      "step": "interview_1",
+      "at": {
+       "$date": "2026-10-20T14:00:00Z"
+      }
+     },
+     {
+      "step": "interview_2",
+      "at": {
+       "$date": "2026-10-26T15:00:00Z"
+      }
+     }
+    ],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on Next.js, tRPC, Prisma, PostgreSQL experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a Next.js, tRPC, Prisma, PostgreSQL stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Next.js, tRPC, Prisma, PostgreSQL"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "Next.js, tRPC, Prisma, PostgreSQL",
+     "summary": "Product team working with Next.js, tRPC, Prisma, PostgreSQL."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000000b"
+    },
+    "title": "Software Engineer",
+    "company": "Marlow Systems",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000011/",
+    "job_id": "4100000011",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Angular, .NET, C#. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, .NET, C#. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, .NET, C#. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "97 applicants",
+    "status": "interview_cancelled",
+    "matched_at": {
+     "$date": "2026-09-28T09:11:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-09-29T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": {
+     "$date": "2026-09-29T10:00:00Z"
+    },
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": {
+       "$date": "2026-09-29T10:00:00Z"
+      }
+     },
+     {
+      "step": "interview_invite",
+      "at": {
+       "$date": "2026-10-06T09:00:00Z"
+      }
+     },
+     {
+      "step": "interview_cancelled",
+      "at": {
+       "$date": "2026-10-08T12:00:00Z"
+      }
+     }
+    ],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on Angular, .NET, C# experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a Angular, .NET, C# stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Angular, .NET, C#"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "Angular, .NET, C#",
+     "summary": "Product team working with Angular, .NET, C#."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000000c"
+    },
+    "title": "Frontend Lead",
+    "company": "Saffron Studio",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000012/",
+    "job_id": "4100000012",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Next.js, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Next.js, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Next.js, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "104 applicants",
+    "status": "offer",
+    "matched_at": {
+     "$date": "2026-09-13T09:12:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-09-14T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [
+     "Dream team"
+    ],
+    "applied_at": {
+     "$date": "2026-09-14T10:00:00Z"
+    },
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": {
+       "$date": "2026-09-14T10:00:00Z"
+      }
+     },
+     {
+      "step": "interview_invite",
+      "at": {
+       "$date": "2026-09-22T09:00:00Z"
+      }
+     },
+     {
+      "step": "interview_1",
+      "at": {
+       "$date": "2026-09-26T11:00:00Z"
+      }
+     },
+     {
+      "step": "interview_final",
+      "at": {
+       "$date": "2026-10-04T15:00:00Z"
+      }
+     },
+     {
+      "step": "offer",
+      "at": {
+       "$date": "2026-10-11T17:00:00Z"
+      }
+     }
+    ],
+    "match_score": 9.5,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on React, Next.js, Node.js experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a React, Next.js, Node.js stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, Next.js, Node.js"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, Next.js, Node.js",
+     "summary": "Product team working with React, Next.js, Node.js."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000000d"
+    },
+    "title": "Full Stack Developer",
+    "company": "Granite Cloud",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000013/",
+    "job_id": "4100000013",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot, Kotlin. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot, Kotlin. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot, Kotlin. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "111 applicants",
+    "status": "rejected",
+    "matched_at": {
+     "$date": "2026-09-23T09:13:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-09-24T11:00:00Z"
+    },
+    "notes": "Wanted Java seniority.",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": {
+     "$date": "2026-09-24T10:00:00Z"
+    },
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": {
+       "$date": "2026-09-24T10:00:00Z"
+      }
+     },
+     {
+      "step": "rejected",
+      "at": {
+       "$date": "2026-09-30T18:00:00Z"
+      }
+     }
+    ],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on React, Spring Boot, Kotlin experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a React, Spring Boot, Kotlin stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, Spring Boot, Kotlin"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, Spring Boot, Kotlin",
+     "summary": "Product team working with React, Spring Boot, Kotlin."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000000e"
+    },
+    "title": "Frontend Engineer",
+    "company": "Ember Analytics",
+    "location": "Berlin, Germany",
+    "link": "https://de.indeed.com/viewjob?jk=000000000000000e",
+    "job_id": "4100000014",
+    "source": "indeed",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Vue, Django, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Django, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Django, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "118 applicants",
+    "status": "rejected",
+    "matched_at": {
+     "$date": "2026-09-08T09:14:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-09-09T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": {
+     "$date": "2026-09-09T10:00:00Z"
+    },
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": {
+       "$date": "2026-09-09T10:00:00Z"
+      }
+     },
+     {
+      "step": "interview_invite",
+      "at": {
+       "$date": "2026-09-16T09:00:00Z"
+      }
+     },
+     {
+      "step": "interview_1",
+      "at": {
+       "$date": "2026-09-19T15:00:00Z"
+      }
+     },
+     {
+      "step": "rejected",
+      "at": {
+       "$date": "2026-09-24T18:00:00Z"
+      }
+     }
+    ],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on Vue, Django, Python experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a Vue, Django, Python stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Vue, Django, Python"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "Vue, Django, Python",
+     "summary": "Product team working with Vue, Django, Python."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000000f"
+    },
+    "title": "Web Developer",
+    "company": "Kestrel AG",
+    "location": "München",
+    "link": "https://www.linkedin.com/jobs/view/4100000015/",
+    "job_id": "4100000015",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Angular, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "125 applicants",
+    "status": "rejected",
+    "matched_at": {
+     "$date": "2026-08-24T09:15:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-08-25T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": {
+     "$date": "2026-08-25T10:00:00Z"
+    },
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": {
+       "$date": "2026-08-25T10:00:00Z"
+      }
+     },
+     {
+      "step": "rejected",
+      "at": {
+       "$date": "2026-09-04T09:00:00Z"
+      }
+     }
+    ],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on Angular, Node.js experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a Angular, Node.js stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Angular, Node.js"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "Angular, Node.js",
+     "summary": "Product team working with Angular, Node.js."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000010"
+    },
+    "title": "Software Engineer",
+    "company": "Juniper Mobility",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000016/",
+    "job_id": "4100000016",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React or Vue, Node.js or Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React or Vue, Node.js or Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React or Vue, Node.js or Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "132 applicants",
+    "status": "rejected",
+    "matched_at": {
+     "$date": "2026-09-03T09:16:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-09-04T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": {
+     "$date": "2026-09-04T10:00:00Z"
+    },
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": {
+       "$date": "2026-09-04T10:00:00Z"
+      }
+     },
+     {
+      "step": "rejected",
+      "at": {
+       "$date": "2026-09-12T09:00:00Z"
+      }
+     }
+    ],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on React or Vue, Node.js or Spring Boot experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a React or Vue, Node.js or Spring Boot stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React or Vue, Node.js or Spring Boot"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React or Vue, Node.js or Spring Boot",
+     "summary": "Product team working with React or Vue, Node.js or Spring Boot."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000011"
+    },
+    "title": "Frontend Engineer",
+    "company": "Ostara Health",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000017/",
+    "job_id": "4100000017",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "139 applicants",
+    "status": "applied",
+    "matched_at": {
+     "$date": "2026-08-14T09:17:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-08-15T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": {
+     "$date": "2026-08-15T10:00:00Z"
+    },
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": {
+       "$date": "2026-08-15T10:00:00Z"
+      }
+     },
+     {
+      "step": "rejected",
+      "at": {
+       "$date": "2026-08-25T09:00:00Z"
+      }
+     },
+     {
+      "step": "reapplied",
+      "at": {
+       "$date": "2026-11-03T11:00:00Z"
+      }
+     }
+    ],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on React, TypeScript experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a React, TypeScript stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, TypeScript"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript",
+     "summary": "Product team working with React, TypeScript."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000012"
+    },
+    "title": "Backend Engineer",
+    "company": "Granite Cloud",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000018/",
+    "job_id": "4100000018",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "146 applicants",
+    "status": "unsuitable",
+    "matched_at": {
+     "$date": "2026-10-19T09:18:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-10-19T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": null,
+    "application_timeline": [],
+    "match_score": 7.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on Java, Spring Boot experience matches the role"
+    ],
+    "missing_requirements": [
+     "Production experience with Kubernetes"
+    ],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a Java, Spring Boot stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Java, Spring Boot"
+     ],
+     "unmatched": [
+      "Kubernetes in production"
+     ]
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "Java, Spring Boot",
+     "summary": "Product team working with Java, Spring Boot."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000013"
+    },
+    "title": "Frontend Developer",
+    "company": "Copperleaf",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000019/",
+    "job_id": "4100000019",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Tailwind. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Tailwind. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Tailwind. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "153 applicants",
+    "status": "closed",
+    "matched_at": {
+     "$date": "2026-10-17T09:19:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-10-17T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": null,
+    "application_timeline": [],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on React, Tailwind experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a React, Tailwind stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, Tailwind"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, Tailwind",
+     "summary": "Product team working with React, Tailwind."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000014"
+    },
+    "title": "Full Stack Engineer",
+    "company": "Bluefin GmbH",
+    "location": "Hamburg, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000020/",
+    "job_id": "4100000020",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Vue, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "160 applicants",
+    "status": "closed_no_reply",
+    "matched_at": {
+     "$date": "2026-08-29T09:20:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-08-30T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": {
+     "$date": "2026-08-30T10:00:00Z"
+    },
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": {
+       "$date": "2026-08-30T10:00:00Z"
+      }
+     }
+    ],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on Vue, Node.js experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a Vue, Node.js stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Vue, Node.js"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "Vue, Node.js",
+     "summary": "Product team working with Vue, Node.js."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000015"
+    },
+    "title": "Frontend Engineer",
+    "company": "Granite Cloud",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000021/",
+    "job_id": "4100000021",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "167 applicants",
+    "status": "prev_rejected",
+    "matched_at": {
+     "$date": "2026-11-05T09:21:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-11-05T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": null,
+    "application_timeline": [],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on React, Spring Boot experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a React, Spring Boot stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, Spring Boot"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, Spring Boot",
+     "summary": "Product team working with React, Spring Boot."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000016"
+    },
+    "title": "React Engineer",
+    "company": "Wrenfield",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000022/",
+    "job_id": "4100000022",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, FastAPI, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, FastAPI, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, FastAPI, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "174 applicants",
+    "status": "too_many_questions",
+    "matched_at": {
+     "$date": "2026-11-07T09:22:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-11-07T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": null,
+    "application_timeline": [],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on React, FastAPI, Python experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a React, FastAPI, Python stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, FastAPI, Python"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, FastAPI, Python",
+     "summary": "Product team working with React, FastAPI, Python."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000017"
+    },
+    "title": "Frontend Engineer",
+    "company": "Northwind Labs",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000023/",
+    "job_id": "4100000023",
+    "source": "linkedin",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "181 applicants",
+    "status": "repost",
+    "matched_at": {
+     "$date": "2026-11-08T09:23:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-11-08T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": null,
+    "application_timeline": [],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on React, TypeScript, Next.js experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a React, TypeScript, Next.js stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, TypeScript, Next.js"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript, Next.js",
+     "summary": "Product team working with React, TypeScript, Next.js."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000018"
+    },
+    "title": "Frontend Engineer",
+    "company": "Larkspur",
+    "location": "Berlin, Germany",
+    "link": "https://de.indeed.com/viewjob?jk=0000000000000018",
+    "job_id": "4100000024",
+    "source": "indeed",
+    "origin": "pipeline",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "applicants": "188 applicants",
+    "status": "duplicate",
+    "matched_at": {
+     "$date": "2026-11-09T09:24:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-11-09T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": null,
+    "application_timeline": [],
+    "match_score": 8.0,
+    "recommendation": "Yes",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on React, NestJS experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Fullstack balanced role on a React, NestJS stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, NestJS"
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, NestJS",
+     "summary": "Product team working with React, NestJS."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000019"
+    },
+    "title": "Software Engineer",
+    "company": "Halden Robotics",
+    "location": "Berlin, Germany",
+    "link": "https://jobs.example.com/manual/25",
+    "job_id": "manual-0025",
+    "source": "manual",
+    "origin": "manual",
+    "description": "",
+    "applicants": "195 applicants",
+    "status": "applied",
+    "matched_at": {
+     "$date": "2026-11-11T09:25:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-11-11T11:00:00Z"
+    },
+    "notes": "",
+    "application_qa": [],
+    "highlights": [],
+    "applied_at": {
+     "$date": "2026-11-11T10:00:00Z"
+    },
+    "application_timeline": [
+     {
+      "step": "applied",
+      "at": {
+       "$date": "2026-11-11T20:00:00Z"
+      }
+     }
+    ],
+    "match_score": 0.0,
+    "recommendation": "",
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Hands-on  experience matches the role"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with "
+     ],
+     "unmatched": []
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "js_only",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "",
+     "summary": "Product team working with ."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    },
+    "manually_logged": true,
+    "ai_pending": true
+   }
+  ],
+  "jobs": [
+   {
+    "_id": {
+     "$oid": "64a00000000000000000001a"
+    },
+    "job_id": "4100000001",
+    "source": "linkedin",
+    "title": "Frontend Engineer",
+    "company": "Northwind Labs",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000001/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-11-13T09:01:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000001b"
+    },
+    "job_id": "4100000002",
+    "source": "indeed",
+    "title": "Full Stack Developer",
+    "company": "Bluefin GmbH",
+    "location": "Hamburg, Germany",
+    "link": "https://de.indeed.com/viewjob?jk=0000000000000002",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Vue, Nuxt, Node.js, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Nuxt, Node.js, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Nuxt, Node.js, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-11-12T09:02:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000001c"
+    },
+    "job_id": "arbeitsagentur-0003",
+    "source": "arbeitsagentur",
+    "title": "Senior Software Engineer",
+    "company": "Kestrel AG",
+    "location": "München",
+    "link": "https://jobs.example.com/arbeitsagentur/3",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Angular, Spring Boot, Java. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, Spring Boot, Java. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, Spring Boot, Java. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-11-11T09:03:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000001d"
+    },
+    "job_id": "ats-0004",
+    "source": "ats",
+    "title": "Product Engineer",
+    "company": "Larkspur",
+    "location": "Remote (Germany)",
+    "link": "https://jobs.example.com/ats/4",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS, GraphQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS, GraphQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS, GraphQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-11-10T09:04:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000001e"
+    },
+    "job_id": "4100000005",
+    "source": "linkedin",
+    "title": "Frontend Developer",
+    "company": "Ostara Health",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000005/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Redux, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Redux, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Redux, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-10-24T09:05:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000001f"
+    },
+    "job_id": "4100000006",
+    "source": "indeed",
+    "title": "Software Engineer (Frontend)",
+    "company": "Quill & Co",
+    "location": "Köln, Germany",
+    "link": "https://de.indeed.com/viewjob?jk=0000000000000006",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Vue, Laravel, PHP. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Laravel, PHP. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Laravel, PHP. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-10-24T09:06:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000020"
+    },
+    "job_id": "4100000007",
+    "source": "linkedin",
+    "title": "Full Stack Engineer",
+    "company": "Northwind Labs",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000007/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Node.js, Express, MongoDB. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Node.js, Express, MongoDB. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Node.js, Express, MongoDB. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-10-03T09:07:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000021"
+    },
+    "job_id": "arbeitnow-0008",
+    "source": "arbeitnow",
+    "title": "React Developer",
+    "company": "Pinecrest",
+    "location": "Remote (Europe)",
+    "link": "https://jobs.example.com/arbeitnow/8",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, React Native, Expo. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, React Native, Expo. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, React Native, Expo. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-09-18T09:08:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000022"
+    },
+    "job_id": "4100000009",
+    "source": "linkedin",
+    "title": "Frontend Engineer",
+    "company": "Halcyon Pay",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000009/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Django. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Django. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Django. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-10-13T09:09:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000023"
+    },
+    "job_id": "4100000010",
+    "source": "linkedin",
+    "title": "Full Stack Engineer",
+    "company": "Tidewater",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000010/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Next.js, tRPC, Prisma, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Next.js, tRPC, Prisma, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Next.js, tRPC, Prisma, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-10-08T09:10:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000024"
+    },
+    "job_id": "4100000011",
+    "source": "linkedin",
+    "title": "Software Engineer",
+    "company": "Marlow Systems",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000011/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Angular, .NET, C#. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, .NET, C#. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, .NET, C#. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-09-28T09:11:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000025"
+    },
+    "job_id": "4100000012",
+    "source": "linkedin",
+    "title": "Frontend Lead",
+    "company": "Saffron Studio",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000012/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Next.js, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Next.js, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Next.js, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-09-13T09:12:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000026"
+    },
+    "job_id": "4100000013",
+    "source": "linkedin",
+    "title": "Full Stack Developer",
+    "company": "Granite Cloud",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000013/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot, Kotlin. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot, Kotlin. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot, Kotlin. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-09-23T09:13:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000027"
+    },
+    "job_id": "4100000014",
+    "source": "indeed",
+    "title": "Frontend Engineer",
+    "company": "Ember Analytics",
+    "location": "Berlin, Germany",
+    "link": "https://de.indeed.com/viewjob?jk=000000000000000e",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Vue, Django, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Django, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Django, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-09-08T09:14:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000028"
+    },
+    "job_id": "4100000015",
+    "source": "linkedin",
+    "title": "Web Developer",
+    "company": "Kestrel AG",
+    "location": "München",
+    "link": "https://www.linkedin.com/jobs/view/4100000015/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Angular, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Angular, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-08-24T09:15:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000029"
+    },
+    "job_id": "4100000016",
+    "source": "linkedin",
+    "title": "Software Engineer",
+    "company": "Juniper Mobility",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000016/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React or Vue, Node.js or Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React or Vue, Node.js or Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React or Vue, Node.js or Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-09-03T09:16:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000002a"
+    },
+    "job_id": "4100000017",
+    "source": "linkedin",
+    "title": "Frontend Engineer",
+    "company": "Ostara Health",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000017/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-08-14T09:17:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000002b"
+    },
+    "job_id": "4100000018",
+    "source": "linkedin",
+    "title": "Backend Engineer",
+    "company": "Granite Cloud",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000018/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-10-19T09:18:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000002c"
+    },
+    "job_id": "4100000019",
+    "source": "linkedin",
+    "title": "Frontend Developer",
+    "company": "Copperleaf",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000019/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Tailwind. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Tailwind. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Tailwind. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-10-17T09:19:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000002d"
+    },
+    "job_id": "4100000020",
+    "source": "linkedin",
+    "title": "Full Stack Engineer",
+    "company": "Bluefin GmbH",
+    "location": "Hamburg, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000020/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Vue, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Vue, Node.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-08-29T09:20:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000002e"
+    },
+    "job_id": "4100000021",
+    "source": "linkedin",
+    "title": "Frontend Engineer",
+    "company": "Granite Cloud",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000021/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, Spring Boot. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-11-05T09:21:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a00000000000000000002f"
+    },
+    "job_id": "4100000022",
+    "source": "linkedin",
+    "title": "React Engineer",
+    "company": "Wrenfield",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000022/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, FastAPI, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, FastAPI, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, FastAPI, Python. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-11-07T09:22:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000030"
+    },
+    "job_id": "4100000023",
+    "source": "linkedin",
+    "title": "Frontend Engineer",
+    "company": "Northwind Labs",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000023/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, TypeScript, Next.js. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-11-08T09:23:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000031"
+    },
+    "job_id": "4100000024",
+    "source": "indeed",
+    "title": "Frontend Engineer",
+    "company": "Larkspur",
+    "location": "Berlin, Germany",
+    "link": "https://de.indeed.com/viewjob?jk=0000000000000018",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: React, NestJS. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-11-09T09:24:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000032"
+    },
+    "job_id": "manual-0025",
+    "source": "manual",
+    "title": "Software Engineer",
+    "company": "Halden Robotics",
+    "location": "Berlin, Germany",
+    "link": "https://jobs.example.com/manual/25",
+    "description": "",
+    "created_at": {
+     "$date": "2026-11-11T09:25:00Z"
+    },
+    "status": "matched"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000033"
+    },
+    "job_id": "4100000101",
+    "source": "linkedin",
+    "title": "Java Developer",
+    "company": "Umbra Insurance",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000101/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-11-07T08:00:00Z"
+    },
+    "matched_at": {
+     "$date": "2026-11-07T08:30:00Z"
+    },
+    "status": "unmatched",
+    "applicants": "80 applicants",
+    "match_score": 3.0,
+    "recommendation": "No",
+    "disqualification_reason": "Backend language other than JavaScript required",
+    "match_reasons": [
+     "Hands-on Java, Spring, PostgreSQL experience matches the role"
+    ],
+    "missing_requirements": [
+     "Production experience with Kubernetes"
+    ],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Backend heavy role on a Java, Spring, PostgreSQL stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Java, Spring, PostgreSQL"
+     ],
+     "unmatched": [
+      "Kubernetes in production"
+     ]
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "backend_heavy",
+     "stack_fit": "weak",
+     "seniority": "mid",
+     "backend_language_ask": "other_required",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "Java, Spring, PostgreSQL",
+     "summary": "Product team working with Java, Spring, PostgreSQL."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000034"
+    },
+    "job_id": "4100000102",
+    "source": "linkedin",
+    "title": "Backend Engineer (Go)",
+    "company": "Fennel Logistics",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000102/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-11-06T08:00:00Z"
+    },
+    "matched_at": {
+     "$date": "2026-11-06T08:30:00Z"
+    },
+    "status": "unmatched",
+    "applicants": "80 applicants",
+    "match_score": 5.5,
+    "recommendation": "Maybe",
+    "disqualification_reason": "Backend language other than JavaScript required",
+    "match_reasons": [
+     "Hands-on Java, Spring, PostgreSQL experience matches the role"
+    ],
+    "missing_requirements": [
+     "Production experience with Kubernetes"
+    ],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Backend heavy role on a Java, Spring, PostgreSQL stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Java, Spring, PostgreSQL"
+     ],
+     "unmatched": [
+      "Kubernetes in production"
+     ]
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "backend_heavy",
+     "stack_fit": "weak",
+     "seniority": "mid",
+     "backend_language_ask": "other_required",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "Java, Spring, PostgreSQL",
+     "summary": "Product team working with Java, Spring, PostgreSQL."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    },
+    "user_status": "watchlist"
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000035"
+    },
+    "job_id": "4100000103",
+    "source": "linkedin",
+    "title": "Frontend Developer (German C1)",
+    "company": "Stadtwerke Nord",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000103/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-11-05T08:00:00Z"
+    },
+    "matched_at": {
+     "$date": "2026-11-05T08:30:00Z"
+    },
+    "status": "unmatched",
+    "applicants": "80 applicants",
+    "match_score": 2.0,
+    "recommendation": "No",
+    "disqualification_reason": "Backend language other than JavaScript required",
+    "match_reasons": [
+     "Hands-on Java, Spring, PostgreSQL experience matches the role"
+    ],
+    "missing_requirements": [
+     "Production experience with Kubernetes"
+    ],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Backend heavy role on a Java, Spring, PostgreSQL stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Java, Spring, PostgreSQL"
+     ],
+     "unmatched": [
+      "Kubernetes in production"
+     ]
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "hard_fail",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "backend_heavy",
+     "stack_fit": "weak",
+     "seniority": "mid",
+     "backend_language_ask": "other_required",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "Java, Spring, PostgreSQL",
+     "summary": "Product team working with Java, Spring, PostgreSQL."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000036"
+    },
+    "job_id": "4100000104",
+    "source": "linkedin",
+    "title": "Full Stack Engineer (PHP)",
+    "company": "Corvid Media",
+    "location": "Berlin, Germany",
+    "link": "https://www.linkedin.com/jobs/view/4100000104/",
+    "description": "About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. About the role. You will join a small product team and ship features end to end. Our stack: Java, Spring, PostgreSQL. We value ownership, clear writing and pragmatic testing. English is our working language. Hybrid work from our office, two days a week. ",
+    "created_at": {
+     "$date": "2026-11-04T08:00:00Z"
+    },
+    "matched_at": {
+     "$date": "2026-11-04T08:30:00Z"
+    },
+    "status": "unmatched",
+    "applicants": "80 applicants",
+    "match_score": 6.5,
+    "recommendation": "Maybe",
+    "disqualification_reason": "Backend language other than JavaScript required",
+    "match_reasons": [
+     "Hands-on Java, Spring, PostgreSQL experience matches the role"
+    ],
+    "missing_requirements": [
+     "Production experience with Kubernetes"
+    ],
+    "red_flags": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "summary": "Backend heavy role on a Java, Spring, PostgreSQL stack.",
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Java, Spring, PostgreSQL"
+     ],
+     "unmatched": [
+      "Kubernetes in production"
+     ]
+    },
+    "special_match": false,
+    "special_match_reasons": [],
+    "match_gate": "scored",
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "backend_heavy",
+     "stack_fit": "weak",
+     "seniority": "mid",
+     "backend_language_ask": "other_required",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "Java, Spring, PostgreSQL",
+     "summary": "Product team working with Java, Spring, PostgreSQL."
+    },
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria."
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000037"
+    },
+    "job_id": "4100000200",
+    "source": "linkedin",
+    "title": "Werkstudent IT",
+    "company": "Lindgrün",
+    "created_at": {
+     "$date": "2026-11-12T07:00:00Z"
+    }
+   }
+  ],
+  "timeout_jobs": [
+   {
+    "_id": {
+     "$oid": "64a000000000000000000038"
+    },
+    "job_id": "4300000001",
+    "source": "linkedin",
+    "title": "Frontend Engineer",
+    "company": "Hooli Berlin",
+    "location": "Berlin, Germany",
+    "keyword": "frontend",
+    "link": "https://www.linkedin.com/jobs/view/4300000001/",
+    "reason": "detail_timeout",
+    "review_status": "open",
+    "timeout_count": 2,
+    "created_at": {
+     "$date": "2026-11-10T06:00:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-11-12T06:00:00Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "64a000000000000000000039"
+    },
+    "job_id": "4300000002",
+    "source": "linkedin",
+    "title": "React Developer",
+    "company": "Starling Apps",
+    "location": "Remote",
+    "keyword": "react",
+    "link": "https://www.linkedin.com/jobs/view/4300000002/",
+    "reason": "detail_timeout",
+    "review_status": "dismissed",
+    "timeout_count": 1,
+    "created_at": {
+     "$date": "2026-11-01T06:00:00Z"
+    },
+    "updated_at": {
+     "$date": "2026-11-02T06:00:00Z"
+    }
+   }
+  ],
+  "scraper_stats": [
+   {
+    "_id": "global",
+    "title_passed_clicked": 640,
+    "german_filtered": 410,
+    "ai_title_filtered": 380,
+    "detail_timeout": 12,
+    "updated_at": {
+     "$date": "2026-11-13T08:00:00Z"
+    }
+   },
+   {
+    "_id": "daily_2026-11-13",
+    "date": "2026-11-13",
+    "title_passed_clicked": 22,
+    "german_filtered": 14,
+    "ai_title_filtered": 11,
+    "updated_at": {
+     "$date": "2026-11-13T20:00:00Z"
+    }
+   },
+   {
+    "_id": "daily_2026-11-12",
+    "date": "2026-11-12",
+    "title_passed_clicked": 35,
+    "german_filtered": 20,
+    "ai_title_filtered": 17,
+    "updated_at": {
+     "$date": "2026-11-12T20:00:00Z"
+    }
+   },
+   {
+    "_id": "daily_2026-11-11",
+    "date": "2026-11-11",
+    "title_passed_clicked": 18,
+    "german_filtered": 9,
+    "ai_title_filtered": 9,
+    "updated_at": {
+     "$date": "2026-11-11T20:00:00Z"
+    }
+   },
+   {
+    "_id": "daily_2026-11-08",
+    "date": "2026-11-08",
+    "title_passed_clicked": 40,
+    "german_filtered": 25,
+    "ai_title_filtered": 20,
+    "updated_at": {
+     "$date": "2026-11-08T20:00:00Z"
+    }
+   },
+   {
+    "_id": "daily_2026-11-04",
+    "date": "2026-11-04",
+    "title_passed_clicked": 28,
+    "german_filtered": 17,
+    "ai_title_filtered": 14,
+    "updated_at": {
+     "$date": "2026-11-04T20:00:00Z"
+    }
+   }
+  ],
+  "company_profiles": [
+   {
+    "_id": "northwind labs",
+    "business": "Route planning SaaS for small fleets.",
+    "product_type": "b2b_saas",
+    "vertical": "Logistics software",
+    "markets": "europe",
+    "markets_detail": "Germany, Austria, Switzerland.",
+    "is_recruiter_for_other_company": false,
+    "sources": [],
+    "cached_at": {
+     "$date": "2026-10-24T10:00:00Z"
+    }
+   }
+  ]
+ }
+}

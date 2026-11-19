@@ -3,6 +3,8 @@ import hmac
 import os
 from datetime import datetime
 
+from core import clock
+
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
@@ -158,7 +160,7 @@ def api_manual_apply():
             applied_date = datetime.strptime(raw_date, "%Y-%m-%d")
         except ValueError:
             return jsonify({"error": "Invalid applied_date format, expected YYYY-MM-DD"}), 400
-        now = datetime.now()
+        now = clock.now()
         if applied_date.date() == now.date():
             applied_date = now
 

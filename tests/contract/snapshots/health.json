@@ -1,0 +1,10 @@
+{
+ "body": {
+  "service": "job-tracker",
+  "status": "ok"
+ },
+ "request": {
+  "path": "/health"
+ },
+ "status": 200
+}

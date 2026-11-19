@@ -1,5 +1,5 @@
 """Unmatched page: AI-scored jobs below the match threshold."""
-from datetime import datetime
+from core import clock
 
 from bson import ObjectId
 from flask import Blueprint, jsonify, request
@@ -128,7 +128,7 @@ def api_update_unmatched_status(job_id: str):
     jobs_col = get_collection("jobs")
     result = jobs_col.update_one(
         {"_id": ObjectId(job_id)},
-        {"$set": {"user_status": new_status, "updated_at": datetime.now()}}
+        {"$set": {"user_status": new_status, "updated_at": clock.now()}}
     )
 
     if result.matched_count == 0:
@@ -146,7 +146,7 @@ def api_update_unmatched_status(job_id: str):
                 matched_col = get_collection("matched_jobs")
                 jid    = job.get("job_id") or ""
                 source = job.get("source") or ""
-                now    = datetime.now()
+                now    = clock.now()
 
                 doc = {
                     "title":       job.get("title", ""),

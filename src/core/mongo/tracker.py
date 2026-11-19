@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from core import clock
+
 from core.applied_location import is_germany_or_remote, normalize_applied_location
 from core.mongo.client import COLLECTION_NAME, get_collection, get_db
 
@@ -151,7 +153,7 @@ def get_daily_activity_stats(days: int = 120, match_threshold: float = 7.0) -> l
     from datetime import timedelta
 
     days = max(1, min(int(days or 120), 366))
-    now = datetime.now()
+    now = clock.now()
     start = (now - timedelta(days=days - 1)).replace(
         hour=0, minute=0, second=0, microsecond=0
     )

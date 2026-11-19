@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime
+from core import clock
 from typing import Optional
 
 from core.db_mongo import get_collection
@@ -155,7 +155,7 @@ def apply_analysis_to_existing(job: dict, analysis: dict) -> bool:
     """
     jobs_col = get_collection("jobs")
     matched_col = get_collection("matched_jobs")
-    now = datetime.utcnow()
+    now = clock.utcnow()
     job_id = job["job_id"]
     source = job["source"]
     match_score = analysis.get("match_score", 0)

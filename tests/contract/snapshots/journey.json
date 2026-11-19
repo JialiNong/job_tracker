@@ -1,0 +1,143 @@
+{
+ "body": {
+  "duration_days": 90,
+  "end_date": "2026-11-13",
+  "start_date": "2026-08-15",
+  "today": "2026-11-13",
+  "total_applied": 16,
+  "tracks": [
+   {
+    "company": "Tidewater",
+    "job_id": "{matched_jobs:10}",
+    "status": "interview",
+    "steps": [
+     {
+      "at": "2026-10-09 10:00",
+      "date": "2026-10-09",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-10-16 09:00",
+      "date": "2026-10-16",
+      "label": "Invite",
+      "step": "interview_invite"
+     },
+     {
+      "at": "2026-10-20 14:00",
+      "date": "2026-10-20",
+      "label": "Round 1",
+      "step": "interview_1"
+     },
+     {
+      "at": "2026-10-26 15:00",
+      "date": "2026-10-26",
+      "label": "Round 2",
+      "step": "interview_2"
+     }
+    ],
+    "title": "Full Stack Engineer"
+   },
+   {
+    "company": "Saffron Studio",
+    "job_id": "{matched_jobs:12}",
+    "status": "offer",
+    "steps": [
+     {
+      "at": "2026-09-14 10:00",
+      "date": "2026-09-14",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-09-22 09:00",
+      "date": "2026-09-22",
+      "label": "Invite",
+      "step": "interview_invite"
+     },
+     {
+      "at": "2026-09-26 11:00",
+      "date": "2026-09-26",
+      "label": "Round 1",
+      "step": "interview_1"
+     },
+     {
+      "at": "2026-10-04 15:00",
+      "date": "2026-10-04",
+      "label": "Final",
+      "step": "interview_final"
+     },
+     {
+      "at": "2026-10-11 17:00",
+      "date": "2026-10-11",
+      "label": "Offer",
+      "step": "offer"
+     }
+    ],
+    "title": "Frontend Lead"
+   },
+   {
+    "company": "Marlow Systems",
+    "job_id": "{matched_jobs:11}",
+    "status": "interview_cancelled",
+    "steps": [
+     {
+      "at": "2026-09-29 10:00",
+      "date": "2026-09-29",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-10-06 09:00",
+      "date": "2026-10-06",
+      "label": "Invite",
+      "step": "interview_invite"
+     },
+     {
+      "at": "2026-10-08 12:00",
+      "date": "2026-10-08",
+      "label": "Cancelled",
+      "step": "interview_cancelled"
+     }
+    ],
+    "title": "Software Engineer"
+   },
+   {
+    "company": "Ember Analytics",
+    "job_id": "{matched_jobs:14}",
+    "status": "rejected",
+    "steps": [
+     {
+      "at": "2026-09-09 10:00",
+      "date": "2026-09-09",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-09-16 09:00",
+      "date": "2026-09-16",
+      "label": "Invite",
+      "step": "interview_invite"
+     },
+     {
+      "at": "2026-09-19 15:00",
+      "date": "2026-09-19",
+      "label": "Round 1",
+      "step": "interview_1"
+     },
+     {
+      "at": "2026-09-24 18:00",
+      "date": "2026-09-24",
+      "label": "Rejected",
+      "step": "rejected"
+     }
+    ],
+    "title": "Frontend Engineer"
+   }
+  ]
+ },
+ "request": {
+  "path": "/api/journey"
+ },
+ "status": 200
+}

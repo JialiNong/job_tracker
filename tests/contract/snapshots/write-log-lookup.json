@@ -1,0 +1,44 @@
+{
+ "body": {
+  "results": [
+   {
+    "ai_pending": false,
+    "collection": "matched_jobs",
+    "company": "Ostara Health",
+    "details_missing": false,
+    "found": true,
+    "id": "{matched_jobs:5}",
+    "job_id": "4100000005",
+    "match_score": 8.0,
+    "needs_scrape": false,
+    "on_tracker": true,
+    "open_path": "/?open={matched_jobs:5}",
+    "promotable": false,
+    "source": "linkedin",
+    "stage": "tracker",
+    "status": "applied",
+    "title": "Frontend Developer",
+    "url": "https://www.linkedin.com/jobs/view/4100000005/"
+   },
+   {
+    "found": false,
+    "job_id": "4400000001",
+    "on_tracker": false,
+    "promotable": true,
+    "source": "linkedin",
+    "url": "https://www.linkedin.com/jobs/view/4400000001/"
+   }
+  ]
+ },
+ "request": {
+  "body": {
+   "urls": [
+    "https://www.linkedin.com/jobs/view/4100000005/",
+    "https://www.linkedin.com/jobs/view/4400000001/"
+   ]
+  },
+  "method": "POST",
+  "path": "/api/manual-apply/lookup"
+ },
+ "status": 200
+}

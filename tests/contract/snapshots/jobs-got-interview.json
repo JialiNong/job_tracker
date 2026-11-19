@@ -1,0 +1,428 @@
+{
+ "body": {
+  "jobs": [
+   {
+    "_id": "{matched_jobs:10}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "90 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-10-09 10:00",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-10-16 09:00",
+      "label": "Invite",
+      "step": "interview_invite"
+     },
+     {
+      "at": "2026-10-20 14:00",
+      "label": "Round 1",
+      "step": "interview_1"
+     },
+     {
+      "at": "2026-10-26 15:00",
+      "label": "Round 2",
+      "step": "interview_2"
+     }
+    ],
+    "applied_at": "2026-10-09 10:00",
+    "can_fetch_details": false,
+    "company": "Tidewater",
+    "company_history": [],
+    "company_history_total": 0,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000010",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "Next.js, tRPC, Prisma, PostgreSQL",
+     "stack_fit": "strong",
+     "summary": "Product team working with Next.js, tRPC, Prisma, PostgreSQL."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000010/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on Next.js, tRPC, Prisma, PostgreSQL experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-10-08 09:10",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "interview",
+    "summary": "Fullstack balanced role on a Next.js, tRPC, Prisma, PostgreSQL stack.",
+    "title": "Full Stack Engineer",
+    "updated_at": "2026-10-09 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Next.js, tRPC, Prisma, PostgreSQL"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:11}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "97 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-09-29 10:00",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-10-06 09:00",
+      "label": "Invite",
+      "step": "interview_invite"
+     },
+     {
+      "at": "2026-10-08 12:00",
+      "label": "Cancelled",
+      "step": "interview_cancelled"
+     }
+    ],
+    "applied_at": "2026-09-29 10:00",
+    "can_fetch_details": false,
+    "company": "Marlow Systems",
+    "company_history": [],
+    "company_history_total": 0,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000011",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "Angular, .NET, C#",
+     "stack_fit": "strong",
+     "summary": "Product team working with Angular, .NET, C#."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000011/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on Angular, .NET, C# experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-09-28 09:11",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "interview_cancelled",
+    "summary": "Fullstack balanced role on a Angular, .NET, C# stack.",
+    "title": "Software Engineer",
+    "updated_at": "2026-09-29 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Angular, .NET, C#"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:12}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "104 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-09-14 10:00",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-09-22 09:00",
+      "label": "Invite",
+      "step": "interview_invite"
+     },
+     {
+      "at": "2026-09-26 11:00",
+      "label": "Round 1",
+      "step": "interview_1"
+     },
+     {
+      "at": "2026-10-04 15:00",
+      "label": "Final",
+      "step": "interview_final"
+     },
+     {
+      "at": "2026-10-11 17:00",
+      "label": "Offer",
+      "step": "offer"
+     }
+    ],
+    "applied_at": "2026-09-14 10:00",
+    "can_fetch_details": false,
+    "company": "Saffron Studio",
+    "company_history": [],
+    "company_history_total": 0,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [
+     "Dream team"
+    ],
+    "job_id": "4100000012",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "React, Next.js, Node.js",
+     "stack_fit": "strong",
+     "summary": "Product team working with React, Next.js, Node.js."
+    },
+    "link": "https://www.linkedin.com/jobs/view/4100000012/",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on React, Next.js, Node.js experience matches the role"
+    ],
+    "match_score": 9.5,
+    "matched_at": "2026-09-13 09:12",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "linkedin",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "offer",
+    "summary": "Fullstack balanced role on a React, Next.js, Node.js stack.",
+    "title": "Frontend Lead",
+    "updated_at": "2026-09-14 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with React, Next.js, Node.js"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   },
+   {
+    "_id": "{matched_jobs:14}",
+    "agent_recommend_reason": "",
+    "agent_recommended_by": "",
+    "ai_pending": false,
+    "applicant_position": null,
+    "applicants": "118 applicants",
+    "application_qa": [],
+    "application_timeline": [
+     {
+      "at": "2026-09-09 10:00",
+      "label": "Applied",
+      "step": "applied"
+     },
+     {
+      "at": "2026-09-16 09:00",
+      "label": "Invite",
+      "step": "interview_invite"
+     },
+     {
+      "at": "2026-09-19 15:00",
+      "label": "Round 1",
+      "step": "interview_1"
+     },
+     {
+      "at": "2026-09-24 18:00",
+      "label": "Rejected",
+      "step": "rejected"
+     }
+    ],
+    "applied_at": "2026-09-09 10:00",
+    "can_fetch_details": false,
+    "company": "Ember Analytics",
+    "company_history": [],
+    "company_history_total": 0,
+    "company_profile": {
+     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "markets": "europe",
+     "markets_detail": "Customers in Germany and Austria.",
+     "product_type": "b2b_saas",
+     "vertical": "Logistics software"
+    },
+    "country": "germany",
+    "country_label": "Germany",
+    "details_missing": false,
+    "disqualification_reason": "",
+    "highlights": [],
+    "job_id": "4100000014",
+    "job_labels": {
+     "ai_product_work": false,
+     "backend_language_ask": "js_only",
+     "description_usable": true,
+     "english_team": "true",
+     "german_evidence": "",
+     "german_required": false,
+     "hard_fail": false,
+     "hard_fail_evidence": "",
+     "hard_fail_kind": "none",
+     "role_type": "fullstack_balanced",
+     "seniority": "mid",
+     "stack": "Vue, Django, Python",
+     "stack_fit": "strong",
+     "summary": "Product team working with Vue, Django, Python."
+    },
+    "link": "https://de.indeed.com/viewjob?jk=000000000000000e",
+    "location": "Berlin, Germany",
+    "manual_fields": [],
+    "match_gate": "scored",
+    "match_reasons": [
+     "Hands-on Vue, Django, Python experience matches the role"
+    ],
+    "match_score": 8.0,
+    "matched_at": "2026-09-08 09:14",
+    "missing_requirements": [],
+    "nice_to_have_matches": [
+     "Docker (listed as nice to have)"
+    ],
+    "notes": "",
+    "origin": "pipeline",
+    "recommend_reason": "",
+    "recommendation": "Yes",
+    "recommended_by": "",
+    "red_flags": [],
+    "source": "indeed",
+    "special_match": false,
+    "special_match_reasons": [],
+    "status": "rejected",
+    "summary": "Fullstack balanced role on a Vue, Django, Python stack.",
+    "title": "Frontend Engineer",
+    "updated_at": "2026-09-09 11:00",
+    "what_theyre_looking_for": {
+     "matched": [
+      "3+ years with Vue, Django, Python"
+     ],
+     "unmatched": []
+    },
+    "what_youll_do": {
+     "matched": [
+      "Build product features end to end"
+     ],
+     "unmatched": []
+    }
+   }
+  ],
+  "page": 1,
+  "page_size": 20,
+  "pages": 1,
+  "total": 4
+ },
+ "request": {
+  "path": "/api/jobs?status=got_interview&country=all"
+ },
+ "status": 200
+}
