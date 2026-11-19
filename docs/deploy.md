@@ -54,6 +54,10 @@ Environment variables (Production and Preview):
 | `ENABLE_EXPERIMENTAL_COREPACK` | `1` (uses the pnpm version pinned in `package.json`) |
 | `MATCH_THRESHOLD` | optional, default `7.0` |
 
+Run AI is local only: the Lingua language model's Linux binary is 277 MB,
+over Vercel's 250 MB function limit, so `next.config.ts` leaves it out of
+the Vercel build and the hosted Run AI button answers "runs on your computer".
+
 Not set on purpose during the week: `AGENT_API_TOKEN` (agents keep pushing
 to the Flask app; the agent API answers 503) and `OPENAI_API_KEY` (Run AI
 runs locally).
