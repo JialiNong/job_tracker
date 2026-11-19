@@ -39,7 +39,7 @@
     ],
     "company_history_total": 2,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Northwind Labs sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -133,7 +133,7 @@
     ],
     "company_history_total": 1,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Bluefin GmbH sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -226,49 +226,26 @@
     "company": "Halden Robotics",
     "company_history": [],
     "company_history_total": 0,
-    "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
-     "markets": "europe",
-     "markets_detail": "Customers in Germany and Austria.",
-     "product_type": "b2b_saas",
-     "vertical": "Logistics software"
-    },
+    "company_profile": {},
     "country": "germany",
     "country_label": "Germany",
     "details_missing": true,
     "disqualification_reason": "",
     "highlights": [],
     "job_id": "manual-0025",
-    "job_labels": {
-     "ai_product_work": false,
-     "backend_language_ask": "js_only",
-     "description_usable": true,
-     "english_team": "true",
-     "german_evidence": "",
-     "german_required": false,
-     "hard_fail": false,
-     "hard_fail_evidence": "",
-     "hard_fail_kind": "none",
-     "role_type": "fullstack_balanced",
-     "seniority": "mid",
-     "stack": "",
-     "stack_fit": "strong",
-     "summary": "Product team working with ."
-    },
+    "job_labels": {},
     "link": "https://jobs.example.com/manual/25",
     "location": "Berlin, Germany",
     "manual_fields": [],
     "manually_logged": true,
-    "match_gate": "scored",
+    "match_gate": "",
     "match_reasons": [
-     "Hands-on  experience matches the role"
+     "Link-only save — AI pending"
     ],
-    "match_score": 0.0,
+    "match_score": null,
     "matched_at": "2026-11-11 09:25",
     "missing_requirements": [],
-    "nice_to_have_matches": [
-     "Docker (listed as nice to have)"
-    ],
+    "nice_to_have_matches": [],
     "notes": "",
     "origin": "manual",
     "recommend_reason": "",
@@ -279,19 +256,15 @@
     "special_match": false,
     "special_match_reasons": [],
     "status": "applied",
-    "summary": "",
+    "summary": "Link saved without scrape/AI. Use Run AI on Tracker when Chrome is available.",
     "title": "Software Engineer",
     "updated_at": "2026-11-11 11:00",
     "what_theyre_looking_for": {
-     "matched": [
-      "3+ years with "
-     ],
+     "matched": [],
      "unmatched": []
     },
     "what_youll_do": {
-     "matched": [
-      "Build product features end to end"
-     ],
+     "matched": [],
      "unmatched": []
     }
    },
@@ -322,7 +295,7 @@
     ],
     "company_history_total": 1,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Kestrel AG sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -420,7 +393,7 @@
     ],
     "company_history_total": 1,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Larkspur sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -508,7 +481,7 @@
     "company_history": [],
     "company_history_total": 0,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Quill & Co sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -608,7 +581,7 @@
     ],
     "company_history_total": 1,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Ostara Health sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -707,7 +680,7 @@
     "company_history": [],
     "company_history_total": 0,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Halcyon Pay sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -810,7 +783,7 @@
     "company_history": [],
     "company_history_total": 0,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Tidewater sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -926,7 +899,7 @@
     ],
     "company_history_total": 2,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Northwind Labs sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -1024,7 +997,7 @@
     "company_history": [],
     "company_history_total": 0,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Marlow Systems sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -1140,7 +1113,7 @@
     ],
     "company_history_total": 2,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Granite Cloud sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -1228,7 +1201,7 @@
     "company_history": [],
     "company_history_total": 0,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Pinecrest sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -1336,7 +1309,7 @@
     "company_history": [],
     "company_history_total": 0,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Saffron Studio sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -1441,7 +1414,7 @@
     "company_history": [],
     "company_history_total": 0,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Ember Analytics sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -1534,7 +1507,7 @@
     "company_history": [],
     "company_history_total": 0,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Juniper Mobility sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -1639,7 +1612,7 @@
     ],
     "company_history_total": 1,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Kestrel AG sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
@@ -1749,7 +1722,7 @@
     ],
     "company_history_total": 1,
     "company_profile": {
-     "business": "Sells a B2B SaaS tool for small logistics companies.",
+     "business": "Ostara Health sells a B2B SaaS tool for small logistics companies.",
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",

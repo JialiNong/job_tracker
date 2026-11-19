@@ -21,7 +21,7 @@ const DEFAULT_FIXTURE = resolve(here, "../../../../tests/contract/fixture.json")
 const COLLECTIONS = ["jobs", "matched_jobs", "timeout_jobs", "scraper_stats", "company_profiles", "stats_cache"] as const;
 
 export function readFixture(path: string): MongoSource {
-  const parsed = EJSON.parse(readFileSync(path, "utf8"), { relaxed: false }) as {
+  const parsed = EJSON.parse(readFileSync(path, "utf8"), { relaxed: true }) as {
     collections: Partial<MongoSource>;
   };
   const source = {} as MongoSource;

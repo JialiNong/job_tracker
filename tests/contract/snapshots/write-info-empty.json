@@ -1,0 +1,13 @@
+{
+ "body": {
+  "error": "No fields to update"
+ },
+ "request": {
+  "body": {
+   "title": 5
+  },
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:5}/info"
+ },
+ "status": 400
+}

@@ -47,8 +47,11 @@ copy. `applications.job_id` is unique, so a posting has at most one card.
 A job can be analysed more than once (pipeline, Run AI after a re-fetch,
 agent push). Each run inserts a row; `jobs.current_analysis_id` points at
 the latest, and that row is what the Tracker and Unmatched pages show.
-Mongo only kept the latest result, so the migration creates one run per
-analysed job (`trigger = 'migration'`). `model` and `prompt_version` are
+Mongo only kept the latest result per copy, so the migration creates one
+run per analysed job (`trigger = 'migration'`), plus a second run where the
+pipeline re-ran AI and updated only the scraped copy (6 jobs on 2026-11-19,
+e.g. 8.0 on the card and a later 5.3). The card keeps showing its own result;
+the Unmatched count is one lower than Mongo's because of that one job. `model` and `prompt_version` are
 recorded for new runs, which makes "did the new prompt score differently?"
 answerable later.
 

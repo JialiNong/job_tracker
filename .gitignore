@@ -1,6 +1,8 @@
 __pycache__
 .DS_Store
 .env
+.env.*
+!.env.example
 .flask_secret_key
 
 # Logs
@@ -48,3 +50,6 @@ artifacts/
 node_modules/
 packages/*/dist/
 packages/db/reports/
+apps/web/.next/
+apps/web/public/static/
+apps/web/next-env.d.ts

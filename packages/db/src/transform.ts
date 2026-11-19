@@ -48,6 +48,7 @@ export interface Report {
   profilesRecreated: { key: string; from: string }[];
   analysesWithoutProfile: { job: string; company: string }[];
   scrapedCompanyLooksWrong: { job: string; scrapedCompany: string; trackerCompany: string }[];
+  extraAnalysisRuns: { job: string; shown: number | null; alsoKept: number | null; keptAt: string | null }[];
 }
 
 // ── Vocabularies (schema enums) ─────────────────────────────────────────────
@@ -89,6 +90,8 @@ export function idOf(doc: Doc): string {
 const keyOf = (doc: Doc) => `${doc.source ?? ""}\u0000${doc.job_id ?? ""}`;
 const str = (v: unknown, fallback = ""): string => (v == null ? fallback : String(v));
 const strOrNull = (v: unknown): string | null => (v == null || v === "" ? null : String(v));
+/** AI text fields: "" is a real value the UI shows (Flask returned it); only a missing field is null. */
+const textOrNull = (v: unknown): string | null => (v == null ? null : String(v));
 const at = (doc: Doc, field: string) => toInstant(doc[field], { utc: UTC_FIELDS.has(field) });
 const iso = (d: Date | null) => (d ? d.toISOString() : null);
 const strList = (v: unknown): string[] =>
@@ -116,6 +119,7 @@ function emptyReport(source: MongoSource): Report {
     profilesRecreated: [],
     analysesWithoutProfile: [],
     scrapedCompanyLooksWrong: [],
+    extraAnalysisRuns: [],
   };
 }
 
@@ -250,25 +254,42 @@ export function transform(source: MongoSource): { rows: Rows; report: Report } {
     const analysed = !aiPending && analysisDoc.matched_at != null
       && (analysisDoc.match_score != null || analysisDoc.summary);
 
-    let currentAnalysisId: bigint | null = null;
-    if (analysed) {
+    const hasAnalysis = (doc: Doc) =>
+      doc.matched_at != null && !doc.ai_pending && (doc.match_score != null || doc.summary);
+    const analysisRow = (doc: Doc): Prisma.JobAnalysisCreateManyInput => {
       analysisId += 1n;
-      currentAnalysisId = analysisId;
       const details: Record<string, unknown> = {};
-      for (const f of ANALYSIS_DETAIL_FIELDS) if (analysisDoc[f] !== undefined) details[f] = analysisDoc[f];
-      rows.jobAnalyses.push({
+      for (const f of ANALYSIS_DETAIL_FIELDS) if (doc[f] !== undefined) details[f] = doc[f];
+      return {
         id: analysisId,
         jobId,
-        analyzedAt: at(analysisDoc, "matched_at")!,
+        analyzedAt: at(doc, "matched_at")!,
         trigger: "migration",
-        matchScore: numOrNull(analysisDoc.match_score),
-        matchGate: strOrNull(analysisDoc.match_gate),
-        recommendation: strOrNull(analysisDoc.recommendation),
-        summary: strOrNull(analysisDoc.summary),
-        disqualificationReason: strOrNull(analysisDoc.disqualification_reason),
+        matchScore: numOrNull(doc.match_score),
+        matchGate: textOrNull(doc.match_gate),
+        recommendation: textOrNull(doc.recommendation),
+        summary: textOrNull(doc.summary),
+        disqualificationReason: textOrNull(doc.disqualification_reason),
         details: details as Prisma.InputJsonValue,
-        companyKey: resolveProfile(analysisDoc, scraped, posting.company!, jobId, profiles, report),
-      });
+        companyKey: resolveProfile(doc, scraped, posting.company!, jobId, profiles, report),
+      };
+    };
+
+    let currentAnalysisId: bigint | null = null;
+    if (analysed) {
+      const current = analysisRow(analysisDoc);
+      currentAnalysisId = current.id as bigint;
+      rows.jobAnalyses.push(current);
+      // The pipeline can re-run AI on a posting and update only the scraped
+      // copy. Keep that run too (D2); the card keeps showing its own result.
+      if (m && hasAnalysis(scraped) && differentRun(m, scraped)) {
+        const other = analysisRow(scraped);
+        rows.jobAnalyses.push(other);
+        report.extraAnalysisRuns.push({
+          job: jobId, shown: numOrNull(m.match_score), alsoKept: numOrNull(scraped.match_score),
+          keptAt: iso(at(scraped, "matched_at")),
+        });
+      }
     }
 
     const userStatus = strOrNull(scraped.user_status);
@@ -446,6 +467,16 @@ function resolveProfile(
   });
   report.profilesRecreated.push({ key, from: jobId });
   return key;
+}
+
+/**
+ * The Tracker copy and the scraped copy hold results of different AI runs.
+ * Compared by content: one run written to both copies gets two matched_at
+ * stamps a few milliseconds apart.
+ */
+function differentRun(tracker: Doc, scraped: Doc): boolean {
+  return numOrNull(tracker.match_score) !== numOrNull(scraped.match_score)
+    || textOrNull(tracker.summary) !== textOrNull(scraped.summary);
 }
 
 /** A stable 24-hex id for a posting row created for a Tracker card without a scraped twin. */

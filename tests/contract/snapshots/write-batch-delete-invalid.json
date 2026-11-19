@@ -1,0 +1,54 @@
+{
+ "after": {
+  "/api/stats": {
+   "body": {
+    "by_status": {
+     "active": 18,
+     "applied": 7,
+     "closed": 1,
+     "closed_no_reply": 1,
+     "duplicate": 1,
+     "got_interview": 4,
+     "interview": 1,
+     "interview_cancelled": 1,
+     "offer": 1,
+     "pending": 4,
+     "prev_rejected": 1,
+     "rejected": 4,
+     "repost": 1,
+     "screening": 1,
+     "too_many_questions": 1,
+     "unsuitable": 1
+    },
+    "funnel": {
+     "ai_matched": 25,
+     "ai_unmatched": 4,
+     "applied": 16,
+     "german_filtered": 410,
+     "interviewed": 4,
+     "offer": 1,
+     "title_clicked": 640
+    },
+    "timeouts": 1,
+    "total": 25,
+    "unmatched": 4
+   },
+   "status": 200
+  }
+ },
+ "body": {
+  "error": "Invalid id: nope",
+  "ok": false
+ },
+ "request": {
+  "body": {
+   "ids": [
+    "{matched_jobs:22}",
+    "nope"
+   ]
+  },
+  "method": "POST",
+  "path": "/api/jobs/batch-delete"
+ },
+ "status": 400
+}

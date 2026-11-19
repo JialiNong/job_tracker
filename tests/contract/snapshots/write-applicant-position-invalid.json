@@ -1,0 +1,13 @@
+{
+ "body": {
+  "error": "applicant_position must be between 1 and 100000"
+ },
+ "request": {
+  "body": {
+   "applicant_position": "0"
+  },
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:5}/applicant-position"
+ },
+ "status": 400
+}

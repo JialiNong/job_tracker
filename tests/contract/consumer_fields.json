@@ -1,0 +1,15 @@
+{
+ "_comment": "Fields of a serialized Tracker / Unmatched job that the frontend reads (grep of static/js on 2026-11-19). Snapshots keep the full Flask output; comparisons look only at these keys of any object that has _id and application_timeline. job_labels and company_profile are compared whole.",
+ "job": [
+  "_id", "title", "company", "location", "link", "source", "status", "origin",
+  "match_score", "recommendation", "summary", "disqualification_reason", "match_gate",
+  "match_reasons", "missing_requirements", "red_flags", "what_youll_do", "what_theyre_looking_for",
+  "job_labels", "company_profile",
+  "applicants", "applicant_position", "application_timeline", "application_qa",
+  "applied_at", "matched_at", "posted_at", "details_fetched_at",
+  "notes", "highlights", "recommended_by", "recommend_reason",
+  "agent_recommended_by", "agent_recommend_reason", "ai_pending",
+  "can_fetch_details", "details_missing", "user_status",
+  "company_history", "company_history_total"
+ ]
+}

@@ -1,0 +1,13 @@
+{
+ "body": {
+  "error": "Job not found"
+ },
+ "request": {
+  "body": {
+   "notes": "x"
+  },
+  "method": "PATCH",
+  "path": "/api/jobs/<new-id-1>/notes"
+ },
+ "status": 404
+}

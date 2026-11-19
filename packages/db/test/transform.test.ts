@@ -57,6 +57,18 @@ describe("AI runs (D2, D7, D13)", () => {
     expect(rows.currentAnalysis).toEqual([{ jobId: id(4), analysisId: 1n }]);
   });
 
+  it("keeps a later pipeline run on the scraped copy as history; the card shows its own", () => {
+    const { rows, report } = transform(source({
+      jobs: [scraped(14, { matched_at: naive("2026-11-18T19:33:00"), match_score: 5.3, summary: "Re-run" })],
+      matched_jobs: [{ ...scraped(14), ...analysis, _id: oid(114), status: "rejected" }],
+    }));
+    expect(rows.jobAnalyses.map((a) => a.matchScore)).toEqual([8, 5.3]);
+    expect(rows.currentAnalysis).toEqual([{ jobId: id(14), analysisId: 1n }]);
+    expect(report.extraAnalysisRuns).toEqual([
+      { job: id(14), shown: 8, alsoKept: 5.3, keptAt: "2026-11-18T18:33:00.000Z" },
+    ]);
+  });
+
   it("link-only (ai_pending) has no run yet; never analysed is 'none'", () => {
     const { rows } = transform(source({
       jobs: [scraped(5, { matched_at: naive("2026-11-01T09:00:00"), ai_pending: true, match_score: 0 }), scraped(6)],
@@ -144,6 +156,6 @@ describe("vocabulary and bookkeeping", () => {
       ],
     }));
     expect(rows.scraperTotals).toEqual([expect.objectContaining({ id: 1, titlePassedClicked: 640 })]);
-    expect(rows.scraperDailyStats[0]!.day.toISOString()).toBe("2026-11-13T00:00:00.000Z");
+    expect((rows.scraperDailyStats[0]!.day as Date).toISOString()).toBe("2026-11-13T00:00:00.000Z");
   });
 });

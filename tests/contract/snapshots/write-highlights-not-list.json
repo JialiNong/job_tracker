@@ -1,0 +1,13 @@
+{
+ "body": {
+  "error": "highlights must be a list"
+ },
+ "request": {
+  "body": {
+   "highlights": "Hamburg"
+  },
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:2}/highlights"
+ },
+ "status": 400
+}

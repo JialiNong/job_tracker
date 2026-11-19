@@ -1,0 +1,17 @@
+{
+ "body": {
+  "job_id": "4100000001",
+  "link": "https://www.linkedin.com/jobs/view/4100000001/",
+  "ok": true,
+  "source": "linkedin",
+  "unchanged": true
+ },
+ "request": {
+  "body": {
+   "link": "https://www.linkedin.com/jobs/view/4100000001/?trk=public"
+  },
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:1}/link"
+ },
+ "status": 200
+}

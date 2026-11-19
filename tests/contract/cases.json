@@ -1,91 +1,513 @@
 [
- {"name": "health", "path": "/health"},
-
- {"name": "stats", "path": "/api/stats"},
- {"name": "stats-daily", "path": "/api/stats/daily?days=30"},
- {"name": "stats-locations", "path": "/api/stats/locations"},
- {"name": "stats-flow", "path": "/api/stats/flow"},
- {"name": "stats-stacks", "path": "/api/stats/stacks"},
- {"name": "journey", "path": "/api/journey"},
-
- {"name": "jobs-active", "path": "/api/jobs?status=active&country=all"},
- {"name": "jobs-default-germany", "path": "/api/jobs?status=active&country=germany"},
- {"name": "jobs-all-page2", "path": "/api/jobs?status=all&country=all&page=2&page_size=10"},
- {"name": "jobs-pending", "path": "/api/jobs?status=pending&country=all"},
- {"name": "jobs-rejected", "path": "/api/jobs?status=rejected&country=all"},
- {"name": "jobs-got-interview", "path": "/api/jobs?status=got_interview&country=all"},
- {"name": "jobs-side-closed", "path": "/api/jobs?status=closed&country=all"},
- {"name": "jobs-search-company", "path": "/api/jobs?status=all&country=all&q=northwind"},
- {"name": "jobs-company-filter", "path": "/api/jobs?status=all&country=all&company=Granite%20Cloud"},
- {"name": "jobs-highlights", "path": "/api/jobs?status=all&country=all&highlights=1"},
- {"name": "jobs-source-indeed", "path": "/api/jobs?status=all&country=all&source=indeed"},
- {"name": "jobs-origin-api", "path": "/api/jobs?status=all&country=all&origin=api"},
- {"name": "jobs-applied-on-day", "path": "/api/jobs?status=all&country=all&applied_on=2026-11-09"},
- {"name": "jobs-matched-last-7-days", "path": "/api/jobs?status=all&country=all&date_from=2026-11-06&date_to=2026-11-13"},
- {"name": "job-detail", "path": "/api/jobs/{matched_jobs:7}"},
- {"name": "job-detail-not-found", "path": "/api/jobs/64a00000000000000000ffff"},
- {"name": "job-detail-bad-id", "path": "/api/jobs/not-an-id"},
- {"name": "job-description", "path": "/api/jobs/{matched_jobs:2}/description"},
- {"name": "fetch-details-ids", "path": "/api/fetch-details/ids?status=all&country=all"},
-
- {"name": "unmatched", "path": "/api/unmatched-jobs"},
- {"name": "unmatched-watchlist", "path": "/api/unmatched-jobs?user_status=watchlist"},
- {"name": "unmatched-hard-fail", "path": "/api/unmatched-jobs?match_gate=hard_fail"},
- {"name": "unmatched-search", "path": "/api/unmatched-jobs?q=php"},
- {"name": "unmatched-detail", "path": "/api/unmatched-jobs/{jobs:26}"},
-
- {"name": "timeouts-open", "path": "/api/timeout-jobs"},
- {"name": "timeouts-dismissed", "path": "/api/timeout-jobs?review_status=dismissed"},
-
- {"name": "write-status-applied", "method": "PATCH", "path": "/api/jobs/{matched_jobs:1}/status",
-  "body": {"status": "applied"}, "after": ["/api/jobs/{matched_jobs:1}", "/api/stats"]},
- {"name": "write-status-side-keeps-record", "method": "PATCH", "path": "/api/jobs/{matched_jobs:5}/status",
-  "body": {"status": "unsuitable"}, "after": ["/api/jobs/{matched_jobs:5}"]},
- {"name": "write-status-reset-pending", "method": "PATCH", "path": "/api/jobs/{matched_jobs:5}/status",
-  "body": {"status": "pending"}, "after": ["/api/jobs/{matched_jobs:5}"]},
- {"name": "write-status-invalid", "method": "PATCH", "path": "/api/jobs/{matched_jobs:1}/status",
-  "body": {"status": "hired"}},
- {"name": "write-timeline-invite", "method": "PATCH", "path": "/api/jobs/{matched_jobs:5}/timeline",
-  "body": {"timeline": [{"step": "applied", "at": "2026-11-09 10:00"}, {"step": "interview_invite", "at": "2026-11-12 09:30"}]},
-  "after": ["/api/jobs/{matched_jobs:5}", "/api/stats"]},
- {"name": "write-timeline-reject-after-round", "method": "PATCH", "path": "/api/jobs/{matched_jobs:10}/timeline",
-  "body": {"timeline": [{"step": "applied", "at": "2026-10-09 10:00"}, {"step": "interview_invite", "at": "2026-10-16 09:00"},
-                        {"step": "interview_1", "at": "2026-10-20 14:00"}, {"step": "rejected", "at": "2026-11-12 18:00"}]},
-  "after": ["/api/jobs/{matched_jobs:10}", "/api/stats/flow"]},
- {"name": "write-notes", "method": "PATCH", "path": "/api/jobs/{matched_jobs:2}/notes",
-  "body": {"notes": "Ask about the on-call rotation."}, "after": ["/api/jobs/{matched_jobs:2}"]},
- {"name": "write-highlights", "method": "PATCH", "path": "/api/jobs/{matched_jobs:2}/highlights",
-  "body": {"highlights": ["Hamburg", "  Remote ok ", "Hamburg", ""]}, "after": ["/api/jobs/{matched_jobs:2}"]},
- {"name": "write-application-qa", "method": "PATCH", "path": "/api/jobs/{matched_jobs:5}/application-qa",
-  "body": {"application_qa": [{"question": "Notice period?", "answer": "One month."}, {"question": "", "answer": ""}]},
-  "after": ["/api/jobs/{matched_jobs:5}"]},
- {"name": "write-applicant-position", "method": "PATCH", "path": "/api/jobs/{matched_jobs:5}/applicant-position",
-  "body": {"applicant_position": "37"}, "after": ["/api/jobs/{matched_jobs:5}"]},
- {"name": "write-info", "method": "PATCH", "path": "/api/jobs/{matched_jobs:25}/info",
-  "body": {"title": " Platform Engineer ", "company": "Halden Robotics GmbH"}, "after": ["/api/jobs/{matched_jobs:25}"]},
- {"name": "write-replace-link", "method": "PATCH", "path": "/api/jobs/{matched_jobs:1}/link",
-  "body": {"link": "https://www.linkedin.com/jobs/view/4199999999/"}, "after": ["/api/jobs/{matched_jobs:1}"]},
- {"name": "write-delete", "method": "DELETE", "path": "/api/jobs/{matched_jobs:24}",
-  "after": ["/api/jobs/{matched_jobs:24}", "/api/stats"]},
- {"name": "write-batch-delete", "method": "POST", "path": "/api/jobs/batch-delete",
-  "body": {"ids": ["{matched_jobs:22}", "{matched_jobs:23}"]}, "after": ["/api/stats"]},
- {"name": "write-unmatched-can-apply", "method": "PATCH", "path": "/api/unmatched-jobs/{jobs:26}/status",
-  "body": {"user_status": "watchlist"}, "after": ["/api/unmatched-jobs/{jobs:26}", "/api/jobs?status=pending&country=all"]},
- {"name": "write-timeout-add", "method": "POST", "path": "/api/timeout-jobs/{timeout_jobs:1}/match",
-  "after": ["/api/timeout-jobs", "/api/jobs?status=pending&country=all"]},
- {"name": "write-timeout-dismiss", "method": "POST", "path": "/api/timeout-jobs/{timeout_jobs:1}/dismiss",
-  "after": ["/api/timeout-jobs", "/api/timeout-jobs?review_status=dismissed"]},
- {"name": "write-log-lookup", "method": "POST", "path": "/api/manual-apply/lookup",
-  "body": {"urls": ["https://www.linkedin.com/jobs/view/4100000005/", "https://www.linkedin.com/jobs/view/4400000001/"]}},
- {"name": "write-log-link-only", "method": "POST", "path": "/api/manual-apply",
-  "body": {"urls": ["https://www.linkedin.com/jobs/view/4400000001/"], "mode": "link_only", "status": "applied",
-           "applied_date": "2026-11-12", "title": "Data Engineer", "company": "Wayne Enterprises"},
-  "settle": {"path": "/api/manual-apply/status", "key": "running"},
-  "after": ["/api/jobs?status=all&country=all&q=wayne", "/api/manual-apply/status"]},
- {"name": "write-agent-push-unauthorized", "method": "POST", "path": "/api/agent/jobs",
-  "headers": {"Authorization": "Bearer wrong"}, "body": {"jobs": ["https://www.linkedin.com/jobs/view/4500000001/"]}},
- {"name": "write-agent-push", "method": "POST", "path": "/api/agent/jobs",
-  "headers": {"Authorization": "Bearer e2e-agent-token"},
-  "body": {"jobs": [{"url": "https://www.linkedin.com/jobs/view/4500000001/", "title": "ML Engineer", "reason": "fits"}]},
-  "after": ["/api/unmatched-jobs?agent_recommended=1", "/api/jobs?status=all&country=all&q=ML%20Engineer"]}
+ {
+  "name": "health",
+  "path": "/health"
+ },
+ {
+  "name": "stats",
+  "path": "/api/stats"
+ },
+ {
+  "name": "stats-daily",
+  "path": "/api/stats/daily?days=30"
+ },
+ {
+  "name": "stats-locations",
+  "path": "/api/stats/locations"
+ },
+ {
+  "name": "stats-flow",
+  "path": "/api/stats/flow"
+ },
+ {
+  "name": "stats-stacks",
+  "path": "/api/stats/stacks"
+ },
+ {
+  "name": "journey",
+  "path": "/api/journey"
+ },
+ {
+  "name": "jobs-active",
+  "path": "/api/jobs?status=active&country=all"
+ },
+ {
+  "name": "jobs-default-germany",
+  "path": "/api/jobs?status=active&country=germany"
+ },
+ {
+  "name": "jobs-all-page2",
+  "path": "/api/jobs?status=all&country=all&page=2&page_size=10"
+ },
+ {
+  "name": "jobs-pending",
+  "path": "/api/jobs?status=pending&country=all"
+ },
+ {
+  "name": "jobs-rejected",
+  "path": "/api/jobs?status=rejected&country=all"
+ },
+ {
+  "name": "jobs-got-interview",
+  "path": "/api/jobs?status=got_interview&country=all"
+ },
+ {
+  "name": "jobs-side-closed",
+  "path": "/api/jobs?status=closed&country=all"
+ },
+ {
+  "name": "jobs-search-company",
+  "path": "/api/jobs?status=all&country=all&q=northwind"
+ },
+ {
+  "name": "jobs-company-filter",
+  "path": "/api/jobs?status=all&country=all&company=Granite%20Cloud"
+ },
+ {
+  "name": "jobs-highlights",
+  "path": "/api/jobs?status=all&country=all&highlights=1"
+ },
+ {
+  "name": "jobs-source-indeed",
+  "path": "/api/jobs?status=all&country=all&source=indeed"
+ },
+ {
+  "name": "jobs-origin-api",
+  "path": "/api/jobs?status=all&country=all&origin=api"
+ },
+ {
+  "name": "jobs-applied-on-day",
+  "path": "/api/jobs?status=all&country=all&applied_on=2026-11-09"
+ },
+ {
+  "name": "jobs-matched-last-7-days",
+  "path": "/api/jobs?status=all&country=all&date_from=2026-11-06&date_to=2026-11-13"
+ },
+ {
+  "name": "job-detail",
+  "path": "/api/jobs/{matched_jobs:7}"
+ },
+ {
+  "name": "job-detail-not-found",
+  "path": "/api/jobs/64a00000000000000000ffff"
+ },
+ {
+  "name": "job-detail-bad-id",
+  "path": "/api/jobs/not-an-id"
+ },
+ {
+  "name": "job-description",
+  "path": "/api/jobs/{matched_jobs:2}/description"
+ },
+ {
+  "name": "fetch-details-ids",
+  "path": "/api/fetch-details/ids?status=all&country=all"
+ },
+ {
+  "name": "unmatched",
+  "path": "/api/unmatched-jobs"
+ },
+ {
+  "name": "unmatched-watchlist",
+  "path": "/api/unmatched-jobs?user_status=watchlist"
+ },
+ {
+  "name": "unmatched-hard-fail",
+  "path": "/api/unmatched-jobs?match_gate=hard_fail"
+ },
+ {
+  "name": "unmatched-search",
+  "path": "/api/unmatched-jobs?q=php"
+ },
+ {
+  "name": "unmatched-detail",
+  "path": "/api/unmatched-jobs/{jobs:26}"
+ },
+ {
+  "name": "timeouts-open",
+  "path": "/api/timeout-jobs"
+ },
+ {
+  "name": "timeouts-dismissed",
+  "path": "/api/timeout-jobs?review_status=dismissed"
+ },
+ {
+  "name": "write-status-applied",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:1}/status",
+  "body": {
+   "status": "applied"
+  },
+  "after": [
+   "/api/jobs/{matched_jobs:1}",
+   "/api/stats"
+  ]
+ },
+ {
+  "name": "write-status-side-keeps-record",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:5}/status",
+  "body": {
+   "status": "unsuitable"
+  },
+  "after": [
+   "/api/jobs/{matched_jobs:5}"
+  ]
+ },
+ {
+  "name": "write-status-reset-pending",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:5}/status",
+  "body": {
+   "status": "pending"
+  },
+  "after": [
+   "/api/jobs/{matched_jobs:5}"
+  ]
+ },
+ {
+  "name": "write-status-invalid",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:1}/status",
+  "body": {
+   "status": "hired"
+  }
+ },
+ {
+  "name": "write-timeline-invite",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:5}/timeline",
+  "body": {
+   "timeline": [
+    {
+     "step": "applied",
+     "at": "2026-11-09 10:00"
+    },
+    {
+     "step": "interview_invite",
+     "at": "2026-11-12 09:30"
+    }
+   ]
+  },
+  "after": [
+   "/api/jobs/{matched_jobs:5}",
+   "/api/stats"
+  ]
+ },
+ {
+  "name": "write-timeline-reject-after-round",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:10}/timeline",
+  "body": {
+   "timeline": [
+    {
+     "step": "applied",
+     "at": "2026-10-09 10:00"
+    },
+    {
+     "step": "interview_invite",
+     "at": "2026-10-16 09:00"
+    },
+    {
+     "step": "interview_1",
+     "at": "2026-10-20 14:00"
+    },
+    {
+     "step": "rejected",
+     "at": "2026-11-12 18:00"
+    }
+   ]
+  },
+  "after": [
+   "/api/jobs/{matched_jobs:10}",
+   "/api/stats/flow"
+  ]
+ },
+ {
+  "name": "write-notes",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:2}/notes",
+  "body": {
+   "notes": "Ask about the on-call rotation."
+  },
+  "after": [
+   "/api/jobs/{matched_jobs:2}"
+  ]
+ },
+ {
+  "name": "write-highlights",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:2}/highlights",
+  "body": {
+   "highlights": [
+    "Hamburg",
+    "  Remote ok ",
+    "Hamburg",
+    ""
+   ]
+  },
+  "after": [
+   "/api/jobs/{matched_jobs:2}"
+  ]
+ },
+ {
+  "name": "write-application-qa",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:5}/application-qa",
+  "body": {
+   "application_qa": [
+    {
+     "question": "Notice period?",
+     "answer": "One month."
+    },
+    {
+     "question": "",
+     "answer": ""
+    }
+   ]
+  },
+  "after": [
+   "/api/jobs/{matched_jobs:5}"
+  ]
+ },
+ {
+  "name": "write-applicant-position",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:5}/applicant-position",
+  "body": {
+   "applicant_position": "37"
+  },
+  "after": [
+   "/api/jobs/{matched_jobs:5}"
+  ]
+ },
+ {
+  "name": "write-info",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:25}/info",
+  "body": {
+   "title": " Platform Engineer ",
+   "company": "Halden Robotics GmbH"
+  },
+  "after": [
+   "/api/jobs/{matched_jobs:25}"
+  ]
+ },
+ {
+  "name": "write-replace-link",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:1}/link",
+  "body": {
+   "link": "https://www.linkedin.com/jobs/view/4199999999/"
+  },
+  "after": [
+   "/api/jobs/{matched_jobs:1}"
+  ]
+ },
+ {
+  "name": "write-delete",
+  "method": "DELETE",
+  "path": "/api/jobs/{matched_jobs:24}",
+  "after": [
+   "/api/jobs/{matched_jobs:24}",
+   "/api/stats"
+  ]
+ },
+ {
+  "name": "write-batch-delete",
+  "method": "POST",
+  "path": "/api/jobs/batch-delete",
+  "body": {
+   "ids": [
+    "{matched_jobs:22}",
+    "{matched_jobs:23}"
+   ]
+  },
+  "after": [
+   "/api/stats"
+  ]
+ },
+ {
+  "name": "write-unmatched-can-apply",
+  "method": "PATCH",
+  "path": "/api/unmatched-jobs/{jobs:26}/status",
+  "body": {
+   "user_status": "watchlist"
+  },
+  "after": [
+   "/api/unmatched-jobs/{jobs:26}",
+   "/api/jobs?status=pending&country=all"
+  ]
+ },
+ {
+  "name": "write-timeout-add",
+  "method": "POST",
+  "path": "/api/timeout-jobs/{timeout_jobs:1}/match",
+  "after": [
+   "/api/timeout-jobs",
+   "/api/jobs?status=pending&country=all"
+  ]
+ },
+ {
+  "name": "write-timeout-dismiss",
+  "method": "POST",
+  "path": "/api/timeout-jobs/{timeout_jobs:1}/dismiss",
+  "after": [
+   "/api/timeout-jobs",
+   "/api/timeout-jobs?review_status=dismissed"
+  ]
+ },
+ {
+  "name": "write-log-lookup",
+  "method": "POST",
+  "path": "/api/manual-apply/lookup",
+  "body": {
+   "urls": [
+    "https://www.linkedin.com/jobs/view/4100000005/",
+    "https://www.linkedin.com/jobs/view/4400000001/"
+   ]
+  }
+ },
+ {
+  "name": "write-log-link-only",
+  "method": "POST",
+  "path": "/api/manual-apply",
+  "body": {
+   "urls": [
+    "https://www.linkedin.com/jobs/view/4400000001/"
+   ],
+   "mode": "link_only",
+   "status": "applied",
+   "applied_date": "2026-11-12",
+   "title": "Data Engineer",
+   "company": "Wayne Enterprises"
+  },
+  "settle": {
+   "path": "/api/manual-apply/status",
+   "key": "running"
+  },
+  "after": [
+   "/api/jobs?status=all&country=all&q=wayne",
+   "/api/manual-apply/status"
+  ]
+ },
+ {
+  "name": "write-agent-push-unauthorized",
+  "method": "POST",
+  "path": "/api/agent/jobs",
+  "headers": {
+   "Authorization": "Bearer wrong"
+  },
+  "body": {
+   "jobs": [
+    "https://www.linkedin.com/jobs/view/4500000001/"
+   ]
+  }
+ },
+ {
+  "name": "write-agent-push",
+  "method": "POST",
+  "path": "/api/agent/jobs",
+  "headers": {
+   "Authorization": "Bearer e2e-agent-token"
+  },
+  "body": {
+   "jobs": [
+    {
+     "url": "https://www.linkedin.com/jobs/view/4500000001/",
+     "title": "ML Engineer",
+     "reason": "fits"
+    }
+   ]
+  },
+  "after": [
+   "/api/unmatched-jobs?agent_recommended=1",
+   "/api/jobs?status=all&country=all&q=ML%20Engineer"
+  ]
+ },
+ {
+  "name": "write-timeline-unknown-step",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:5}/timeline",
+  "body": {
+   "timeline": [
+    {
+     "step": "applied",
+     "at": "2026-11-09 10:00"
+    },
+    {
+     "step": "ghosted",
+     "at": "2026-11-12 09:30"
+    }
+   ]
+  },
+  "after": [
+   "/api/jobs/{matched_jobs:5}"
+  ]
+ },
+ {
+  "name": "write-replace-link-conflict",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:1}/link",
+  "body": {
+   "link": "https://www.linkedin.com/jobs/view/4100000005/"
+  },
+  "after": [
+   "/api/jobs/{matched_jobs:1}"
+  ]
+ },
+ {
+  "name": "write-replace-link-unchanged",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:1}/link",
+  "body": {
+   "link": "https://www.linkedin.com/jobs/view/4100000001/?trk=public"
+  }
+ },
+ {
+  "name": "write-highlights-not-list",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:2}/highlights",
+  "body": {
+   "highlights": "Hamburg"
+  }
+ },
+ {
+  "name": "write-applicant-position-invalid",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:5}/applicant-position",
+  "body": {
+   "applicant_position": "0"
+  }
+ },
+ {
+  "name": "write-info-empty",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:5}/info",
+  "body": {
+   "title": 5
+  }
+ },
+ {
+  "name": "write-batch-delete-invalid",
+  "method": "POST",
+  "path": "/api/jobs/batch-delete",
+  "body": {
+   "ids": [
+    "{matched_jobs:22}",
+    "nope"
+   ]
+  },
+  "after": [
+   "/api/stats"
+  ]
+ },
+ {
+  "name": "write-notes-missing-card",
+  "method": "PATCH",
+  "path": "/api/jobs/64a00000000000000000ffff/notes",
+  "body": {
+   "notes": "x"
+  }
+ }
 ]
