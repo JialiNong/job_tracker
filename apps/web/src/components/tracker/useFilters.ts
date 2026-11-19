@@ -64,16 +64,25 @@ export function useFilters() {
   const searchParams = useSearchParams();
   const { filters, page } = parseFilters(new URLSearchParams(searchParams.toString()));
 
-  const navigate = (next: Filters, nextPage: number) => {
-    const qs = serializeFilters(next, nextPage, new URLSearchParams(searchParams.toString())).toString();
+  /** One navigation for everything, so two changes in one event cannot overwrite each other. */
+  const navigate = (next: Filters, nextPage: number, other: Record<string, string | null> = {}) => {
+    const keep = new URLSearchParams(searchParams.toString());
+    for (const [name, value] of Object.entries(other)) {
+      if (value === null) keep.delete(name); else keep.set(name, value);
+    }
+    const qs = serializeFilters(next, nextPage, keep).toString();
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
 
   return {
     filters,
     page,
-    /** Change filters; the list goes back to page 1. */
-    setFilters: (patch: Partial<Filters>) => navigate({ ...filters, ...patch }, 1),
+    /**
+     * Change filters; the list goes back to page 1. `other` sets or (null)
+     * removes parameters this hook does not own, e.g. { view: null }.
+     */
+    setFilters: (patch: Partial<Filters>, other?: Record<string, string | null>) =>
+      navigate({ ...filters, ...patch }, 1, other),
     setPage: (next: number) => navigate(filters, next),
     /** Remove a one-off parameter (e.g. ?open= after the card was opened). */
     dropParam: (name: string) => {

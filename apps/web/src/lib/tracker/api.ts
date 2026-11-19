@@ -2,7 +2,18 @@
  * Browser-side calls to the Tracker API. Every helper throws an Error with
  * the server's message on a non-2xx answer, so callers only handle one path.
  */
-import type { Job, JobPage, Stats, TimelineItem } from "./types";
+import type { DayStats, SankeyData, Week } from "./overview";
+import type { Job, JobPage, Stats, StackStats, TimelineItem } from "./types";
+
+export interface JourneyStep { step: string; label: string; at: string; date: string }
+export interface Journey {
+  start_date: string;
+  end_date: string;
+  today: string;
+  duration_days: number;
+  total_applied: number;
+  tracks: { job_id: string; company: string; title: string; status: string; steps: JourneyStep[] }[];
+}
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(path, { cache: "no-store", ...init });
@@ -26,6 +37,11 @@ export const api = {
   getJob: (id: string) => request<Job>(`/api/jobs/${id}`),
   getDescription: (id: string) => request<{ description: string }>(`/api/jobs/${id}/description`),
   stats: () => request<Stats>("/api/stats"),
+  daily: (days: number) => request<{ days: DayStats[] }>(`/api/stats/daily?days=${days}`),
+  locations: () => request<{ total: number; locations: { name: string; count: number }[] }>("/api/stats/locations"),
+  flow: () => request<{ sankey: SankeyData; weekly: { weeks: Week[]; totals: Omit<Week, "week_start"> } }>("/api/stats/flow"),
+  journey: () => request<Journey>("/api/journey"),
+  stacks: (refresh = false) => request<StackStats>(`/api/stats/stacks${refresh ? "?refresh=1" : ""}`),
 
   setStatus: (id: string, status: string) =>
     send<{ status: string }>("PATCH", `/api/jobs/${id}/status`, { status }),

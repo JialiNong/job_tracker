@@ -82,4 +82,31 @@ export interface Stats {
   by_status: Record<string, number>;
   unmatched: number;
   timeouts: number;
+  funnel: {
+    title_clicked: number;
+    german_filtered: number;
+    ai_matched: number;
+    ai_unmatched: number;
+    applied: number;
+    interviewed: number;
+    offer: number;
+  };
+}
+
+export interface StackRow {
+  key: string;
+  label?: string;
+  applied: number;
+  rejected: number;
+}
+export interface StackSummary {
+  applied: number;
+  rejected: number;
+  [group: string]: StackRow[] | number;
+}
+export interface StackStats {
+  settled_after_days: number;
+  computed_at: string;
+  all: StackSummary;
+  settled: StackSummary;
 }

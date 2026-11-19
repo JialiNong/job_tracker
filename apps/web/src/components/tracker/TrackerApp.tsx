@@ -10,7 +10,7 @@
  * - Local UI state here: the open card, "Select jobs", the search box text.
  */
 import { useQueryClient } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useDialog } from "@/components/ui/Dialog";
 import { useToast } from "@/components/ui/Toast";
@@ -19,12 +19,20 @@ import { invalidateTracker, useJob, useJobPage, useStats } from "@/lib/tracker/q
 import { BatchBar } from "./BatchBar";
 import { type Filters, OPEN_VIEW_FILTERS, companyKey, toQuery } from "./filters";
 import { JobList } from "./JobList";
+import { OverviewView } from "./overview/OverviewView";
+import { StacksView } from "./StacksView";
 import { Sidebar } from "./Sidebar";
 import { type Layout, Toolbar } from "./Toolbar";
 import { TrackerContext } from "./TrackerContext";
 import { useFilters } from "./useFilters";
 
 const SEARCH_DEBOUNCE_MS = 600; // wait until typing pauses
+const VIEWS = [
+  { view: "jobs", tab: "tabJobs", panel: "jobsView", label: "Jobs" },
+  { view: "overview", tab: "tabOverview", panel: "overviewView", label: "Overview" },
+  { view: "stacks", tab: "tabStacks", panel: "stacksView", label: "Stacks" },
+] as const;
+type View = (typeof VIEWS)[number]["view"];
 const BATCH_DELETE_MAX = 80; // the API's cap per request
 
 export function TrackerApp() {
@@ -35,6 +43,28 @@ export function TrackerApp() {
 
   const list = useJobPage(toQuery(filters, page));
   const stats = useStats();
+
+  // ── Tabs (?view=overview|stacks; Jobs is the default) ────────────────
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const rawView = searchParams.get("view");
+  const view: View = rawView === "overview" || rawView === "stacks" ? rawView : "jobs";
+  const showView = (next: View) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (next === "jobs") params.delete("view"); else params.set("view", next);
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  };
+  const onTabKey = (e: React.KeyboardEvent) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
+    e.preventDefault();
+    const i = VIEWS.findIndex((v) => v.view === view);
+    const next = e.key === "Home" ? 0 : e.key === "End" ? VIEWS.length - 1
+      : (i + (e.key === "ArrowRight" ? 1 : -1) + VIEWS.length) % VIEWS.length;
+    showView(VIEWS[next]!.view);
+    document.getElementById(VIEWS[next]!.tab)?.focus();
+  };
 
   // ── Search box: local while typing, written to the URL after a pause ──
   const [searchText, setSearchText] = useState(filters.q);
@@ -54,7 +84,6 @@ export function TrackerApp() {
   // ── Open card and the ?open=<id> deep link ────────────────────────────
   const [expandedId, setExpandedId] = useState("");
   const [flashId, setFlashId] = useState("");
-  const searchParams = useSearchParams();
   const [openId] = useState(() => searchParams.get("open") ?? ""); // read once, then dropped from the URL
   const openHandled = useRef(false);
   const onPage = !!list.data?.jobs.some((j) => j._id === openId);
@@ -163,18 +192,24 @@ export function TrackerApp() {
       }}
     >
       <div className="app">
-        <Sidebar stats={stats.data ?? null} status={filters.status} onStatus={(status) => setFilters({ status })} showStatuses />
+        <Sidebar stats={stats.data ?? null} status={filters.status} onStatus={(status) => setFilters({ status })} showStatuses={view === "jobs"} />
         <main className="main">
           <div className="page-head">
-            <div className="tabs" role="tablist" aria-label="Tracker views">
-              <button type="button" role="tab" id="tabJobs" aria-selected="true">Jobs</button>
-              {/* Overview and Stacks move to the new stack in phase 3 */}
+            <div className="tabs" role="tablist" aria-label="Tracker views" onKeyDown={onTabKey}>
+              {VIEWS.map((v) => (
+                <button
+                  key={v.view} type="button" role="tab" id={v.tab} aria-controls={v.panel}
+                  aria-selected={view === v.view} tabIndex={view === v.view ? 0 : -1} onClick={() => showView(v.view)}
+                >
+                  {v.label}
+                </button>
+              ))}
             </div>
             <div className="page-actions">
               <button id="refreshBtn" className="ui-btn" onClick={() => void invalidateTracker(client)}>Refresh</button>
             </div>
           </div>
-          <div id="jobsView" className="tracker-view" role="tabpanel" aria-labelledby="tabJobs">
+          <div id="jobsView" className="tracker-view" role="tabpanel" aria-labelledby="tabJobs" hidden={view !== "jobs"}>
             <Toolbar
               filters={filters} searchText={searchText} onSearchText={setSearchText} onChange={setFilters}
               onRemoveCompany={(name) => setFilters({ companies: filters.companies.filter((c) => companyKey(c) !== companyKey(name)) })}
@@ -201,6 +236,14 @@ export function TrackerApp() {
               </div>
             ) : null}
           </div>
+          <OverviewView
+            open={view === "overview"} stats={stats.data ?? null}
+            onOpenAppliedDay={(day) => {
+              // Every job applied that day, whatever its status now
+              setFilters({ ...OPEN_VIEW_FILTERS, companies: [], appliedOn: day }, { view: null });
+            }}
+          />
+          <StacksView open={view === "stacks"} />
         </main>
       </div>
       <PanelScrim open={!!expandedId} onClose={() => setExpandedId("")} />
