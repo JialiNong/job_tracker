@@ -35,9 +35,11 @@
     "company_history_total": 1,
     "company_profile": {
      "business": "Ostara Health sells a B2B SaaS tool for small logistics companies.",
+     "is_recruiter_for_other_company": false,
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
+     "sources": [],
      "vertical": "Logistics software"
     },
     "country": "germany",
@@ -141,9 +143,11 @@
     "company_history_total": 2,
     "company_profile": {
      "business": "Granite Cloud sells a B2B SaaS tool for small logistics companies.",
+     "is_recruiter_for_other_company": false,
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
+     "sources": [],
      "vertical": "Logistics software"
     },
     "country": "germany",
@@ -227,9 +231,11 @@
     "company_history_total": 0,
     "company_profile": {
      "business": "Copperleaf sells a B2B SaaS tool for small logistics companies.",
+     "is_recruiter_for_other_company": false,
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
+     "sources": [],
      "vertical": "Logistics software"
     },
     "country": "germany",
@@ -325,9 +331,11 @@
     "company_history_total": 0,
     "company_profile": {
      "business": "Halcyon Pay sells a B2B SaaS tool for small logistics companies.",
+     "is_recruiter_for_other_company": false,
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
+     "sources": [],
      "vertical": "Logistics software"
     },
     "country": "germany",
@@ -428,9 +436,11 @@
     "company_history_total": 0,
     "company_profile": {
      "business": "Tidewater sells a B2B SaaS tool for small logistics companies.",
+     "is_recruiter_for_other_company": false,
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
+     "sources": [],
      "vertical": "Logistics software"
     },
     "country": "germany",
@@ -544,9 +554,11 @@
     "company_history_total": 2,
     "company_profile": {
      "business": "Northwind Labs sells a B2B SaaS tool for small logistics companies.",
+     "is_recruiter_for_other_company": false,
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
+     "sources": [],
      "vertical": "Logistics software"
     },
     "country": "germany",
@@ -642,9 +654,11 @@
     "company_history_total": 0,
     "company_profile": {
      "business": "Marlow Systems sells a B2B SaaS tool for small logistics companies.",
+     "is_recruiter_for_other_company": false,
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
+     "sources": [],
      "vertical": "Logistics software"
     },
     "country": "germany",
@@ -758,9 +772,11 @@
     "company_history_total": 2,
     "company_profile": {
      "business": "Granite Cloud sells a B2B SaaS tool for small logistics companies.",
+     "is_recruiter_for_other_company": false,
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
+     "sources": [],
      "vertical": "Logistics software"
     },
     "country": "germany",
@@ -846,9 +862,11 @@
     "company_history_total": 0,
     "company_profile": {
      "business": "Pinecrest sells a B2B SaaS tool for small logistics companies.",
+     "is_recruiter_for_other_company": false,
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
+     "sources": [],
      "vertical": "Logistics software"
     },
     "country": "remote",
@@ -954,9 +972,11 @@
     "company_history_total": 0,
     "company_profile": {
      "business": "Saffron Studio sells a B2B SaaS tool for small logistics companies.",
+     "is_recruiter_for_other_company": false,
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
+     "sources": [],
      "vertical": "Logistics software"
     },
     "country": "germany",

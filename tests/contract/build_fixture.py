@@ -47,6 +47,7 @@ def profile_for(company: str) -> dict:
         "business": f"{company} sells a B2B SaaS tool for small logistics companies.",
         "product_type": "b2b_saas", "vertical": "Logistics software",
         "markets": "europe", "markets_detail": "Customers in Germany and Austria.",
+        "is_recruiter_for_other_company": False, "sources": [],
     }
 
 
@@ -238,8 +239,7 @@ def build() -> dict:
         if not key or key in seen or not doc.get("company_profile"):
             continue
         seen.add(key)
-        profiles.append({"_id": key, **profile_for(doc["company"]), "is_recruiter_for_other_company": False,
-                         "sources": [], "cached_at": doc["matched_at"]})
+        profiles.append({"_id": key, **profile_for(doc["company"]), "cached_at": doc["matched_at"]})
 
     return {
         "now": FIXTURE_NOW.strftime("%Y-%m-%dT%H:%M:%S"),

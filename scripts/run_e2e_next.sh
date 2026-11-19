@@ -19,6 +19,9 @@ disown "$FAKE_OPENAI"
 (
   cd apps/web
   set -a; . ./.env.contract; set +a
+  # next dev (15.5.29+) expands $ in variables that are already set, which
+  # cuts the bcrypt hash ($2b$12$...) to a few characters: escape it here
+  case "${TRACKER_PASSWORD_HASH:-}" in *\\*) ;; *) export TRACKER_PASSWORD_HASH="${TRACKER_PASSWORD_HASH//\$/\\\$}" ;; esac
   node scripts/copy-legacy-static.mjs >/dev/null
   # The e2e suite logs in and clicks around: real wall clock, not the pinned one
   unset TRACKER_ALLOW_FIXED_NOW TRACKER_FIXED_NOW

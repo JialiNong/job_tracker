@@ -105,9 +105,11 @@
       "company_history_total": 2,
       "company_profile": {
        "business": "Northwind Labs sells a B2B SaaS tool for small logistics companies.",
+       "is_recruiter_for_other_company": false,
        "markets": "europe",
        "markets_detail": "Customers in Germany and Austria.",
        "product_type": "b2b_saas",
+       "sources": [],
        "vertical": "Logistics software"
       },
       "country": "germany",
@@ -199,9 +201,11 @@
       "company_history_total": 1,
       "company_profile": {
        "business": "Bluefin GmbH sells a B2B SaaS tool for small logistics companies.",
+       "is_recruiter_for_other_company": false,
        "markets": "europe",
        "markets_detail": "Customers in Germany and Austria.",
        "product_type": "b2b_saas",
+       "sources": [],
        "vertical": "Logistics software"
       },
       "country": "germany",
@@ -299,9 +303,11 @@
       "company_history_total": 1,
       "company_profile": {
        "business": "Kestrel AG sells a B2B SaaS tool for small logistics companies.",
+       "is_recruiter_for_other_company": false,
        "markets": "europe",
        "markets_detail": "Customers in Germany and Austria.",
        "product_type": "b2b_saas",
+       "sources": [],
        "vertical": "Logistics software"
       },
       "country": "germany",
@@ -397,9 +403,11 @@
       "company_history_total": 1,
       "company_profile": {
        "business": "Larkspur sells a B2B SaaS tool for small logistics companies.",
+       "is_recruiter_for_other_company": false,
        "markets": "europe",
        "markets_detail": "Customers in Germany and Austria.",
        "product_type": "b2b_saas",
+       "sources": [],
        "vertical": "Logistics software"
       },
       "country": "germany",
@@ -485,9 +493,11 @@
     "company": "Umbra Insurance",
     "company_profile": {
      "business": "Umbra Insurance sells a B2B SaaS tool for small logistics companies.",
+     "is_recruiter_for_other_company": false,
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
+     "sources": [],
      "vertical": "Logistics software"
     },
     "country": "germany",

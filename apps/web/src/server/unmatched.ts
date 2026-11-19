@@ -7,9 +7,10 @@
  * simply points at the same posting, so the AI result is shared, not copied.
  */
 import { berlinDayBounds, LINK_ONLY_ANALYSIS, now as clockNow, serializeJob } from "@tracker/core";
-import type { CompanyProfile, Prisma, PrismaClient } from "@tracker/db/client";
+import type { Prisma, PrismaClient } from "@tracker/db/client";
 import { newRecordId } from "./ids";
 import { matchThreshold } from "./stats";
+import { profileFields } from "./tracker-jobs";
 
 export const UNMATCHED_PAGE_SIZE = 20;
 const USER_STATUSES = ["", "watchlist"]; // "" = unmarked, "watchlist" = Can Apply
@@ -19,10 +20,6 @@ const POSTING_INCLUDE = {
   currentAnalysis: { include: { company: true } },
 } satisfies Prisma.JobInclude;
 type PostingRow = Omit<Prisma.JobGetPayload<{ include: typeof POSTING_INCLUDE }>, "description">;
-
-const profileFields = (p: CompanyProfile | null) => p && ({
-  business: p.business, product_type: p.productType, vertical: p.vertical, markets: p.markets, markets_detail: p.marketsDetail,
-});
 
 /** A posting in the card shape (no Tracker fields: it has no card). */
 function serializePosting(job: PostingRow) {

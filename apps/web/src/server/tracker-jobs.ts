@@ -172,7 +172,8 @@ const FULL_INCLUDE = {
 
 type FullRow = Prisma.ApplicationGetPayload<{ include: typeof FULL_INCLUDE }>;
 
-function profileFields(profile: CompanyProfile | null) {
+/** The company_profile fields a card shows (the Flask app's per-job snapshot keys). */
+export function profileFields(profile: CompanyProfile | null) {
   if (!profile) return null;
   return {
     business: profile.business,
@@ -180,6 +181,8 @@ function profileFields(profile: CompanyProfile | null) {
     vertical: profile.vertical,
     markets: profile.markets,
     markets_detail: profile.marketsDetail,
+    is_recruiter_for_other_company: profile.isRecruiterForOtherCompany,
+    sources: profile.sources,
   };
 }
 

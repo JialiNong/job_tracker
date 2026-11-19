@@ -15,6 +15,9 @@ TEST_DB="postgresql://tracker:tracker@127.0.0.1:54329/tracker_test"
 (
   cd apps/web
   set -a; . ./.env.contract; set +a
+  # next dev (15.5.29+) expands $ in variables that are already set, which
+  # cuts the bcrypt hash ($2b$12$...) to a few characters: escape it here
+  case "${TRACKER_PASSWORD_HASH:-}" in *\\*) ;; *) export TRACKER_PASSWORD_HASH="${TRACKER_PASSWORD_HASH//\$/\\\$}" ;; esac
   node scripts/copy-legacy-static.mjs >/dev/null
   # TZ=UTC on purpose: dates must not depend on the server's zone
   TZ=UTC NODE_ENV=development exec npx next dev --port "$PORT" >"$LOG" 2>&1

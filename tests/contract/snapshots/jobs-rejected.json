@@ -51,9 +51,11 @@
     "company_history_total": 2,
     "company_profile": {
      "business": "Granite Cloud sells a B2B SaaS tool for small logistics companies.",
+     "is_recruiter_for_other_company": false,
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
+     "sources": [],
      "vertical": "Logistics software"
     },
     "country": "germany",
@@ -154,9 +156,11 @@
     "company_history_total": 0,
     "company_profile": {
      "business": "Ember Analytics sells a B2B SaaS tool for small logistics companies.",
+     "is_recruiter_for_other_company": false,
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
+     "sources": [],
      "vertical": "Logistics software"
     },
     "country": "germany",
@@ -247,9 +251,11 @@
     "company_history_total": 0,
     "company_profile": {
      "business": "Juniper Mobility sells a B2B SaaS tool for small logistics companies.",
+     "is_recruiter_for_other_company": false,
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
+     "sources": [],
      "vertical": "Logistics software"
     },
     "country": "germany",
@@ -352,9 +358,11 @@
     "company_history_total": 1,
     "company_profile": {
      "business": "Kestrel AG sells a B2B SaaS tool for small logistics companies.",
+     "is_recruiter_for_other_company": false,
      "markets": "europe",
      "markets_detail": "Customers in Germany and Austria.",
      "product_type": "b2b_saas",
+     "sources": [],
      "vertical": "Logistics software"
     },
     "country": "germany",
