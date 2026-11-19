@@ -80,7 +80,18 @@ all seeding and checks go through a store object in `harness.py`
 E2E_STORE=pg_store:PostgresStore E2E_BASE_URL=http://127.0.0.1:3000 ./scripts/run_e2e.sh
 ```
 
-The new stack adds a store class with the same method names over Postgres.
+The new stack adds a store class with the same method names over Postgres:
+`tests/e2e/pg_store.py`. Against the Next.js app:
+
+```bash
+pnpm db:up
+./scripts/run_e2e_next.sh -k login -k tracker_shows -k status_chip -k record_ -k backfill \
+  -k undo -k side_status -k save_notes -k edit_job -k replace_posting -k delete_card -k stored_javascript
+```
+
+Status on 2026-11-19 (phase 2c): the React Tracker page passes all 16 login
+and Jobs tests. Unmatched, Timeouts, Log Job, the agent API and the
+Overview / Stacks tabs are phase 3, so their 8 tests still run on Flask only.
 
 ## Fixed in the Flask app while building the contracts
 

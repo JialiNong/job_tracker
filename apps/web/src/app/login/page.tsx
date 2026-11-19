@@ -10,7 +10,8 @@ export default async function LoginPage({ searchParams }: { searchParams: Search
   const { error, next } = await searchParams;
   return (
     <>
-      <link rel="stylesheet" href="/static/css/login.css" />
+      <link rel="stylesheet" href="/static/css/base.css" precedence="page" />
+      <link rel="stylesheet" href="/static/css/login.css" precedence="page" />
       <main className="login-container">
         <img className="login-mark" src="/static/img/logo.svg" alt="" width={56} height={56} />
         <h1 className="login-logo">Job Tracker</h1>
