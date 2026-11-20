@@ -249,7 +249,11 @@ export function transform(source: MongoSource): { rows: Rows; report: Report } {
     }
 
     const pick = (f: string) => (m && m[f] != null ? m[f] : scraped[f]);
-    const analysisDoc = m ?? scraped; // what the Tracker / Unmatched page shows
+    // What the Tracker / Unmatched page shows. A card made by "Can Apply" on
+    // the Unmatched page copied only some AI fields (no labels, gate or
+    // company profile); for the same run, fill those gaps from the posting,
+    // which now shares the card's analysis.
+    const analysisDoc = m ? withPostingGaps(m, scraped) : scraped;
     const aiPending = !!(m?.ai_pending ?? scraped.ai_pending);
     const analysed = !aiPending && analysisDoc.matched_at != null
       && (analysisDoc.match_score != null || analysisDoc.summary);
@@ -468,6 +472,17 @@ function resolveProfile(
   report.profilesRecreated.push({ key, from: jobId });
   return key;
 }
+
+/** AI fields a "Can Apply" card (src/web/routes/unmatched.py) never copied from the posting. */
+const POSTING_ONLY_AI_FIELDS = ["job_labels", "match_gate", "company_profile", "requirement_extract"] as const;
+
+function withPostingGaps(card: Doc, scraped: Doc): Doc {
+  if (differentRun(card, scraped)) return card;
+  const gaps = POSTING_ONLY_AI_FIELDS.filter((f) => isBlank(card[f]) && !isBlank(scraped[f]));
+  return gaps.length ? { ...card, ...Object.fromEntries(gaps.map((f) => [f, scraped[f]])) } : card;
+}
+
+const isBlank = (v: unknown) => v == null || v === "" || isEmptyObject(v);
 
 /**
  * The Tracker copy and the scraped copy hold results of different AI runs.

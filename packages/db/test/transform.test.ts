@@ -96,6 +96,31 @@ describe("AI runs (D2, D7, D13)", () => {
     expect(rows.companyProfiles).toEqual([expect.objectContaining({ key: "bluefin", business: "Boats" })]);
     expect(report.profilesRecreated).toEqual([{ key: "bluefin", from: id(8) }]);
   });
+
+  it("a 'Can Apply' card keeps the labels, gate and profile only the posting stored (same run)", () => {
+    const profile = { business: "Snacks", product_type: "b2c_ecommerce_marketplace" };
+    const labels = { role_type: "fullstack_balanced" };
+    const { rows } = transform(source({
+      company_profiles: [{ _id: "acme", ...profile }],
+      jobs: [scraped(9, { ...analysis, match_gate: "scored", job_labels: labels, company_profile: profile })],
+      matched_jobs: [{
+        ...scraped(9), ...analysis, _id: oid(109), matched_at: naive("2026-11-03T10:00:00"),
+        status: "applied", from_unmatched: true,
+      }],
+    }));
+    expect(rows.jobAnalyses).toHaveLength(1);
+    expect(rows.jobAnalyses[0]).toMatchObject({ matchGate: "scored", companyKey: "acme" });
+    expect(rows.jobAnalyses[0]!.details).toMatchObject({ job_labels: labels });
+  });
+
+  it("a card from a different run does not borrow the posting's fields", () => {
+    const { rows } = transform(source({
+      jobs: [scraped(10, { ...analysis, match_score: 5, summary: "Rerun", job_labels: { role_type: "backend" } })],
+      matched_jobs: [{ ...scraped(10), ...analysis, _id: oid(110), status: "pending" }],
+    }));
+    const shown = rows.jobAnalyses.find((a) => a.matchScore === 8)!;
+    expect(shown.details).not.toHaveProperty("job_labels");
+  });
 });
 
 describe("posting_key is unique (D8)", () => {
