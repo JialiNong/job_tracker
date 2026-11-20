@@ -49,6 +49,10 @@ PYTHONPATH=src python3 scripts/tools/export_pipeline_config.py
   silently never scored. A posting scraped more than 7 days before it is
   scored (`STALE_DAYS`, e.g. the 58 old "Viewed" rows at the cutover) goes to
   Unmatched, not the Tracker, even with a high score.
+- LinkedIn cards whose footer says "Applied" are not saved (`pg_store.save_job`):
+  jobs applied to on LinkedIn are logged by hand with Log job. Python saved
+  them but never scored them; Postgres has no card status column, so the
+  matcher could not tell them apart.
 
 - Telegram "this run's matches": Python tagged Tracker rows with a run id;
   the matcher now returns the cards it created and the digest lists those.

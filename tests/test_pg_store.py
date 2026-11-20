@@ -66,6 +66,12 @@ class PgStoreTest(unittest.TestCase):
         ).fetchone()
         self.assertEqual(row, ("Frontend Engineer", "12 applicants", "incomplete", True, "none", 24))
 
+    def test_applied_card_is_not_saved(self):
+        self.assertFalse(self.store.save_job(self._job(status="Applied")))
+        self.assertFalse(self.store.save_job(self._job(status="Applied 2 days ago")))
+        self.assertFalse(self.store.is_job_id_exists("pgstore-test-1", "linkedin"))
+        self.assertTrue(self.store.save_job(self._job(status="Viewed")))
+
     def test_same_posting_under_another_id_is_a_duplicate(self):
         link = "https://boards.greenhouse.io/pgstoretest/jobs/123"
         self.assertTrue(self.store.save_job(self._job(source="ats", job_id="pgstore-test-a", link=link)))
