@@ -40,6 +40,9 @@ EXTRA_PATHS = [
 ]
 # Fields that differ on purpose (see tests/contract/cases.json drop_keys_why)
 DROP_ONLY_FOR = {"/api/unmatched-jobs": {"status", "origin"}, "/api/stats/stacks": {"computed_at"}}
+# Flask prints details_fetched_at (stored as naive UTC) as if it were Berlin
+# time, one hour early in winter; the new app converts it. A fix, not a diff.
+DROP_EVERYWHERE = {"details_fetched_at"}
 
 
 def read_paths() -> list[str]:
@@ -62,8 +65,8 @@ def drop(value, keys: set):
 def keys_to_drop(path: str) -> set:
     for prefix, keys in DROP_ONLY_FOR.items():
         if path.startswith(prefix):
-            return keys
-    return set()
+            return keys | DROP_EVERYWHERE
+    return set(DROP_EVERYWHERE)
 
 
 def main() -> int:
