@@ -75,12 +75,24 @@ def is_job_id_exists(job_id, source="linkedin") -> bool:
     return row is not None
 
 
+def is_applied_card(job_data: dict) -> bool:
+    """
+    The LinkedIn card footer said "Applied": the user applied on LinkedIn and
+    logs that job by hand. Python never scored these (it scores status "new"
+    only); Postgres has no status column, so they are not saved at all.
+    """
+    return str(job_data.get("status") or "").strip().lower().startswith("applied")
+
+
 def save_job(job_data: dict) -> bool:
     """
     Store one scraped posting. False when it is already there (same source +
     job id, or the same ad under another URL: posting_key), like the Mongo
-    unique index.
+    unique index, or when the card says "Applied" (is_applied_card).
     """
+    if is_applied_card(job_data):
+        print(f"⏭  Skipped (card says Applied): {job_data.get('title', 'Untitled')}")
+        return False
     now = _now()
     source = job_data.get("source") or "linkedin"
     link = job_data.get("link") or ""
