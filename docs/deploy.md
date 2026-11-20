@@ -92,6 +92,28 @@ The sync logs counts only (`--quiet`): no job names or ids in the Actions log.
   Differences right after an edit in the Flask app are expected until the
   next sync. Anything else: note it and fix it before the cutover.
 
+- Compare the scrapers (once or twice, same day). Never point the new
+  pipeline at Neon now: the nightly sync overwrites it. Use the local
+  Docker Postgres (`apps/web/.env.local` already points there):
+
+  ```bash
+  pnpm db:up
+  pnpm db from-mongo                      # snapshot; note the time, e.g. 10:00
+  ./scripts/run_jobs.sh                   # old pipeline -> Mongo; wait until it ends
+  PYTHON=/opt/miniconda3/bin/python3 pnpm pipeline scrape   # new -> local Postgres
+  PYTHONPATH=src python3 scripts/tools/compare_pipeline_runs.py --since "2026-11-21 10:00"
+  ```
+
+  Order matters: the snapshot first (otherwise the new run finds every
+  posting already saved and adds nothing), the new run after the old one
+  (both share `logs/pipeline.pid`). `PYTHON` must be an interpreter with
+  `psycopg` installed. The new run sends its own Telegram digest.
+  Expected differences: the new run scores LinkedIn "Viewed" cards (more
+  jobs), a few postings appear in one run only (search results change
+  between runs), AI scores move a little. Investigate a source with far
+  fewer postings, or many jobs that land in Tracker on one side and
+  Unmatched on the other.
+
 ## 6. Cutover (one evening)
 
 1. Stop writing to the Flask app. Run **Sync Mongo to Postgres** by hand,
