@@ -85,9 +85,12 @@ The sync logs counts only (`--quiet`): no job names or ids in the Actions log.
 - Compare both apps after a sync (GET requests only):
 
   ```bash
-  LIVE_USERNAME=… LIVE_PASSWORD=… python3 tests/contract/compare_live.py \
+  python3 tests/contract/compare_live.py \
       --old https://<render-app>.onrender.com --new https://<vercel-app>.vercel.app
   ```
+
+  The username comes from `TRACKER_USERNAME` in `.env`; the password is
+  asked for (not echoed, so it stays out of the shell history).
 
   Differences right after an edit in the Flask app are expected until the
   next sync. Anything else: note it and fix it before the cutover.
