@@ -15,6 +15,14 @@ the password from LIVE_PASSWORD, else it is asked for (not echoed).
 Run it after the nightly Mongo -> Postgres sync (both sides then hold the
 same data). Differences right after a change in the old app are expected
 until the next sync.
+
+Differences that stay after a sync, on purpose:
+- cards the migration merged by posting_key (duplicate/repost of a posting
+  that already has a card) are gone, so card totals and the duplicate count
+  are lower on the new app;
+- "Can Apply" cards show the posting's job_labels / match_gate /
+  company_profile on the new app (packages/db/src/transform.ts
+  withPostingGaps), so those keys are "unexpected" there.
 """
 from __future__ import annotations
 
@@ -62,6 +70,19 @@ def drop(value, keys: set):
     return value
 
 
+def empty_profile_as_null(value):
+    """Flask returns the Mongo snapshot company_profile: {} for "no profile";
+    the new app returns null. Same meaning for the card, so compare them equal."""
+    if isinstance(value, dict):
+        return {
+            k: None if k == "company_profile" and v == {} else empty_profile_as_null(v)
+            for k, v in value.items()
+        }
+    if isinstance(value, list):
+        return [empty_profile_as_null(v) for v in value]
+    return value
+
+
 def keys_to_drop(path: str) -> set:
     for prefix, keys in DROP_ONLY_FOR.items():
         if path.startswith(prefix):
@@ -96,8 +117,8 @@ def main() -> int:
         s1, b1 = old.json("GET", path)
         s2, b2 = new.json("GET", path)
         dropped = keys_to_drop(path)
-        a = consumer_view(drop({"status": s1, "body": b1}, dropped), job_fields)
-        b = consumer_view(drop({"status": s2, "body": b2}, dropped), job_fields)
+        a = consumer_view(empty_profile_as_null(drop({"status": s1, "body": b1}, dropped)), job_fields)
+        b = consumer_view(empty_profile_as_null(drop({"status": s2, "body": b2}, dropped)), job_fields)
         if a == b:
             print(f"  same {path}")
             continue
