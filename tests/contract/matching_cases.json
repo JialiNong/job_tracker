@@ -5661,7 +5661,7 @@
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
-    "disqualification_reason": "blocked_company",
+    "disqualification_reason": "blocked_company: company is on the blocked list",
     "match_reasons": [
      "Score: hard fail: blocked company"
     ],
@@ -5698,7 +5698,7 @@
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
-    "disqualification_reason": "blocked_company",
+    "disqualification_reason": "blocked_company: company is on the blocked list",
     "match_reasons": [
      "Score: hard fail: blocked company"
     ],
@@ -6138,7 +6138,7 @@
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
-    "disqualification_reason": "blocked_company",
+    "disqualification_reason": "blocked_company: company is on the blocked list",
     "match_reasons": [
      "Business: Online checkout for shops.",
      "Customers/markets: unclear — 12 EU countries",
@@ -6672,7 +6672,7 @@
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
-    "disqualification_reason": "blocked_company",
+    "disqualification_reason": "blocked_company: company is on the blocked list",
     "match_reasons": [
      "Business: Online checkout for shops.",
      "Customers/markets: unclear — 12 EU countries",
@@ -7207,7 +7207,7 @@
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
-    "disqualification_reason": "blocked_company",
+    "disqualification_reason": "blocked_company: company is on the blocked list",
     "match_reasons": [
      "Business: Online checkout for shops.",
      "Customers/markets: unclear — 12 EU countries",
@@ -7741,7 +7741,7 @@
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
-    "disqualification_reason": "blocked_company",
+    "disqualification_reason": "blocked_company: company is on the blocked list",
     "match_reasons": [
      "Business: Online checkout for shops.",
      "Customers/markets: unclear — 12 EU countries",
@@ -8276,7 +8276,7 @@
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
-    "disqualification_reason": "blocked_company",
+    "disqualification_reason": "blocked_company: company is on the blocked list",
     "match_reasons": [
      "Business: Online checkout for shops.",
      "Customers/markets: unclear — 12 EU countries",
@@ -8808,7 +8808,7 @@
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
-    "disqualification_reason": "blocked_company: quote for german_required",
+    "disqualification_reason": "blocked_company: company is on the blocked list",
     "match_reasons": [
      "Business: Online checkout for shops.",
      "Customers/markets: unclear — 12 EU countries",
@@ -9333,7 +9333,7 @@
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
-    "disqualification_reason": "blocked_company: quote for too_many_years",
+    "disqualification_reason": "blocked_company: company is on the blocked list",
     "match_reasons": [
      "Business: Online checkout for shops.",
      "Customers/markets: unclear — 12 EU countries",
@@ -9862,7 +9862,7 @@
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
-    "disqualification_reason": "blocked_company",
+    "disqualification_reason": "blocked_company: company is on the blocked list",
     "match_reasons": [
      "Business: Online checkout for shops.",
      "Customers/markets: unclear — 12 EU countries",
@@ -11880,7 +11880,7 @@
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
-    "disqualification_reason": "blocked_company",
+    "disqualification_reason": "blocked_company: company is on the blocked list",
     "match_reasons": [
      "Stack: React, TypeScript",
      "Score: hard fail: blocked company"
@@ -11978,7 +11978,7 @@
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
-    "disqualification_reason": "blocked_company",
+    "disqualification_reason": "blocked_company: company is on the blocked list",
     "match_reasons": [
      "Business: Online checkout for shops.",
      "Customers/markets: europe — 12 EU countries",
@@ -12088,7 +12088,7 @@
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
-    "disqualification_reason": "blocked_company",
+    "disqualification_reason": "blocked_company: company is on the blocked list",
     "match_reasons": [
      "Business: Online checkout for shops.",
      "Customers/markets: germany_only",
@@ -12198,7 +12198,7 @@
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
-    "disqualification_reason": "blocked_company",
+    "disqualification_reason": "blocked_company: company is on the blocked list",
     "match_reasons": [
      "Business: Online checkout for shops.",
      "Customers/markets: unclear — 12 EU countries",
@@ -12308,7 +12308,7 @@
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
-    "disqualification_reason": "blocked_company",
+    "disqualification_reason": "blocked_company: company is on the blocked list",
     "match_reasons": [
      "Customers/markets: global — 12 EU countries",
      "Stack: React, TypeScript",

@@ -600,6 +600,9 @@ def to_analysis(result: Dict, threshold: float = 7.0) -> Optional[Dict]:
         disqualification = f"Mandatory German: {labels.get('german_evidence') or ''}".strip()
     elif gate == "non_english":
         disqualification = "Job description is not English"
+    elif gate == "blocked_company":
+        # Not an LLM verdict: the AI's hard_fail_evidence belongs to some other kind.
+        disqualification = "blocked_company: company is on the blocked list"
     elif gate not in ("scored",):
         evidence = labels.get("hard_fail_evidence") or ""
         disqualification = f"{gate}: {evidence}".strip(": ") if evidence else gate

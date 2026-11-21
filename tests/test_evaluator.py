@@ -84,6 +84,15 @@ class ScoreJobTests(unittest.TestCase):
             res = ev.score_job(job, labels(), COMPANY)
         self.assertIn("hard fail: blocked company", res["parts"])
 
+    def test_blocked_company_reason_ignores_ai_evidence(self):
+        job = {**JOB, "company": "Hyra"}
+        lab = labels(hard_fail=True, hard_fail_kind="leadership", hard_fail_evidence='"Leading technical projects"')
+        with patch.object(ev, "MATCH_BLOCKED_COMPANIES", ["Hyra"]):
+            res = {**ev.score_job(job, lab, None), "labels": lab, "company": None}
+        out = ev.to_analysis(res)
+        self.assertEqual(out["match_gate"], "blocked_company")
+        self.assertEqual(out["disqualification_reason"], "blocked_company: company is on the blocked list")
+
     def test_unusable_description(self):
         res = ev.score_job(JOB, labels(description_usable=False))
         self.assertEqual(res["score"], 0.0)
