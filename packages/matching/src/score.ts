@@ -164,6 +164,9 @@ export function toAnalysis(result: Partial<EvaluateResult>, threshold = 7.0): An
     disqualification = pyStrip(`Mandatory German: ${truthy(labels.german_evidence) ? pyStr(labels.german_evidence) : ""}`);
   } else if (gate === "non_english") {
     disqualification = "Job description is not English";
+  } else if (gate === "blocked_company") {
+    // Not an LLM verdict: the AI's hard_fail_evidence belongs to some other kind.
+    disqualification = "blocked_company: company is on the blocked list";
   } else if (gate !== "scored") {
     const evidence = truthy(labels.hard_fail_evidence) ? pyStr(labels.hard_fail_evidence) : "";
     disqualification = evidence ? stripColonSpace(`${gate}: ${evidence}`) : gate;
