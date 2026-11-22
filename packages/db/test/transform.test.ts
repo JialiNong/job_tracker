@@ -97,6 +97,21 @@ describe("AI runs (D2, D7, D13)", () => {
     expect(report.profilesRecreated).toEqual([{ key: "bluefin", from: id(8) }]);
   });
 
+  it("a card named by hand after scraping uses the cached profile under that name, not overwrite it", () => {
+    const cached = { business: "Recruiter (cached)", is_recruiter_for_other_company: true };
+    const { rows, report } = transform(source({
+      company_profiles: [{ _id: "code compass", ...cached }],
+      jobs: [scraped(11, { ...analysis, company: "", company_profile: { business: "Recruiter (snapshot)" } })],
+      matched_jobs: [{
+        ...scraped(11), ...analysis, _id: oid(111), company: "Code Compass",
+        company_profile: { business: "Recruiter (snapshot)" }, status: "applied",
+      }],
+    }));
+    expect(rows.jobAnalyses[0]!.companyKey).toBe("code compass");
+    expect(rows.companyProfiles).toEqual([expect.objectContaining({ key: "code compass", business: "Recruiter (cached)" })]);
+    expect(report.profilesRecreated).toEqual([]);
+  });
+
   it("a 'Can Apply' card keeps the labels, gate and profile only the posting stored (same run)", () => {
     const profile = { business: "Snacks", product_type: "b2c_ecommerce_marketplace" };
     const labels = { role_type: "fullstack_balanced" };

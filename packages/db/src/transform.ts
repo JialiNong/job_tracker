@@ -458,6 +458,9 @@ function resolveProfile(
     report.analysesWithoutProfile.push({ job: jobId, company });
     return null;
   }
+  // The pipeline saw no company name and the card's (edited) name already has
+  // a cached profile: use that row, never overwrite it with this snapshot.
+  if (profiles.has(key)) return key;
   profiles.set(key, {
     key,
     business: str(snap.business),
