@@ -4,6 +4,7 @@
  *   pnpm db from-mongo              # into DATABASE_URL (local docker by default)
  *   pnpm db from-mongo --dry-run    # transform + report only, write nothing
  *   pnpm db from-mongo --quiet      # counts only in the log (CI: no job names or ids)
+ *   pnpm db from-mongo --replace-remote   # allow a non-local DATABASE_URL (e.g. Neon)
  *
  * Mongo is only read (find). Postgres tables are replaced in one
  * transaction (src/load.ts), so the command can run every day during the
@@ -36,6 +37,14 @@ function hostOf(url: string): string {
   }
 }
 
+function safeHostname(url: string): string {
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return "";
+  }
+}
+
 function summarize(report: Report, quiet: boolean): string[] {
   return [
     `source:  ${Object.entries(report.source).map(([k, v]) => `${k} ${v}`).join(", ")}`,
@@ -63,6 +72,17 @@ async function main() {
   if (!mongoUri) throw new Error("MONGO_URI is not set (expected in the repo's .env)");
   if (!pgUrl) throw new Error("DATABASE_URL is not set (packages/db/.env)");
   const dbName = process.env.DATABASE_NAME || "job_scraper";
+
+  // Since the cutover Neon is the live database and this replaces every
+  // table. A remote target needs an explicit flag, so a shell or .env that
+  // still has DATABASE_URL pointing at Neon cannot wipe it by accident.
+  const local = ["localhost", "127.0.0.1", "::1", "[::1]"].includes(safeHostname(pgUrl));
+  if (!dryRun && !local && !process.argv.includes("--replace-remote")) {
+    throw new Error(
+      `DATABASE_URL points at ${quiet ? "a remote host" : hostOf(pgUrl)}, not a local database. ` +
+        "from-mongo replaces every table there. Pass --replace-remote only if that is what you want.",
+    );
+  }
 
   console.log(`Mongo   ${quiet ? "(hidden)" : hostOf(mongoUri)} / ${dbName} (read only)`);
   console.log(`Target  ${dryRun ? "(dry run, nothing written)" : quiet ? "(hidden)" : hostOf(pgUrl)}`);
