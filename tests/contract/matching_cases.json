@@ -1971,12 +1971,12 @@
     "_model": "test-model"
    },
    "output": {
-    "score": 5.3,
+    "score": 6.3,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    }
@@ -2506,12 +2506,12 @@
     "_model": "test-model"
    },
    "output": {
-    "score": 2.3,
+    "score": 3.3,
     "parts": [
      "role fullstack_balanced +5.5",
      "seniority junior -0.5",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    }
@@ -2773,12 +2773,12 @@
     "_model": "test-model"
    },
    "output": {
-    "score": 0.8,
+    "score": 1.8,
     "parts": [
      "role fullstack_balanced +5.5",
      "stack_fit weak -2.0",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    }
@@ -3041,12 +3041,12 @@
     "_model": "test-model"
    },
    "output": {
-    "score": 5.3,
+    "score": 6.3,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    }
@@ -3306,12 +3306,12 @@
     "_model": "test-model"
    },
    "output": {
-    "score": 5.3,
+    "score": 6.3,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    }
@@ -3823,13 +3823,13 @@
     "_model": "test-model"
    },
    "output": {
-    "score": 5.8,
+    "score": 6.8,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
      "AI product +0.5",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    }
@@ -4189,12 +4189,12 @@
     "_model": "test-model"
    },
    "output": {
-    "score": 5.3,
+    "score": 6.3,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    }
@@ -4460,11 +4460,11 @@
     "_model": "test-model"
    },
    "output": {
-    "score": 5.0,
+    "score": 6.0,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    }
@@ -4730,12 +4730,12 @@
     "_model": "test-model"
    },
    "output": {
-    "score": 5.3,
+    "score": 6.3,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    }
@@ -5256,11 +5256,11 @@
     "_model": "test-model"
    },
    "output": {
-    "score": 5.0,
+    "score": 6.0,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    }
@@ -5376,6 +5376,348 @@
      "stack_fit strong +1.0",
      "consumer_app +0.5",
      "markets global +0.7"
+    ]
+   }
+  },
+  {
+   "job": {
+    "company": "Acme",
+    "location": "Munich"
+   },
+   "labels": {
+    "description_usable": true,
+    "hard_fail": false,
+    "hard_fail_kind": "none",
+    "hard_fail_evidence": "",
+    "german_required": false,
+    "german_evidence": "",
+    "role_type": "frontend",
+    "stack_fit": "strong",
+    "seniority": "mid",
+    "backend_language_ask": "none",
+    "ai_product_work": false,
+    "english_team": "true",
+    "stack": "React, TypeScript",
+    "stack_matched": [
+     "React"
+    ],
+    "stack_missing": [],
+    "summary": "Frontend role on a React dashboard.",
+    "watch_outs": "none",
+    "_usage": {
+     "input_tokens": 10,
+     "output_tokens": 5
+    },
+    "_model": "test-model"
+   },
+   "company": {
+    "business": "Online checkout for shops.",
+    "product_type": "hardware_industrial_automotive",
+    "vertical": "ecommerce",
+    "markets": "germany_only",
+    "markets_detail": "",
+    "is_recruiter_for_other_company": false,
+    "sources": [
+     "https://example.com"
+    ],
+    "_usage": {
+     "input_tokens": 1,
+     "output_tokens": 1
+    },
+    "_model": "test-model"
+   },
+   "output": {
+    "score": 6.0,
+    "parts": [
+     "role frontend +7.0",
+     "stack_fit strong +1.0",
+     "hardware_industrial_automotive -1.5",
+     "markets germany_only -0.5"
+    ]
+   }
+  },
+  {
+   "job": {
+    "company": "Acme",
+    "location": "Munich"
+   },
+   "labels": {
+    "description_usable": true,
+    "hard_fail": false,
+    "hard_fail_kind": "none",
+    "hard_fail_evidence": "",
+    "german_required": false,
+    "german_evidence": "",
+    "role_type": "fullstack_frontend_leaning",
+    "stack_fit": "strong",
+    "seniority": "mid",
+    "backend_language_ask": "none",
+    "ai_product_work": false,
+    "english_team": "true",
+    "stack": "React, TypeScript",
+    "stack_matched": [
+     "React"
+    ],
+    "stack_missing": [],
+    "summary": "Frontend role on a React dashboard.",
+    "watch_outs": "none",
+    "_usage": {
+     "input_tokens": 10,
+     "output_tokens": 5
+    },
+    "_model": "test-model"
+   },
+   "company": {
+    "business": "Online checkout for shops.",
+    "product_type": "hardware_industrial_automotive",
+    "vertical": "ecommerce",
+    "markets": "germany_only",
+    "markets_detail": "",
+    "is_recruiter_for_other_company": false,
+    "sources": [
+     "https://example.com"
+    ],
+    "_usage": {
+     "input_tokens": 1,
+     "output_tokens": 1
+    },
+    "_model": "test-model"
+   },
+   "output": {
+    "score": 5.5,
+    "parts": [
+     "role fullstack_frontend_leaning +6.5",
+     "stack_fit strong +1.0",
+     "hardware_industrial_automotive -1.5",
+     "markets germany_only -0.5"
+    ]
+   }
+  },
+  {
+   "job": {
+    "company": "Acme",
+    "location": "Munich"
+   },
+   "labels": {
+    "description_usable": true,
+    "hard_fail": false,
+    "hard_fail_kind": "none",
+    "hard_fail_evidence": "",
+    "german_required": false,
+    "german_evidence": "",
+    "role_type": "fullstack_balanced",
+    "stack_fit": "strong",
+    "seniority": "mid",
+    "backend_language_ask": "none",
+    "ai_product_work": false,
+    "english_team": "true",
+    "stack": "React, TypeScript",
+    "stack_matched": [
+     "React"
+    ],
+    "stack_missing": [],
+    "summary": "Frontend role on a React dashboard.",
+    "watch_outs": "none",
+    "_usage": {
+     "input_tokens": 10,
+     "output_tokens": 5
+    },
+    "_model": "test-model"
+   },
+   "company": {
+    "business": "Online checkout for shops.",
+    "product_type": "hardware_industrial_automotive",
+    "vertical": "ecommerce",
+    "markets": "germany_only",
+    "markets_detail": "",
+    "is_recruiter_for_other_company": false,
+    "sources": [
+     "https://example.com"
+    ],
+    "_usage": {
+     "input_tokens": 1,
+     "output_tokens": 1
+    },
+    "_model": "test-model"
+   },
+   "output": {
+    "score": 4.5,
+    "parts": [
+     "role fullstack_balanced +5.5",
+     "stack_fit strong +1.0",
+     "hardware_industrial_automotive -1.5",
+     "markets germany_only -0.5"
+    ]
+   }
+  },
+  {
+   "job": {
+    "company": "Acme",
+    "location": "Munich"
+   },
+   "labels": {
+    "description_usable": true,
+    "hard_fail": false,
+    "hard_fail_kind": "none",
+    "hard_fail_evidence": "",
+    "german_required": false,
+    "german_evidence": "",
+    "role_type": "fullstack_backend_leaning",
+    "stack_fit": "strong",
+    "seniority": "mid",
+    "backend_language_ask": "none",
+    "ai_product_work": false,
+    "english_team": "true",
+    "stack": "React, TypeScript",
+    "stack_matched": [
+     "React"
+    ],
+    "stack_missing": [],
+    "summary": "Frontend role on a React dashboard.",
+    "watch_outs": "none",
+    "_usage": {
+     "input_tokens": 10,
+     "output_tokens": 5
+    },
+    "_model": "test-model"
+   },
+   "company": {
+    "business": "Online checkout for shops.",
+    "product_type": "hardware_industrial_automotive",
+    "vertical": "ecommerce",
+    "markets": "germany_only",
+    "markets_detail": "",
+    "is_recruiter_for_other_company": false,
+    "sources": [
+     "https://example.com"
+    ],
+    "_usage": {
+     "input_tokens": 1,
+     "output_tokens": 1
+    },
+    "_model": "test-model"
+   },
+   "output": {
+    "score": 2.5,
+    "parts": [
+     "role fullstack_backend_leaning +3.5",
+     "stack_fit strong +1.0",
+     "hardware_industrial_automotive -1.5",
+     "markets germany_only -0.5"
+    ]
+   }
+  },
+  {
+   "job": {
+    "company": "Acme",
+    "location": "Munich"
+   },
+   "labels": {
+    "description_usable": true,
+    "hard_fail": false,
+    "hard_fail_kind": "none",
+    "hard_fail_evidence": "",
+    "german_required": false,
+    "german_evidence": "",
+    "role_type": "backend",
+    "stack_fit": "strong",
+    "seniority": "mid",
+    "backend_language_ask": "none",
+    "ai_product_work": false,
+    "english_team": "true",
+    "stack": "React, TypeScript",
+    "stack_matched": [
+     "React"
+    ],
+    "stack_missing": [],
+    "summary": "Frontend role on a React dashboard.",
+    "watch_outs": "none",
+    "_usage": {
+     "input_tokens": 10,
+     "output_tokens": 5
+    },
+    "_model": "test-model"
+   },
+   "company": {
+    "business": "Online checkout for shops.",
+    "product_type": "hardware_industrial_automotive",
+    "vertical": "ecommerce",
+    "markets": "germany_only",
+    "markets_detail": "",
+    "is_recruiter_for_other_company": false,
+    "sources": [
+     "https://example.com"
+    ],
+    "_usage": {
+     "input_tokens": 1,
+     "output_tokens": 1
+    },
+    "_model": "test-model"
+   },
+   "output": {
+    "score": 0.0,
+    "parts": [
+     "role backend +2.0",
+     "stack_fit strong +1.0",
+     "hardware_industrial_automotive -2.5",
+     "markets germany_only -0.5"
+    ]
+   }
+  },
+  {
+   "job": {
+    "company": "Acme",
+    "location": "Munich"
+   },
+   "labels": {
+    "description_usable": true,
+    "hard_fail": false,
+    "hard_fail_kind": "none",
+    "hard_fail_evidence": "",
+    "german_required": false,
+    "german_evidence": "",
+    "role_type": "not_web_dev",
+    "stack_fit": "strong",
+    "seniority": "mid",
+    "backend_language_ask": "none",
+    "ai_product_work": false,
+    "english_team": "true",
+    "stack": "React, TypeScript",
+    "stack_matched": [
+     "React"
+    ],
+    "stack_missing": [],
+    "summary": "Frontend role on a React dashboard.",
+    "watch_outs": "none",
+    "_usage": {
+     "input_tokens": 10,
+     "output_tokens": 5
+    },
+    "_model": "test-model"
+   },
+   "company": {
+    "business": "Online checkout for shops.",
+    "product_type": "hardware_industrial_automotive",
+    "vertical": "ecommerce",
+    "markets": "germany_only",
+    "markets_detail": "",
+    "is_recruiter_for_other_company": false,
+    "sources": [
+     "https://example.com"
+    ],
+    "_usage": {
+     "input_tokens": 1,
+     "output_tokens": 1
+    },
+    "_model": "test-model"
+   },
+   "output": {
+    "score": 0.0,
+    "parts": [
+     "role not_web_dev +0.0",
+     "stack_fit strong +1.0",
+     "hardware_industrial_automotive -2.5",
+     "markets germany_only -0.5"
     ]
    }
   }
@@ -6013,19 +6355,19 @@
      },
      "_model": "test-model"
     },
-    "score": 5.3,
+    "score": 6.3,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    },
    "threshold": 7.0,
    "output": {
-    "match_score": 5.3,
-    "recommendation": "No",
+    "match_score": 6.3,
+    "recommendation": "Maybe",
     "special_match": false,
     "special_match_reasons": [],
     "disqualification_reason": "",
@@ -6033,7 +6375,7 @@
      "Business: Online checkout for shops.",
      "Customers/markets: germany_only",
      "Stack: React, TypeScript",
-     "Score: role frontend +7.0, stack_fit strong +1.0, location +0.3, hardware_industrial_automotive -2.5, markets germany_only -0.5"
+     "Score: role frontend +7.0, stack_fit strong +1.0, location +0.3, hardware_industrial_automotive -1.5, markets germany_only -0.5"
     ],
     "missing_requirements": [],
     "red_flags": [],
@@ -7082,18 +7424,18 @@
      },
      "_model": "test-model"
     },
-    "score": 2.3,
+    "score": 3.3,
     "parts": [
      "role fullstack_balanced +5.5",
      "seniority junior -0.5",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    },
    "threshold": 7.0,
    "output": {
-    "match_score": 2.3,
+    "match_score": 3.3,
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
@@ -7102,7 +7444,7 @@
      "Business: Online checkout for shops.",
      "Customers/markets: germany_only",
      "Stack: React, TypeScript",
-     "Score: role fullstack_balanced +5.5, seniority junior -0.5, location +0.3, hardware_industrial_automotive -2.5, markets germany_only -0.5"
+     "Score: role fullstack_balanced +5.5, seniority junior -0.5, location +0.3, hardware_industrial_automotive -1.5, markets germany_only -0.5"
     ],
     "missing_requirements": [],
     "red_flags": [],
@@ -7616,18 +7958,18 @@
      },
      "_model": "test-model"
     },
-    "score": 0.8,
+    "score": 1.8,
     "parts": [
      "role fullstack_balanced +5.5",
      "stack_fit weak -2.0",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    },
    "threshold": 7.0,
    "output": {
-    "match_score": 0.8,
+    "match_score": 1.8,
     "recommendation": "No",
     "special_match": false,
     "special_match_reasons": [],
@@ -7636,7 +7978,7 @@
      "Business: Online checkout for shops.",
      "Customers/markets: germany_only",
      "Stack: React, TypeScript",
-     "Score: role fullstack_balanced +5.5, stack_fit weak -2.0, location +0.3, hardware_industrial_automotive -2.5, markets germany_only -0.5"
+     "Score: role fullstack_balanced +5.5, stack_fit weak -2.0, location +0.3, hardware_industrial_automotive -1.5, markets germany_only -0.5"
     ],
     "missing_requirements": [],
     "red_flags": [],
@@ -8151,19 +8493,19 @@
      },
      "_model": "test-model"
     },
-    "score": 5.3,
+    "score": 6.3,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    },
    "threshold": 7.0,
    "output": {
-    "match_score": 5.3,
-    "recommendation": "No",
+    "match_score": 6.3,
+    "recommendation": "Maybe",
     "special_match": false,
     "special_match_reasons": [],
     "disqualification_reason": "",
@@ -8171,7 +8513,7 @@
      "Business: Online checkout for shops.",
      "Customers/markets: germany_only",
      "Stack: React, TypeScript",
-     "Score: role frontend +7.0, stack_fit strong +1.0, location +0.3, hardware_industrial_automotive -2.5, markets germany_only -0.5"
+     "Score: role frontend +7.0, stack_fit strong +1.0, location +0.3, hardware_industrial_automotive -1.5, markets germany_only -0.5"
     ],
     "missing_requirements": [],
     "red_flags": [],
@@ -8683,19 +9025,19 @@
      },
      "_model": "test-model"
     },
-    "score": 5.3,
+    "score": 6.3,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    },
    "threshold": 7.0,
    "output": {
-    "match_score": 5.3,
-    "recommendation": "No",
+    "match_score": 6.3,
+    "recommendation": "Maybe",
     "special_match": false,
     "special_match_reasons": [],
     "disqualification_reason": "",
@@ -8703,7 +9045,7 @@
      "Business: Online checkout for shops.",
      "Customers/markets: germany_only",
      "Stack: React, TypeScript",
-     "Score: role frontend +7.0, stack_fit strong +1.0, location +0.3, hardware_industrial_automotive -2.5, markets germany_only -0.5"
+     "Score: role frontend +7.0, stack_fit strong +1.0, location +0.3, hardware_industrial_automotive -1.5, markets germany_only -0.5"
     ],
     "missing_requirements": [],
     "red_flags": [],
@@ -9734,20 +10076,20 @@
      },
      "_model": "test-model"
     },
-    "score": 5.8,
+    "score": 6.8,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
      "AI product +0.5",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    },
    "threshold": 7.0,
    "output": {
-    "match_score": 5.8,
-    "recommendation": "No",
+    "match_score": 6.8,
+    "recommendation": "Maybe",
     "special_match": false,
     "special_match_reasons": [],
     "disqualification_reason": "",
@@ -9755,7 +10097,7 @@
      "Business: Online checkout for shops.",
      "Customers/markets: germany_only",
      "Stack: React, TypeScript",
-     "Score: role frontend +7.0, stack_fit strong +1.0, AI product +0.5, location +0.3, hardware_industrial_automotive -2.5, markets germany_only -0.5"
+     "Score: role frontend +7.0, stack_fit strong +1.0, AI product +0.5, location +0.3, hardware_industrial_automotive -1.5, markets germany_only -0.5"
     ],
     "missing_requirements": [],
     "red_flags": [
@@ -10468,19 +10810,19 @@
      },
      "_model": "test-model"
     },
-    "score": 5.3,
+    "score": 6.3,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    },
    "threshold": 7.0,
    "output": {
-    "match_score": 5.3,
-    "recommendation": "No",
+    "match_score": 6.3,
+    "recommendation": "Maybe",
     "special_match": false,
     "special_match_reasons": [],
     "disqualification_reason": "",
@@ -10488,7 +10830,7 @@
      "Business: Online checkout for shops.",
      "Customers/markets: germany_only",
      "Stack: React, TypeScript",
-     "Score: role frontend +7.0, stack_fit strong +1.0, location +0.3, hardware_industrial_automotive -2.5, markets germany_only -0.5"
+     "Score: role frontend +7.0, stack_fit strong +1.0, location +0.3, hardware_industrial_automotive -1.5, markets germany_only -0.5"
     ],
     "missing_requirements": [],
     "red_flags": [],
@@ -11006,18 +11348,18 @@
      },
      "_model": "test-model"
     },
-    "score": 5.0,
+    "score": 6.0,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    },
    "threshold": 7.0,
    "output": {
-    "match_score": 5.0,
-    "recommendation": "No",
+    "match_score": 6.0,
+    "recommendation": "Maybe",
     "special_match": false,
     "special_match_reasons": [],
     "disqualification_reason": "",
@@ -11025,7 +11367,7 @@
      "Business: Online checkout for shops.",
      "Customers/markets: germany_only",
      "Stack: React, TypeScript",
-     "Score: role frontend +7.0, stack_fit strong +1.0, hardware_industrial_automotive -2.5, markets germany_only -0.5"
+     "Score: role frontend +7.0, stack_fit strong +1.0, hardware_industrial_automotive -1.5, markets germany_only -0.5"
     ],
     "missing_requirements": [],
     "red_flags": [],
@@ -11543,19 +11885,19 @@
      },
      "_model": "test-model"
     },
-    "score": 5.3,
+    "score": 6.3,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
      "location +0.3",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    },
    "threshold": 7.0,
    "output": {
-    "match_score": 5.3,
-    "recommendation": "No",
+    "match_score": 6.3,
+    "recommendation": "Maybe",
     "special_match": false,
     "special_match_reasons": [],
     "disqualification_reason": "",
@@ -11563,7 +11905,7 @@
      "Business: Online checkout for shops.",
      "Customers/markets: germany_only",
      "Stack: React, TypeScript",
-     "Score: role frontend +7.0, stack_fit strong +1.0, location +0.3, hardware_industrial_automotive -2.5, markets germany_only -0.5"
+     "Score: role frontend +7.0, stack_fit strong +1.0, location +0.3, hardware_industrial_automotive -1.5, markets germany_only -0.5"
     ],
     "missing_requirements": [],
     "red_flags": [],
@@ -12603,18 +12945,18 @@
      },
      "_model": "test-model"
     },
-    "score": 5.0,
+    "score": 6.0,
     "parts": [
      "role frontend +7.0",
      "stack_fit strong +1.0",
-     "hardware_industrial_automotive -2.5",
+     "hardware_industrial_automotive -1.5",
      "markets germany_only -0.5"
     ]
    },
    "threshold": 7.0,
    "output": {
-    "match_score": 5.0,
-    "recommendation": "No",
+    "match_score": 6.0,
+    "recommendation": "Maybe",
     "special_match": false,
     "special_match_reasons": [],
     "disqualification_reason": "",
@@ -12622,7 +12964,7 @@
      "Business: Online checkout for shops.",
      "Customers/markets: germany_only",
      "Stack: React, TypeScript",
-     "Score: role frontend +7.0, stack_fit strong +1.0, hardware_industrial_automotive -2.5, markets germany_only -0.5"
+     "Score: role frontend +7.0, stack_fit strong +1.0, hardware_industrial_automotive -1.5, markets germany_only -0.5"
     ],
     "missing_requirements": [],
     "red_flags": [],
@@ -12890,6 +13232,684 @@
      "vertical": "ecommerce",
      "markets": "global",
      "markets_detail": "12 EU countries",
+     "is_recruiter_for_other_company": false,
+     "sources": [
+      "https://example.com"
+     ]
+    }
+   }
+  },
+  {
+   "result": {
+    "labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "frontend",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "none",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript",
+     "stack_matched": [
+      "React"
+     ],
+     "stack_missing": [],
+     "summary": "Frontend role on a React dashboard.",
+     "watch_outs": "none",
+     "_usage": {
+      "input_tokens": 10,
+      "output_tokens": 5
+     },
+     "_model": "test-model"
+    },
+    "company": {
+     "business": "Online checkout for shops.",
+     "product_type": "hardware_industrial_automotive",
+     "vertical": "ecommerce",
+     "markets": "germany_only",
+     "markets_detail": "",
+     "is_recruiter_for_other_company": false,
+     "sources": [
+      "https://example.com"
+     ],
+     "_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+     },
+     "_model": "test-model"
+    },
+    "score": 6.0,
+    "parts": [
+     "role frontend +7.0",
+     "stack_fit strong +1.0",
+     "hardware_industrial_automotive -1.5",
+     "markets germany_only -0.5"
+    ]
+   },
+   "threshold": 7.0,
+   "output": {
+    "match_score": 6.0,
+    "recommendation": "Maybe",
+    "special_match": false,
+    "special_match_reasons": [],
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Business: Online checkout for shops.",
+     "Customers/markets: germany_only",
+     "Stack: React, TypeScript",
+     "Score: role frontend +7.0, stack_fit strong +1.0, hardware_industrial_automotive -1.5, markets germany_only -0.5"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [],
+    "summary": "Frontend role on a React dashboard.",
+    "what_youll_do": {
+     "matched": [],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [],
+     "unmatched": []
+    },
+    "match_gate": "scored",
+    "needs_refetch": false,
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "frontend",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "none",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript",
+     "stack_matched": [
+      "React"
+     ],
+     "stack_missing": [],
+     "summary": "Frontend role on a React dashboard.",
+     "watch_outs": "none"
+    },
+    "company_profile": {
+     "business": "Online checkout for shops.",
+     "product_type": "hardware_industrial_automotive",
+     "vertical": "ecommerce",
+     "markets": "germany_only",
+     "markets_detail": "",
+     "is_recruiter_for_other_company": false,
+     "sources": [
+      "https://example.com"
+     ]
+    }
+   }
+  },
+  {
+   "result": {
+    "labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_frontend_leaning",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "none",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript",
+     "stack_matched": [
+      "React"
+     ],
+     "stack_missing": [],
+     "summary": "Frontend role on a React dashboard.",
+     "watch_outs": "none",
+     "_usage": {
+      "input_tokens": 10,
+      "output_tokens": 5
+     },
+     "_model": "test-model"
+    },
+    "company": {
+     "business": "Online checkout for shops.",
+     "product_type": "hardware_industrial_automotive",
+     "vertical": "ecommerce",
+     "markets": "germany_only",
+     "markets_detail": "",
+     "is_recruiter_for_other_company": false,
+     "sources": [
+      "https://example.com"
+     ],
+     "_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+     },
+     "_model": "test-model"
+    },
+    "score": 5.5,
+    "parts": [
+     "role fullstack_frontend_leaning +6.5",
+     "stack_fit strong +1.0",
+     "hardware_industrial_automotive -1.5",
+     "markets germany_only -0.5"
+    ]
+   },
+   "threshold": 7.0,
+   "output": {
+    "match_score": 5.5,
+    "recommendation": "No",
+    "special_match": false,
+    "special_match_reasons": [],
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Business: Online checkout for shops.",
+     "Customers/markets: germany_only",
+     "Stack: React, TypeScript",
+     "Score: role fullstack_frontend_leaning +6.5, stack_fit strong +1.0, hardware_industrial_automotive -1.5, markets germany_only -0.5"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [],
+    "summary": "Frontend role on a React dashboard.",
+    "what_youll_do": {
+     "matched": [],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [],
+     "unmatched": []
+    },
+    "match_gate": "scored",
+    "needs_refetch": false,
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_frontend_leaning",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "none",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript",
+     "stack_matched": [
+      "React"
+     ],
+     "stack_missing": [],
+     "summary": "Frontend role on a React dashboard.",
+     "watch_outs": "none"
+    },
+    "company_profile": {
+     "business": "Online checkout for shops.",
+     "product_type": "hardware_industrial_automotive",
+     "vertical": "ecommerce",
+     "markets": "germany_only",
+     "markets_detail": "",
+     "is_recruiter_for_other_company": false,
+     "sources": [
+      "https://example.com"
+     ]
+    }
+   }
+  },
+  {
+   "result": {
+    "labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "none",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript",
+     "stack_matched": [
+      "React"
+     ],
+     "stack_missing": [],
+     "summary": "Frontend role on a React dashboard.",
+     "watch_outs": "none",
+     "_usage": {
+      "input_tokens": 10,
+      "output_tokens": 5
+     },
+     "_model": "test-model"
+    },
+    "company": {
+     "business": "Online checkout for shops.",
+     "product_type": "hardware_industrial_automotive",
+     "vertical": "ecommerce",
+     "markets": "germany_only",
+     "markets_detail": "",
+     "is_recruiter_for_other_company": false,
+     "sources": [
+      "https://example.com"
+     ],
+     "_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+     },
+     "_model": "test-model"
+    },
+    "score": 4.5,
+    "parts": [
+     "role fullstack_balanced +5.5",
+     "stack_fit strong +1.0",
+     "hardware_industrial_automotive -1.5",
+     "markets germany_only -0.5"
+    ]
+   },
+   "threshold": 7.0,
+   "output": {
+    "match_score": 4.5,
+    "recommendation": "No",
+    "special_match": false,
+    "special_match_reasons": [],
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Business: Online checkout for shops.",
+     "Customers/markets: germany_only",
+     "Stack: React, TypeScript",
+     "Score: role fullstack_balanced +5.5, stack_fit strong +1.0, hardware_industrial_automotive -1.5, markets germany_only -0.5"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [],
+    "summary": "Frontend role on a React dashboard.",
+    "what_youll_do": {
+     "matched": [],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [],
+     "unmatched": []
+    },
+    "match_gate": "scored",
+    "needs_refetch": false,
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_balanced",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "none",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript",
+     "stack_matched": [
+      "React"
+     ],
+     "stack_missing": [],
+     "summary": "Frontend role on a React dashboard.",
+     "watch_outs": "none"
+    },
+    "company_profile": {
+     "business": "Online checkout for shops.",
+     "product_type": "hardware_industrial_automotive",
+     "vertical": "ecommerce",
+     "markets": "germany_only",
+     "markets_detail": "",
+     "is_recruiter_for_other_company": false,
+     "sources": [
+      "https://example.com"
+     ]
+    }
+   }
+  },
+  {
+   "result": {
+    "labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_backend_leaning",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "none",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript",
+     "stack_matched": [
+      "React"
+     ],
+     "stack_missing": [],
+     "summary": "Frontend role on a React dashboard.",
+     "watch_outs": "none",
+     "_usage": {
+      "input_tokens": 10,
+      "output_tokens": 5
+     },
+     "_model": "test-model"
+    },
+    "company": {
+     "business": "Online checkout for shops.",
+     "product_type": "hardware_industrial_automotive",
+     "vertical": "ecommerce",
+     "markets": "germany_only",
+     "markets_detail": "",
+     "is_recruiter_for_other_company": false,
+     "sources": [
+      "https://example.com"
+     ],
+     "_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+     },
+     "_model": "test-model"
+    },
+    "score": 2.5,
+    "parts": [
+     "role fullstack_backend_leaning +3.5",
+     "stack_fit strong +1.0",
+     "hardware_industrial_automotive -1.5",
+     "markets germany_only -0.5"
+    ]
+   },
+   "threshold": 7.0,
+   "output": {
+    "match_score": 2.5,
+    "recommendation": "No",
+    "special_match": false,
+    "special_match_reasons": [],
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Business: Online checkout for shops.",
+     "Customers/markets: germany_only",
+     "Stack: React, TypeScript",
+     "Score: role fullstack_backend_leaning +3.5, stack_fit strong +1.0, hardware_industrial_automotive -1.5, markets germany_only -0.5"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [],
+    "summary": "Frontend role on a React dashboard.",
+    "what_youll_do": {
+     "matched": [],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [],
+     "unmatched": []
+    },
+    "match_gate": "scored",
+    "needs_refetch": false,
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "fullstack_backend_leaning",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "none",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript",
+     "stack_matched": [
+      "React"
+     ],
+     "stack_missing": [],
+     "summary": "Frontend role on a React dashboard.",
+     "watch_outs": "none"
+    },
+    "company_profile": {
+     "business": "Online checkout for shops.",
+     "product_type": "hardware_industrial_automotive",
+     "vertical": "ecommerce",
+     "markets": "germany_only",
+     "markets_detail": "",
+     "is_recruiter_for_other_company": false,
+     "sources": [
+      "https://example.com"
+     ]
+    }
+   }
+  },
+  {
+   "result": {
+    "labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "backend",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "none",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript",
+     "stack_matched": [
+      "React"
+     ],
+     "stack_missing": [],
+     "summary": "Frontend role on a React dashboard.",
+     "watch_outs": "none",
+     "_usage": {
+      "input_tokens": 10,
+      "output_tokens": 5
+     },
+     "_model": "test-model"
+    },
+    "company": {
+     "business": "Online checkout for shops.",
+     "product_type": "hardware_industrial_automotive",
+     "vertical": "ecommerce",
+     "markets": "germany_only",
+     "markets_detail": "",
+     "is_recruiter_for_other_company": false,
+     "sources": [
+      "https://example.com"
+     ],
+     "_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+     },
+     "_model": "test-model"
+    },
+    "score": 0.0,
+    "parts": [
+     "role backend +2.0",
+     "stack_fit strong +1.0",
+     "hardware_industrial_automotive -2.5",
+     "markets germany_only -0.5"
+    ]
+   },
+   "threshold": 7.0,
+   "output": {
+    "match_score": 0.0,
+    "recommendation": "No",
+    "special_match": false,
+    "special_match_reasons": [],
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Business: Online checkout for shops.",
+     "Customers/markets: germany_only",
+     "Stack: React, TypeScript",
+     "Score: role backend +2.0, stack_fit strong +1.0, hardware_industrial_automotive -2.5, markets germany_only -0.5"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [],
+    "summary": "Frontend role on a React dashboard.",
+    "what_youll_do": {
+     "matched": [],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [],
+     "unmatched": []
+    },
+    "match_gate": "scored",
+    "needs_refetch": false,
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "backend",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "none",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript",
+     "stack_matched": [
+      "React"
+     ],
+     "stack_missing": [],
+     "summary": "Frontend role on a React dashboard.",
+     "watch_outs": "none"
+    },
+    "company_profile": {
+     "business": "Online checkout for shops.",
+     "product_type": "hardware_industrial_automotive",
+     "vertical": "ecommerce",
+     "markets": "germany_only",
+     "markets_detail": "",
+     "is_recruiter_for_other_company": false,
+     "sources": [
+      "https://example.com"
+     ]
+    }
+   }
+  },
+  {
+   "result": {
+    "labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "not_web_dev",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "none",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript",
+     "stack_matched": [
+      "React"
+     ],
+     "stack_missing": [],
+     "summary": "Frontend role on a React dashboard.",
+     "watch_outs": "none",
+     "_usage": {
+      "input_tokens": 10,
+      "output_tokens": 5
+     },
+     "_model": "test-model"
+    },
+    "company": {
+     "business": "Online checkout for shops.",
+     "product_type": "hardware_industrial_automotive",
+     "vertical": "ecommerce",
+     "markets": "germany_only",
+     "markets_detail": "",
+     "is_recruiter_for_other_company": false,
+     "sources": [
+      "https://example.com"
+     ],
+     "_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+     },
+     "_model": "test-model"
+    },
+    "score": 0.0,
+    "parts": [
+     "role not_web_dev +0.0",
+     "stack_fit strong +1.0",
+     "hardware_industrial_automotive -2.5",
+     "markets germany_only -0.5"
+    ]
+   },
+   "threshold": 7.0,
+   "output": {
+    "match_score": 0.0,
+    "recommendation": "No",
+    "special_match": false,
+    "special_match_reasons": [],
+    "disqualification_reason": "",
+    "match_reasons": [
+     "Business: Online checkout for shops.",
+     "Customers/markets: germany_only",
+     "Stack: React, TypeScript",
+     "Score: role not_web_dev +0.0, stack_fit strong +1.0, hardware_industrial_automotive -2.5, markets germany_only -0.5"
+    ],
+    "missing_requirements": [],
+    "red_flags": [],
+    "nice_to_have_matches": [],
+    "summary": "Frontend role on a React dashboard.",
+    "what_youll_do": {
+     "matched": [],
+     "unmatched": []
+    },
+    "what_theyre_looking_for": {
+     "matched": [],
+     "unmatched": []
+    },
+    "match_gate": "scored",
+    "needs_refetch": false,
+    "job_labels": {
+     "description_usable": true,
+     "hard_fail": false,
+     "hard_fail_kind": "none",
+     "hard_fail_evidence": "",
+     "german_required": false,
+     "german_evidence": "",
+     "role_type": "not_web_dev",
+     "stack_fit": "strong",
+     "seniority": "mid",
+     "backend_language_ask": "none",
+     "ai_product_work": false,
+     "english_team": "true",
+     "stack": "React, TypeScript",
+     "stack_matched": [
+      "React"
+     ],
+     "stack_missing": [],
+     "summary": "Frontend role on a React dashboard.",
+     "watch_outs": "none"
+    },
+    "company_profile": {
+     "business": "Online checkout for shops.",
+     "product_type": "hardware_industrial_automotive",
+     "vertical": "ecommerce",
+     "markets": "germany_only",
+     "markets_detail": "",
      "is_recruiter_for_other_company": false,
      "sources": [
       "https://example.com"

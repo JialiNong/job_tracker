@@ -399,6 +399,8 @@ Never guess; say unclear."""
 
 _PREFERRED_CITIES = re.compile(r"\b(leipzig|halle|berlin)\b", re.I)
 _REMOTE = re.compile(r"\bremote\b", re.I)
+# Roles where a hardware company gets the softer hardware_web_role penalty
+_WEB_ROLE_TYPES = {"frontend", "fullstack_frontend_leaning", "fullstack_balanced", "fullstack_backend_leaning"}
 
 
 def score_job(job: Dict, labels: Optional[Dict], company: Optional[Dict] = None) -> Dict:
@@ -444,6 +446,8 @@ def score_job(job: Dict, labels: Optional[Dict], company: Optional[Dict] = None)
 
     if company:
         delta = w["product_type"].get(company.get("product_type"), 0.0)
+        if company.get("product_type") == "hardware_industrial_automotive" and labels.get("role_type") in _WEB_ROLE_TYPES:
+            delta = w["hardware_web_role"]
         if delta:
             score += delta
             parts.append(f"{company.get('product_type')} {delta:+.1f}")

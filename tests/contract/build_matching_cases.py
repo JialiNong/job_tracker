@@ -228,6 +228,9 @@ def score_inputs():
         yield jobs[i % len(jobs)], labels, companies[i % len(companies)]
     for job, company in itertools.product(jobs, companies):
         yield job, BASE_LABELS, company
+    # hardware company: softer penalty only for web frontend / fullstack roles
+    for role in ROLE_TYPES:
+        yield jobs[1], {**BASE_LABELS, "role_type": role}, companies[2]
 
 
 def score_cases():

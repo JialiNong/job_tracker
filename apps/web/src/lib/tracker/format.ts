@@ -326,3 +326,69 @@ export function fitTags(job: Pick<Job, "job_labels" | "company_profile">) {
   if (!showStack && !rerunHint && !business.length) return null;
   return { matched, missing, business, rerunHint };
 }
+
+/** One term of the matcher's score ("role frontend +7.0" → Frontend role, +7). */
+export interface ScorePart {
+  label: string;
+  /** null for a term without a number (hard fail, classification failed) */
+  delta: number | null;
+  /** the role's base score, shown neutral rather than as a plus */
+  base: boolean;
+  raw: string;
+}
+
+const SCORE_TERM_LABELS: Record<string, string> = {
+  "role frontend": "Frontend role",
+  "role fullstack_frontend_leaning": "Fullstack, frontend-leaning",
+  "role fullstack_balanced": "Fullstack, balanced",
+  "role fullstack_backend_leaning": "Fullstack, backend-leaning",
+  "role backend": "Backend role",
+  "role not_web_dev": "Not web dev",
+  "backend implied_non_js": "Non-JS backend listed",
+  location: "Preferred location",
+  b2b_saas: "B2B SaaS",
+  b2c_ecommerce_marketplace: "B2C e-commerce",
+  consumer_app: "Consumer app",
+  fintech: "Fintech",
+  other_software_product: "Other software",
+  agency_consulting_outsourcing: "Agency / consulting",
+  staffing_recruiter: "Staffing / recruiter",
+  hardware_industrial_automotive: "Hardware / industrial",
+  public_sector_research: "Public sector / research",
+  other: "Other business",
+  "recruiter posting": "Recruiter posting",
+  "markets germany_only": "Germany-only market",
+};
+
+function scoreTermLabel(term: string): string {
+  const known = SCORE_TERM_LABELS[term];
+  if (known) return known;
+  const field = term.match(/^(stack_fit|seniority|markets) (.+)$/);
+  if (field) {
+    const name = { stack_fit: "Stack fit", seniority: "Seniority", markets: "Markets" }[field[1]!]!;
+    return `${name}: ${field[2]!.replace(/_/g, " ")}`;
+  }
+  const text = term.replace(/_/g, " ");
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+/** The "Score: …" line of match_reasons, split into its terms. Empty when there is none. */
+export function scoreParts(reasons: string[] | null | undefined): ScorePart[] {
+  const line = (reasons ?? []).find((r) => typeof r === "string" && r.startsWith("Score: "));
+  if (!line) return [];
+  return line.slice("Score: ".length).split(", ").map((raw) => raw.trim()).filter(Boolean).map((raw) => {
+    const m = raw.match(/^(.*) ([+-]\d+(?:\.\d+)?)$/);
+    if (!m) return { label: scoreTermLabel(raw), delta: null, base: false, raw };
+    return { label: scoreTermLabel(m[1]!), delta: Number(m[2]), base: m[1]!.startsWith("role "), raw };
+  });
+}
+
+/** match_reasons without the score line (shown as ScoreParts instead). */
+export function reasonsWithoutScore(reasons: string[] | null | undefined): string[] {
+  return (reasons ?? []).filter((r) => !(typeof r === "string" && r.startsWith("Score: ")));
+}
+
+/** +7.0 / −2.5 with a real minus sign. */
+export function formatScoreDelta(delta: number): string {
+  return `${delta < 0 ? "−" : "+"}${Math.abs(delta).toFixed(1)}`;
+}

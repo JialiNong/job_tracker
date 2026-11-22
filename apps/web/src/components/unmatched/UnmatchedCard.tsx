@@ -1,9 +1,9 @@
 /** One Unmatched card: the row, and the details panel with "Can apply" when expanded. */
-import { Breakdown } from "@/components/tracker/card/AiResult";
+import { Breakdown, ScoreParts } from "@/components/tracker/card/AiResult";
 import { ScoreRing } from "@/components/tracker/card/ScoreRing";
 import type { UnmatchedJob } from "@/lib/pages/api";
 import {
-  RECOMMENDED_BY_LABEL, applicantsRow, formatApplicants, jobChannel, postedAgo, safeUrl, viaText,
+  RECOMMENDED_BY_LABEL, applicantsRow, formatApplicants, jobChannel, postedAgo, reasonsWithoutScore, safeUrl, viaText,
 } from "@/lib/tracker/format";
 
 const GATE_PILLS: Record<string, string> = {
@@ -132,6 +132,7 @@ export function UnmatchedCard({ job, expanded, flash, onToggle, onClose, onMark 
           {reason ? <div className="reason-box"><strong>Why it was rejected</strong>{reason}</div> : null}
           {agentReason ? <div className="agent-reason"><strong>Why the agent recommended this</strong>{agentReason}</div> : null}
           {summary && summary !== reason ? <div className="card-summary">{summary}</div> : null}
+          <ScoreParts reasons={job.match_reasons} />
           {!hasAnalysis ? (
             <div className="card-summary">This match has not saved detailed analysis yet. Run matcher again to write full analysis.</div>
           ) : null}
@@ -140,7 +141,7 @@ export function UnmatchedCard({ job, expanded, flash, onToggle, onClose, onMark 
           <Breakdown title="What they're looking for" section={job.what_theyre_looking_for} openGaps={false} />
           <TagList label="Missing requirements" items={job.missing_requirements} cls="bd-no" />
           <TagList label="Red flags" items={job.red_flags} cls="bd-no" />
-          <TagList label="Company & score" items={job.match_reasons} cls="" />
+          <TagList label="Company & stack" items={reasonsWithoutScore(job.match_reasons)} cls="" />
 
           <a className="btn-apply" href={safeUrl(job.link)} target="_blank" rel="noopener">View Original</a>
 
