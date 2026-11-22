@@ -156,11 +156,14 @@ A `goto` timeout no longer aborts the extract — the listing is often already o
 
 ### 2.4 Agent ingest (Cursor / Claude daily)
 
-Scheduled Cursor and Claude screens `POST /api/agent/jobs` on Render (`Authorization: Bearer AGENT_API_TOKEN`). Each agent already filtered with its own model, so this path **does not** run title gates or the matcher. It is a third ingest lane next to GitHub Actions and the on-demand browser scrapers, not a coding-agent side effect.
+Scheduled Cursor and Claude screens `POST /api/agent/jobs` on Vercel (`Authorization: Bearer AGENT_API_TOKEN`). Each agent already filtered with its own model, so this path **does not** run title gates or the matcher. It is a third ingest lane next to GitHub Actions and the on-demand browser scrapers, not a coding-agent side effect.
 
 - New URL → `matched_jobs` link-only stub (`origin=agent`, `recommended_by` = `cursor` / `claude` / `gemini` / `gpt`)
 - URL already on Tracker, in `jobs`, or in `timeout_jobs` → no overwrite of a scraped JD
 - URL already Unmatched → stamp `agent_recommended_by` / `agent_recommend_reason`, return `below_threshold` so the agent can report the disagreement
+- `to.indeed.com` link that leads to an encrypted Indeed click URL (Cloudflare challenge, no `jk=`) → with title + company, saved under `unresolved-<hash of company + title>` and returned in `needs_link`; the card shows **Fix link** until the real `viewjob?jk=` link is pasted
+- URL that cannot be saved → listed in `urls.failed`, and `failed_reasons` gives `{url, reason, message, title, company}` per URL (`not_http`, `short_link_unresolved`, `no_job_id`, `save_failed`)
+- Every call → one `agent_push_runs` row; `GET /api/stats/agent-pushes` (login required) returns today's rows for the Tracker banner
 
 Local twin: `python3 scripts/tools/log_recommended_jobs.py`. Source list: [`job_sources.md`](./job_sources.md).
 

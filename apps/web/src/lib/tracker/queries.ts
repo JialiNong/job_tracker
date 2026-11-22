@@ -23,6 +23,8 @@ export const trackerKeys = {
   page: (query: string) => ["jobs", query] as const,
   job: (id: string) => ["job", id] as const,
   stats: ["stats"] as const,
+  /** Under "stats", so every write that refreshes the counts refreshes the banner too */
+  agentPushes: ["stats", "agent-pushes"] as const,
   /** Overview charts: refetched after writes like the counts */
   overview: ["overview"] as const,
   stacks: ["stacks"] as const,
@@ -35,6 +37,11 @@ export function useJobPage(query: URLSearchParams) {
     queryFn: ({ signal }) => api.listJobs(query, signal), // an obsolete request is aborted
     placeholderData: keepPreviousData, // no spinner flash when filters change
   });
+}
+
+/** Today's agent pushes; refetched every few minutes so the morning push shows without a reload. */
+export function useAgentPushes() {
+  return useQuery({ queryKey: trackerKeys.agentPushes, queryFn: api.agentPushes, refetchInterval: 5 * 60_000 });
 }
 
 export function useStats() {

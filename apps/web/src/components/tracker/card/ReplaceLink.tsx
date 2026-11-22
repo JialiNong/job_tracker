@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/tracker/api";
+import { needsLinkFix } from "@/lib/tracker/format";
 import { useTrackerWrite } from "@/lib/tracker/queries";
 import type { Job } from "@/lib/tracker/types";
 import { useSavedFlash } from "./useSavedFlash";
@@ -35,7 +36,11 @@ export function ReplaceLink({ job }: { job: Job }) {
           {write.isPending ? "⏳" : saved ? "Saved ✓" : "Save"}
         </button>
       </div>
-      <span className="rl-hint">If the original posting is closed, paste the live company-page URL, save, then Fetch job details.</span>
+      <span className="rl-hint">
+        {needsLinkFix(job.link)
+          ? "This Indeed short link has no job id. Open it in the browser, copy the https://de.indeed.com/viewjob?jk=… URL and save it here."
+          : "If the original posting is closed, paste the live company-page URL, save, then Fetch job details."}
+      </span>
     </div>
   );
 }

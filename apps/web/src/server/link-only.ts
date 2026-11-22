@@ -31,6 +31,12 @@ export interface LinkOnlyOptions {
   identity?: Identity;
   recommendReason?: string;
   country?: string;
+  /**
+   * Use this source / job id instead of reading one from the URL, and store the
+   * URL as given. For links that carry no job id (an Indeed short link whose
+   * redirect is blocked); the card is fixed later with Replace posting link.
+   */
+  pinnedId?: { source: string; jobId: string };
 }
 
 export interface LinkOnlyResult {
@@ -99,8 +105,8 @@ export async function saveLinkOnly(prisma: PrismaClient, urls: string[], opts: L
     const url = normalizePastedJobUrl(raw);
     if (!url) continue;
     log(`[${i + 1}/${urls.length}] ${url}`);
-    let source = detectSource(url);
-    let jobId = resolveJobId(url, source);
+    let source = opts.pinnedId?.source ?? detectSource(url);
+    let jobId = opts.pinnedId?.jobId ?? resolveJobId(url, source);
     if (!jobId) {
       log("  Failed: cannot read a job id from this URL");
       result.failed.push(url);
@@ -128,7 +134,7 @@ export async function saveLinkOnly(prisma: PrismaClient, urls: string[], opts: L
       continue;
     }
 
-    const link = canonicalJobLink(url, source, jobId);
+    const link = opts.pinnedId ? url : canonicalJobLink(url, source, jobId);
     const title = opts.identity?.values.title ?? linkOnlyTitle(link, source, jobId);
     const applied = opts.status === "applied";
     try {

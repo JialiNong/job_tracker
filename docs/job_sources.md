@@ -14,7 +14,7 @@ There are **5 ways to get jobs**, plus 2 ways to rescue jobs the pipeline alread
 | 2 | **Public job APIs** | Arbeitnow, Bundesagentur für Arbeit (Adzuna: opt-in, paid) | GitHub Actions, **daily 09:17 UTC** (10:17 Berlin in winter; Mac can be off), or by hand | Nothing (Adzuna: paid key) | `arbeitnow`, `arbeitsagentur`, `adzuna` | `api` |
 | 3 | **Company ATS boards** | Greenhouse, Lever, Ashby, Personio, Recruitee, Workable — for companies on the watchlist | Same daily GitHub Actions run | Watchlist `config/ats_companies.json` | `ats` (+ `ats_provider`, `ats_slug`) | `api` |
 | 4 | **Manual Log Job** | Any job URL you paste | Tracker web UI **Log Job**, or `scripts/tools/log_jobs.py` | — | `linkedin` / `indeed` / `manual` | `manual` |
-| 5 | **Agent push** | Cursor and Claude daily screens (Gemini / GPT also accepted) | Scheduled `POST /api/agent/jobs` on Render, or `scripts/tools/log_recommended_jobs.py` locally | `AGENT_API_TOKEN` | from the URL | `agent` |
+| 5 | **Agent push** | Cursor and Claude daily screens (Gemini / GPT also accepted) | Scheduled `POST /api/agent/jobs` on Vercel, or `scripts/tools/log_recommended_jobs.py` locally | `AGENT_API_TOKEN` | from the URL | `agent` |
 
 Rescue paths (not new sources):
 
@@ -191,6 +191,12 @@ Why it skips the matcher: the agent already decided the role is a fit. Re-scorin
 | New URL | Tracker card, `pending`, `ai_pending` |
 | Already on Tracker / in `timeout_jobs` | Skip, no overwrite |
 | Already on Unmatched | Skip copy; stamp `agent_recommended_by` so Overview and the Unmatched **Agent recommended** chip show the disagreement |
+| Indeed short link with no job id, title + company sent | Tracker card under a stand-in id from title + company (`unresolved-<hash>`, so a re-push with a new short link is a duplicate), **Fix link** pill; paste the `viewjob?jk=` URL under Replace posting link |
+| Cannot be saved | Listed in `failed_reasons` (`not_http`, `short_link_unresolved` without title/company, `no_job_id`, `save_failed`) |
+
+Every push is recorded in `agent_push_runs`. The Tracker shows today's pushes (Berlin day) above the list: per agent sent / saved / already stored / failed, each failed URL with its reason, and cards whose link still needs fixing. Earlier days are not shown, so the banner clears at midnight.
+
+Some `to.indeed.com` links (from the Indeed connector) redirect to an encrypted `/uie/clk` URL behind a Cloudflare challenge, so no `jk=` is ever seen. Agents should always send `title` and `company` with each job.
 
 ```bash
 python3 scripts/tools/log_recommended_jobs.py jobs.json --recommended-by cursor
