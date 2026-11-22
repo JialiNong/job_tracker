@@ -152,10 +152,13 @@ export async function logAgentJobs(prisma: PrismaClient, jobs: unknown[], defaul
   return out;
 }
 
-/** One row per push for the Tracker's daily banner. Never fails the push itself. */
+/**
+ * One row per push for the Tracker's daily banner. Never fails the push itself;
+ * returns false when the row could not be written so the response can say so.
+ */
 export async function recordPushRun(
   prisma: PrismaClient, agent: string, received: number, result: Awaited<ReturnType<typeof logAgentJobs>>,
-) {
+): Promise<boolean> {
   try {
     await prisma.agentPushRun.create({
       data: {
@@ -165,7 +168,9 @@ export async function recordPushRun(
         items: result.items as unknown as Prisma.InputJsonValue,
       },
     });
+    return true;
   } catch (err) {
     console.error("agent push: could not record the run", err);
+    return false;
   }
 }

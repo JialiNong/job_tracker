@@ -65,7 +65,15 @@ function JobLine({ title, company, url, openPath, extra }: {
 }
 
 export function AgentPushBanner() {
-  const { data } = useAgentPushes();
+  const { data, error } = useAgentPushes();
+  if (error) {
+    return (
+      <section className="agent-push-banner has-error" role="alert">
+        <strong>Agent push summary unavailable</strong>
+        <span className="apb-muted"> · {error.message || "the server returned an error"}. Pushed jobs are still saved.</span>
+      </section>
+    );
+  }
   if (!data || !data.agents.length) return null;
   const problems = data.failures.length + data.needs_link.length;
 
