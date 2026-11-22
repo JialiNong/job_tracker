@@ -163,7 +163,7 @@ Scheduled Cursor and Claude screens `POST /api/agent/jobs` on Vercel (`Authoriza
 - URL already Unmatched → stamp `agent_recommended_by` / `agent_recommend_reason`, return `below_threshold` so the agent can report the disagreement
 - `to.indeed.com` link that leads to an encrypted Indeed click URL (Cloudflare challenge, no `jk=`) → with title + company, saved under `unresolved-<hash of company + title>` and returned in `needs_link`; the card shows **Fix link** until the real `viewjob?jk=` link is pasted
 - URL that cannot be saved → listed in `urls.failed`, and `failed_reasons` gives `{url, reason, message, title, company}` per URL (`not_http`, `short_link_unresolved`, `no_job_id`, `save_failed`)
-- Every call → one `agent_push_runs` row with an `items` entry per job (outcome, link, open path, score, gate, card origin); `GET /api/stats/agent-pushes` (login required) returns today's rows for the Tracker banner
+- Every call → one `agent_push_runs` row with an `items` entry per job (outcome, link, open path, score, gate, card origin); `GET /api/stats/agent-pushes` (login required) returns today's rows for the Tracker banner. If the row cannot be written, the jobs are still processed and the response adds `run_recorded: false`; if the summary cannot be read, the banner shows "Agent push summary unavailable" instead of hiding
 
 Local twin: `python3 scripts/tools/log_recommended_jobs.py`. Source list: [`job_sources.md`](./job_sources.md).
 

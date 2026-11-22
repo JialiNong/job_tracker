@@ -994,3 +994,9 @@
   border: 1px solid color-mix(in srgb, var(--warning) 40%, transparent);
   font-weight: 600;
 }
+.agent-push-banner.has-error {
+  background: color-mix(in srgb, var(--danger) 9%, var(--surface));
+  border-color: color-mix(in srgb, var(--danger) 45%, var(--border));
+  color: var(--text);
+}
+.agent-push-banner.has-error strong { color: var(--danger); }

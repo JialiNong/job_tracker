@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
   }
 
   const result = await logAgentJobs(prisma, jobs, rec);
-  await recordPushRun(prisma, rec, jobs.length, result);
+  const recorded = await recordPushRun(prisma, rec, jobs.length, result);
   return NextResponse.json({
     recommended_by: rec,
     saved: result.ok.length,
@@ -62,6 +62,11 @@ export async function POST(req: NextRequest) {
     urls: { ok: result.ok, skipped: result.skipped, failed: result.failed, existing: result.existing },
     // Only when something failed, so a clean response keeps its old shape.
     ...(result.failed_reasons.length ? { failed_reasons: result.failed_reasons } : {}),
+    // Jobs above were saved; only the Tracker's daily banner will miss this push
+    ...(recorded ? {} : {
+      run_recorded: false,
+      run_recorded_error: "The jobs were processed, but this push could not be logged for the Tracker's daily summary.",
+    }),
     ...(result.needs_link.length ? {
       needs_link: result.needs_link.map((j) => ({ ...j, open_path: `/?open=${j.card_id}` })),
     } : {}),
