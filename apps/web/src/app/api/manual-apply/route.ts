@@ -1,4 +1,4 @@
-/** POST /api/manual-apply: Log Job (link-only here; scrape needs a local browser). */
+/** POST /api/manual-apply: Log Job (link-only anywhere; Scrape & log on the app running locally). */
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@tracker/db/client";
 import { readJsonObject } from "@/lib/http";

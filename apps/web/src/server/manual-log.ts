@@ -7,22 +7,32 @@
  * A serverless function has neither, so the link-only save runs inside the
  * request (no browser, no AI: it is quick) and the finished run is stored in
  * stats_cache under "manual-log", where GET /api/manual-apply/status reads
- * it. "Scrape & log" needs a local browser, so it answers 503 here.
+ * it.
+ *
+ * "Scrape & log" needs the debug Chrome, so it runs only where the app runs
+ * on your computer (503 on Vercel). It saves every URL link-only first (the
+ * same rules as above: dedupe, mark applied, agent tag, typed fields), then
+ * for each card that still has no JD runs Fetch details and Run AI. A card
+ * whose scrape fails stays saved, AI pending, like Python's fallback. That
+ * part runs after the response, in this long-lived local server, writing its
+ * progress to stats_cache as it goes.
  */
 import {
   berlinDayBounds, detectSource, expandShortJobUrl, isHttpUrl, jobMissingDetails, normalizeManualIdentity,
-  now as clockNow, resolveJobId,
+  normalizePastedJobUrl, now as clockNow, resolveJobId,
   formatBerlinDate,
 } from "@tracker/core";
 import type { Prisma, PrismaClient } from "@tracker/db/client";
-import { PLAYWRIGHT_UNAVAILABLE } from "@/lib/local-only";
 import { AGENTS } from "./agent";
+import { FETCH_DETAILS_LOCAL_ONLY, type FetchDetailsDeps, fetchDetailsForCard } from "./fetch-details";
 import { lookupKnownJob, openPath } from "./known-jobs";
-import { saveLinkOnly } from "./link-only";
+import { type LinkOnlyOptions, saveLinkOnly } from "./link-only";
+import { runAiOnCard } from "./run-ai";
 
 const CACHE_KEY = "manual-log";
 const BUSY_MSG = "A manual job log run is already in progress. Please wait.";
-// A request that died mid-run never clears "running"; after this long it no longer blocks
+// A request that died mid-run never clears "running"; after this long without
+// progress it no longer blocks (a scrape run writes progress after every step)
 const STALE_RUN_MS = 5 * 60_000;
 
 type Result = { status: number; body: Record<string, unknown> };
@@ -86,7 +96,7 @@ function parseAppliedDate(raw: unknown): Date | null | "invalid" {
 }
 
 /** POST /api/manual-apply. */
-export async function startManualLog(prisma: PrismaClient, body: Record<string, unknown>): Promise<Result> {
+export async function startManualLog(prisma: PrismaClient, body: Record<string, unknown>, deps: ScrapeLogDeps = {}): Promise<Result> {
   if (!Array.isArray(body.urls ?? [])) return bad("urls must be a list");
   const urls: string[] = [];
   for (const u of (body.urls ?? []) as unknown[]) {
@@ -106,8 +116,8 @@ export async function startManualLog(prisma: PrismaClient, body: Record<string, 
   }
   const appliedAt = parseAppliedDate(body.applied_date);
   if (appliedAt === "invalid") return bad("Invalid applied_date format, expected YYYY-MM-DD");
-  if (mode === "scrape") {
-    return { status: 503, body: { ok: false, error: PLAYWRIGHT_UNAVAILABLE } };
+  if (mode === "scrape" && process.env.VERCEL && !deps.fetch) {
+    return { status: 503, body: { ok: false, error: FETCH_DETAILS_LOCAL_ONLY } };
   }
 
   const current = await prisma.statsCache.findUnique({ where: { key: CACHE_KEY } });
@@ -116,21 +126,104 @@ export async function startManualLog(prisma: PrismaClient, body: Record<string, 
   if (busy) return bad(BUSY_MSG, 429);
   await writeRun(prisma, { ...IDLE, running: true });
 
-  const run: RunRecord = { ...IDLE };
-  try {
-    const saved = await saveLinkOnly(prisma, urls, {
-      status, appliedAt, recommendedBy: rawRec === "none" ? "" : rawRec,
-      identity: normalizeManualIdentity(body.title, body.company, body.location),
-    });
-    Object.assign(run, {
-      log: saved.log, done_count: saved.ok.length, skip_count: saved.skipped.length, fail_count: saved.failed.length,
-    });
-  } catch (err) {
-    Object.assign(run, { log: [`Fatal error: ${(err as Error).message}`], fail_count: urls.length });
-  } finally {
-    await writeRun(prisma, run);
+  const opts: LinkOnlyOptions = {
+    status, appliedAt, recommendedBy: rawRec === "none" ? "" : rawRec,
+    identity: normalizeManualIdentity(body.title, body.company, body.location),
+  };
+  if (mode === "scrape") {
+    const work = scrapeAndLog(prisma, urls, opts, deps);
+    // Locally the server outlives the request: the page polls the status. Tests wait for it.
+    if (deps.wait) await work; else void work;
+  } else {
+    const run: RunRecord = { ...IDLE };
+    try {
+      const saved = await saveLinkOnly(prisma, urls, opts);
+      Object.assign(run, {
+        log: saved.log, done_count: saved.ok.length, skip_count: saved.skipped.length, fail_count: saved.failed.length,
+      });
+    } catch (err) {
+      Object.assign(run, { log: [`Fatal error: ${(err as Error).message}`], fail_count: urls.length });
+    } finally {
+      await writeRun(prisma, run);
+    }
   }
   return { status: 200, body: { status: "started", total: urls.length, job_status: status, mode } };
+}
+
+export interface ScrapeLogDeps {
+  /** Fetch details / Run AI stand-ins (tests); default the real scraper and model. */
+  fetch?: FetchDetailsDeps;
+  runAi?: typeof runAiOnCard;
+  /** Await the background part before answering (tests). */
+  wait?: boolean;
+}
+
+/** The Tracker card a URL was saved to, as Log Job's lookup sees it. */
+async function cardFor(prisma: PrismaClient, url: string) {
+  const normalized = normalizePastedJobUrl(url);
+  if (!normalized) return null;
+  const source = detectSource(normalized);
+  const hit = await lookupKnownJob(prisma, resolveJobId(normalized, source) ?? "", source, normalized);
+  return hit?.on_tracker ? hit : null;
+}
+
+/** Link-only save, then Fetch details + Run AI for each card that still needs them. */
+async function scrapeAndLog(prisma: PrismaClient, urls: string[], opts: LinkOnlyOptions, deps: ScrapeLogDeps) {
+  const run: RunRecord = { ...IDLE, running: true };
+  const say = async (line: string) => {
+    run.log.push(line);
+    await writeRun(prisma, run);
+  };
+  try {
+    const saved = await saveLinkOnly(prisma, urls, opts);
+    run.log.push(...saved.log);
+    const ok = new Set(saved.ok);
+    const skipped = new Set(saved.skipped);
+    const failed = new Set(saved.failed);
+    const sync = () => Object.assign(run, { done_count: ok.size, skip_count: skipped.size, fail_count: failed.size });
+    sync();
+    await writeRun(prisma, run);
+
+    const targets = [...saved.ok, ...saved.skipped];
+    await say(`Scrape & log: ${targets.length} card(s) to check`);
+    for (const [i, url] of targets.entries()) {
+      const card = await cardFor(prisma, url);
+      if (!card) continue;
+      const missing = jobMissingDetails({ ...card });
+      const aiPending = card.ai_pending || card.match_score == null;
+      if (!missing && !aiPending) continue;
+      const wasSkipped = skipped.has(url);
+      await say(`[${i + 1}/${targets.length}] ${card.title || url}`);
+
+      if (missing) {
+        await say("  Scraping the job page in Chrome…");
+        const fetched = await fetchDetailsForCard(prisma, card._id, deps.fetch);
+        if (!fetched.body.ok) {
+          await say(`  ❌ ${String(fetched.body.error)} — card kept, AI pending`);
+          // An existing card left unchanged counts as failed, a new one is still saved
+          if (wasSkipped) { skipped.delete(url); failed.add(url); sync(); await writeRun(prisma, run); }
+          continue;
+        }
+        await say(`  ✅ Details saved: ${String(fetched.body.title || "")} @ ${String(fetched.body.company || "")}`);
+      }
+
+      await say("  Running AI…");
+      const ai = await (deps.runAi ?? runAiOnCard)(prisma, card._id);
+      if (ai.body.ok) {
+        const gate = String(ai.body.match_gate || "");
+        await say(gate && gate !== "scored" ? `  ⛔ Stopped at the ${gate} gate (not scored)` : `  ✅ AI score ${String(ai.body.match_score)}/10`);
+      } else {
+        await say(`  ⚠️ AI pending: ${String(ai.body.error)}`);
+      }
+      if (wasSkipped) { skipped.delete(url); ok.add(url); sync(); }
+    }
+    await say(`Done: ${ok.size} saved, ${skipped.size} skipped, ${failed.size} failed`);
+  } catch (err) {
+    run.log.push(`Fatal error: ${(err as Error).message}`);
+  } finally {
+    run.running = false;
+    await writeRun(prisma, run).catch(() => undefined);
+  }
 }
 
 /** GET /api/manual-apply/status?since=N: log lines after the first N, plus the total. */

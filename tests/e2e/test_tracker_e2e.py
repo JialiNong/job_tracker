@@ -523,6 +523,44 @@ class TrackerE2E(unittest.TestCase):
         # Log wording differs between the Flask and Next.js apps; both name the save
         expect(self.page.locator("#logBody")).to_contain_text(re.compile(r"Saved to (matched_jobs|the Tracker)"))
 
+    @unittest.skipUnless(os.getenv("E2E_FAKE_SCRAPER"), "Next.js only: Scrape & log against the fake scraper")
+    def test_log_job_scrape_saves_details_and_runs_ai(self):
+        url = "https://www.linkedin.com/jobs/view/4400000001/"
+        self.page.goto(self.base + "/manual-apply")
+        self.page.fill("#urlBox", url)
+        self.page.select_option("#jobStatus", "applied")
+        self.page.click("#submitBtn")
+        expect(self.page.locator("#statusBanner")).to_contain_text("1 saved as Applied", timeout=30_000)
+        saved = self.store.tracker_job_by_job_id("4400000001")
+        self.assertEqual(saved["title"], "E2E Fetched Backend Engineer")
+        self.assertEqual(saved["company"], "E2E Fetched GmbH")
+        self.assertEqual(saved["status"], "applied")
+        self.assertIsNotNone(saved["details_fetched_at"])
+        job = self.ctx.request.get(f"{self.base}/api/jobs/{saved['_id']}").json()
+        self.assertEqual(job["summary"], "E2E fake AI summary")
+        expect(self.page.locator("#logBody")).to_contain_text("AI score")
+
+    @unittest.skipUnless(os.getenv("E2E_FAKE_SCRAPER"), "Next.js only: Scrape & log against the fake scraper")
+    def test_log_job_scrape_refreshes_existing_link_only_card(self):
+        self.make_link_only(PENDING_ID)
+        url = self.job(PENDING_ID)["link"]
+        self.page.goto(self.base + "/manual-apply")
+        self.page.fill("#urlBox", url)
+        self.page.click("#submitBtn")
+        expect(self.page.locator("#statusBanner")).to_contain_text("1 saved", timeout=30_000)
+        job = self.job(PENDING_ID)
+        self.assertEqual(job["title"], "E2E Fetched Backend Engineer")
+        self.assertEqual(self.store.tracker_job_count(), 3, "refreshes the card, never a second one")
+
+    @unittest.skipUnless(os.getenv("E2E_FAKE_SCRAPER"), "Next.js only: Scrape & log against the fake scraper")
+    def test_log_job_scrape_failure_keeps_link_only_card(self):
+        self.page.goto(self.base + "/manual-apply")
+        self.page.fill("#urlBox", "https://jobs.example.com/scrape-fails/42")
+        self.page.click("#submitBtn")
+        expect(self.page.locator("#statusBanner")).to_contain_text("1 saved", timeout=30_000)
+        expect(self.page.locator("#logBody")).to_contain_text("E2E fake scrape failure")
+        self.assertEqual(self.store.tracker_job_count(), 4, "the link is still saved, AI pending")
+
     def test_agent_api_requires_token_and_saves(self):
         url = "https://www.linkedin.com/jobs/view/4500000001/"
         api = self.ctx.request
