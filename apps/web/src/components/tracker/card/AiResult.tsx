@@ -1,5 +1,5 @@
 /** The AI match: agent's reason, summary + breakdowns (or top reasons), and fit tags. */
-import { fitTags, hasAiScore } from "@/lib/tracker/format";
+import { fitTags, formatScoreDelta, hasAiScore, reasonsWithoutScore, scoreParts } from "@/lib/tracker/format";
 import type { BreakdownSection, Job } from "@/lib/tracker/types";
 import { ScoreRing } from "./ScoreRing";
 
@@ -42,7 +42,7 @@ export function LocalAi({ job }: { job: Job }) {
     job.what_youll_do?.matched?.length || job.what_youll_do?.unmatched?.length
     || job.what_theyre_looking_for?.matched?.length || job.what_theyre_looking_for?.unmatched?.length,
   );
-  const reasons = hasBreakdown ? [] : (job.match_reasons ?? []).slice(0, 3);
+  const reasons = hasBreakdown ? [] : reasonsWithoutScore(job.match_reasons).slice(0, 3);
   if (!hasAiScore(job) && !job.summary && !hasBreakdown && !reasons.length) return null;
   return (
     <div className="ai-local">
@@ -59,12 +59,36 @@ export function LocalAi({ job }: { job: Job }) {
   );
 }
 
+/** How the score adds up: one chip per term of the matcher's "Score: …" line. */
+export function ScoreParts({ reasons }: { reasons: string[] | null | undefined }) {
+  const parts = scoreParts(reasons);
+  if (!parts.length) return null;
+  return (
+    <div className="score-parts">
+      <span className="score-parts-label">Score</span>
+      <div className="score-parts-chips">
+        {parts.map((p, i) => {
+          const cls = p.delta === null || p.delta < 0 ? "sp-down" : p.base ? "" : "sp-up";
+          return (
+            <span key={i} className={`score-part ${cls}`.trim()} title={p.raw}>
+              {p.label}
+              {p.delta !== null ? <b>{p.base ? p.delta.toFixed(1) : formatScoreDelta(p.delta)}</b> : null}
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function FitTags({ job }: { job: Job }) {
   const tags = fitTags(job);
-  if (!tags) return null;
+  const hasScore = scoreParts(job.match_reasons).length > 0;
+  if (!tags && !hasScore) return null;
   return (
     <div className="fit-tags">
-      {tags.matched.length || tags.missing.length ? (
+      <ScoreParts reasons={job.match_reasons} />
+      {!tags ? null : tags.matched.length || tags.missing.length ? (
         <div className="fit-row">
           <span className="fit-label">Stack</span>
           <div className="fit-chips">
@@ -78,7 +102,7 @@ export function FitTags({ job }: { job: Job }) {
           <span className="fit-hint">Re-run AI to see which stack you match</span>
         </div>
       ) : null}
-      {tags.business.length ? (
+      {tags?.business.length ? (
         <div className="fit-row">
           <span className="fit-label">Business</span>
           <div className="fit-chips">

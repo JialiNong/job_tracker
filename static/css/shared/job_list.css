@@ -600,3 +600,18 @@
     cursor: pointer;
   }
 }
+
+/* Score terms: how the matcher's labels add up to the score (Tracker + Unmatched) */
+.score-parts { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.score-parts-label { flex: none; width: 64px; font-size: .72rem; font-weight: 600; color: var(--muted); }
+.score-parts-chips { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.score-part {
+  display: inline-flex; align-items: baseline; gap: 5px;
+  padding: 2px 9px; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--surface2); color: var(--text);
+  font-size: .76rem; line-height: 1.5; overflow-wrap: anywhere;
+}
+.score-part b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.score-part.sp-up b { color: var(--success); }
+.score-part.sp-down { border-color: color-mix(in srgb, var(--danger) 35%, transparent); background: color-mix(in srgb, var(--danger) 8%, var(--surface)); }
+.score-part.sp-down b { color: var(--danger); }

@@ -74,9 +74,16 @@ class ScoreJobTests(unittest.TestCase):
         self.assertAlmostEqual(res["score"], 7.3)
 
     def test_hardware_company_is_penalised(self):
+        # Frontend / fullstack role at a hardware company: softer -1.5
         hw = {**COMPANY, "product_type": "hardware_industrial_automotive", "markets": "dach"}
         res = ev.score_job(JOB, labels(), hw)
-        self.assertAlmostEqual(res["score"], 5.8)
+        self.assertAlmostEqual(res["score"], 6.8)
+        self.assertIn("hardware_industrial_automotive -1.5", res["parts"])
+
+    def test_hardware_company_full_penalty_for_non_web_role(self):
+        hw = {**COMPANY, "product_type": "hardware_industrial_automotive", "markets": "dach"}
+        res = ev.score_job(JOB, labels(role_type="backend"), hw)
+        self.assertIn("hardware_industrial_automotive -2.5", res["parts"])
 
     def test_blocked_company_case_insensitive(self):
         job = {**JOB, "company": "HYRA Talent"}

@@ -72,6 +72,10 @@ technology from the CV or from the examples in these rules: if the posting only 
 - `stack_missing`: those the posting requires or clearly expects that the CV does not show, at
   most 8. Leave out tools the posting only says the company uses, and nice-to-haves. Empty list
   when nothing is missing.
+- Meta-frameworks count as the framework they are built on: Next.js / Remix / Gatsby are React
+  (on Node.js), Nuxt is Vue, Analog is Angular. If the CV shows the base framework, a named
+  meta-framework goes in `stack_matched`, never in `stack_missing`, and is not a gap in
+  `watch_outs` or `summary`, even when it is a core requirement.
 
 `summary`: two short sentences on what the job is and why it does or does not fit.
 `watch_outs`: one honest gap, or "none".

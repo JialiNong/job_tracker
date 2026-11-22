@@ -12,6 +12,8 @@ export interface EvaluateResult extends ScoreResult { labels: Labels | null; com
 
 const PREFERRED_CITIES = /(?<![\p{L}\p{N}_])(leipzig|halle|berlin)(?![\p{L}\p{N}_])/iu;
 const REMOTE = /(?<![\p{L}\p{N}_])remote(?![\p{L}\p{N}_])/iu;
+// Roles where a hardware company gets the softer hardware_web_role penalty
+const WEB_ROLE_TYPES = new Set(["frontend", "fullstack_frontend_leaning", "fullstack_balanced", "fullstack_backend_leaning"]);
 
 /** Python truthiness for the label values (empty dict / list / string are false). */
 export const truthy = (v: unknown) =>
@@ -69,7 +71,9 @@ export function scoreJob(
     parts.push(`location ${pySigned1(w.preferred_location)}`);
   }
   if (company && truthy(company)) {
-    const productDelta = weight(w.product_type, company.product_type);
+    const hardwareWebRole = company.product_type === "hardware_industrial_automotive"
+      && typeof labels.role_type === "string" && WEB_ROLE_TYPES.has(labels.role_type);
+    const productDelta = hardwareWebRole ? w.hardware_web_role : weight(w.product_type, company.product_type);
     if (productDelta) {
       score += productDelta;
       parts.push(`${pyStr(company.product_type)} ${pySigned1(productDelta)}`);

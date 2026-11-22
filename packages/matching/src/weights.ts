@@ -32,6 +32,9 @@ export const MATCH_WEIGHTS = {
     public_sector_research: -0.5,
     other: -0.5,
   } as Record<string, number>,
+  // Replaces the hardware_industrial_automotive penalty when the role itself
+  // is web frontend / fullstack (e.g. a React portal at an EV-charger maker)
+  hardware_web_role: -1.5,
   recruiter_posting: -1.0, // agency posting on behalf of another employer
   markets: { global: 0.7, europe: 0.4, dach: 0.0, germany_only: -0.5, unclear: 0.0 } as Record<string, number>,
 };
