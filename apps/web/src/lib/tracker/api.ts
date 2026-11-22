@@ -3,7 +3,7 @@
  * the server's message on a non-2xx answer, so callers only handle one path.
  */
 import type { DayStats, SankeyData, Week } from "./overview";
-import type { Job, JobPage, Stats, StackStats, TimelineItem } from "./types";
+import type { AgentPushesToday, Job, JobPage, Stats, StackStats, TimelineItem } from "./types";
 
 export interface JourneyStep { step: string; label: string; at: string; date: string }
 export interface Journey {
@@ -72,6 +72,7 @@ export const api = {
   },
   getDescription: (id: string) => request<{ description: string }>(`/api/jobs/${id}/description`),
   stats: () => request<Stats>("/api/stats"),
+  agentPushes: () => request<AgentPushesToday>("/api/stats/agent-pushes"),
   daily: (days: number) => request<{ days: DayStats[] }>(`/api/stats/daily?days=${days}`),
   locations: () => request<{ total: number; locations: { name: string; count: number }[] }>("/api/stats/locations"),
   flow: () => request<{ sankey: SankeyData; weekly: { weeks: Week[]; totals: Omit<Week, "week_start"> } }>("/api/stats/flow"),

@@ -17,6 +17,7 @@ import { useDialog } from "@/components/ui/Dialog";
 import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/tracker/api";
 import { invalidateTracker, useJob, useJobPage, useStats } from "@/lib/tracker/queries";
+import { AgentPushBanner } from "./AgentPushBanner";
 import { BatchBar } from "./BatchBar";
 import { type Filters, OPEN_VIEW_FILTERS, companyKey, toQuery } from "./filters";
 import { JobList } from "./JobList";
@@ -220,6 +221,7 @@ export function TrackerApp() {
             </div>
           </div>
           <div id="jobsView" className="tracker-view" role="tabpanel" aria-labelledby="tabJobs" hidden={view !== "jobs"}>
+            <AgentPushBanner />
             <Toolbar
               filters={filters} searchText={searchText} onSearchText={setSearchText} onChange={setFilters}
               onRemoveCompany={(name) => setFilters({ companies: filters.companies.filter((c) => companyKey(c) !== companyKey(name)) })}

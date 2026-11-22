@@ -9,7 +9,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { normalizeRecommendedBy } from "@tracker/core";
 import { prisma } from "@tracker/db/client";
 import { jsonError } from "@/lib/http";
-import { AGENT_JOBS_MAX, AGENTS, logAgentJobs } from "@/server/agent";
+import { AGENT_JOBS_MAX, AGENTS, logAgentJobs, recordPushRun } from "@/server/agent";
 
 export const dynamic = "force-dynamic";
 
@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
   }
 
   const result = await logAgentJobs(prisma, jobs, rec);
+  await recordPushRun(prisma, rec, jobs.length, result);
   return NextResponse.json({
     recommended_by: rec,
     saved: result.ok.length,
@@ -61,6 +62,9 @@ export async function POST(req: NextRequest) {
     urls: { ok: result.ok, skipped: result.skipped, failed: result.failed, existing: result.existing },
     // Only when something failed, so a clean response keeps its old shape.
     ...(result.failed_reasons.length ? { failed_reasons: result.failed_reasons } : {}),
+    ...(result.needs_link.length ? {
+      needs_link: result.needs_link.map((j) => ({ ...j, open_path: `/?open=${j.card_id}` })),
+    } : {}),
     ...(result.below_threshold ? {
       hint: "below_threshold jobs are already in Unmatched (scored below the match cut-off). "
         + "They were not added to the Tracker match list.",

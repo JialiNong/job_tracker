@@ -66,6 +66,11 @@ export function safeUrl(raw: string | null | undefined, fallback = "#"): string 
   }
 }
 
+/** An Indeed short link with no job id: the card needs the real viewjob link pasted. */
+export function needsLinkFix(link: string | null | undefined): boolean {
+  return hostOf(link) === "to.indeed.com";
+}
+
 export function hostOf(link: string | null | undefined): string {
   try {
     return new URL(link ?? "").hostname.replace(/^www\./, "");

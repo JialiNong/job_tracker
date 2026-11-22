@@ -293,3 +293,21 @@ model StatsCache {
 
   @@map("stats_cache")
 }
+
+// One row per POST /api/agent/jobs call. The Tracker shows today's rows (Berlin
+// day) as a banner, so failed agent pushes are visible without reading the
+// agent's own report.
+model AgentPushRun {
+  id            BigInt   @id @default(autoincrement())
+  agent         String // recommended_by of the request: claude, cursor, gemini, gpt
+  at            DateTime @default(now()) @db.Timestamptz(3)
+  received      Int      @default(0)
+  saved         Int      @default(0)
+  skipped       Int      @default(0)
+  failed        Int      @default(0)
+  failures      Json     @default("[]") // [{url, reason, message, title, company}]
+  needsLinkJobs Json     @default("[]") @map("needs_link_jobs") // [{card_id, url, title, company}]: saved with a short link and no job id
+
+  @@index([at])
+  @@map("agent_push_runs")
+}
