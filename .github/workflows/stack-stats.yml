@@ -6,10 +6,10 @@
 # (already set for api-sources.yml).
 name: Stack stats cache
 
+#
+# Manual only since the cutover: the Next.js app refreshes its own Stacks
+# numbers (apps/web/src/server/stacks.ts). Kept for the Flask fallback.
 on:
-  schedule:
-    # 22:47 UTC = 23:47 Berlin in winter, 00:47 in summer: after the day's applies.
-    - cron: "47 22 * * *"
   workflow_dispatch:
 
 concurrency:

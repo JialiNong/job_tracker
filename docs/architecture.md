@@ -76,9 +76,9 @@ flowchart TB
 
 The browser pipeline (LinkedIn / Indeed) has **no schedule**: it runs on demand from Telegram `/jobs` (or the same script from a shell) on the Mac.
 
-The **API sources pipeline** (Arbeitnow, Bundesagentur, company ATS boards; Adzuna opt-in; `src/sources/run_sources.py`) runs **daily on GitHub Actions** (`.github/workflows/api-sources.yml`, 09:17 UTC / 10:17 Berlin in winter), with no Mac needed. It uses the same title / language gates and the same AI matcher, and sends its own Telegram summary + match cards.
+The **API sources pipeline** (Arbeitnow, Bundesagentur, company ATS boards; Adzuna opt-in; `src/sources/run_sources.py`) runs **daily on GitHub Actions** (`.github/workflows/api-sources-pg.yml`, 09:17 UTC / 10:17 Berlin in winter), with no Mac needed. It uses the same title / language gates and the same AI matcher, and sends its own Telegram summary + match cards.
 
-A third daily lane is **agent ingest**: Cursor and Claude scheduled screens `POST /api/agent/jobs` on Render. Those picks skip this funnel (see [2.4](#24-agent-ingest-cursor--claude-daily)). Full source list, setup and watchlist: [`job_sources.md`](./job_sources.md).
+A third daily lane is **agent ingest**: Cursor and Claude scheduled screens `POST /api/agent/jobs` on the Vercel app. Those picks skip this funnel (see [2.4](#24-agent-ingest-cursor--claude-daily)). Full source list, setup and watchlist: [`job_sources.md`](./job_sources.md).
 
 | Command | What it does | Typical time |
 |---------|--------------|--------------|
