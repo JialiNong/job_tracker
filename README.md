@@ -65,35 +65,43 @@ Screening German-market listings by hand was slow. Many posts are written in Ger
 
 Two daily ingest lanes, then one tracker.
 
-The collector and matcher write **directly to MongoDB Atlas**. Agent picks hit the tracker API on Render and skip the matcher. Render never runs collection.
+A TypeScript pnpm monorepo. The pipeline runs on GitHub Actions and writes **directly to Neon Postgres**. Agent picks hit the tracker API on Vercel and skip the matcher. Vercel never runs collection.
 
 ```mermaid
 flowchart LR
   GHA["GitHub Actions<br/>daily"] --> Sources["APIs + ATS boards"]
   Sources --> Matcher["Gates → LLM labels → code score"]
-  Matcher --> Mongo[(MongoDB Atlas)]
+  Matcher --> PG[(Neon Postgres)]
   Matcher --> TG["Telegram"]
-  Agents["Cursor / Claude<br/>daily screen"] -->|"POST /api/agent/jobs<br/>already AI-picked"| Render["Render · Flask tracker"]
-  Mongo <--> Render
-  Render --> User["Phone / browser"]
+  Agents["Cursor / Claude<br/>daily screen"] -->|"POST /api/agent/jobs<br/>already AI-picked"| Web["Vercel · Next.js tracker"]
+  PG <--> Web
+  Web --> User["Phone / browser"]
   TG --> User
 ```
 
-Full flow, gates, and stored fields: [architecture.md](docs/architecture.md). Matching rules the model follows: [matching_rules.md](docs/matching_rules.md).
+| Package | Role |
+|---|---|
+| `apps/web` | Next.js App Router: tracker UI and route handlers (`/api/*`), session auth |
+| `packages/pipeline` | Source fetchers, dedup, title gate, ingest, Telegram digest; CLIs for `sources` and `scrape` |
+| `packages/matching` | JD quality and language gates, OpenAI labelling, score from weights |
+| `packages/db` | Prisma schema and migrations, the Mongo → Postgres migration CLI |
+| `packages/core` | Shared status model and Berlin-time helpers |
+
+Full flow, gates, and stored fields: [architecture.md](docs/architecture.md). Matching rules the model follows: [matching_rules.md](docs/matching_rules.md). Database schema: [pg-schema.md](docs/pg-schema.md).
 
 ## Design decisions
 
 ### Deterministic checks stay in code; judgment goes to the LLM
 
-Empty JDs, non-English JDs, and incomplete page chrome are rejected in code (`assess_job_description`, Lingua). Those jobs are never sent to the model. The LLM only sees a usable English posting, and every hard fail has to quote the JD.
+Empty JDs, non-English JDs, and incomplete page chrome are rejected in code (`assessJobDescription`, Lingua). Those jobs are never sent to the model. The LLM only sees a usable English posting, and every hard fail has to quote the JD.
 
 ### The LLM outputs labels; code computes the score
 
-The model returns structured labels (role type, stack fit, seniority, German requirement, company markets, …). `MATCH_WEIGHTS` in `src/core/config.py` turns those labels into a 0–10 score. The number is explainable, I can retune a preference (for example hardware −2.5) without rewriting prompts, and swapping models does not change the scoring logic.
+The model returns structured labels (role type, stack fit, seniority, German requirement, company markets, …). `MATCH_WEIGHTS` in `packages/matching/src/weights.ts` turns those labels into a 0–10 score. The number is explainable, I can retune a preference (for example hardware −2.5) without rewriting prompts, and swapping models does not change the scoring logic.
 
 ### Two-layer matching, with a company cache
 
-Layer 1 labels the job against my CV and [matching_rules.md](docs/matching_rules.md). Layer 2 (web search) runs only for jobs that passed layer 1, and only the first time a company is seen — later jobs reuse `company_profiles`. Layer 1 costs about 4k input + 0.4k output tokens per job; a first-time company lookup is about 12–14k input plus search fees.
+Layer 1 labels the job against my CV and [matching_rules.md](docs/matching_rules.md). Layer 2 (web search) runs only for jobs that passed layer 1, and only the first time a company is seen — later jobs reuse the cached company profile. Layer 1 costs about 4k input + 0.4k output tokens per job; a first-time company lookup is about 12–14k input plus search fees.
 
 ### Agent picks are a source, not a second match
 
@@ -103,33 +111,56 @@ Cursor and Claude already screened the posting. Running the matcher again would 
 
 Before I change a prompt, a weight, or a model, I re-score jobs I already marked applied or unsuitable (`python3 scripts/tools/eval_matcher.py`). The eval is my own Tracker history, not a public benchmark — that is a limitation, but it catches regressions against the taste the pipeline is for.
 
+## Migrating from Flask + MongoDB
+
+The tracker started as Python (Flask, MongoDB Atlas, Render) and was rewritten in TypeScript (Next.js, Postgres, Vercel) while staying in daily use. The rewrite was checked against the old app, not by eye:
+
+- **API contract snapshots first.** Before any new code, 54 HTTP cases (every read endpoint plus the main writes) were recorded from Flask against a synthetic fixture, with a pinned clock and normalised ids. The Next.js app had to return the same JSON for every field the frontend reads. [migration-contracts.md](docs/migration-contracts.md).
+- **The same browser E2E suite** (Playwright) runs against both apps, with a fake OpenAI server so Run AI costs nothing in tests.
+- **A read-only parallel week.** A nightly job copied Mongo into Neon, and the new app ran read-only on Vercel next to the old one before the cutover. [deploy.md](docs/deploy.md).
+- **Scoring parity.** Matching was ported label by label, and old and new pipeline runs were compared on the same postings.
+
+The LinkedIn / Indeed browser scrapers are still Python (Chrome over CDP). They run on demand from my Mac; `pnpm pipeline scrape` starts them and writes their cards to Postgres.
+
 ## Tech stack
 
-Python 3.12 · Flask · gunicorn · MongoDB Atlas · OpenAI · Lingua · GitHub Actions · Render · Telegram Bot API
+**Web:** TypeScript · Next.js 15 (App Router) · React 19 · TanStack Query · iron-session
+
+**Data:** PostgreSQL (Neon) · Prisma
+
+**Pipeline and matching:** Node.js 22 · OpenAI · Lingua · Telegram Bot API
+
+**Infra and tooling:** Vercel · GitHub Actions · pnpm workspaces · Docker (local Postgres) · Vitest · Playwright
+
+**Legacy, still in use:** Python browser scrapers (Chrome CDP), Python test runners for the contract and E2E suites
 
 ## Built with AI coding agents
 
 This repo is the daily workflow, not a demo of prompting.
 
 - I implement features with Claude Code / Cursor against project skills (matching rules, UI contracts, impact checks).
-- After Claude edits web code, a Stop hook (`scripts/e2e_hook.sh`) runs unit tests and browser E2E tests against a throwaway MongoDB. A failure is sent back to Claude to fix; the same failure is reported once.
+- The stack migration was done the same way, phase by phase, with the contract snapshots and the E2E suite as the check for every phase.
 
 ## Quick start
 
-Operator details live in **[docs/setup.md](docs/setup.md)**. Deploying the UI: **[docs/deployment/RENDER_SETUP.md](docs/deployment/RENDER_SETUP.md)**.
+Operator details: **[docs/setup.md](docs/setup.md)**. Deploying to Vercel + Neon: **[docs/deploy.md](docs/deploy.md)**.
 
 ```bash
-cp .env.example .env          # MongoDB, OpenAI, tracker login
-pip3 install -r requirements.txt
-python3 src/sources/run_sources.py --dry-run
-./scripts/start_ui.sh
+pnpm install                                   # Node 22, pnpm 10
+pnpm db:up                                     # local Postgres in Docker
+cp .env.example .env                           # pipeline: OpenAI, Telegram
+cp apps/web/.env.example apps/web/.env.local   # web: session secret, login
+cp packages/db/.env.example packages/db/.env   # Prisma
+pnpm db migrate:dev                            # create the tables
+pnpm pipeline sources --dry-run --no-match     # preview, no writes, no AI
+pnpm --filter @tracker/web dev                 # http://localhost:3000
 ```
 
 ## Limitations and next steps
 
 - **Single user.** Auth, CV, and weights are mine; this is not a multi-tenant product.
 - **The eval set is small** and is my own Tracker decisions, so it will overfit my taste.
-- **Render's free plan cold-starts** after about 15 minutes idle (about 20–30s on the next open).
+- **Run AI on a single job is local only.** Lingua's Linux binary is larger than Vercel's function size limit, so the hosted button points you to your own machine. The daily pipeline on GitHub Actions is not affected.
 - **Coverage is APIs + an ATS watchlist + daily agent screens.** Jobs that never appear on a board I query, and that no agent picks that day, never enter.
 
-Next: grow the eval set, and tighten company coverage on the ATS watchlist.
+Next: grow the eval set, port the eval to the Postgres stack, and tighten company coverage on the ATS watchlist.
