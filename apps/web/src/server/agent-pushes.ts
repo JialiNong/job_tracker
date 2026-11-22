@@ -6,7 +6,7 @@
  */
 import { berlinDayBounds, formatBerlin, formatBerlinDate, now as clockNow } from "@tracker/core";
 import type { PrismaClient } from "@tracker/db/client";
-import type { NeedsLinkJob, PushFailure } from "./agent";
+import type { NeedsLinkJob, PushFailure, PushItem } from "./agent";
 
 export interface AgentPushSummary {
   agent: string;
@@ -23,6 +23,8 @@ export interface AgentPushesToday {
   agents: AgentPushSummary[];
   failures: (PushFailure & { agent: string; at: string })[];
   needs_link: (NeedsLinkJob & { agent: string })[];
+  /** Every saved or already-stored job, once per posting, with the agents that pushed it. Needs-link cards are in needs_link. */
+  items: (PushItem & { agents: string[] })[];
 }
 
 const SHORT_LINK_HOST = "to.indeed.com";
@@ -38,6 +40,7 @@ export async function agentPushesToday(prisma: PrismaClient): Promise<AgentPushe
   const agents = new Map<string, AgentPushSummary>();
   const failures: AgentPushesToday["failures"] = [];
   const needsLink = new Map<string, NeedsLinkJob & { agent: string }>();
+  const items = new Map<string, PushItem & { agents: string[] }>();
   for (const run of runs) {
     const at = formatBerlin(run.at);
     const row = agents.get(run.agent) ?? { agent: run.agent, runs: 0, received: 0, saved: 0, skipped: 0, failed: 0, last_at: "" };
@@ -50,6 +53,14 @@ export async function agentPushesToday(prisma: PrismaClient): Promise<AgentPushe
     agents.set(run.agent, row);
     for (const f of (run.failures as PushFailure[] | null) ?? []) failures.push({ ...f, agent: run.agent, at });
     for (const j of (run.needsLinkJobs as NeedsLinkJob[] | null) ?? []) needsLink.set(j.card_id, { ...j, agent: run.agent });
+    for (const item of (run.items as PushItem[] | null) ?? []) {
+      if (item.outcome === "needs_link") continue;
+      const key = item.open_path || item.url;
+      const seen = items.get(key);
+      // The first outcome is kept: saved by Claude, then pushed by Cursor too, stays "saved"
+      if (seen) { if (!seen.agents.includes(run.agent)) seen.agents.push(run.agent); }
+      else items.set(key, { ...item, agents: [run.agent] });
+    }
   }
 
   // Drop cards whose link was fixed (or that were deleted) since the push
@@ -66,5 +77,6 @@ export async function agentPushesToday(prisma: PrismaClient): Promise<AgentPushe
     agents: [...agents.values()],
     failures,
     needs_link: [...needsLink.values()].filter((j) => stillShort.has(j.card_id)),
+    items: [...items.values()],
   };
 }

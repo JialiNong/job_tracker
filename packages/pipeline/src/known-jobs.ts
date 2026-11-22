@@ -28,13 +28,15 @@ export interface KnownJob {
   summary: string;
   description: string;
   matched_by: "job_id" | "posting_key";
+  /** How the Tracker card got there (pipeline, api, manual, agent); "" when not on the Tracker. */
+  origin: string;
 }
 
 const JOB_SELECT = {
   id: true, source: true, externalId: true, title: true, company: true, userStatus: true,
   analysisState: true, detailsFetchedAt: true, description: true,
   currentAnalysis: { select: { matchScore: true, matchGate: true, summary: true } },
-  application: { select: { id: true, status: true } },
+  application: { select: { id: true, status: true, origin: true } },
 } satisfies Prisma.JobSelect;
 
 type JobRow = Prisma.JobGetPayload<{ select: typeof JOB_SELECT }>;
@@ -46,6 +48,7 @@ function fromJob(row: JobRow, matchedBy: KnownJob["matched_by"]): KnownJob {
     match_score: analysis?.matchScore ?? null, match_gate: analysis?.matchGate ?? "",
     ai_pending: row.analysisState === "pending", details_fetched_at: row.detailsFetchedAt,
     summary: analysis?.summary ?? "", description: row.description, matched_by: matchedBy,
+    origin: row.application?.origin ?? "",
   };
   if (row.application) {
     return { ...base, collection: "matched_jobs", stage: "tracker", on_tracker: true, _id: row.application.id, status: row.application.status };
@@ -70,7 +73,7 @@ async function byId(prisma: PrismaClient, jobId: string, source: string): Promis
     collection: "timeout_jobs", stage: "timeout", on_tracker: false, _id: timeout.id, jobId: "",
     title: timeout.title, company: timeout.company, status: timeout.reviewStatus, source: timeout.source,
     job_id: timeout.externalId, match_score: null, match_gate: "", ai_pending: false, details_fetched_at: null,
-    summary: "", description: "", matched_by: "job_id",
+    summary: "", description: "", matched_by: "job_id", origin: "",
   };
 }
 
