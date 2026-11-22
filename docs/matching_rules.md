@@ -46,7 +46,8 @@ separately.
 6. **Too many years.** A must-have of more than 7 years overall/frontend, or more than 2 years of
    backend specifically.
 7. **Contract type or location.** Working student, internship, part-time, freelance; or not in
-   Germany (remote roles that require living outside Germany).
+   Germany (remote roles that require living outside Germany). Hybrid or on-site work anywhere in
+   Germany, and business travel, are never a location hard fail.
 
 If the description is missing, truncated, or clearly belongs to a different job, set
 `description_usable` false instead of guessing. A recruiter / agency posting for another company
