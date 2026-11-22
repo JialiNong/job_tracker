@@ -45,6 +45,21 @@ export type FailedReason = keyof typeof FAILED_REASONS;
 
 export type PushFailure = { url: string; reason: FailedReason; message: string; title: string; company: string };
 export type NeedsLinkJob = { card_id: string; url: string; title: string; company: string };
+/** Where a pushed job ended up: saved now, already stored somewhere, or saved without a usable link. */
+export type PushOutcome = "saved" | "tracker" | "unmatched" | "awaiting_match" | "timeout" | "needs_link";
+export type PushItem = {
+  outcome: PushOutcome; url: string; title: string; company: string; open_path: string | null;
+  match_score: number | null; match_gate: string; origin: string;
+};
+
+function pushItem(outcome: PushOutcome, url: string, title: string, company: string, hit: KnownJob | null): PushItem {
+  return {
+    outcome, url,
+    title: hit?.title || title, company: hit?.company || company,
+    open_path: hit ? openPath(hit) : null,
+    match_score: hit?.match_score ?? null, match_gate: hit?.match_gate ?? "", origin: hit?.origin ?? "",
+  };
+}
 
 /** Stand-in Indeed job id for a posting known only by title + company. */
 export function unresolvedIndeedId(title: string, company: string): string {
@@ -71,6 +86,7 @@ export async function logAgentJobs(prisma: PrismaClient, jobs: unknown[], defaul
     ok: [] as string[], skipped: [] as string[], failed: [] as string[],
     failed_reasons: [] as PushFailure[],
     needs_link: [] as NeedsLinkJob[],
+    items: [] as PushItem[],
     existing: [] as ReturnType<typeof existingRow>[],
     already_on_tracker: 0, below_threshold: 0, awaiting_match: 0, timeout: 0,
   };
@@ -103,6 +119,7 @@ export async function logAgentJobs(prisma: PrismaClient, jobs: unknown[], defaul
     if (hit) {
       // Pushed again before the link was fixed: remind again today
       if (pinned && hit.on_tracker) out.needs_link.push({ card_id: hit._id, url, title, company });
+      out.items.push(pushItem(pinned && hit.on_tracker ? "needs_link" : hit.stage, url, title, company, hit));
       if (hit.stage === "unmatched" || hit.stage === "awaiting_match") {
         const reason = normalizeRecommendReason(item.reason);
         await prisma.job.update({
@@ -119,14 +136,17 @@ export async function logAgentJobs(prisma: PrismaClient, jobs: unknown[], defaul
       recommendReason: String(item.reason ?? ""), country: String(item.country ?? ""),
       ...(pinned ? { pinnedId: { source, jobId } } : {}),
     });
-    if (saved.ok.includes(url)) {
-      out.ok.push(url);
-      if (pinned) {
-        const card = await lookupKnownJob(prisma, jobId, source);
-        if (card?.on_tracker) out.needs_link.push({ card_id: card._id, url, title, company });
+    if (saved.ok.includes(url) || saved.skipped.includes(url)) {
+      const card = await lookupKnownJob(prisma, jobId, source, pinned ? undefined : url);
+      if (saved.ok.includes(url)) {
+        out.ok.push(url);
+        if (pinned && card?.on_tracker) out.needs_link.push({ card_id: card._id, url, title, company });
+        out.items.push(pushItem(pinned ? "needs_link" : "saved", url, title, company, card));
+      } else {
+        out.skipped.push(url); // stored by a parallel push between the lookup and the save
+        out.items.push(pushItem("tracker", url, title, company, card));
       }
-    } else if (saved.skipped.includes(url)) out.skipped.push(url);
-    else fail(url, "save_failed");
+    } else fail(url, "save_failed");
   }
   for (const row of out.existing) out[BUCKET[row.stage]!] += 1;
   return out;
@@ -142,6 +162,7 @@ export async function recordPushRun(
         agent, received, saved: result.ok.length, skipped: result.skipped.length, failed: result.failed.length,
         failures: result.failed_reasons as unknown as Prisma.InputJsonValue,
         needsLinkJobs: result.needs_link as unknown as Prisma.InputJsonValue,
+        items: result.items as unknown as Prisma.InputJsonValue,
       },
     });
   } catch (err) {

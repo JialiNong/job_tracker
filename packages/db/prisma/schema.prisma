@@ -307,6 +307,7 @@ model AgentPushRun {
   failed        Int      @default(0)
   failures      Json     @default("[]") // [{url, reason, message, title, company}]
   needsLinkJobs Json     @default("[]") @map("needs_link_jobs") // [{card_id, url, title, company}]: saved with a short link and no job id
+  items         Json     @default("[]") // every job that was not a failure: [{outcome, url, title, company, open_path, match_score, match_gate, origin}]
 
   @@index([at])
   @@map("agent_push_runs")

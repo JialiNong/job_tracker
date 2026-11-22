@@ -117,4 +117,9 @@ export interface AgentPushesToday {
   agents: { agent: string; runs: number; received: number; saved: number; skipped: number; failed: number; last_at: string }[];
   failures: { url: string; reason: string; message: string; title: string; company: string; agent: string; at: string }[];
   needs_link: { card_id: string; url: string; title: string; company: string; agent: string }[];
+  items: {
+    outcome: "saved" | "tracker" | "unmatched" | "awaiting_match" | "timeout";
+    url: string; title: string; company: string; open_path: string | null;
+    match_score: number | null; match_gate: string; origin: string; agents: string[];
+  }[];
 }

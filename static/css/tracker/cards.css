@@ -980,8 +980,10 @@
 .apb-summary strong { color: var(--text); }
 .has-problems .apb-summary strong { color: var(--warning); }
 .apb-failed { color: var(--danger); font-weight: 600; }
-.apb-block { margin-top: 8px; }
-.apb-heading { font-weight: 600; margin-bottom: 2px; }
+.apb-block { margin-top: 8px; color: var(--text); }
+.apb-block > summary { cursor: pointer; }
+.apb-heading { font-weight: 600; }
+.apb-warn .apb-heading { color: var(--warning); }
 .apb-block ul { margin: 0; padding-left: 18px; }
 .apb-block li { margin: 2px 0; overflow-wrap: anywhere; }
 .apb-block a { color: var(--accent); }

@@ -194,7 +194,7 @@ Why it skips the matcher: the agent already decided the role is a fit. Re-scorin
 | Indeed short link with no job id, title + company sent | Tracker card under a stand-in id from title + company (`unresolved-<hash>`, so a re-push with a new short link is a duplicate), **Fix link** pill; paste the `viewjob?jk=` URL under Replace posting link |
 | Cannot be saved | Listed in `failed_reasons` (`not_http`, `short_link_unresolved` without title/company, `no_job_id`, `save_failed`) |
 
-Every push is recorded in `agent_push_runs`. The Tracker shows today's pushes (Berlin day) above the list: per agent sent / saved / already stored / failed, each failed URL with its reason, and cards whose link still needs fixing. Earlier days are not shown, so the banner clears at midnight.
+Every push is recorded in `agent_push_runs`, with one entry per job. The Tracker shows today's pushes (Berlin day) above the list: per agent sent / saved / already stored / failed, then every job with its posting link and an Open card link, grouped as Fix the link, Not saved, Saved, Already on the Tracker (with how it got there: scraper, API source, Log Job or an earlier agent push, and its score), On Unmatched (score and the gate that stopped it), Waiting for the matcher, In Timeouts. Earlier days are not shown, so the banner clears at midnight.
 
 Some `to.indeed.com` links (from the Indeed connector) redirect to an encrypted `/uie/clk` URL behind a Cloudflare challenge, so no `jk=` is ever seen. Agents should always send `title` and `company` with each job.
 
