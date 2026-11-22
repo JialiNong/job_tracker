@@ -9,7 +9,7 @@
  * recommended this, the matcher did not".
  */
 import {
-  detectSource, expandShortJobUrl, isHttpUrl, normalizeManualIdentity, normalizeRecommendReason,
+  detectSource, expandShortJobUrl, isHttpUrl, isShortJobUrl, normalizeManualIdentity, normalizeRecommendReason,
   normalizeRecommendedBy, now as clockNow, resolveJobId,
 } from "@tracker/core";
 import type { PrismaClient } from "@tracker/db/client";
@@ -22,6 +22,17 @@ export const AGENTS = ["claude", "cursor", "gemini", "gpt"];
 const BUCKET: Record<string, "already_on_tracker" | "below_threshold" | "awaiting_match" | "timeout"> = {
   tracker: "already_on_tracker", unmatched: "below_threshold", awaiting_match: "awaiting_match", timeout: "timeout",
 };
+
+/** Why a URL landed in `failed`, so the agent can report it or retry with a better link. */
+export const FAILED_REASONS = {
+  not_http: "Not an http(s) job link.",
+  short_link_unresolved:
+    "This Indeed short link did not lead to a job key (jk=): Indeed blocked the redirect, "
+    + "which happens with encrypted click links. Send the job's https://de.indeed.com/viewjob?jk=<id> link instead.",
+  no_job_id: "Could not read a job id from this URL.",
+  save_failed: "The tracker could not save this job (database error, see the server log).",
+} as const;
+export type FailedReason = keyof typeof FAILED_REASONS;
 
 function existingRow(url: string, jobId: string, hit: KnownJob) {
   return {
@@ -40,8 +51,13 @@ function existingRow(url: string, jobId: string, hit: KnownJob) {
 export async function logAgentJobs(prisma: PrismaClient, jobs: unknown[], defaultAgent: string) {
   const out = {
     ok: [] as string[], skipped: [] as string[], failed: [] as string[],
+    failed_reasons: [] as { url: string; reason: FailedReason; message: string }[],
     existing: [] as ReturnType<typeof existingRow>[],
     already_on_tracker: 0, below_threshold: 0, awaiting_match: 0, timeout: 0,
+  };
+  const fail = (url: string, reason: FailedReason) => {
+    out.failed.push(url);
+    out.failed_reasons.push({ url, reason, message: FAILED_REASONS[reason] });
   };
   for (const raw of jobs) {
     const item = typeof raw === "string" ? { url: raw } : raw && typeof raw === "object" ? raw as Record<string, unknown> : null;
@@ -49,10 +65,10 @@ export async function logAgentJobs(prisma: PrismaClient, jobs: unknown[], defaul
     const pasted = String(item.url ?? "").trim();
     const url = (await expandShortJobUrl(pasted)) || pasted;
     if (!url) continue;
-    if (!isHttpUrl(url)) { out.failed.push(url); continue; } // never store javascript: / data: links
+    if (!isHttpUrl(url)) { fail(url, "not_http"); continue; } // never store javascript: / data: links
     const source = detectSource(url);
     const jobId = resolveJobId(url, source);
-    if (!jobId) { out.failed.push(url); continue; }
+    if (!jobId) { fail(url, isShortJobUrl(url) ? "short_link_unresolved" : "no_job_id"); continue; }
     const agent = normalizeRecommendedBy(item.recommended_by) || defaultAgent;
 
     const hit = await lookupKnownJob(prisma, jobId, source, url);
@@ -75,7 +91,7 @@ export async function logAgentJobs(prisma: PrismaClient, jobs: unknown[], defaul
     });
     if (saved.ok.includes(url)) out.ok.push(url);
     else if (saved.skipped.includes(url)) out.skipped.push(url);
-    else out.failed.push(url);
+    else fail(url, "save_failed");
   }
   for (const row of out.existing) out[BUCKET[row.stage]!] += 1;
   return out;

@@ -59,6 +59,8 @@ export async function POST(req: NextRequest) {
     timeout: result.timeout,
     below_threshold_jobs: result.existing.filter((e) => e.stage === "unmatched"),
     urls: { ok: result.ok, skipped: result.skipped, failed: result.failed, existing: result.existing },
+    // Only when something failed, so a clean response keeps its old shape.
+    ...(result.failed_reasons.length ? { failed_reasons: result.failed_reasons } : {}),
     ...(result.below_threshold ? {
       hint: "below_threshold jobs are already in Unmatched (scored below the match cut-off). "
         + "They were not added to the Tracker match list.",
