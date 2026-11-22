@@ -69,8 +69,9 @@ PYTHONPATH=src python3 scripts/tools/export_pipeline_config.py
 
 1. Set the scrapers' machine to `pnpm pipeline scrape` instead of
    `scripts/run_jobs.sh` (cron / launchd).
-2. GitHub: add the `DATABASE_URL` secret, move the schedule from
-   `api-sources.yml` to `api-sources-pg.yml`.
+2. GitHub: add the `DATABASE_URL` secret; merge `chore/cutover-workflows`,
+   which moves the schedule from `api-sources.yml` to `api-sources-pg.yml`
+   (docs/deploy.md §6).
 3. Telegram bot (`src/tg/bot.py`, stays Python): set `TRACKER_PIPELINE=postgres`
    so `/jobs` starts `pnpm pipeline scrape` instead of `scripts/run_jobs.sh`
    (same arguments). The bot itself does not read Mongo; the Indeed

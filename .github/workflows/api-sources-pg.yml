@@ -1,11 +1,13 @@
 # API job sources on the Next.js + Postgres stack (packages/pipeline).
 #
-# Manual only until the cutover: during the parallel week api-sources.yml
-# (Python + Mongo) keeps the daily schedule. At the cutover, move the
-# schedule here and remove it from api-sources.yml (docs/pipeline.md).
+# The daily run since the cutover (the old api-sources.yml is manual only).
 name: API job sources (Postgres)
 
 on:
+  schedule:
+    # 09:17 UTC = 10:17 Berlin in winter, 11:17 in summer.
+    # Offset from :00 — GitHub may skip top-of-hour schedules under load.
+    - cron: "17 9 * * *"
   workflow_dispatch:
     inputs:
       days:

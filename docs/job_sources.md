@@ -109,7 +109,7 @@ Telegram gets one summary (`🌐 API sources done … • Arbeitnow: 259 listed,
 
 ## 4. Automatic daily run (no Mac needed)
 
-`.github/workflows/api-sources.yml` runs on GitHub's servers every day at 09:17 UTC (10:17 Berlin in winter, 11:17 in summer — after morning postings, before afternoon applications). The `:17` offset avoids GitHub skipping top-of-hour schedules under load. It runs `run_sources.py`, which writes to the same MongoDB Atlas database the Tracker on Render reads. You can also start it by hand: GitHub → **Actions → API job sources → Run workflow** (choose days / sources).
+`.github/workflows/api-sources-pg.yml` runs on GitHub's servers every day at 09:17 UTC (10:17 Berlin in winter, 11:17 in summer — after morning postings, before afternoon applications). The `:17` offset avoids GitHub skipping top-of-hour schedules under load. It runs `pnpm pipeline sources` (packages/pipeline), which writes to the Neon Postgres database the Tracker on Vercel reads. You can also start it by hand: GitHub → **Actions → API job sources (Postgres) → Run workflow** (choose days / sources).
 
 The LinkedIn / Indeed lane cannot run there (it needs your logged-in Chrome and sometimes a human for Indeed's captcha), so it stays on Telegram `/jobs` on the Mac.
 

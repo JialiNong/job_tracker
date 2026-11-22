@@ -10,10 +10,8 @@
 name: API job sources
 
 on:
-  schedule:
-    # 09:17 UTC = 10:17 Berlin in winter, 11:17 in summer.
-    # Offset from :00 — GitHub may skip top-of-hour schedules under load.
-    - cron: "17 9 * * *"
+  # Manual only since the cutover: the daily schedule moved to
+  # api-sources-pg.yml. Kept as the fallback while Render + Atlas stay up.
   workflow_dispatch:
     inputs:
       days:

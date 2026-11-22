@@ -24,11 +24,13 @@ data, read-only. At the cutover Neon becomes the live database.
 ```bash
 export DIRECT_DATABASE_URL='postgresql://…direct…'   # quotes: the URL has & and ?
 DATABASE_URL="$DIRECT_DATABASE_URL" pnpm db migrate:deploy   # creates the tables
-DATABASE_URL="$DIRECT_DATABASE_URL" pnpm db from-mongo       # copies Mongo (MONGO_URI from .env)
+DATABASE_URL="$DIRECT_DATABASE_URL" pnpm db from-mongo --replace-remote   # copies Mongo (MONGO_URI from .env)
 ```
 
 `from-mongo` only reads Mongo. It ends with checks (row counts, cards,
-scores) that must all say `ok`.
+scores) that must all say `ok`. It replaces every table in the target, so a
+non-local `DATABASE_URL` needs `--replace-remote`: after the cutover, never
+run it against Neon.
 
 ## 3. Vercel
 
@@ -119,17 +121,34 @@ The sync logs counts only (`--quiet`): no job names or ids in the Actions log.
 
 ## 6. Cutover (one evening)
 
+The workflow changes live on one branch (`chore/cutover-workflows`): it
+deletes `sync-mongo-to-pg.yml`, moves the daily schedule from
+`api-sources.yml` to `api-sources-pg.yml`, and makes `stack-stats.yml`
+manual (the Next.js app refreshes its own Stacks numbers). Merging it is
+the point of no return, so merge only after step 2.
+
+Before you start: a backup of Atlas (snapshot or `mongodump`).
+
 1. Stop writing to the Flask app. Run **Sync Mongo to Postgres** by hand,
    wait for all checks `ok`.
-2. Set the GitHub variable `MONGO_SYNC` to `off`. From now on Neon is the
+2. Neon: create a branch from `main` (e.g. `pre-cutover`) as a snapshot.
+   Set the GitHub variable `MONGO_SYNC` to `off`. From now on Neon is the
    live data; a sync would destroy every change made after it.
-3. Vercel: delete `TRACKER_READ_ONLY`; add `AGENT_API_TOKEN` (the same token
-   as on Render) and redeploy. Point the agents (the daily job push) at the
-   Vercel URL.
-4. GitHub: move the `schedule:` from `api-sources.yml` to `api-sources-pg.yml`.
-5. Your computer: run `pnpm pipeline scrape` instead of `scripts/run_jobs.sh`
-   (cron / launchd), with `DATABASE_URL` set to the Neon direct string; set
-   `TRACKER_PIPELINE=postgres` for the Telegram bot so `/jobs` starts it
-   (docs/pipeline.md).
+3. Merge `chore/cutover-workflows` into `main` and push. Check that the
+   GitHub secret `DATABASE_URL` (Neon direct string) exists: the daily
+   `api-sources-pg.yml` run needs it.
+4. Vercel: delete `TRACKER_READ_ONLY`; add `AGENT_API_TOKEN` (the same token
+   as on Render) and redeploy. Point the agents (the Cursor / Claude daily
+   job push) at the Vercel URL.
+5. Your computer: put `DATABASE_URL` (Neon direct string) in the repo-root
+   `.env`; the pipeline reads it before `apps/web/.env.local`. Add
+   `TRACKER_PIPELINE=postgres` to the same file and restart the Telegram
+   bot, so `/jobs` runs `pnpm pipeline scrape` instead of
+   `scripts/run_jobs.sh` (docs/pipeline.md).
 6. Keep Render and Atlas running, untouched, for two weeks as a fallback,
-   then shut them down.
+   then shut them down. Do not log in to the Flask app meanwhile: its
+   writes go to Mongo and never reach Neon.
+
+The next day, check: the daily **API job sources (Postgres)** run passed
+and the old **API job sources** did not run; the agents' picks show up in
+the Vercel app; a `/jobs` run added postings and sent its Telegram digest.
