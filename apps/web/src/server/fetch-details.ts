@@ -67,7 +67,23 @@ export function parseScraperOutput(stdout: string): ScrapeResult | null {
   return null;
 }
 
-export const pythonScraper: Scraper = (url) => new Promise((done) => {
+/**
+ * One Chrome scrape at a time in this server: Fetch details on the Tracker and
+ * Scrape & log share the debug Chrome's first tab, and two navigations at once
+ * would read each other's page. Kept on globalThis so every route bundle
+ * shares the same queue.
+ */
+const QUEUE_KEY = "__trackerChromeScrapeQueue";
+function inChromeQueue<T>(task: () => Promise<T>): Promise<T> {
+  const g = globalThis as unknown as Record<string, Promise<unknown> | undefined>;
+  const run = (g[QUEUE_KEY] ?? Promise.resolve()).then(task, task);
+  g[QUEUE_KEY] = run.catch(() => undefined);
+  return run;
+}
+
+export const pythonScraper: Scraper = (url) => inChromeQueue(() => runScraperScript(url));
+
+const runScraperScript = (url: string) => new Promise<ScrapeResult>((done) => {
   const root = repoRoot();
   if (!root) return done({ ok: false, error: `${SCRIPT} not found (run the app from the repo)` });
   const override = process.env.FETCH_DETAILS_SCRAPER?.trim();

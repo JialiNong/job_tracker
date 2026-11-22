@@ -29,17 +29,27 @@ the scraper processes only. Unset, everything stays on Mongo, so
 `scripts/run_jobs.sh` keeps working unchanged during the parallel week. Both
 runners take the same lock (`logs/pipeline.pid`).
 
-## Fetch job details (Tracker)
+## Fetch job details and Scrape & log
 
-The Tracker's Fetch job details (one card or the selection) runs only where
+The Tracker's Fetch job details (one card or the selection) and Log Job's
+Scrape & log run only where
 the app runs on your computer (`pnpm --filter @tracker/web dev`, localhost:3000).
 `POST /api/jobs/<id>/fetch-details` starts `scripts/tools/scrape_job_page.py`
 with `PYTHON` (set it in `apps/web/.env.local` to the interpreter that has
 Playwright). The script opens the link in the debug Chrome with the unchanged
 page scraper and prints one JSON line; the route saves title / company /
 location / description to Postgres (status, timeline, notes and AI fields are
-untouched, user-typed fields win). On Vercel it answers 503. The e2e suite
-swaps in `tests/e2e/fake_scrape_job_page.py` through `FETCH_DETAILS_SCRAPER`.
+untouched, user-typed fields win). On Vercel both answer 503.
+
+Scrape & log saves every URL link-only first (dedupe, mark applied, agent tag,
+typed fields), then runs Fetch details and Run AI for each card that still
+has no JD or AI result. A failed scrape leaves the card saved, AI pending.
+That part runs after the response in the local server; the page polls
+`/api/manual-apply/status`. Scrapes run one at a time per server, so a Log run
+and a Fetch click never share the Chrome tab.
+
+The e2e suite swaps in `tests/e2e/fake_scrape_job_page.py` through
+`FETCH_DETAILS_SCRAPER`.
 
 ## Settings shared with Python
 
