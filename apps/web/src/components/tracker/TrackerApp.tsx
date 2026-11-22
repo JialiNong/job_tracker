@@ -161,12 +161,9 @@ export function TrackerApp() {
     const titles = new Map((data?.jobs ?? []).map((j) => [j._id, j.title]));
     void runAi.runBatch([...selected].map((id) => ({ id, label: titles.get(id) ?? id }))).then(() => setSelected(new Set()));
   };
-  const fetchSelected = async () => {
-    try {
-      await api.fetchDetailsBatch([...selected]);
-    } catch (err) {
-      toast((err as Error).message, "err", 5000);
-    }
+  const fetchSelected = () => {
+    const titles = new Map((data?.jobs ?? []).map((j) => [j._id, j.title]));
+    void runAi.runBatch([...selected].map((id) => ({ id, label: titles.get(id) ?? id })), "fetch").then(() => setSelected(new Set()));
   };
 
   // ── Company filter (chips in the search box) ──────────────────────────
@@ -198,6 +195,7 @@ export function TrackerApp() {
           return next;
         }),
         runAi: (id) => void runAi.runOne(id),
+        fetchDetails: (id) => void runAi.fetchOne(id),
         isRunningAi: runAi.isRunning,
         batchRunning: !!runAi.batch?.running,
       }}

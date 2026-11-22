@@ -337,6 +337,57 @@ class TrackerE2E(unittest.TestCase):
         # The card shows the new result without a reload
         expect(card.locator(".card-summary").first).to_contain_text("E2E fake AI summary")
 
+    # ── Fetch job details (fake scraper: tests/e2e/fake_scrape_job_page.py) ──
+
+    def make_link_only(self, oid, link=None):
+        fields = {"title": "(Link only) linkedin", "company": "", "location": "", "description": ""}
+        if link:
+            fields.update(source="ats", link=link)
+        self.store.set_tracker_fields(oid, fields)
+
+    @unittest.skipUnless(os.getenv("E2E_FAKE_SCRAPER"), "Next.js only: Fetch details against the fake scraper")
+    def test_fetch_details_saves_scraped_fields(self):
+        # Regression: on localhost the app answered "Playwright not available … run locally".
+        # An applied card with no JD, like the one that hit it.
+        self.make_link_only(APPLIED_ID)
+        self.open_card(APPLIED_ID)
+        card = self.page.locator(f"#card-{APPLIED_ID}")
+        card.locator(".btn-fetch-details").click()
+        expect(self.page.locator("#toast")).to_contain_text("Details fetched")
+        job = wait_for(lambda: (j := self.job(APPLIED_ID)) and j["details_fetched_at"] and j, "details saved")
+        self.assertEqual(job["title"], "E2E Fetched Backend Engineer")
+        self.assertEqual(job["company"], "E2E Fetched GmbH")
+        self.assertEqual(job["location"], "Hamburg, Germany")
+        self.assertIn("E2E fetched description", job["description"])
+        self.assertEqual(job["status"], "applied", "fetching details must not touch the status")
+        self.assertEqual(len(job["application_timeline"]), 1, "nor the timeline")
+        # The card refreshes: new title, no Fetch button any more
+        expect(card.locator(".row-title")).to_have_text("E2E Fetched Backend Engineer")
+        expect(card.locator(".btn-fetch-details")).to_have_count(0)
+
+    @unittest.skipUnless(os.getenv("E2E_FAKE_SCRAPER"), "Next.js only: Fetch details against the fake scraper")
+    def test_fetch_details_failure_shows_error_and_keeps_card(self):
+        self.make_link_only(PENDING_ID, link="https://jobs.example.com/scrape-fails/1")
+        self.open_card(PENDING_ID)
+        self.page.locator(f"#card-{PENDING_ID} .btn-fetch-details").click()
+        expect(self.page.locator("#toast")).to_contain_text("E2E fake scrape failure")
+        job = self.job(PENDING_ID)
+        self.assertEqual(job["title"], "(Link only) linkedin")
+        self.assertIsNone(job["details_fetched_at"])
+
+    @unittest.skipUnless(os.getenv("E2E_FAKE_SCRAPER"), "Next.js only: Fetch details against the fake scraper")
+    def test_batch_fetch_details_for_selected_cards(self):
+        self.make_link_only(PENDING_ID)
+        self.make_link_only(DELETE_ID)
+        self.page.goto(self.base + "/")
+        self.page.click("#selectModeBtn")
+        self.page.click("#selectMissingBtn")
+        expect(self.page.locator("#batchFetchMeta")).to_contain_text("2 selected")
+        self.page.click("#fetchSelectedBtn")
+        expect(self.page.locator("#batchFetchBanner")).to_contain_text("Fetch details finished — 2 updated")
+        for oid in (PENDING_ID, DELETE_ID):
+            self.assertEqual(self.job(oid)["title"], "E2E Fetched Backend Engineer")
+
     def test_edit_job_info(self):
         self.open_card(PENDING_ID)
         card = self.page.locator(f"#card-{PENDING_ID}")

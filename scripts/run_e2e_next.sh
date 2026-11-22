@@ -27,6 +27,8 @@ disown "$FAKE_OPENAI"
   unset TRACKER_ALLOW_FIXED_NOW TRACKER_FIXED_NOW
   export OPENAI_API_KEY=e2e-fake OPENAI_BASE_URL="http://127.0.0.1:$OPENAI_PORT/v1"
   export MATCH_PROFILE_PATH="$PWD/../../tests/e2e/fake_cv.md"
+  # Fetch details runs a fake scraper (tests/e2e/fake_scrape_job_page.py): no Chrome, no website
+  export FETCH_DETAILS_SCRAPER="$PWD/../../tests/e2e/fake_scrape_job_page.py" PYTHON="$PYTHON"
   TZ=UTC NODE_ENV=development exec npx next dev --port "$PORT" >"$LOG" 2>&1
 ) &
 SERVER=$!
@@ -39,5 +41,5 @@ done
 curl -sf "http://127.0.0.1:$PORT/health" >/dev/null || { echo "next dev did not start, see $LOG"; exit 1; }
 
 cd tests/e2e
-E2E_STORE=pg_store:PostgresStore E2E_BASE_URL="http://127.0.0.1:$PORT" E2E_FAKE_OPENAI=1 \
+E2E_STORE=pg_store:PostgresStore E2E_BASE_URL="http://127.0.0.1:$PORT" E2E_FAKE_OPENAI=1 E2E_FAKE_SCRAPER=1 \
   "$PYTHON" -m unittest test_tracker_e2e "$@"
