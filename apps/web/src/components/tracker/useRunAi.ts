@@ -1,9 +1,10 @@
 "use client";
 /**
- * Run AI from the browser: one card, or the selected cards one after another
- * (each a POST /api/jobs/<id>/run-ai that runs to the end on the server).
- * Flask ran batches in a server thread; a serverless function cannot, so
- * the page drives the sequence and shows the progress itself.
+ * Run AI / Fetch details from the browser: one card, or the selected cards
+ * one after another (each a POST /api/jobs/<id>/run-ai or /fetch-details
+ * that runs to the end on the server). Flask ran batches in a server thread;
+ * a serverless function cannot, so the page drives the sequence and shows
+ * the progress itself.
  */
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -13,12 +14,17 @@ import { GATE_LABELS } from "@/lib/tracker/format";
 import { invalidateTracker } from "@/lib/tracker/queries";
 
 export interface BatchRow extends RunAiResult { id: string; label: string }
+export type BatchMode = "ai" | "fetch";
 export interface BatchProgress {
+  mode: BatchMode;
   running: boolean;
   total: number;
   current: number;
   rows: BatchRow[];
 }
+
+const MODE_LABEL: Record<BatchMode, string> = { ai: "Run AI", fetch: "Fetch details" };
+const call = (mode: BatchMode, id: string) => (mode === "ai" ? api.runAi(id) : api.fetchDetails(id));
 
 const gateText = (gate?: string) => GATE_LABELS[gate ?? ""] || gate || "";
 
@@ -36,7 +42,7 @@ export function useRunAi() {
   });
 
   const runOne = async (id: string) => {
-    if (batch?.running) return toast("Wait for the batch Run AI to finish", "err");
+    if (batch?.running) return toast(`Wait for the batch ${MODE_LABEL[batch.mode]} to finish`, "err");
     mark(id, true);
     const result = await api.runAi(id);
     mark(id, false);
@@ -49,22 +55,33 @@ export function useRunAi() {
     await invalidateTracker(client);
   };
 
+  /** Scrape one card's link in the local Chrome (no AI). */
+  const fetchOne = async (id: string) => {
+    if (batch?.running) return toast(`Wait for the batch ${MODE_LABEL[batch.mode]} to finish`, "err");
+    mark(id, true);
+    const result = await api.fetchDetails(id);
+    mark(id, false);
+    if (!result.ok) return toast(`Fetch details failed: ${result.error}`, "err", 6000);
+    toast(`Details fetched${result.title ? `: ${result.title}` : ""}`);
+    await invalidateTracker(client);
+  };
+
   /** Selected cards in order; one failure does not stop the rest. */
-  const runBatch = async (items: { id: string; label: string }[]) => {
+  const runBatch = async (items: { id: string; label: string }[], mode: BatchMode = "ai") => {
     if (batch?.running || !items.length) return;
     setBanner(null);
     const rows: BatchRow[] = [];
-    setBatch({ running: true, total: items.length, current: 0, rows: [] });
+    setBatch({ mode, running: true, total: items.length, current: 0, rows: [] });
     for (const [i, item] of items.entries()) {
-      setBatch({ running: true, total: items.length, current: i + 1, rows: [...rows] });
+      setBatch({ mode, running: true, total: items.length, current: i + 1, rows: [...rows] });
       mark(item.id, true);
-      rows.push({ ...(await api.runAi(item.id)), id: item.id, label: item.label });
+      rows.push({ ...(await call(mode, item.id)), id: item.id, label: item.label });
       mark(item.id, false);
     }
     const done = rows.filter((r) => r.ok).length;
     const failed = rows.length - done;
-    setBatch({ running: false, total: items.length, current: items.length, rows });
-    const text = `Run AI finished — ${done} updated${failed ? `, ${failed} failed` : ""}`;
+    setBatch({ mode, running: false, total: items.length, current: items.length, rows });
+    const text = `${MODE_LABEL[mode]} finished — ${done} updated${failed ? `, ${failed} failed` : ""}`;
     setBanner({ text, type: failed ? "err" : "ok" });
     toast(text, failed ? "err" : "ok", 8000);
     await invalidateTracker(client);
@@ -72,6 +89,7 @@ export function useRunAi() {
 
   return {
     runOne,
+    fetchOne,
     runBatch,
     isRunning: (id: string) => running.has(id),
     batch,
@@ -79,6 +97,8 @@ export function useRunAi() {
     dismissBanner: () => setBanner(null),
   };
 }
+
+export const batchModeLabel = (mode: BatchMode) => MODE_LABEL[mode];
 
 /** The progress list under the batch bar (markup from the old page). */
 export function batchRowText(r: BatchRow): string {

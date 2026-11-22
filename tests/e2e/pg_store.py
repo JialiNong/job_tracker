@@ -94,7 +94,7 @@ class PostgresStore:
         row = self.conn.execute(
             f"""SELECT a.id, a.status::text AS status, a.applied_at, a.notes, a.applicant_position,
                        j.title, j.company, j.location, j.link, j.source, j.external_id,
-                       j.posting_key, j.link_replaced_at
+                       j.posting_key, j.link_replaced_at, j.description, j.details_fetched_at
                   FROM applications a JOIN jobs j ON j.id = a.job_id
                  WHERE {where} = %s""",
             (value,),
@@ -107,6 +107,7 @@ class PostgresStore:
             "title": row["title"], "company": row["company"], "location": row["location"],
             "link": row["link"], "source": row["source"], "job_id": row["external_id"],
             "link_replaced_at": row["link_replaced_at"],
+            "description": row["description"], "details_fetched_at": row["details_fetched_at"],
             "application_timeline": self._events(row["id"]),
         }
         if row["posting_key"]:
@@ -124,7 +125,7 @@ class PostgresStore:
 
     def set_tracker_fields(self, job_oid, fields: dict):
         columns = {"source": "source", "link": "link", "title": "title", "company": "company",
-                   "location": "location", "job_id": "external_id"}
+                   "location": "location", "job_id": "external_id", "description": "description"}
         sets = ", ".join(f"{columns[k]} = %s" for k in fields)
         self.conn.execute(
             f"UPDATE jobs SET {sets} WHERE id = (SELECT job_id FROM applications WHERE id = %s)",

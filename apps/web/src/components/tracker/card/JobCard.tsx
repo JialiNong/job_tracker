@@ -4,7 +4,6 @@
  * decides which card is open (one at a time).
  */
 import { useDialog } from "@/components/ui/Dialog";
-import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/tracker/api";
 import { needsAi, normalizeHighlights, safeUrl } from "@/lib/tracker/format";
 import { useTrackerWrite } from "@/lib/tracker/queries";
@@ -111,22 +110,13 @@ function CardBody({ job, highlights, onClose }: { job: Job; highlights: string[]
 
 /**
  * Run AI runs on the server when the card has a complete stored JD. Fetch
- * job details needs the browser scraper, which runs on your computer; the
- * server says so.
+ * job details scrapes the link in your debug Chrome, so it works when the
+ * app runs on your computer; the hosted app says so.
  */
 function PipelineButtons({ job }: { job: Job }) {
-  const toast = useToast();
   const tracker = useTracker();
   const running = tracker.isRunningAi(job._id);
   const aiPending = needsAi(job);
-  const fetchDetails = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    try {
-      await api.fetchDetails(job._id);
-    } catch (err) {
-      toast((err as Error).message, "err", 5000);
-    }
-  };
   return (
     <>
       <button
@@ -139,7 +129,8 @@ function PipelineButtons({ job }: { job: Job }) {
       </button>
       {job.details_missing || job.can_fetch_details ? (
         <button
-          type="button" className="btn-fetch-details" onClick={fetchDetails}
+          type="button" className="btn-fetch-details" disabled={running || tracker.batchRunning}
+          onClick={(e) => { e.stopPropagation(); tracker.fetchDetails(job._id); }}
           title="Scrape title, company, location, and description (no AI matching) — runs on your computer"
         >
           Fetch job details

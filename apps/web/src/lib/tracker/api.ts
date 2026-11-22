@@ -44,12 +44,12 @@ export interface RunAiResult {
 }
 
 /** Like request(), but a failed run comes back as a result (batches report it per job, they do not stop). */
-async function runAiRequest(id: string): Promise<RunAiResult> {
+async function postForResult(path: string, label: string): Promise<RunAiResult> {
   try {
-    const res = await fetch(`/api/jobs/${id}/run-ai`, { method: "POST", cache: "no-store" });
+    const res = await fetch(path, { method: "POST", cache: "no-store" });
     const data = (await res.json().catch(() => ({}))) as Partial<RunAiResult>;
-    if (res.ok && data.ok) return data as RunAiResult;
-    return { ...data, ok: false, error: data.error || `Run AI failed (HTTP ${res.status})`, match_score: null };
+    if (res.ok && data.ok) return { match_score: null, ...data } as RunAiResult;
+    return { ...data, ok: false, error: data.error || `${label} failed (HTTP ${res.status})`, match_score: null };
   } catch (err) {
     return { ok: false, error: (err as Error).message || "Network error", match_score: null };
   }
@@ -59,9 +59,9 @@ export const api = {
   listJobs: (params: URLSearchParams, signal?: AbortSignal) =>
     request<JobPage>(`/api/jobs?${params}`, { signal }),
   getJob: (id: string) => request<Job>(`/api/jobs/${id}`),
-  runAi: runAiRequest,
-  fetchDetails: (id: string) => send<{ ok: boolean }>("POST", `/api/jobs/${id}/fetch-details`),
-  fetchDetailsBatch: (ids: string[]) => send<{ ok: boolean }>("POST", "/api/fetch-details/batch", { ids }),
+  runAi: (id: string) => postForResult(`/api/jobs/${id}/run-ai`, "Run AI"),
+  /** Scrape in the local debug Chrome; a failure comes back as { ok: false, error }. */
+  fetchDetails: (id: string) => postForResult(`/api/jobs/${id}/fetch-details`, "Fetch details"),
   /** Cards across all pages for the list filters: kind "missing" (no JD) or "missing_ai" (no AI result). */
   fetchTargets: (params: URLSearchParams, kind: "missing" | "missing_ai") => {
     const q = new URLSearchParams(params);

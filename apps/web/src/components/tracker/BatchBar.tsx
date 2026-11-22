@@ -4,7 +4,7 @@
  * select helpers, then Fetch details / Run AI match / Delete for the
  * selection; the batch progress list and the result banner below it.
  */
-import { type BatchProgress, batchRowText } from "./useRunAi";
+import { type BatchProgress, batchModeLabel, batchRowText } from "./useRunAi";
 
 interface Props {
   selectMode: boolean;
@@ -83,7 +83,7 @@ function BatchProgressList({ batch }: { batch: BatchProgress }) {
   return (
     <>
       <div className="bf-head">
-        <span>{batch.running ? `Run AI ${Math.min(batch.current, batch.total)}/${batch.total}` : `Batch done — ${done} saved, ${failed} failed`}</span>
+        <span>{batch.running ? `${batchModeLabel(batch.mode)} ${Math.min(batch.current, batch.total)}/${batch.total}` : `Batch done — ${done} saved, ${failed} failed`}</span>
         <span>{done} ok · {failed} failed</span>
       </div>
       <div className="bf-list">
