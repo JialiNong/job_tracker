@@ -218,6 +218,38 @@ class TrackerCardE2E(E2ECase):
         self.assertEqual([e["step"] for e in job["application_timeline"]], ["applied"])
         self.assertIsNotNone(job["applied_at"])
 
+    def test_undo_later_step_asks_and_keeps_applied(self):
+        progress = self.open_card(APPLIED_ID)
+        progress.get_by_role("button", name="+ Rejected").click()
+        self.confirm_modal()
+        wait_for(lambda: self.job(APPLIED_ID)["status"] == "rejected", "status = rejected")
+
+        progress = self.page.locator(f"#progress-{APPLIED_ID}")
+        progress.get_by_role("button", name="↩ Undo").click()
+        self.confirm_modal()
+        wait_for(lambda: self.job(APPLIED_ID)["status"] == "applied", "undo rejected")
+        job = self.job(APPLIED_ID)
+        self.assertEqual([e["step"] for e in job["application_timeline"]], ["applied"])
+        self.assertIsNotNone(job["applied_at"], "undoing Rejected must keep Applied")
+        expect(progress.locator(".progress-node")).to_have_count(1)
+        expect(self.page.locator(f"#card-{APPLIED_ID} .status-pill")).to_have_text("Applied")
+
+    def test_undo_later_step_cancel_keeps_the_step(self):
+        progress = self.open_card(APPLIED_ID)
+        progress.get_by_role("button", name="+ Rejected").click()
+        self.confirm_modal()
+        wait_for(lambda: self.job(APPLIED_ID)["status"] == "rejected", "status = rejected")
+
+        progress = self.page.locator(f"#progress-{APPLIED_ID}")
+        progress.get_by_role("button", name="↩ Undo").click()
+        self.cancel_modal()
+        self.page.locator(".tl-modal").wait_for(state="hidden")
+        job = self.job(APPLIED_ID)
+        self.assertEqual(job["status"], "rejected")
+        self.assertEqual([e["step"] for e in job["application_timeline"]], ["applied", "rejected"])
+        self.assertIsNotNone(job["applied_at"])
+        expect(progress.locator(".progress-node")).to_have_count(2)
+
     def test_side_status_keeps_application_record(self):
         self.open_card(APPLIED_ID)
         self.page.select_option(f".status-side-select[data-id='{APPLIED_ID}']", "unsuitable")
