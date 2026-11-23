@@ -116,8 +116,10 @@ export function useTrackerWrite<TArgs, TResult>(
   const toast = useToast();
   return useMutation({
     mutationFn: write,
-    onSuccess: async (result, args) => {
-      if (!options.noRefetch) await invalidateTracker(client);
+    onSuccess: (result, args) => {
+      // Do not await the refetch: waiting on every list/stats query made the
+      // page look like it reloaded, and a second click could land on Undo.
+      if (!options.noRefetch) void invalidateTracker(client);
       const msg = typeof options.success === "function" ? options.success(result, args) : options.success;
       if (msg) toast(msg);
     },
