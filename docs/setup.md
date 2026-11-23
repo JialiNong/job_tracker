@@ -95,12 +95,48 @@ All commands and flags: [pipeline.md](./pipeline.md). Raise `MATCH_THRESHOLD` fo
 
 ## 6. Tests
 
-| What | Command |
+The Next.js app is covered by **Vitest unit tests** (`apps/web/test`, `packages/*/test`) and **Playwright e2e** (`tests/e2e`, against Next.js + the local test Postgres). Run the suite for the area you changed, not the whole tree.
+
+Python unit tests under `tests/test_*.py` belong to the old Flask app, except the **page scrapers** (`./scripts/run_tests.sh scrape`).
+
+```bash
+./scripts/run_tests.sh              # list suites
+./scripts/run_tests.sh fetch        # Fetch details / Run AI / batch
+./scripts/run_tests.sh tracker      # Jobs list, cards, timeline, filters, Overview
+./scripts/run_tests.sh log-job
+./scripts/run_tests.sh unmatched
+./scripts/run_tests.sh timeouts
+./scripts/run_tests.sh matching     # AI matcher + Run AI
+./scripts/run_tests.sh scrape       # pipeline sources + Python page scrapers
+./scripts/run_tests.sh ui
+./scripts/run_tests.sh unit         # every Vitest package + apps/web
+```
+
+| Layer | Command | What it covers |
+|---|---|---|
+| One area (unit + e2e) | `./scripts/run_tests.sh <suite>` | See `./scripts/run_tests.sh` with no args |
+| Vitest (Next.js + packages) | `./scripts/run_tests.sh unit` | `apps/web/test`, `packages/*/test` |
+| One web unit file | `pnpm --filter @tracker/web test -- test/fetch-targets.test.ts` | |
+| Type check | `pnpm -r --if-present typecheck` | |
+| API contract snapshots | `./scripts/run_contract_next.sh` | JSON vs Flask snapshots |
+| Browser E2E (Playwright) | `./scripts/run_e2e_next.sh` | Click the UI, assert Postgres |
+| One e2e page | `./scripts/run_tests.sh unmatched` | The page's e2e file |
+| One e2e file | `./scripts/run_e2e_next.sh test_timeouts_e2e.py` | |
+| Extra `-k` | `./scripts/run_tests.sh tracker -k chip` | AND-narrows inside that suite's files |
+
+E2E files are split by page under `tests/e2e/`:
+
+| File | Page / actions |
 |---|---|
-| Unit tests (Vitest, every package) | `pnpm -r --if-present test` |
-| Type check | `pnpm -r --if-present typecheck` |
-| API contract snapshots | `./scripts/run_contract_next.sh` |
-| Browser E2E (Playwright) | `./scripts/run_e2e_next.sh` |
+| `test_login_e2e.py` | Login, wrong password, logout |
+| `test_tracker_list_e2e.py` | Chips, search, filters, layout, select, pagination, collapse |
+| `test_tracker_card_e2e.py` | Timeline (incl. datetime edit, reapplied, offer), notes, Q&A, highlights, edit, replace link, delete |
+| `test_tracker_overview_e2e.py` | Overview panels, heatmap (desktop click / phone double-tap), location bubbles, journey i, agent-push banner, Stacks |
+| `test_tracker_fetch_e2e.py` | Fetch details, Run AI, batch fetch / AI / delete |
+| `test_unmatched_e2e.py` | Search, Can apply, close, source / score / agent filters |
+| `test_timeouts_e2e.py` | Add as Not Applied, dismiss, source / status filter |
+| `test_log_job_e2e.py` | Lookup, Save Link Only, Scrape & Log, Clear, agent API |
+| `test_pages_e2e.py` | Every page loads styled, no JS errors |
 
 Contract and E2E both run against `tracker_test` and need `pnpm db:up` plus `apps/web/.env.contract` (test credentials; see [migration-contracts.md](./migration-contracts.md)). They start their own `next dev`. E2E talks to a local fake OpenAI server (`tests/e2e/fake_openai.py`), so Run AI needs no key and costs nothing.
 
@@ -118,7 +154,7 @@ The Python app (`src/web`, `templates/`, `static/`) and its MongoDB scripts stay
 | Matcher eval against Tracker decisions | `python3 scripts/tools/eval_matcher.py` |
 | Demo database for screenshots | `python3 scripts/db/seed_demo.py`, then `DATABASE_NAME=job_scraper_demo ./scripts/start_ui_demo.sh` |
 
-The Claude Code Stop hook (`scripts/e2e_hook.sh`) still runs the Python suites when `src/web`, `src/core`, `templates`, `static` or `tests` change.
+The Claude Code Stop hook (`scripts/e2e_hook.sh`) runs Vitest, the Python page-scraper tests, and the Next.js e2e suite when `apps/web`, `packages/*`, `src/scrapers`, or `tests` change.
 
 README images go in `docs/images/`: `tracker-flow.gif`, `tracker-desktop.jpg`, `match-detail.png`, `tracker-phone.jpg`.
 

@@ -1,7 +1,7 @@
 """Postgres store for the browser e2e suite (Next.js + Postgres stack).
 
 Same methods as harness.MongoStore, returning documents in the Tracker's
-Mongo-era field names, so test_tracker_e2e.py runs unchanged:
+Mongo-era field names, so tests/e2e/test_*_e2e.py run unchanged:
 
     E2E_STORE=pg_store:PostgresStore E2E_BASE_URL=http://127.0.0.1:3100 \\
         python3 -m unittest discover -s tests/e2e
@@ -124,12 +124,54 @@ class PostgresStore:
         return self.conn.execute("SELECT count(*) AS n FROM applications").fetchone()["n"]
 
     def set_tracker_fields(self, job_oid, fields: dict):
-        columns = {"source": "source", "link": "link", "title": "title", "company": "company",
-                   "location": "location", "job_id": "external_id", "description": "description"}
-        sets = ", ".join(f"{columns[k]} = %s" for k in fields)
+        columns = {
+            "source": "source", "link": "link", "title": "title", "company": "company",
+            "location": "location", "job_id": "external_id", "description": "description",
+            "details_fetched_at": "details_fetched_at", "analysis_state": "analysis_state",
+        }
+        sets = ", ".join(
+            f"{columns[k]} = {'NULL' if fields[k] is None else '%s'}" for k in fields
+        )
+        values = [fields[k] for k in fields if fields[k] is not None]
         self.conn.execute(
             f"UPDATE jobs SET {sets} WHERE id = (SELECT job_id FROM applications WHERE id = %s)",
-            (*fields.values(), _id(job_oid)),
+            (*values, _id(job_oid)),
+        )
+
+    def add_extra_tracker_jobs(self, n: int, *, location="Berlin, Germany", status="pending"):
+        """Insert n extra Tracker cards (for pagination). 24-char ids, Germany, LinkedIn."""
+        for i in range(n):
+            job_pk = f"65e1{i:020d}"[:24]
+            app_id = f"65e2{i:020d}"[:24]
+            ext = str(4110000000 + i)
+            self.conn.execute(
+                """INSERT INTO jobs (id, source, external_id, title, company, location, link, description, analysis_state, updated_at)
+                   VALUES (%s, 'linkedin', %s, %s, %s, %s, %s, %s, 'done', now())""",
+                (job_pk, ext, f"Extra Engineer {i}", f"Corp {i}", location,
+                 f"https://www.linkedin.com/jobs/view/{ext}/", "Node.js backend. " * 20),
+            )
+            self.conn.execute(
+                """INSERT INTO applications (id, job_id, status, origin, country, added_at, updated_at)
+                   VALUES (%s, %s, %s, 'pipeline', 'germany', now(), now())""",
+                (app_id, job_pk, status),
+            )
+
+    def insert_agent_push(self, *, agent="cursor", title="Backend Engineer", company="Acme",
+                          card_id=None, url=None):
+        """One of today's agent-push runs, so the Tracker banner has something to show."""
+        import json
+        card_id = card_id or "65f000000000000000000001"
+        url = url or f"https://www.linkedin.com/jobs/view/4100000001/"
+        open_path = f"/?open={card_id}"
+        item = {
+            "outcome": "saved", "url": url, "title": title, "company": company,
+            "open_path": open_path, "match_score": None, "match_gate": "", "origin": "agent",
+        }
+        self.conn.execute(
+            """INSERT INTO agent_push_runs
+               (agent, at, received, saved, skipped, failed, failures, needs_link_jobs, items)
+               VALUES (%s, now(), 1, 1, 0, 0, '[]'::jsonb, '[]'::jsonb, %s::jsonb)""",
+            (agent, json.dumps([item])),
         )
 
     def scraped_job(self, job_id, source=None):

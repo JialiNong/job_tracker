@@ -51,6 +51,7 @@ node_modules/
 packages/*/dist/
 packages/db/reports/
 apps/web/.next/
+apps/web/.next-e2e/
 apps/web/public/static/
 apps/web/next-env.d.ts
 *.tsbuildinfo

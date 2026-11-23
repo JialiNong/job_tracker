@@ -2,7 +2,8 @@
 # Browser e2e suite against the Next.js app (apps/web) on the local test
 # Postgres (tracker_test), with the Postgres store (tests/e2e/pg_store.py).
 #   ./scripts/run_e2e_next.sh                 every test
-#   ./scripts/run_e2e_next.sh -k tracker      unittest -k patterns
+#   ./scripts/run_e2e_next.sh -k TrackerFetch unittest -k patterns (page / feature)
+#   ./scripts/run_e2e_next.sh test_timeouts_e2e   one file
 # Needs: pnpm db:up, apps/web/.env.contract, pip install -r requirements-dev.txt
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -10,6 +11,10 @@ PYTHON="${PYTHON:-/opt/miniconda3/bin/python3}"
 PORT="${E2E_PORT:-3200}"
 LOG="${TMPDIR:-/tmp}/tracker_next_e2e_${PORT}.log"
 OPENAI_PORT="${E2E_OPENAI_PORT:-3299}"
+TEST_DB="${E2E_PG_URL:-postgresql://tracker:tracker@127.0.0.1:54329/tracker_test}"
+
+# Apply pending Prisma migrations so new tables (agent_push_runs, …) exist.
+DATABASE_URL="$TEST_DB" DIRECT_DATABASE_URL="$TEST_DB" pnpm --silent db migrate:deploy
 
 # Run AI talks to a local fake OpenAI (tests/e2e/fake_openai.py): no key, no cost
 "$PYTHON" tests/e2e/fake_openai.py "$OPENAI_PORT" &
@@ -41,5 +46,11 @@ done
 curl -sf "http://127.0.0.1:$PORT/health" >/dev/null || { echo "next dev did not start, see $LOG"; exit 1; }
 
 cd tests/e2e
-E2E_STORE=pg_store:PostgresStore E2E_BASE_URL="http://127.0.0.1:$PORT" E2E_FAKE_OPENAI=1 E2E_FAKE_SCRAPER=1 \
-  "$PYTHON" -m unittest test_tracker_e2e "$@"
+# Files are split by page (test_*_e2e.py). Pass -k TrackerFetch / Unmatched / … to
+# run one area; a test_*.py module name runs that file only.
+export E2E_STORE=pg_store:PostgresStore E2E_BASE_URL="http://127.0.0.1:$PORT" E2E_FAKE_OPENAI=1 E2E_FAKE_SCRAPER=1
+if [[ "${1:-}" == test_* ]]; then
+  "$PYTHON" -m unittest "$@"
+else
+  "$PYTHON" -m unittest discover -s . -p 'test_*e2e.py' "$@"
+fi
