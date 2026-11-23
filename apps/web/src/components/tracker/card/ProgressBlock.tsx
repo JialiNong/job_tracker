@@ -1,8 +1,9 @@
 "use client";
 /**
  * Application progress: the timeline track, "+ Step" buttons, Undo, and the
- * "Other" side status. Clearing to Not applied asks first (it wipes the
- * application record). One timeline write at a time: a leftover click after
+ * "Other" side status. Every Undo asks first (a leftover click after Save
+ * used to drop a step). Clearing to Not applied / undoing the only Applied
+ * step is the wipe. One timeline write at a time: a leftover click after
  * the time modal must not Undo the step that was just saved. The card cache
  * updates from the PATCH; chips refetch in the background.
  */
@@ -107,17 +108,24 @@ export function ProgressBlock({ job }: { job: Job }) {
     }
     writing.current = true;
     const removed = timeline[timeline.length - 1]!;
+    const label = TIMELINE_LABEL[removed.step] ?? removed.step;
     // Undoing the only Applied step is the same wipe as Reset Not Applied
-    if (timeline.length === 1 && removed.step === "applied") {
-      const ok = await dialog.confirm({
-        title: "Remove Applied?",
-        hint: "This resets the card to Not applied and deletes the apply date. To record a rejection, use + Rejected instead.",
-        confirmLabel: "Remove",
-        danger: true,
-      });
-      if (!ok) { writing.current = false; return; }
-    }
-    runTimeline({ next: timeline.slice(0, -1), done: `↩ Undid ${TIMELINE_LABEL[removed.step] ?? removed.step}` });
+    const wipingApplied = timeline.length === 1 && removed.step === "applied";
+    const ok = await dialog.confirm(wipingApplied
+      ? {
+          title: "Remove Applied?",
+          hint: "This resets the card to Not applied and deletes the apply date. To record a rejection, use + Rejected instead.",
+          confirmLabel: "Remove",
+          danger: true,
+        }
+      : {
+          title: `Undo ${label}?`,
+          hint: `This removes ${label} from the progress track. Earlier steps stay.`,
+          confirmLabel: "Undo",
+          danger: true,
+        });
+    if (!ok) { writing.current = false; return; }
+    runTimeline({ next: timeline.slice(0, -1), done: `↩ Undid ${label}` });
   };
 
   const setSide = async (value: string) => {
