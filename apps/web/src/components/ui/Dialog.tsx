@@ -3,9 +3,16 @@
  * Modal dialogs as promises: `await confirm({...})` -> true / false,
  * `await askTime({...})` -> "YYYY-MM-DD HH:MM" or null. Same markup and
  * classes as the old page (.tl-modal-backdrop / .tl-modal / .tl-confirm).
+ *
+ * Closing the dialog leaves a transparent click shield for a moment so the
+ * same tap/click cannot hit Undo (or anything else) under the Save button.
+ * The time picker is a <form> that preventDefault, so Enter / the native
+ * datetime control cannot navigate the page.
  */
 import { createContext, use, useEffect, useRef, useState, type ReactNode } from "react";
 import { fromInputValue, nowInputValue } from "@/lib/tracker/timeline";
+
+const GHOST_CLICK_MS = 400;
 
 interface ConfirmOptions {
   title: string;
@@ -33,6 +40,8 @@ const DialogContext = createContext<DialogApi | null>(null);
 
 export function DialogProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState<Open | null>(null);
+  const [shield, setShield] = useState(false);
+  const shieldTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const confirm = (options: ConfirmOptions) =>
     new Promise<boolean>((resolve) => setOpen({ kind: "confirm", options, resolve }));
@@ -42,15 +51,28 @@ export function DialogProvider({ children }: { children: ReactNode }) {
   const close = (value: boolean | string | null) => {
     if (!open) return;
     setOpen(null);
+    setShield(true);
+    if (shieldTimer.current) clearTimeout(shieldTimer.current);
+    shieldTimer.current = setTimeout(() => setShield(false), GHOST_CLICK_MS);
     if (open.kind === "confirm") open.resolve(value === true);
     else open.resolve(typeof value === "string" ? value : null);
   };
+
+  useEffect(() => () => {
+    if (shieldTimer.current) clearTimeout(shieldTimer.current);
+  }, []);
 
   return (
     <DialogContext value={{ confirm, askTime }}>
       {children}
       {open?.kind === "confirm" && <ConfirmDialog options={open.options} onClose={close} />}
       {open?.kind === "time" && <TimeDialog options={open.options} onClose={close} />}
+      {shield ? (
+        <div
+          aria-hidden="true"
+          style={{ position: "fixed", inset: 0, zIndex: 200, background: "rgba(0,0,0,0)" }}
+        />
+      ) : null}
     </DialogContext>
   );
 }
@@ -99,18 +121,24 @@ function TimeDialog({ options, onClose }: { options: TimeOptions; onClose: (v: s
   const [value, setValue] = useState(options.initial || nowInputValue());
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => inputRef.current?.focus(), []);
+  const save = () => onClose(value ? fromInputValue(value) : null);
   return (
     <Backdrop onCancel={() => onClose(null)}>
-      <h3>{options.title}</h3>
-      <p>{options.hint || "Pick the date and time for this step"}</p>
-      <input
-        ref={inputRef} type="datetime-local" id="tlDatetimeInput"
-        value={value} onChange={(e) => setValue(e.target.value)}
-      />
-      <div className="tl-modal-actions">
-        <button type="button" className="tl-cancel" onClick={() => onClose(null)}>Cancel</button>
-        <button type="button" className="tl-confirm" onClick={() => onClose(value ? fromInputValue(value) : null)}>Save</button>
-      </div>
+      <form
+        style={{ display: "contents" }}
+        onSubmit={(e) => { e.preventDefault(); save(); }}
+      >
+        <h3>{options.title}</h3>
+        <p>{options.hint || "Pick the date and time for this step"}</p>
+        <input
+          ref={inputRef} type="datetime-local" id="tlDatetimeInput"
+          value={value} onChange={(e) => setValue(e.target.value)}
+        />
+        <div className="tl-modal-actions">
+          <button type="button" className="tl-cancel" onClick={() => onClose(null)}>Cancel</button>
+          <button type="submit" className="tl-confirm">Save</button>
+        </div>
+      </form>
     </Backdrop>
   );
 }

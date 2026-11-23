@@ -1,6 +1,8 @@
 """Tracker card body: timeline, notes, edit, highlights, Q&A, delete."""
 from __future__ import annotations
 
+import json
+import time
 from datetime import datetime, timedelta
 
 from harness import APPLIED_ID, DELETE_ID, E2ECase, PENDING_ID, wait_for
@@ -65,6 +67,53 @@ class TrackerCardE2E(E2ECase):
             "rejected chip +1",
         )
         self.assertEqual(int(self.page.locator("#cnt-applied").inner_text()), before_applied)
+        job = self.job(PENDING_ID)
+        self.assertEqual([e["step"] for e in job["application_timeline"]], ["applied", "rejected"])
+        self.assertIsNotNone(job["applied_at"], "+ Rejected must keep the Applied record")
+        expect(self.page.locator(f"#card-{PENDING_ID} .status-pill")).to_have_text("Rejected")
+        expect(progress.locator(".progress-node")).to_have_count(2)
+        expect(progress.locator(".node-label").nth(1)).to_have_text("Rejected")
+
+    def test_rejected_survives_undo_click_while_save_is_in_flight(self):
+        """+ Rejected on an already-applied card: leftover Undo after Save must not wipe to Not applied."""
+        progress = self.open_card(APPLIED_ID)
+        held: list = []
+
+        def hold_timeline(route):
+            if route.request.method != "PATCH":
+                route.continue_()
+                return
+            held.append(route)
+
+        self.page.route("**/api/jobs/*/timeline", hold_timeline)
+        try:
+            progress.get_by_role("button", name="+ Rejected").click()
+            self.page.locator(".tl-modal").wait_for(state="visible")
+            # Undo is still enabled under the time modal; the write lock must ignore this.
+            progress.locator("button.btn-undo").dispatch_event("click")
+            self.confirm_modal()
+            deadline = time.time() + 10
+            while not held:
+                if time.time() > deadline:
+                    self.fail("rejected PATCH did not start")
+                self.page.wait_for_timeout(50)
+            self.assertEqual(len(held), 1, "Undo must not send a second timeline PATCH")
+            payload = json.loads(held[0].request.post_data or "{}")
+            self.assertEqual(
+                [e["step"] for e in payload.get("timeline") or []],
+                ["applied", "rejected"],
+            )
+            for req in list(held):
+                req.continue_()
+        finally:
+            self.page.unroute("**/api/jobs/*/timeline")
+
+        wait_for(lambda: self.job(APPLIED_ID)["status"] == "rejected", "status = rejected")
+        job = self.job(APPLIED_ID)
+        self.assertEqual([e["step"] for e in job["application_timeline"]], ["applied", "rejected"])
+        self.assertIsNotNone(job["applied_at"])
+        expect(self.page.locator(f"#card-{APPLIED_ID} .status-pill")).to_have_text("Rejected")
+        expect(self.page.locator(f"#progress-{APPLIED_ID} .progress-node")).to_have_count(2)
 
     def test_record_invite_then_cancelled_keeps_got_interview(self):
         progress = self.open_card(PENDING_ID)
@@ -153,10 +202,21 @@ class TrackerCardE2E(E2ECase):
     def test_undo_applied_resets_to_not_applied(self):
         progress = self.open_card(APPLIED_ID)
         progress.get_by_role("button", name="↩ Undo").click()
+        self.confirm_modal()
         wait_for(lambda: self.job(APPLIED_ID)["status"] == "pending", "status = pending")
         job = self.job(APPLIED_ID)
         self.assertEqual(job["application_timeline"], [])
         self.assertIsNone(job["applied_at"])
+
+    def test_undo_applied_cancel_keeps_the_record(self):
+        progress = self.open_card(APPLIED_ID)
+        progress.get_by_role("button", name="↩ Undo").click()
+        self.cancel_modal()
+        self.page.locator(".tl-modal").wait_for(state="hidden")
+        job = self.job(APPLIED_ID)
+        self.assertEqual(job["status"], "applied")
+        self.assertEqual([e["step"] for e in job["application_timeline"]], ["applied"])
+        self.assertIsNotNone(job["applied_at"])
 
     def test_side_status_keeps_application_record(self):
         self.open_card(APPLIED_ID)
@@ -171,10 +231,21 @@ class TrackerCardE2E(E2ECase):
         self.page.select_option(f".status-side-select[data-id='{APPLIED_ID}']", "closed")
         wait_for(lambda: self.job(APPLIED_ID)["status"] == "closed", "status = closed")
         self.page.select_option(f".status-side-select[data-id='{APPLIED_ID}']", "pending")
+        self.confirm_modal()
         wait_for(lambda: self.job(APPLIED_ID)["status"] == "pending", "reset not applied")
         job = self.job(APPLIED_ID)
         self.assertEqual(job["application_timeline"], [])
         self.assertIsNone(job["applied_at"])
+
+    def test_reset_not_applied_cancel_keeps_the_record(self):
+        self.open_card(APPLIED_ID)
+        self.page.select_option(f".status-side-select[data-id='{APPLIED_ID}']", "pending")
+        self.cancel_modal()
+        self.page.locator(".tl-modal").wait_for(state="hidden")
+        job = self.job(APPLIED_ID)
+        self.assertEqual(job["status"], "applied")
+        self.assertEqual([e["step"] for e in job["application_timeline"]], ["applied"])
+        self.assertIsNotNone(job["applied_at"])
 
     def test_save_notes(self):
         self.open_card(PENDING_ID)

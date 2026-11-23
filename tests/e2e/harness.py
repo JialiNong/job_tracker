@@ -386,6 +386,9 @@ class E2ECase(unittest.TestCase):
     def confirm_modal(self):
         self.page.click(".tl-modal .tl-confirm")
 
+    def cancel_modal(self):
+        self.page.click(".tl-modal .tl-cancel")
+
     def confirm_time(self, value: str | None = None):
         """Save the datetime-local modal. value is YYYY-MM-DDTHH:MM (the input's value)."""
         field = self.page.locator("#tlDatetimeInput")
