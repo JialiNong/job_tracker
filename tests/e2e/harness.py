@@ -10,6 +10,7 @@ Nothing here can reach your real data:
 """
 from __future__ import annotations
 
+import atexit
 import os
 import shutil
 import socket
@@ -17,6 +18,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import unittest
 import urllib.request
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -24,6 +26,11 @@ from pathlib import Path
 import bcrypt
 from bson import ObjectId
 from pymongo import MongoClient
+
+try:
+    from playwright.sync_api import sync_playwright
+except ImportError:  # pragma: no cover
+    sync_playwright = None
 
 ROOT = Path(__file__).resolve().parents[2]
 DB_NAME = "job_scraper_e2e"
@@ -292,3 +299,137 @@ def launch_browser(playwright):
         return playwright.chromium.launch(channel="chrome", headless=True)
     except Exception:
         return playwright.chromium.launch(headless=True)
+
+
+UI_TIMEOUT_MS = 10_000
+
+
+def wait_for(check, what: str, timeout: float = 10.0):
+    """Poll until check() returns a truthy value (DB writes land after the click)."""
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        value = check()
+        if value:
+            return value
+        time.sleep(0.1)
+    raise AssertionError(f"Timed out waiting for: {what}")
+
+
+# One Stack + browser per process so splitting tests into page files does not
+# start a new next/mongod for every TestCase class.
+_session: dict = {}
+
+
+def _stop_session():
+    pw = _session.pop("pw", None)
+    browser = _session.pop("browser", None)
+    stack = _session.pop("stack", None)
+    if browser is not None:
+        browser.close()
+    if pw is not None:
+        pw.stop()
+    if stack is not None:
+        stack.stop()
+
+
+def _ensure_session():
+    if _session.get("stack") is not None:
+        return
+    stack = Stack()
+    pw = sync_playwright().start()
+    browser = launch_browser(pw)
+    ctx = browser.new_context()
+    page = ctx.new_page()
+    page.goto(stack.base + "/login")
+    page.fill("#username", USERNAME)
+    page.fill("#password", PASSWORD)
+    page.click(".btn-login")
+    page.wait_for_url(stack.base + "/")
+    _session.update(stack=stack, pw=pw, browser=browser, auth_state=ctx.storage_state())
+    ctx.close()
+    atexit.register(_stop_session)
+
+
+@unittest.skipIf(sync_playwright is None, "playwright is not installed")
+@unittest.skipIf(not os.getenv("E2E_STORE") and find_mongod() is None, "mongod is not installed")
+class E2ECase(unittest.TestCase):
+    """Shared login session; each test gets a fresh page and a re-seeded DB."""
+
+    @classmethod
+    def setUpClass(cls):
+        _ensure_session()
+        cls.stack = _session["stack"]
+        cls.store = cls.stack.store
+        cls.base = cls.stack.base
+        cls.browser = _session["browser"]
+        cls.auth_state = _session["auth_state"]
+
+    def setUp(self):
+        self.store.seed()
+        self.js_errors = []
+        self.ctx = self.browser.new_context(storage_state=self.auth_state)
+        self.ctx.set_default_timeout(UI_TIMEOUT_MS)
+        self.page = self.ctx.new_page()
+        self.page.on("pageerror", lambda err: self.js_errors.append(str(err)))
+
+    def tearDown(self):
+        self.ctx.close()
+        self.assertEqual(self.js_errors, [], "Uncaught JavaScript error on the page")
+
+    def open_card(self, oid):
+        """Deep-link to a Tracker card and wait until its body is visible."""
+        self.page.goto(f"{self.base}/?open={oid}")
+        progress = self.page.locator(f"#progress-{oid}")
+        progress.wait_for(state="visible")
+        return progress
+
+    def confirm_modal(self):
+        self.page.click(".tl-modal .tl-confirm")
+
+    def confirm_time(self, value: str | None = None):
+        """Save the datetime-local modal. value is YYYY-MM-DDTHH:MM (the input's value)."""
+        field = self.page.locator("#tlDatetimeInput")
+        field.wait_for(state="visible")
+        if value:
+            field.fill(value)
+        self.page.click(".tl-modal .tl-confirm")
+
+    def job(self, oid):
+        return self.store.tracker_job(oid)
+
+    def api_job(self, oid):
+        """The JSON the Tracker card reads (highlights, Q&A, recommended_by, …)."""
+        return self.ctx.request.get(f"{self.base}/api/jobs/{oid}").json()
+
+    def make_link_only(self, oid, link=None):
+        fields = {
+            "title": "(Link only) linkedin", "company": "", "location": "", "description": "",
+            "details_fetched_at": None, "analysis_state": "pending",
+        }
+        if link:
+            fields.update(source="ats", link=link)
+        self.store.set_tracker_fields(oid, fields)
+
+    def settled_chip_counts(self, *statuses) -> dict:
+        """
+        Chip counts once the page agrees with the server.
+
+        After a progress click the page bumps chips optimistically, then
+        reloads them from /api/stats. Reading in between races that reload.
+        """
+        def matches():
+            by_status = self.ctx.request.get(f"{self.base}/api/stats").json()["by_status"]
+            want = {s: int(by_status.get(s) or 0) for s in statuses}
+            shown = {
+                s: self.page.locator(f"#cnt-{s}").inner_text().strip() for s in statuses
+            }
+            return want if all(shown[s] == str(want[s]) for s in statuses) else None
+
+        return wait_for(matches, f"chips {statuses} match /api/stats")
+
+    def assert_page_styled(self, page, path):
+        """The page's external stylesheet (static/css/*.css) loaded and has rules."""
+        rules = page.evaluate("""() => [...document.styleSheets]
+            .filter(s => (s.href || '').includes('/static/css/'))
+            .reduce((n, s) => n + s.cssRules.length, 0)""")
+        self.assertGreater(rules, 0, f"{path}: static stylesheet missing or empty")

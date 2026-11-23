@@ -134,9 +134,10 @@ type Card = Prisma.ApplicationGetPayload<{ select: typeof CARD_SELECT }>;
 /** The page to open: the stored link, or the canonical LinkedIn / Indeed URL from the job id. */
 export function cardUrl(job: Pick<Card["job"], "link" | "source" | "externalId">): string {
   const link = normalizeLink({ link: job.link.trim(), source: job.source, job_id: job.externalId });
-  if (link.startsWith("http")) return link;
-  if (link.startsWith("/")) return (job.source === "indeed" ? "https://de.indeed.com" : "https://www.linkedin.com") + link;
-  if (link) return link;
+  if (link.startsWith("http://") || link.startsWith("https://")) return link;
+  if (link.startsWith("/") && !link.startsWith("//")) {
+    return (job.source === "indeed" ? "https://de.indeed.com" : "https://www.linkedin.com") + link;
+  }
   if (job.source === "indeed" && job.externalId) return `https://de.indeed.com/viewjob?jk=${job.externalId}`;
   return "";
 }

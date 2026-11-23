@@ -40,6 +40,9 @@ async function main() {
   const prisma = new PrismaClient();
   try {
     await replaceAll(prisma, rows);
+    // Postgres-only table (no Mongo collection). Clear leftover e2e banner rows
+    // here, not in replaceAll, so from-mongo does not wipe live agent-push history.
+    await prisma.agentPushRun.deleteMany();
   } finally {
     await prisma.$disconnect();
   }

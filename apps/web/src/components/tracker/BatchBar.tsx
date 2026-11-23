@@ -28,7 +28,7 @@ export function BatchBar(p: Props) {
       <div className={p.selectMode ? "batch-fetch-bar select-mode" : "batch-fetch-bar"} id="batchFetchBar">
         <div className="bf-helpers">
           <span className="batch-fetch-meta" id="batchFetchMeta">{p.count} selected</span>
-          <button type="button" className="batch-fetch-btn select-mode-only" onClick={p.onSelectAll} title="Select every card on this page">
+          <button type="button" className="batch-fetch-btn select-mode-only" id="selectAllVisibleBtn" onClick={p.onSelectAll} title="Select every card on this page">
             Select all on page
           </button>
           <button
@@ -43,7 +43,7 @@ export function BatchBar(p: Props) {
           >
             Select missing AI result
           </button>
-          <button type="button" className="batch-fetch-btn" onClick={p.onClear}>Clear selection</button>
+          <button type="button" className="batch-fetch-btn" id="clearFetchSelectBtn" onClick={p.onClear}>Clear selection</button>
         </div>
         <span className="batch-sep" aria-hidden="true" />
         <div className="bf-actions">
