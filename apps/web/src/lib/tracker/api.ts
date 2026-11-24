@@ -71,6 +71,8 @@ export const api = {
     return request<{ ids: string[]; total: number }>(`/api/fetch-details/ids?${q}`);
   },
   getDescription: (id: string) => request<{ description: string }>(`/api/jobs/${id}/description`),
+  setDescription: (id: string, description: string) =>
+    send<{ description: string }>("PATCH", `/api/jobs/${id}/description`, { description }),
   stats: () => request<Stats>("/api/stats"),
   agentPushes: () => request<AgentPushesToday>("/api/stats/agent-pushes"),
   daily: (days: number) => request<{ days: DayStats[] }>(`/api/stats/daily?days=${days}`),

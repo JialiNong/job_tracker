@@ -215,6 +215,75 @@ class FetchKeepsManualIdentityTests(unittest.TestCase):
         self.assertEqual(written["location"], "Berlin")
         self.assertEqual(written["description"], "A JD")
 
+    def test_fetch_details_does_not_overwrite_user_pasted_description(self):
+        import services.tracker_jobs as svc
+
+        pasted = "User pasted the modal JD. We build backends in Node.js. "
+        existing = {
+            "job_id": JOB_KEY,
+            "source": "indeed",
+            "link": USER_URL,
+            "title": "Backend Engineer",
+            "company": "Acme",
+            "location": "Berlin",
+            "description": pasted,
+            "recommended_by": "cursor",
+            "manual_fields": ["description"],
+        }
+        scraped = {
+            "job_id": JOB_KEY,
+            "source": "indeed",
+            "title": "Scraped title",
+            "company": "Scraped Co",
+            "location": "Munich",
+            "description": "Scraped teaser only",
+            "link": USER_URL,
+        }
+        page = MagicMock()
+        browser = MagicMock()
+        browser.contexts = [MagicMock()]
+        browser.contexts[0].pages = [page]
+        fake_pw = MagicMock()
+        fake_pw.return_value.__enter__.return_value = MagicMock()
+        fake_pw.return_value.__exit__.return_value = False
+
+        with patch.object(svc, "load_playwright", return_value=fake_pw), patch(
+            "services.browser_session.connect_browser", return_value=browser
+        ), patch.object(svc, "scrape_job_page", return_value=scraped), patch.object(
+            svc, "apply_scraped_details", return_value={"ok": True, "error": None}
+        ) as save:
+            result = svc.fetch_job_details_for_matched_job(existing)
+
+        self.assertTrue(result["ok"])
+        written = save.call_args[0][0]
+        self.assertEqual(written["description"], pasted)
+
+
+class StampManualIdentityTests(unittest.TestCase):
+    def test_stamp_keeps_existing_description_flag(self):
+        matched = MagicMock()
+        jobs_col = MagicMock()
+        matched.find_one.return_value = {
+            "_id": "abc",
+            "job_id": JOB_KEY,
+            "source": "indeed",
+            "manual_fields": ["description"],
+            "description": "Pasted JD",
+        }
+
+        def get_col(name):
+            return matched if name == "matched_jobs" else jobs_col
+
+        ident = ml.normalize_manual_identity(title="Phone title", company="Acme")
+        with patch.object(ml, "get_collection", side_effect=get_col):
+            ok = ml.stamp_manual_identity(JOB_KEY, "indeed", ident)
+
+        self.assertTrue(ok)
+        set_fields = matched.update_one.call_args[0][1]["$set"]
+        self.assertEqual(set_fields["title"], "Phone title")
+        self.assertEqual(set_fields["company"], "Acme")
+        self.assertEqual(set_fields["manual_fields"], ["description", "title", "company"])
+
 
 class ProcessUrlsIdentityFallbackTests(unittest.TestCase):
     def test_playwright_missing_passes_identity_to_stub_save(self):

@@ -1,7 +1,8 @@
 import { afterEach, describe, expect, it } from "vitest";
 import type { PrismaClient } from "@tracker/db/client";
 import {
-  FETCH_DETAILS_LOCAL_ONLY, cardUrl, fetchDetailsForCard, keepManualIdentity, parseScraperOutput,
+  FETCH_DETAILS_LOCAL_ONLY, cardUrl, fetchDetailsForCard, keepManualDescription, keepManualIdentity,
+  parseScraperOutput,
 } from "@/server/fetch-details";
 
 describe("parseScraperOutput", () => {
@@ -64,6 +65,26 @@ describe("keepManualIdentity", () => {
       { ...scraped, title: "Fetched" },
       { title: "(Link only) linkedin", company: "", location: "", manualFields: [] },
     ).title).toBe("Fetched");
+  });
+});
+
+describe("keepManualDescription", () => {
+  it("keeps a user-pasted JD", () => {
+    expect(keepManualDescription("Scraped teaser", {
+      description: "Pasted from the modal",
+      manualFields: ["description"],
+    })).toBe("Pasted from the modal");
+  });
+
+  it("lets the scrape through when the paste is empty or unmarked", () => {
+    expect(keepManualDescription("Scraped", {
+      description: "   ",
+      manualFields: ["description"],
+    })).toBe("Scraped");
+    expect(keepManualDescription("Scraped", {
+      description: "Pasted from the modal",
+      manualFields: ["title"],
+    })).toBe("Scraped");
   });
 });
 
@@ -163,6 +184,28 @@ describe("fetchDetailsForCard", () => {
     expect(data).not.toHaveProperty("status");
     expect(data).not.toHaveProperty("appliedAt");
     expect(data).not.toHaveProperty("recommendedBy");
+  });
+
+  it("keeps a user-pasted description over the scrape", async () => {
+    const pasted = "User pasted the modal JD. We build backends in Node.js. ".repeat(8);
+    const { prisma, updates } = prismaFor({
+      id: "app-1",
+      recommendedBy: "claude",
+      job: {
+        ...linkOnlyJob,
+        title: "Backend Engineer",
+        company: "Acme",
+        description: pasted,
+        manualFields: ["description"],
+        detailsFetchedAt: new Date("2026-10-01"),
+      },
+    });
+    const out = await fetchDetailsForCard(prisma, "app-1", {
+      scrape: async () => ({ ok: true, job: scraped }), llm: null,
+    });
+    expect(out.status).toBe(200);
+    const data = (updates[0] as { data: Record<string, unknown> }).data;
+    expect(data.description).toBe(pasted);
   });
 
   it("returns the scraper error as 502 and does not write", async () => {

@@ -94,7 +94,8 @@ class PostgresStore:
         row = self.conn.execute(
             f"""SELECT a.id, a.status::text AS status, a.applied_at, a.notes, a.applicant_position,
                        j.title, j.company, j.location, j.link, j.source, j.external_id,
-                       j.posting_key, j.link_replaced_at, j.description, j.details_fetched_at
+                       j.posting_key, j.link_replaced_at, j.description, j.details_fetched_at,
+                       j.manual_fields
                   FROM applications a JOIN jobs j ON j.id = a.job_id
                  WHERE {where} = %s""",
             (value,),
@@ -108,6 +109,7 @@ class PostgresStore:
             "link": row["link"], "source": row["source"], "job_id": row["external_id"],
             "link_replaced_at": row["link_replaced_at"],
             "description": row["description"], "details_fetched_at": row["details_fetched_at"],
+            "manual_fields": list(row["manual_fields"] or []),
             "application_timeline": self._events(row["id"]),
         }
         if row["posting_key"]:

@@ -153,6 +153,13 @@ export function keepManualIdentity(scraped: ScrapedJob, job: Pick<Card["job"], "
   return out;
 }
 
+/** A user-pasted original JD wins over a later scrape (keep_manual_description). */
+export function keepManualDescription(scraped: string, job: Pick<Card["job"], "description" | "manualFields">): string {
+  const current = job.description.trim();
+  if (job.manualFields.includes("description") && current) return job.description;
+  return scraped;
+}
+
 export interface FetchDetailsDeps { scrape?: Scraper; llm?: LlmClient | null }
 
 export async function fetchDetailsForCard(prisma: PrismaClient, cardId: string, deps: FetchDetailsDeps = {}): Promise<Result> {
@@ -172,19 +179,18 @@ export async function fetchDetailsForCard(prisma: PrismaClient, cardId: string, 
   if (!scraped.ok) return { status: 502, body: { ok: false, error: scraped.error } };
 
   const identity = keepManualIdentity(scraped.job, job);
+  const description = keepManualDescription(scraped.job.description, job);
   const missing = IDENTITY.filter((f) => !identity[f]);
   const llm = deps.llm !== undefined ? deps.llm : process.env.OPENAI_API_KEY ? await createOpenAiClient() : null;
   if (missing.length && llm) {
     try {
-      const guess = await inferJobMetadata(llm, stripHtml(scraped.job.description), modelSettings());
+      const guess = await inferJobMetadata(llm, stripHtml(description), modelSettings());
       for (const f of missing) identity[f] = guess[f]?.trim() ?? "";
     } catch {
       // the scrape is still worth saving without the guess
     }
   }
   if (!identity.title) identity.title = job.title;
-
-  const description = scraped.job.description;
   const quality = assessJobDescription(description, identity.title, identity.company);
   const now = clockNow();
   await prisma.job.update({

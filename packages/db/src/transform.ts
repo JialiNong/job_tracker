@@ -70,6 +70,7 @@ const UTC_FIELDS = new Set(["link_replaced_at", "details_fetched_at"]);
 
 const POSTING_FIELDS = ["title", "company", "location", "link", "description", "applicants"] as const;
 const IDENTITY_FIELDS = new Set(["title", "company", "location"]);
+const MANUAL_FIELDS = new Set(["title", "company", "location", "description"]);
 
 /** AI output that is only displayed: goes to job_analyses.details (D4). */
 const ANALYSIS_DETAIL_FIELDS = [
@@ -317,7 +318,7 @@ export function transform(source: MongoSource): { rows: Rows; report: Report } {
       jobTypes: strList(scraped.job_types),
       keyword: strOrNull(scraped.keyword),
       runId: strOrNull(pick("run_id")),
-      manualFields: [...manual].filter((f) => IDENTITY_FIELDS.has(f)),
+      manualFields: [...manual].filter((f) => MANUAL_FIELDS.has(f)),
       descriptionQuality: strOrNull(pick("description_quality")),
       descriptionQualityReason: strOrNull(pick("description_quality_reason")),
       descriptionEmpty: !!pick("description_empty"),

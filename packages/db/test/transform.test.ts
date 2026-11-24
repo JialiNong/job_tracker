@@ -39,6 +39,17 @@ describe("jobs + matched_jobs -> jobs + applications (D1)", () => {
     expect(report.appliedAtMismatch).toEqual([]);
   });
 
+  it("keeps a user-pasted description flag in manual_fields", () => {
+    const { rows } = transform(source({
+      jobs: [scraped(1, { manual_fields: ["description"] })],
+      matched_jobs: [{
+        ...scraped(1), ...analysis, _id: oid(101), manual_fields: ["description"],
+        status: "pending", origin: "pipeline",
+      }],
+    }));
+    expect(rows.jobs[0]!.manualFields).toContain("description");
+  });
+
   it("keeps the analysed document when one (source, job_id) was scraped twice", () => {
     const { rows, report } = transform(source({
       jobs: [scraped(2, { created_at: naive("2026-11-01T08:00:06") }), { ...scraped(3, analysis), job_id: "412" }],

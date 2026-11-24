@@ -6,7 +6,9 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
 from core.db_mongo import get_collection, lookup_known_job
+from core.jd_quality import description_save_flags
 from core.job_url import indeed_job_id_variants, replacement_link_fields
+from core.manual_fields import normalize_user_description, with_manual_description
 from core.manual_log import can_fetch_details
 from web.chrome_tasks import _fetch_batch_state, parse_batch_job_oids
 from web.list_query import JOBS_LIST_PROJECTION, _jobs_list_query_from_args
@@ -80,6 +82,56 @@ def api_job_description(job_id: str):
     if not job:
         return jsonify({"error": "Job not found"}), 404
     return jsonify({"description": job.get("description") or ""})
+
+
+@bp.route("/api/jobs/<job_id>/description", methods=["PATCH"])
+@login_required
+def api_update_job_description(job_id: str):
+    """Save a user-pasted original JD when the posting only shows it in a modal."""
+    data = request.get_json(silent=True) or {}
+    text, error = normalize_user_description(data.get("description"))
+    if error:
+        return jsonify({"error": error}), 400
+
+    try:
+        oid = ObjectId(job_id)
+    except Exception:
+        return jsonify({"error": "Invalid job ID"}), 400
+
+    matched_col = get_collection("matched_jobs")
+    doc = matched_col.find_one({"_id": oid})
+    if not doc:
+        return jsonify({"error": "Job not found"}), 404
+
+    now = clock.now()
+    flags = description_save_flags(
+        text,
+        title=str(doc.get("title") or ""),
+        company=str(doc.get("company") or ""),
+        source=str(doc.get("source") or ""),
+    )
+    set_fields = {
+        "description": text,
+        "manual_fields": with_manual_description(
+            doc.get("manual_fields"), has_text=bool(text.strip()),
+        ),
+        "updated_at": now,
+        **flags,
+    }
+    matched_col.update_one({"_id": oid}, {"$set": set_fields})
+
+    jid = doc.get("job_id") or ""
+    source = doc.get("source") or ""
+    if jid and source:
+        jobs_col = get_collection("jobs")
+        if source == "indeed":
+            variants = indeed_job_id_variants(jid) or [jid]
+            jobs_query = {"job_id": {"$in": variants}, "source": "indeed"}
+        else:
+            jobs_query = {"job_id": jid, "source": source}
+        jobs_col.update_many(jobs_query, {"$set": set_fields})
+
+    return jsonify({"ok": True, "description": text})
 
 
 @bp.route("/api/jobs/<job_id>/status", methods=["PATCH"])

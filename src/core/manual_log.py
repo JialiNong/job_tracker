@@ -18,6 +18,7 @@ from core.db_mongo import (
 )
 from core.country import normalize_country
 from core.job_origin import log_job_origin
+from core.manual_fields import known_manual_fields
 from core.job_url import (
     detect_source,
     indeed_job_id_variants,
@@ -389,7 +390,7 @@ def stamp_manual_identity(job_id: str, source: str, identity: dict | None) -> bo
         return False
     now = clock.now()
     fields = {**values, "updated_at": now}
-    prev = [f for f in (job.get("manual_fields") or []) if f in IDENTITY_FIELDS]
+    prev = known_manual_fields(job.get("manual_fields"))
     extra = [f for f in (identity.get("manual_fields") or []) if f in IDENTITY_FIELDS]
     merged = list(dict.fromkeys([*prev, *extra]))
     if merged:

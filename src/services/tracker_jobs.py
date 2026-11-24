@@ -7,6 +7,7 @@ a result dict instead of raising, so the web layer can map it to HTTP codes.
 from __future__ import annotations
 
 from core.jd_quality import assess_job_description
+from core.manual_fields import keep_manual_description
 from core.manual_log import (
     LINK_ONLY_TITLE_PREFIX,
     PLAYWRIGHT_UNAVAILABLE_MSG,
@@ -117,6 +118,7 @@ def fetch_job_details_for_matched_job(matched_doc: dict) -> dict:
         return {"ok": False, "error": error}
 
     keep_manual_identity(job, matched_doc)
+    keep_manual_description(job, matched_doc)
     fill_identity_from_description(job)
     if not job.get("title"):
         job["title"] = matched_doc.get("title") or ""
@@ -163,8 +165,10 @@ def _evaluate_and_save(
     used_stored_jd: bool,
 ) -> dict:
     keep_manual_identity(job, matched_doc)
+    keep_manual_description(job, matched_doc)
     analysis = enrich_job_and_evaluate(job, user_profile, rules)
     keep_manual_identity(job, matched_doc)
+    keep_manual_description(job, matched_doc)
     if not analysis:
         print("  ❌ No description — cannot run AI")
         return {"ok": False, "error": "Empty description after scrape", "match_score": None}

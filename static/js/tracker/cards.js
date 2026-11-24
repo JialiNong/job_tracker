@@ -56,11 +56,24 @@ function renderOriginalDescription(job) {
       <details class="job-description" data-job-id="${job._id}" ontoggle="loadJobDescription(this)">
         <summary>
           <span>Original description</span>
-          <button type="button" class="jd-copy-btn" data-job-id="${job._id}"
-                  onclick="event.preventDefault(); event.stopPropagation(); copyJobDescription(this)"
-                  title="Copy the full original description">Copy</button>
+          <span class="jd-actions">
+            <button type="button" class="jd-copy-btn" data-job-id="${job._id}"
+                    onclick="event.preventDefault(); event.stopPropagation(); copyJobDescription(this)"
+                    title="Copy the full original description">Copy</button>
+            <button type="button" class="jd-edit-btn" data-job-id="${job._id}"
+                    onclick="event.preventDefault(); event.stopPropagation(); startEditJobDescription(this)"
+                    title="Paste a description the scraper missed">Edit</button>
+          </span>
         </summary>
         <div class="job-description-body" data-loaded="0">Expand to load…</div>
+        <div class="jd-edit" onclick="event.stopPropagation()">
+          <textarea class="jd-edit-textarea" aria-label="Original job description"
+                    placeholder="Paste the job description from the posting…"></textarea>
+          <div class="info-action-row">
+            <button type="button" class="info-save-btn jd-save-btn" onclick="saveJobDescription(this)">✓ Save</button>
+            <button type="button" class="info-cancel-btn jd-cancel-btn" onclick="cancelEditJobDescription(this)">✕ Cancel</button>
+          </div>
+        </div>
       </details>`;
 }
 
