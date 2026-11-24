@@ -4,8 +4,8 @@ Shared funnel for API job sources: listing → filters → `jobs` collection.
 Same gates as the browser scrapers (title blacklist, auto-pass / AI title
 check, dedup, JD completeness, English-only), plus two API-only steps:
 
-  * location gate — feeds like Arbeitnow and company ATS boards include
-    Swiss / Dutch / US roles; keep Germany + remote (core.db_mongo.is_germany_or_remote)
+  * location / scope gate — Arbeitnow by job URL host (arbeitnow.com = DE);
+    ATS by strict location text; Bundesagentur / Adzuna DE are already DE-only
   * cross-source dedup — skip roles already saved from another board
     (core.dedup.find_cross_source_duplicate)
 
@@ -19,6 +19,7 @@ from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Callable, Iterable, Optional
+from urllib.parse import urlparse
 
 from core.config import (
     API_MAX_POSTING_AGE_DAYS,
@@ -111,7 +112,24 @@ def is_too_old(job: SourceJob, now: Optional[datetime] = None,
     return job.posted_at < (now or datetime.now()) - timedelta(days=max_days)
 
 
+def is_arbeitnow_germany_host(link: str) -> bool:
+    """True when the listing URL is on the Arbeitnow Germany board (.com)."""
+    if not link or "\\" in link:
+        return False
+    try:
+        parsed = urlparse(link)
+        if parsed.scheme != "https":
+            return False
+        host = (parsed.hostname or "").lower()
+    except ValueError:
+        return False
+    return host in ("arbeitnow.com", "www.arbeitnow.com")
+
+
 def location_ok(job: SourceJob) -> bool:
+    # Arbeitnow mixed feed: DE is arbeitnow.com; .fr / .ch / .co.uk / .nl are other sites
+    if job.source == "arbeitnow":
+        return is_arbeitnow_germany_host(job.link)
     if job.location_policy == "none" or not job.location:
         return True
     if job.location_policy == "strict":

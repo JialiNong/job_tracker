@@ -1,7 +1,9 @@
 /**
- * Location gates for the API sources (src/sources/base.py). Global boards
- * (company ATS) must positively name Germany / a German city, or be remote
- * without a foreign scope; DE-focused feeds use the lenient chart rule.
+ * Location / scope gates for the API sources (src/sources/base.py). Global
+ * boards (company ATS) must positively name Germany / a German city, or be
+ * remote without a foreign scope. Arbeitnow is gated by job URL host instead
+ * of the location string (.com = DE board; .fr / .ch / .co.uk / … are other
+ * country sites).
  */
 import { cityInText, isGermanyOrRemote, pyRegex } from "@tracker/core";
 
@@ -20,6 +22,19 @@ const LOCATION_FILLER = new RegExp(
   pyRegex("\\b(remote|home\\s?office|work from home|wfh|first|only|friendly|possible|job|hybrid)\\b|[^a-z]+").source, "gu",
 );
 
+/** Arbeitnow DE board only: https://arbeitnow.com (with or without www). */
+export function isArbeitnowGermanyHost(link: string): boolean {
+  if (!link || link.includes("\\")) return false;
+  try {
+    const parsed = new URL(link);
+    if (parsed.protocol !== "https:") return false;
+    const host = parsed.hostname.toLowerCase();
+    return host === "arbeitnow.com" || host === "www.arbeitnow.com";
+  } catch {
+    return false;
+  }
+}
+
 export function isGermanyOrRemoteStrict(location: string): boolean {
   const text = (location || "").toLowerCase();
   if (!text.trim()) return true;
@@ -36,4 +51,15 @@ export type LocationPolicy = "strict" | "lenient" | "none";
 export function locationOk(location: string, policy: LocationPolicy): boolean {
   if (policy === "none" || !location) return true;
   return policy === "strict" ? isGermanyOrRemoteStrict(location) : isGermanyOrRemote(location);
+}
+
+/** Per-source Germany scope used by ingest (Arbeitnow: URL host; others: location policy). */
+export function germanyScopeOk(job: {
+  source: string;
+  link: string;
+  location: string;
+  locationPolicy?: LocationPolicy;
+}): boolean {
+  if (job.source === "arbeitnow") return isArbeitnowGermanyHost(job.link);
+  return locationOk(job.location, job.locationPolicy ?? "lenient");
 }

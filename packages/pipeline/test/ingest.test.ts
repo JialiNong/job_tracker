@@ -61,7 +61,11 @@ describe("ingest", () => {
       { ...saved }, // same source + id again
       listing("Frontend Engineer", { company: saved.company }), // same company + title in this run
       listing("Old Frontend Engineer", { postedAt: new Date(Date.now() - 200 * 86_400_000) }),
-      listing("Frontend Engineer", { location: "Austin, Texas", locationPolicy: "strict" }),
+      listing("Frontend Engineer", { location: "Austin, Texas", locationPolicy: "strict", source: "ats" }),
+      listing("Software Engineer", {
+        location: "Hybrid",
+        link: "https://www.arbeitnow.fr/jobs/companies/automation-consultants-ltd/software-engineer-hybrid-281608",
+      }),
       listing("Senior Java Developer"),
       listing("Office Assistant"), // off-topic for a keyword-less feed
       listing("Simulation Software Engineer"), // AI title check: unrelated
@@ -74,7 +78,7 @@ describe("ingest", () => {
     const stats = await ingest(prisma, jobs, { requireOnTopicTitle: true, client, titleModel: "fake", runId: "run-1", log: () => {} });
 
     expect(stats).toMatchObject({
-      listed: 11, saved: 1, repeat_in_run: 2, too_old: 1, not_germany: 1, title_excluded: 1, off_topic: 1,
+      listed: 12, saved: 1, repeat_in_run: 2, too_old: 1, not_germany: 2, title_excluded: 1, off_topic: 1,
       ai_title_filtered: 1, german_filtered: 1, invalid: 1,
     });
     expect((stats.known ?? 0) + (stats.cross_source_duplicate ?? 0)).toBe(1);

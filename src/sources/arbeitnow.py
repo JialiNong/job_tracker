@@ -1,10 +1,11 @@
 """
-Arbeitnow job board API — free, no key, Germany / EU tech-heavy.
+Arbeitnow job board API — free, no key.
 
 https://www.arbeitnow.com/api/job-board-api returns 300 jobs per page,
 newest first, full HTML description included. There is no server-side
 search, so we page until listings are older than the window and let the
-shared funnel filter titles and locations locally.
+shared funnel filter titles. The feed mixes DE (arbeitnow.com) with
+.fr / .ch / .co.uk / .nl / … — location_ok keeps only the .com host.
 """
 from __future__ import annotations
 
@@ -35,6 +36,8 @@ def to_source_job(item: dict) -> SourceJob:
         description=item.get("description") or "",
         posted_at=posted,
         remote=remote,
+        # Host gate in location_ok; location string is not used for DE scope.
+        location_policy="none",
         extra={"tags": item.get("tags") or [], "job_types": item.get("job_types") or []},
     )
 

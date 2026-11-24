@@ -15,7 +15,7 @@ import { API_MAX_POSTING_AGE_DAYS } from "./config.js";
 import { dedupKey, findCrossSourceDuplicate } from "./dedup.js";
 import { newRecordId } from "./ids.js";
 import { lookupKnownJob } from "./known-jobs.js";
-import { locationOk } from "./location.js";
+import { germanyScopeOk } from "./location.js";
 import { type ScraperStat, incrementScraperStat } from "./scraper-stats.js";
 import type { Log, SourceJob } from "./sources/types.js";
 import { isApiTitleExcluded, isOnTopicTitle, isTitleRelevantByAi, titleMatchesAutoPass } from "./title-gate.js";
@@ -60,7 +60,7 @@ export async function ingest(prisma: PrismaClient, jobs: Iterable<SourceJob>, op
     seen.add(idKey);
 
     if (isTooOld(job, opts.now)) { bump("too_old"); continue; }
-    if (!locationOk(job.location, job.locationPolicy ?? "lenient")) { bump("not_germany"); continue; }
+    if (!germanyScopeOk(job)) { bump("not_germany"); continue; }
     if (isApiTitleExcluded(job.title)) { bump("title_excluded"); continue; }
     if (opts.requireOnTopicTitle && !isOnTopicTitle(job.title)) { bump("off_topic"); continue; }
     // Also by link: the same ad saved by hand or from another URL (?language=en ...)

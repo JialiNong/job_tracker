@@ -62,7 +62,7 @@ scripts/tools/discover_ats.py  # find a company's ATS board
 
 | Source | Request | Time window | Notes |
 |--------|---------|-------------|-------|
-| Arbeitnow | `GET arbeitnow.com/api/job-board-api?page=N` | pages newest-first until older than `--days` | No search on the server: every listing is filtered locally (title must look like a dev role, location must be Germany/remote) |
+| Arbeitnow | `GET arbeitnow.com/api/job-board-api?page=N` | pages newest-first until older than `--days` | No search on the server: every listing is filtered locally (title must look like a dev role; **job URL host must be `arbeitnow.com`** — the feed also ships `.fr` / `.ch` / `.co.uk` / `.nl` / … which are dropped as outside DE) |
 | Bundesagentur | `GET rest.arbeitsagentur.de/…/pc/v6/jobs?was=<keyword>&veroeffentlichtseit=<d>&pav=false&zeitarbeit=false` (header `X-API-Key: jobboerse-jobsuche`) then `pc/v4/jobdetails/<base64 refnr>` for the JD | `veroeffentlichtseit` only accepts 0/1/7/14/28, so the window is rounded up and also checked locally | `pav=false` drops private recruiting agencies, `zeitarbeit=false` drops temp staffing. v4 search is gone (403); v6 search has no description. The API is free and public but has no official docs (bundesAPI's community docs) |
 | Adzuna | `GET api.adzuna.com/v1/api/jobs/de/search/N?what_phrase=<keyword>&max_days_old=<d>` | `max_days_old` | Teaser only: the funnel follows `redirect_url` and extracts the page text (trafilatura). If it is still short, the job is saved as `description_incomplete` and the matcher skips it at no cost |
 | ATS | one request per watched company (see table below) | none: boards list only open roles | Every run fetches every open role. Roles already in the DB are skipped, so only new openings cost anything |
@@ -80,9 +80,10 @@ scripts/tools/discover_ats.py  # find a company's ATS board
 
 Cheapest checks first. The full JD is fetched, and the AI title check paid for, only after the free checks pass:
 
-1. **Location**: per-source policy
+1. **Location / scope**: per-source policy
+   - **Arbeitnow (URL host)**: keep only `arbeitnow.com` / `www.arbeitnow.com` (Germany board). Reject `arbeitnow.fr`, `.ch`, `.co.uk`, `.nl`, and other country TLDs — do not use the location string (it is often `"Hybrid"` or a foreign city).
    - `strict` (ATS: global companies): must name Germany or a German city, or be remote with no country (or EU/EMEA scope). Rejects "Austin, Texas" and "Remote - US".
-   - `lenient` (Arbeitnow): the Tracker's `is_germany_or_remote`.
+   - `lenient`: the Tracker's `is_germany_or_remote` (location text; unused by Arbeitnow now).
    - `none` (Bundesagentur, Adzuna DE): already Germany-only.
 2. **Title blacklist**: shared `TITLE_EXCLUDE_KEYWORDS` + API-only `API_TITLE_EXCLUDE_EXTRA` (VP, Director, New Grad, Internship, Werkstudent, …). The API-only list does not change LinkedIn / Indeed.
 3. **On-topic title** (feeds without search: Arbeitnow, ATS): `FEED_TITLE_INCLUDE_PATTERNS` (engineer / developer / Entwickler / frontend / …).
@@ -103,7 +104,7 @@ python3 src/sources/run_sources.py --dry-run                    # print what wou
 python3 src/sources/run_sources.py --no-match --no-telegram     # save only
 ```
 
-Telegram gets one summary (`🌐 API sources done … • Arbeitnow: 259 listed, 4 new saved, …`) and then this run's match cards. Cards for jobs from these sources include the company and the source label. The Tracker and Unmatched pages show the same label as a coloured diamond badge: **ATS** (teal), **Bundesagentur** (red), **Arbeitnow API** (blue), **Adzuna API** (amber). Hover the badge to see the site, e.g. `jobs.ashbyhq.com`. The Source filter has the same four options.
+Telegram gets one summary (`🌐 API sources done … • Arbeitnow: 259 listed, 4 new saved, …` plus a matcher line like Agent push: `🎯 Matcher: 2 new on Tracker · 1 already stored · 3 below cut-off`) and then this run's **new** match cards only. Jobs that scored high but were already on the Tracker are counted in that line, not listed again. Cards for jobs from these sources include the company and the source label. The Tracker and Unmatched pages show the same label as a coloured diamond badge: **ATS** (teal), **Bundesagentur** (red), **Arbeitnow API** (blue), **Adzuna API** (amber). Hover the badge to see the site, e.g. `jobs.ashbyhq.com`. The Source filter has the same four options.
 
 ---
 

@@ -14,7 +14,7 @@ export interface SourceJob {
   /** Extra columns: externalUrl, atsProvider, atsSlug, tags, jobTypes. */
   extra?: { externalUrl?: string; atsProvider?: string; atsSlug?: string; tags?: string[]; jobTypes?: string[] };
   fetchDescription?: () => Promise<string>;
-  /** strict (global boards), lenient (DE-focused feeds), none (source is DE-only). */
+  /** strict (ATS), lenient (location-text DE feeds), none (DE-only source or Arbeitnow host gate). */
   locationPolicy?: LocationPolicy;
 }
 

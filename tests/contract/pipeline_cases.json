@@ -644,7 +644,7 @@
       "full time"
      ]
     },
-    "locationPolicy": "lenient"
+    "locationPolicy": "none"
    }
   },
   {
@@ -672,7 +672,7 @@
      "tags": [],
      "jobTypes": []
     },
-    "locationPolicy": "lenient"
+    "locationPolicy": "none"
    }
   }
  ],
