@@ -1,7 +1,7 @@
 /**
  * Tracker card writes: status, timeline, notes, highlights, Q&A, applicant
- * position, title/company/location, posting link, delete. Replaces the
- * PATCH / DELETE routes in src/web/routes/jobs.py.
+ * position, title/company/location, original description, posting link, delete.
+ * Replaces the PATCH / DELETE routes in src/web/routes/jobs.py.
  *
  * Every write that touches more than one row (timeline + status + applied
  * date) runs in one transaction, so a failure cannot leave the timeline and
@@ -13,6 +13,7 @@ import {
   unknownTimelineSteps, type DatedEvent, type StatusUpdate, type TrackerJob,
 } from "@tracker/core";
 import { Prisma, type PrismaClient } from "@tracker/db/client";
+import { assessJobDescription } from "@tracker/matching";
 
 /** A result the route turns into JSON + an HTTP status. */
 export type WriteResult = { status: number; body: Record<string, unknown> };
@@ -24,6 +25,8 @@ const NOT_FOUND = fail(404, "Job not found");
 const MAX_HIGHLIGHTS = 8;
 const MAX_HIGHLIGHT_LENGTH = 40;
 const BATCH_MAX = 80;
+const USER_DESCRIPTION_MAX_CHARS = 80_000;
+const MANUAL_FIELDS = new Set(["title", "company", "location", "description"]);
 
 // ── Loading a card for the rules ────────────────────────────────────────────
 
@@ -184,6 +187,42 @@ export async function setInfo(prisma: PrismaClient, id: string, body: Record<str
     return true;
   });
   return done ? ok() : NOT_FOUND;
+}
+
+/**
+ * Original JD pasted by hand when the posting only shows it in a modal.
+ * Stored on the job row and marked in manual_fields so Fetch details / Run AI
+ * scrape keep it (same rule as title / company / location).
+ */
+export async function setDescription(prisma: PrismaClient, id: string, body: Record<string, unknown>): Promise<WriteResult> {
+  if (typeof body.description !== "string") return fail(400, "description must be a string");
+  let text = body.description.replaceAll("\0", "");
+  if (text.length > USER_DESCRIPTION_MAX_CHARS) text = text.slice(0, USER_DESCRIPTION_MAX_CHARS);
+  const now = clockNow();
+  const done = await prisma.$transaction(async (tx) => {
+    const card = await tx.application.findUnique({
+      where: { id },
+      select: { jobId: true, job: { select: { title: true, company: true, manualFields: true } } },
+    });
+    if (!card) return false;
+    const known = card.job.manualFields.filter((f) => MANUAL_FIELDS.has(f) && f !== "description");
+    const quality = assessJobDescription(text, card.job.title, card.job.company);
+    await tx.job.update({
+      where: { id: card.jobId },
+      data: {
+        description: text,
+        manualFields: text.trim() ? [...known, "description"] : known,
+        descriptionQuality: quality.kind,
+        descriptionQualityReason: quality.reason,
+        descriptionEmpty: quality.kind === "empty",
+        descriptionIncomplete: quality.kind !== "ok",
+        updatedAt: now,
+      },
+    });
+    await tx.application.update({ where: { id }, data: { updatedAt: now } });
+    return true;
+  });
+  return done ? ok({ description: text }) : NOT_FOUND;
 }
 
 // ── Posting link ────────────────────────────────────────────────────────────

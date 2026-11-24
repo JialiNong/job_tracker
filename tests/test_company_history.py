@@ -205,6 +205,7 @@ class TrackerUiTests(unittest.TestCase):
         local = js.find("${renderLocalAiBlock(")
         tags = js.find("${fitTagsHtml(job)}")
         desc = js.find("${renderOriginalDescription(job)}")
+        self.assertIn("startEditJobDescription", js)
         highlights = js.find("${renderHighlightsBlock(job)}")
         danger = js.find('class="card-danger-row"')
         self.assertTrue(0 < hist < progress < applicant < notes < agent < local < tags < desc)

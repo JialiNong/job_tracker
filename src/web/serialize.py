@@ -4,8 +4,8 @@ from datetime import datetime
 from core.country import COUNTRY_LABELS, job_country
 from core.db_mongo import get_collection
 from core.job_origin import infer_origin
+from core.manual_fields import known_manual_fields
 from core.manual_log import (
-    IDENTITY_FIELDS,
     can_fetch_details,
     job_missing_details,
     normalize_recommended_by,
@@ -191,12 +191,7 @@ def _serialize(job: dict) -> dict:
     job["country_label"] = COUNTRY_LABELS.get(job["country"], "")
     job["can_fetch_details"] = can_fetch_details(job)
     raw_manual = job.get("manual_fields")
-    if isinstance(raw_manual, list):
-        job["manual_fields"] = [
-            f for f in raw_manual if f in IDENTITY_FIELDS
-        ]
-    else:
-        job["manual_fields"] = []
+    job["manual_fields"] = known_manual_fields(raw_manual if isinstance(raw_manual, list) else [])
     # Hydrate / serialise application timeline
     timeline = _hydrate_timeline(job)
     job["application_timeline"] = [

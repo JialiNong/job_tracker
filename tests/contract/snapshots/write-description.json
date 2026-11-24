@@ -1,0 +1,22 @@
+{
+ "after": {
+  "/api/jobs/{matched_jobs:2}/description": {
+   "body": {
+    "description": "Pasted full job description from the company page modal."
+   },
+   "status": 200
+  }
+ },
+ "body": {
+  "description": "Pasted full job description from the company page modal.",
+  "ok": true
+ },
+ "request": {
+  "body": {
+   "description": "Pasted full job description from the company page modal."
+  },
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:2}/description"
+ },
+ "status": 200
+}

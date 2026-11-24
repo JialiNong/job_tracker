@@ -313,6 +313,22 @@ class TrackerCardE2E(E2ECase):
         expect(self.page.locator("#jobGrid .card")).to_have_count(1)
         expect(self.page.locator(f"#card-{PENDING_ID}")).to_have_count(1)
 
+    def test_edit_original_description(self):
+        self.open_card(PENDING_ID)
+        card = self.page.locator(f"#card-{PENDING_ID}")
+        pasted = "Pasted from the company-page modal. " * 12
+        card.locator(".jd-edit-btn").click()
+        card.locator(".jd-edit-textarea").wait_for(state="visible")
+        card.locator(".jd-edit-textarea").fill(pasted)
+        card.locator(".jd-save-btn").click()
+        wait_for(
+            lambda: (self.job(PENDING_ID).get("description") or "").startswith("Pasted from the company-page modal."),
+            "original description saved",
+        )
+        job = self.job(PENDING_ID)
+        self.assertIn("description", job.get("manual_fields") or [])
+        expect(card.locator(".job-description-body")).to_contain_text("Pasted from the company-page modal.")
+
     def test_edit_job_info(self):
         self.open_card(PENDING_ID)
         card = self.page.locator(f"#card-{PENDING_ID}")

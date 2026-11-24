@@ -351,14 +351,22 @@
   flex-shrink: 0;
 }
 .job-description[open] summary::before { content: "▾"; }
-.jd-copy-btn {
+.jd-actions {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.jd-copy-btn, .jd-edit-btn {
   border: 1px solid var(--border); background: var(--surface);
   color: var(--text); border-radius: 5px; padding: 1px 7px;
   font: inherit; font-size: .7rem; font-weight: 700; cursor: pointer;
   line-height: 1.3;
 }
-.jd-copy-btn:hover { color: var(--text); border-color: var(--accent); }
+.jd-copy-btn:hover, .jd-edit-btn:hover { color: var(--text); border-color: var(--accent); }
+.job-description.editing .jd-copy-btn,
+.job-description.editing .jd-edit-btn { display: none; }
 .job-description-body {
   margin-top: 10px;
   font-size: .78rem;
@@ -370,6 +378,28 @@
   overflow-y: auto;
   padding-right: 4px;
 }
+.job-description.editing .job-description-body { display: none; }
+.jd-edit { display: none; margin-top: 10px; }
+.job-description.editing .jd-edit { display: block; }
+.jd-edit-textarea {
+  width: 100%;
+  min-height: 160px;
+  max-height: 360px;
+  box-sizing: border-box;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 8px 10px;
+  font: inherit;
+  font-size: .78rem;
+  line-height: 1.55;
+  resize: vertical;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.jd-edit-textarea:focus { border-color: var(--accent); outline: none; }
+.jd-edit .info-action-row { margin-top: 8px; }
 
 /* Job Wizard breakdown */
 
@@ -957,6 +987,9 @@
 @media (pointer: coarse) {
   .card.expanded .edit-info-btn { position: relative; padding: 3px 10px; }
   .card.expanded .edit-info-btn::after { content: ""; position: absolute; inset: -8px -4px; }
+  .jd-copy-btn, .jd-edit-btn { position: relative; padding: 3px 8px; }
+  .jd-copy-btn::after, .jd-edit-btn::after { content: ""; position: absolute; inset: -8px -4px; }
+  .jd-edit-textarea { font-size: 16px; }
   .qa-remove { min-width: 30px; min-height: var(--phone-ctrl-h); }
   .company-link, .ch-all { padding-block: 8px; margin-block: -8px; }
 }

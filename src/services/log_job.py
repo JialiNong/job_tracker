@@ -17,6 +17,7 @@ from core.job_url import (
     normalize_pasted_job_url,
     resolve_job_id,
 )
+from core.manual_fields import keep_manual_description
 from core.manual_log import (
     apply_identity_to_job,
     apply_scraped_details,
@@ -75,6 +76,7 @@ def _refresh_existing_card(
     if rec:
         job["recommended_by"] = rec
     keep_manual_identity(job, existing)
+    keep_manual_description(job, existing)
     apply_identity_to_job(job, identity)
     if status == "applied":
         mark_tracker_job_applied(job_id, source, applied_date, recommended_by=rec)

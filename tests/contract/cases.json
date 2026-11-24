@@ -260,6 +260,17 @@
   ]
  },
  {
+  "name": "write-description",
+  "method": "PATCH",
+  "path": "/api/jobs/{matched_jobs:2}/description",
+  "body": {
+   "description": "Pasted full job description from the company page modal."
+  },
+  "after": [
+   "/api/jobs/{matched_jobs:2}/description"
+  ]
+ },
+ {
   "name": "write-highlights",
   "method": "PATCH",
   "path": "/api/jobs/{matched_jobs:2}/highlights",
