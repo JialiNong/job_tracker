@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildMatchMessages, formatJobBlock, normalizeJobLink } from "../src/digest.js";
 import { dedupKey, normalizeCompany, normalizeTitle } from "../src/dedup.js";
-import { isGermanyOrRemoteStrict } from "../src/location.js";
+import { germanyScopeOk, isArbeitnowGermanyHost, isGermanyOrRemoteStrict } from "../src/location.js";
 import { toSourceJob as adzunaJob } from "../src/sources/adzuna.js";
 import { toSourceJob as arbeitnowJob } from "../src/sources/arbeitnow.js";
 import { publishedSinceParam, toSourceJob as arbeitsagenturJob } from "../src/sources/arbeitsagentur.js";
@@ -44,6 +44,29 @@ describe("cross-source dedup and location", () => {
     expect([normalizeCompany(c.company), normalizeTitle(c.title), dedupKey(c.title, c.company)]).toEqual([c.company_norm, c.title_norm, c.key]);
   });
   it.each(each(cases.strict_location))("strict location %i", (_i, c) => expect(isGermanyOrRemoteStrict(c.location), c.location).toBe(c.ok));
+  it.each([
+    ["https://www.arbeitnow.com/jobs/x", true],
+    ["https://arbeitnow.com/jobs/x", true],
+    ["https://www.arbeitnow.fr/jobs/x", false],
+    ["https://www.arbeitnow.ch/jobs/x", false],
+    ["https://www.arbeitnow.co.uk/jobs/x", false],
+    ["https://www.arbeitnow.nl/jobs/x", false],
+    ["http://www.arbeitnow.com/jobs/x", false],
+    ["javascript://arbeitnow.com/x", false],
+    ["not-a-url", false],
+  ] as const)("arbeitnow host %s", (link, ok) => {
+    expect(isArbeitnowGermanyHost(link)).toBe(ok);
+    expect(germanyScopeOk({ source: "arbeitnow", link, location: "Hybrid", locationPolicy: "none" })).toBe(ok);
+  });
+  // Location string is ignored for Arbeitnow: a foreign city on .com still passes.
+  it("arbeitnow .com keeps London location", () => {
+    expect(germanyScopeOk({
+      source: "arbeitnow",
+      link: "https://www.arbeitnow.com/jobs/london-role",
+      location: "London, UK",
+      locationPolicy: "none",
+    })).toBe(true);
+  });
 });
 
 describe("source payloads -> jobs", () => {

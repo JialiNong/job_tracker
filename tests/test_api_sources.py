@@ -93,7 +93,43 @@ class ArbeitnowTests(unittest.TestCase):
         })
         self.assertEqual(job.location, "Remote")
         self.assertEqual(job.job_id, "frontend-engineer-berlin-1")
-        self.assertEqual(job.location_policy, "lenient")
+        self.assertEqual(job.location_policy, "none")
+        self.assertTrue(base.location_ok(job))
+
+    def test_germany_host_only(self):
+        self.assertTrue(base.is_arbeitnow_germany_host("https://www.arbeitnow.com/jobs/x"))
+        self.assertTrue(base.is_arbeitnow_germany_host("https://arbeitnow.com/jobs/x"))
+        for url in (
+            "https://www.arbeitnow.fr/jobs/x",
+            "https://www.arbeitnow.ch/jobs/x",
+            "https://www.arbeitnow.co.uk/jobs/x",
+            "https://www.arbeitnow.nl/jobs/x",
+            "https://www.arbeitnow.uk/jobs/x",
+            "http://www.arbeitnow.com/jobs/x",
+            "javascript://arbeitnow.com/x",
+            r"https://evil.com\@arbeitnow.com/jobs/x",
+            "not-a-url",
+        ):
+            self.assertFalse(base.is_arbeitnow_germany_host(url), url)
+
+    def test_foreign_board_rejected_even_with_hybrid_location(self):
+        job = arbeitnow.to_source_job({
+            "slug": "software-engineer-hybrid-281608", "company_name": "Automation Consultants Ltd",
+            "title": "Software Engineer", "description": "<p>Hi</p>", "remote": False,
+            "url": "https://www.arbeitnow.fr/jobs/companies/automation-consultants-ltd/software-engineer-hybrid-281608",
+            "tags": [], "job_types": [], "location": "Hybrid", "created_at": 1794308480,
+        })
+        self.assertFalse(base.location_ok(job))
+
+    def test_com_board_keeps_foreign_city_location(self):
+        # Host gate ignores the location string — London on .com still passes.
+        job = arbeitnow.to_source_job({
+            "slug": "london-role", "company_name": "Acme", "title": "Software Engineer",
+            "description": "<p>Hi</p>", "remote": False,
+            "url": "https://www.arbeitnow.com/jobs/companies/acme/london-role",
+            "tags": [], "job_types": [], "location": "London, UK", "created_at": 1794308480,
+        })
+        self.assertTrue(base.location_ok(job))
 
 
 class AtsParserTests(unittest.TestCase):

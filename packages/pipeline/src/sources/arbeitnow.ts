@@ -1,7 +1,9 @@
 /**
- * Arbeitnow job board API: free, no key, Germany / EU tech-heavy. 300 jobs
- * per page, newest first, full HTML description included; no server-side
- * search, so pages are read until listings are older than the window.
+ * Arbeitnow job board API: free, no key. 300 jobs per page, newest first,
+ * full HTML description included; no server-side search, so pages are read
+ * until listings are older than the window. The mixed feed includes DE
+ * (arbeitnow.com) plus .fr / .ch / .co.uk / .nl / … — ingest keeps only the
+ * .com host (see germanyScopeOk).
  */
 import { config } from "../config.js";
 import { getJson } from "../http.js";
@@ -24,6 +26,8 @@ export function toSourceJob(item: Record<string, any>): SourceJob {
     description: item.description ?? "",
     postedAt: created ? new Date(Number.parseInt(String(created), 10) * 1000) : null,
     remote,
+    // Host gate in germanyScopeOk; location string is not used for DE scope.
+    locationPolicy: "none",
     extra: { tags: item.tags ?? [], jobTypes: item.job_types ?? [] },
   };
 }

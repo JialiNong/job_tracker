@@ -76,7 +76,7 @@ flowchart TB
 
 The browser pipeline (LinkedIn / Indeed) has **no schedule**: it runs on demand from Telegram `/jobs` (or the same script from a shell) on the Mac.
 
-The **API sources pipeline** (Arbeitnow, Bundesagentur, company ATS boards; Adzuna opt-in; `src/sources/run_sources.py`) runs **daily on GitHub Actions** (`.github/workflows/api-sources-pg.yml`, 09:17 UTC / 10:17 Berlin in winter), with no Mac needed. It uses the same title / language gates and the same AI matcher, and sends its own Telegram summary + match cards.
+The **API sources pipeline** (Arbeitnow, Bundesagentur, company ATS boards; Adzuna opt-in; `pnpm pipeline sources` / `packages/pipeline`) runs **daily on GitHub Actions** (`.github/workflows/api-sources-pg.yml`, 09:17 UTC / 10:17 Berlin in winter), with no Mac needed. It uses the same title / language gates and the same AI matcher, and sends a Telegram summary that includes a matcher outcome line (new on Tracker / already stored / below cut-off — same idea as Agent push) plus this run's new match cards. Arbeitnow's mixed feed is scoped by **job URL host** (`arbeitnow.com` = Germany board; `.fr` / `.ch` / `.co.uk` / `.nl` / … dropped) — not by the location string.
 
 A third daily lane is **agent ingest**: Cursor and Claude scheduled screens `POST /api/agent/jobs` on the Vercel app. Those picks skip this funnel (see [2.4](#24-agent-ingest-cursor--claude-daily)). Full source list, setup and watchlist: [`job_sources.md`](./job_sources.md).
 
@@ -104,7 +104,7 @@ caffeinate -i ./scripts/run_jobs.sh --days 3 --hours 72 --pages 2
 | `/jobs [days] [linkedin_hours] [pages]` | Run `scripts/run_jobs.sh` in the background; per-source scrape/match pings; “Done” when both lanes finish. `days` ∈ 1/3/7/14 (Indeed), `linkedin_hours` defaults to `days × 24`, `pages` applies to both platforms. Examples: `/jobs`, `/jobs 7`, `/jobs 3 120`, `/jobs 3 72 2` |
 | `/indeed_ok` | Resume Indeed after human verification (also: inline **Continue** button) |
 
-**Per-source progress:** each lane sends two short Telegram notes — scrape done (matching started), then matching done. Indeed and LinkedIn do not wait for each other to start matching.
+**Per-source progress:** each lane sends two short Telegram notes — scrape done (matching started), then matching done with a matcher outcome line (new on Tracker / already stored / below cut-off). Indeed and LinkedIn do not wait for each other to start matching.
 
 **Match card push:** `scripts/run_jobs.sh` calls `tg.digest.push_todays_matched_jobs()` only after **both** lanes finish. That covers Telegram `/jobs` and any manual shell run.
 
