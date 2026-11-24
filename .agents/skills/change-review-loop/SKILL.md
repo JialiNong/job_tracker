@@ -12,16 +12,16 @@ description: >-
 
 The **parent** (this conversation) is the coding agent. Do not spawn a second implementer — that would drop the user’s request context.
 
-Custom reviewers live in `.cursor/agents/change-reviewer.md` and `.cursor/agents/security-reviewer.md`.
+Custom reviewers live in `.agents/reviewers/` (symlinked as `.cursor/agents/` and `.claude/agents/`). **Do not review in this same chat** after implementing: the reviewer would inherit the implementer’s rationale. Spawn a fresh subagent that sees the user request, the file list, and the diff — not the design narrative.
 
 ## When to run
 
-Run after you have **written or edited application code** (Python, JS, CSS, templates, shell pipelines, bot, tests) and the impact check / UI chrome check from the job-scraper skill are done.
+Run after you have **written or edited application code** (TypeScript, Python, CSS, shell pipelines, bot, tests) and the impact check / UI chrome check from the job-scraper skill are done.
 
 **Skip** when any of these is true:
 
 - No files changed, or the user only asked a question / explanation
-- Docs-only or comments-only (`docs/**`, README) with no behavior change
+- Docs-only or comments-only (`docs/**`, README, `AGENTS.md`, skills) with no behavior change
 - Commit / push / summarize with no further code edits (if a feature was just implemented in this turn, run the loop **before** commit)
 - User said skip review / “don’t review”
 - You are already inside a reviewer subagent
@@ -32,11 +32,11 @@ Small feature requests **do** run the loop. That is the point.
 
 **Round 1**
 
-1. Launch **both** reviewers in **one** message (parallel Task calls).
-2. Prompt each with: the user’s request in 1–2 sentences, files you changed, and “review uncommitted diff; if clean, review branch vs main”.
-3. Prefer `subagent_type` `change-reviewer` and `security-reviewer`. If those types are not in the Task enum (session started before the agent files existed), fall back:
-   - Review: `generalPurpose` whose prompt is the body of `.cursor/agents/change-reviewer.md` plus the change summary
-   - Security: built-in `security-review` with `Diff: uncommitted changes` and Custom Instructions copied from `.cursor/agents/security-reviewer.md` threat model
+1. Launch **both** reviewers in **one** message (parallel Task / subagent calls).
+2. Prompt each with: the user’s request in 1–2 sentences, files you changed, and “review uncommitted diff; if clean, review branch vs main”. Do **not** paste why you wrote it that way.
+3. Cursor: `subagent_type` `change-reviewer` and `security-reviewer`. Claude Code: the Agent tool with `.claude/agents/change-reviewer.md` / `security-reviewer.md`. Fallback if those types are missing:
+   - Review: `generalPurpose` whose prompt is the body of `.agents/reviewers/change-reviewer.md` plus the change summary
+   - Security: built-in `security-review` with `Diff: uncommitted changes` and Custom Instructions copied from `.agents/reviewers/security-reviewer.md` threat model
 4. Wait for both. Do not keep chatting to the user until triage is done.
 
 **Triage** (parent decides; reviewers can be noisy)

@@ -1,13 +1,13 @@
 ---
-description: After Tracker UI edits, run the overlay/layout chrome check (not Mongo E2E)
-globs: templates/**,static/css/**,static/js/**
+description: After Tracker UI edits, run the overlay/layout chrome check (not E2E)
+globs: templates/**,static/css/**,static/js/**,apps/web/src/components/**,apps/web/src/app/**
 ---
 
 # UI chrome check (different layer from E2E)
 
-`tests/e2e` asserts MongoDB after clicks. That is the wrong trigger for CSS, overlays, phone layout, or select styling.
+`tests/e2e` asserts Postgres after clicks against Next.js. That is the wrong trigger for CSS, overlays, phone layout, or select styling.
 
-When you edit Tracker templates / `static/css` / `static/js`, **before finishing**:
+When you edit Tracker React (`apps/web/src/components`, `apps/web/src/app`) or `static/css` / `static/js`, **before finishing**:
 
 1. Run `./scripts/check_ui.sh`
 2. If it fails, fix the UI and re-run

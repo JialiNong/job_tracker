@@ -5,11 +5,11 @@ alwaysApply: true
 
 # Change review loop
 
-After you **implement** a feature or bugfix, do not stop at the impact check. Run the loop in [`.cursor/skills/change-review-loop/SKILL.md`](../skills/change-review-loop/SKILL.md).
+After you **implement** a feature or bugfix, do not stop at the impact check. Run the loop in [`.agents/skills/change-review-loop/SKILL.md`](../../.agents/skills/change-review-loop/SKILL.md). Reviewers must run in a **fresh context** (diff only), not in the implementing chat.
 
 1. Parent stays the coding agent (do not spawn a second implementer).
-2. In parallel: `change-reviewer` (edge cases, tests, splits) and `security-reviewer` (auth, XSS, Mongo, Telegram, secrets, CDP).
+2. In parallel: `change-reviewer` (edge cases, tests, splits) and `security-reviewer` (auth, XSS, Prisma, Telegram, secrets, CDP).
 3. Fix **Must-fix** only; list Should-fix; drop Skip.
 4. Re-review at most **one** extra round (max 2 total). Then stop.
 
-Skip the loop for questions, docs-only, user “don’t review”, or commit/push with no new code. If the user also asked to ship, finish this loop **before** commit.
+Skip the loop for questions, docs-only (`docs/**`, README, `AGENTS.md`, skills), user “don’t review”, or commit/push with no new code. If the user also asked to ship, finish this loop **before** commit.
