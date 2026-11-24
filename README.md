@@ -84,7 +84,7 @@ flowchart LR
 | `apps/web` | Next.js App Router: tracker UI and route handlers (`/api/*`), session auth |
 | `packages/pipeline` | Source fetchers, dedup, title gate, ingest, Telegram digest; CLIs for `sources` and `scrape` |
 | `packages/matching` | JD quality and language gates, OpenAI labelling, score from weights |
-| `packages/db` | Prisma schema and migrations, the Mongo → Postgres migration CLI |
+| `packages/db` | Prisma schema and migrations |
 | `packages/core` | Shared status model and Berlin-time helpers |
 
 Full flow, gates, and stored fields: [architecture.md](docs/architecture.md). Matching rules the model follows: [matching_rules.md](docs/matching_rules.md). Database schema: [pg-schema.md](docs/pg-schema.md).
@@ -111,14 +111,16 @@ Cursor and Claude already screened the posting. Running the matcher again would 
 
 Before I change a prompt, a weight, or a model, I re-score jobs I already marked applied or unsuitable (`python3 scripts/tools/eval_matcher.py`). The eval is my own Tracker history, not a public benchmark — that is a limitation, but it catches regressions against the taste the pipeline is for.
 
-## Migrating from Flask + MongoDB
+## Rewritten from Flask + MongoDB
 
-The tracker started as Python (Flask, MongoDB Atlas, Render) and was rewritten in TypeScript (Next.js, Postgres, Vercel) while staying in daily use. The rewrite was checked against the old app, not by eye:
+Production is **Vercel + Neon**. The tracker started as Python (Flask, MongoDB Atlas, Render) and was rewritten in TypeScript (Next.js, Postgres) while staying in daily use. The rewrite was checked against the old app, not by eye:
 
 - **API contract snapshots first.** Before any new code, 54 HTTP cases (every read endpoint plus the main writes) were recorded from Flask against a synthetic fixture, with a pinned clock and normalised ids. The Next.js app had to return the same JSON for every field the frontend reads. [migration-contracts.md](docs/migration-contracts.md).
 - **The same browser E2E suite** (Playwright) runs against both apps, with a fake OpenAI server so Run AI costs nothing in tests.
-- **A read-only parallel week.** A nightly job copied Mongo into Neon, and the new app ran read-only on Vercel next to the old one before the cutover. [deploy.md](docs/deploy.md).
+- **A read-only parallel week**, then a cutover. A nightly job copied Mongo into Neon until Neon became the live database. [deploy.md](docs/deploy.md).
 - **Scoring parity.** Matching was ported label by label, and old and new pipeline runs were compared on the same postings.
+
+Flask on Render and MongoDB Atlas stay up for one to two weeks as a fallback. Do not use that app: its writes go to Mongo and never reach Neon.
 
 The LinkedIn / Indeed browser scrapers are still Python (Chrome over CDP). They run on demand from my Mac; `pnpm pipeline scrape` starts them and writes their cards to Postgres.
 
@@ -132,7 +134,9 @@ The LinkedIn / Indeed browser scrapers are still Python (Chrome over CDP). They 
 
 **Infra and tooling:** Vercel · GitHub Actions · pnpm workspaces · Docker (local Postgres) · Vitest · Playwright
 
-**Legacy, still in use:** Python browser scrapers (Chrome CDP), Python test runners for the contract and E2E suites
+**Still Python:** LinkedIn / Indeed scrapers (Chrome CDP) and the contract / E2E test runners.
+
+**Fallback only (1–2 weeks):** Flask + MongoDB Atlas + Render. Not the live tracker.
 
 ## Built with AI coding agents
 
