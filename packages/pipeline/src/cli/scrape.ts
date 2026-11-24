@@ -24,7 +24,7 @@ import { createOpenAiClient, modelSettings } from "@tracker/matching";
 import { config } from "../config.js";
 import { pushMatchDigest } from "../digest.js";
 import { loadMatchingDocs } from "../docs.js";
-import { matchNewJobs } from "../match.js";
+import { formatMatchOutcomeLine, matchNewJobs, mergeMatchSummaries, type MatchSummary } from "../match.js";
 import { sendTelegramMessage } from "../telegram.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../../../..");
@@ -126,7 +126,7 @@ function scrape(source: string, args: string[]): Promise<number> {
   });
 }
 
-interface LaneResult { scrapeOk: boolean; matchOk: boolean; cardIds: string[] }
+interface LaneResult { scrapeOk: boolean; matchOk: boolean; match: MatchSummary | null }
 
 async function lane(name: string, source: string, args: string[]): Promise<LaneResult> {
   const code = await scrape(source, args);
@@ -135,19 +135,25 @@ async function lane(name: string, source: string, args: string[]): Promise<LaneR
   await sendTelegramMessage(scrapeOk ? `🔍 ${name} scrape done — matching started.` : `⚠️ ${name} scrape failed (exit ${code}) — matching saved jobs anyway.`, { log: () => {} });
   if (!client || !cv || !rules) {
     log(`⚠️  ${name} matching skipped: OPENAI_API_KEY, docs/user_profile.md or docs/matching_rules.md missing`);
-    return { scrapeOk, matchOk: false, cardIds: [] };
+    return { scrapeOk, matchOk: false, match: null };
   }
   const matchLog = createWriteStream(join(LOG_DIR, `matcher_${source}_${fileStamp}.log`));
   try {
     const summary = await matchNewJobs(prisma, { client, cv, rules, settings, threshold, source, log: (l) => matchLog.write(`${l}\n`) });
     const matchOk = !summary.stoppedReason;
     log(matchOk ? `✅ ${name} matching completed` : `⚠️  WARNING: ${name} matching stopped: ${summary.stoppedReason}`);
-    await sendTelegramMessage(matchOk ? `✅ ${name} matching done.` : `⚠️ ${name} matching stopped: ${summary.stoppedReason}`, { log: () => {} });
-    return { scrapeOk, matchOk, cardIds: summary.matchedCardIds };
+    // Per-lane ping keeps the Agent-style new/already-stored counts
+    await sendTelegramMessage(
+      matchOk
+        ? `✅ ${name} matching done.\n${formatMatchOutcomeLine(summary)}`
+        : `⚠️ ${name} matching stopped: ${summary.stoppedReason}\n${formatMatchOutcomeLine(summary)}`,
+      { log: () => {} },
+    );
+    return { scrapeOk, matchOk, match: summary };
   } catch (err) {
     log(`⚠️  WARNING: ${name} matching failed (${(err as Error).message})`);
     await sendTelegramMessage(`⚠️ ${name} matching failed.`, { log: () => {} });
-    return { scrapeOk, matchOk: false, cardIds: [] };
+    return { scrapeOk, matchOk: false, match: null };
   } finally {
     matchLog.end();
   }
@@ -169,10 +175,11 @@ log(`LinkedIn scrape: ${mark(linkedin.scrapeOk)}`);
 log(`Indeed match:    ${mark(indeed.matchOk)}`);
 log(`LinkedIn match:  ${mark(linkedin.matchOk)}`);
 
-const cardIds = [...indeed.cardIds, ...linkedin.cardIds];
+const matchSummary = mergeMatchSummaries([indeed.match, linkedin.match].filter((m): m is MatchSummary => m != null));
+const cardIds = matchSummary.matchedCardIds;
 const today = berlinDayBounds(formatBerlinDate(clockNow()))!;
 const scraped = await prisma.job.count({ where: { scrapedAt: { gte: today.start } } });
-log(`Today: ${scraped} jobs scraped; this run: ${cardIds.length} high-quality matches`);
+log(`Today: ${scraped} jobs scraped; ${formatMatchOutcomeLine(matchSummary)}`);
 log("Step 2/2: Pushing this run's matches to Telegram...");
 try {
   const digest = await pushMatchDigest(prisma, cardIds, () => {});

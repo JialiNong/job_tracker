@@ -82,6 +82,7 @@ describe("matchNewJobs", () => {
 
     expect(calls).toEqual(expect.arrayContaining(["Strong Frontend Engineer", "Weak Backend Engineer"]));
     expect(summary).toMatchObject({ found: seeded + 2, failed: 0, stoppedReason: null });
+    expect(summary.belowThreshold).toBeGreaterThanOrEqual(1);
     expect(await prisma.jobAnalysis.count()).toBe(before + seeded + 2);
     // Analysed postings (state done / pending) are never picked up again
     expect(await prisma.job.count({ where: { analysisState: "none" } })).toBe(0);
@@ -96,6 +97,18 @@ describe("matchNewJobs", () => {
     const w = await state(weak);
     expect(w.application).toBeNull();
     expect(w.currentAnalysis!.matchScore).toBeLessThan(7);
+  });
+
+  it("counts a single weak posting as belowThreshold with no new card", async () => {
+    await addPosting("Only Weak Backend", {
+      source: "arbeitnow", scrapedAt: new Date(),
+    });
+    const { client } = fakeClient({
+      "Only Weak Backend": { ...LABELS, role_type: "backend", stack_fit: "weak" },
+    });
+    const summary = await run(client, { source: "arbeitnow", limit: 1 });
+    expect(summary).toMatchObject({ found: 1, matched: 0, belowThreshold: 1, alreadyOnTracker: 0 });
+    expect(summary.matchedCardIds).toEqual([]);
   });
 
   it("stores a failed call as score_failed and stops when credits run out", async () => {
@@ -141,6 +154,23 @@ describe("matchNewJobs", () => {
     expect(o.application).toBeNull(); // but not one of today's matches
     expect((await state(fresh)).application).not.toBeNull();
     expect(summary.matchedCardIds).toHaveLength(1);
+    expect(summary.stale).toBeGreaterThanOrEqual(1);
+  });
+
+  it("counts a high score as already stored when a Tracker card already exists", async () => {
+    const jobId = await addPosting("Dup Frontend Engineer", { source: "arbeitnow", scrapedAt: new Date() });
+    await prisma.application.create({
+      data: {
+        id: newRecordId(), jobId, status: "pending", origin: "agent",
+        addedAt: new Date(), updatedAt: new Date(),
+      },
+    });
+    const { client } = fakeClient({});
+    // Newest first + limit 1: only this posting is scored
+    const summary = await run(client, { source: "arbeitnow", limit: 1 });
+    expect(summary).toMatchObject({ found: 1, matched: 0, alreadyOnTracker: 1, belowThreshold: 0 });
+    expect(summary.matchedCardIds).toEqual([]);
+    expect((await state(jobId)).application).not.toBeNull();
   });
 
   it("only takes the requested source and limit", async () => {

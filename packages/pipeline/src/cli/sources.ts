@@ -15,7 +15,7 @@ import { API_MAX_POSTING_AGE_DAYS } from "../config.js";
 import { SOURCE_LABELS, pushMatchDigest } from "../digest.js";
 import { loadMatchingDocs } from "../docs.js";
 import { type IngestStats, ingest } from "../ingest.js";
-import { matchNewJobs } from "../match.js";
+import { formatMatchOutcomeLine, matchNewJobs, mergeMatchSummaries, type MatchSummary } from "../match.js";
 import { adzunaCredentials, fetchAdzuna } from "../sources/adzuna.js";
 import { fetchArbeitnow } from "../sources/arbeitnow.js";
 import { fetchArbeitsagentur } from "../sources/arbeitsagentur.js";
@@ -93,30 +93,46 @@ try {
     }
   }
 
-  const matchedCardIds: string[] = [];
+  const matchParts: MatchSummary[] = [];
+  let matchSkippedReason: string | null = null;
   if (!dryRun && !values["no-match"]) {
-    if (!client) console.log("\nOPENAI_API_KEY not set — AI matching skipped");
+    if (!client) matchSkippedReason = "OPENAI_API_KEY not set — AI matching skipped";
     else {
       const { cv, rules } = await loadMatchingDocs();
-      if (!cv || !rules) console.log("\ndocs/user_profile.md or docs/matching_rules.md missing — AI matching skipped");
+      if (!cv || !rules) matchSkippedReason = "docs/user_profile.md or docs/matching_rules.md missing — AI matching skipped";
       else {
         const threshold = Number.parseFloat(process.env.MATCH_THRESHOLD ?? "7.0") || 7.0;
         for (const name of names.filter((n) => results[n]![1] === null)) {
           console.log(`\n--- AI matching: ${SOURCE_LABELS[name]} ---`);
-          const summary = await matchNewJobs(prisma, { client, cv, rules, settings, threshold, source: name });
-          matchedCardIds.push(...summary.matchedCardIds);
-          if (summary.stoppedReason) break;
+          const part = await matchNewJobs(prisma, { client, cv, rules, settings, threshold, source: name });
+          matchParts.push(part);
+          if (part.stoppedReason) break;
         }
       }
     }
+    if (matchSkippedReason) console.log(`\n${matchSkippedReason}`);
   }
 
+  const matchSummary = mergeMatchSummaries(matchParts);
   const minutes = Math.round((Date.now() - started) / 60_000);
-  const summary = [`🌐 API sources done (${minutes} min, last ${days}d)`, ...names.map((n) => summaryLine(n, ...results[n]!))].join("\n");
+  const lines = [
+    `🌐 API sources done (${minutes} min, last ${days}d)`,
+    ...names.map((n) => summaryLine(n, ...results[n]!)),
+  ];
+  // Same shape as Agent push ("N saved · M already stored"): new cards vs skips
+  if (!dryRun && !values["no-match"]) {
+    if (matchSkippedReason) lines.push(`🎯 Matcher: skipped — ${matchSkippedReason}`);
+    else {
+      const outcome = formatMatchOutcomeLine(matchSummary);
+      // Credit stop (etc.) must not look like a finished full run
+      lines.push(matchSummary.stoppedReason ? `${outcome}\n⚠️ Matching stopped: ${matchSummary.stoppedReason}` : outcome);
+    }
+  }
+  const summary = lines.join("\n");
   console.log(`\n${summary}`);
   if (!dryRun && !values["no-telegram"]) {
     await sendTelegramMessage(summary);
-    if (!values["no-match"]) await pushMatchDigest(prisma, matchedCardIds);
+    if (!values["no-match"] && !matchSkippedReason) await pushMatchDigest(prisma, matchSummary.matchedCardIds);
   }
   const failed = names.filter((n) => results[n]![1] && !results[n]![1]!.startsWith("skipped"));
   process.exitCode = failed.length && failed.length === names.length ? 1 : 0;
