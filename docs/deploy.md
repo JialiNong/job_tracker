@@ -152,3 +152,81 @@ Before you start: a backup of Atlas (snapshot or `mongodump`).
 The next day, check: the daily **API job sources (Postgres)** run passed
 and the old **API job sources** did not run; the agents' picks show up in
 the Vercel app; a `/jobs` run added postings and sent its Telegram digest.
+
+## 7. Public demo (separate subdomain)
+
+Interviewers need a login-free Tracker with fictional data. Production stays
+on its own Vercel project and Neon database. Soft writes are allowed; a
+nightly Action reseeds the demo DB so vandalism does not stick.
+
+### Neon (demo)
+
+1. Create a **second** Neon project (or a second database) in Frankfurt, named
+   so the database path ends in `_demo` (e.g. `tracker_demo`).
+2. Note the pooled and direct connection strings (same `connect_timeout=15`
+   tips as in §1).
+
+```bash
+export DIRECT_DATABASE_URL='postgresql://…/tracker_demo?…'
+DATABASE_URL="$DIRECT_DATABASE_URL" pnpm --filter @tracker/db exec prisma migrate deploy
+DATABASE_URL="$DIRECT_DATABASE_URL" DIRECT_DATABASE_URL="$DIRECT_DATABASE_URL" pnpm db demo:seed
+```
+
+`pnpm db demo:seed` refuses any database whose name does not end in `_demo`.
+
+### Vercel (demo project)
+
+**Add New → Project** from the same GitHub repo (do not reuse the production
+project's env):
+
+| Setting | Value |
+|---|---|
+| Root Directory | `apps/web` |
+| Custom domain | e.g. `demo.your-domain.com` |
+
+Environment variables (Production only):
+
+| Name | Value |
+|---|---|
+| `DATABASE_URL` | demo Neon **pooled** string |
+| `DIRECT_DATABASE_URL` | demo Neon **direct** string |
+| `TRACKER_DEMO` | `1` |
+| `SESSION_SECRET` | any 32+ character string (login is skipped; iron-session still loads) |
+| `TRACKER_USERNAME` | `demo` (unused while `TRACKER_DEMO=1`) |
+| `TRACKER_PASSWORD_HASH` | any bcrypt hash (unused) |
+| `ENABLE_EXPERIMENTAL_COREPACK` | `1` |
+| `DEMO_WRITE_LIMIT_PER_HOUR` | optional, default `10` — max mutating calls per IP per route family / hour |
+
+Do **not** set on the demo project: `AGENT_API_TOKEN`, `OPENAI_API_KEY`,
+`TELEGRAM_*`, or the production `DATABASE_URL`. Agent / Run AI / Fetch details
+APIs answer 503; Log Job link-only and status/notes/delete stay open.
+
+### GitHub Actions (nightly reseed)
+
+Repository secrets:
+
+| Secret | Value |
+|---|---|
+| `DEMO_DIRECT_DATABASE_URL` | demo Neon **direct** string |
+
+Workflow: [`.github/workflows/reseed-demo.yml`](../.github/workflows/reseed-demo.yml)
+(03:41 UTC daily + **workflow_dispatch**). Run it by hand before an interview
+if someone emptied the board.
+
+### Local check
+
+```bash
+pnpm db:up
+# if the volume predates tracker_demo:
+#   docker compose exec postgres psql -U tracker -d postgres -c 'CREATE DATABASE tracker_demo OWNER tracker;'
+DATABASE_URL=postgresql://tracker:tracker@127.0.0.1:54329/tracker_demo \
+  DIRECT_DATABASE_URL=postgresql://tracker:tracker@127.0.0.1:54329/tracker_demo \
+  pnpm --filter @tracker/db exec prisma migrate deploy
+DATABASE_URL=postgresql://tracker:tracker@127.0.0.1:54329/tracker_demo \
+  DIRECT_DATABASE_URL=postgresql://tracker:tracker@127.0.0.1:54329/tracker_demo \
+  pnpm db demo:seed
+./scripts/start_web_demo.sh   # http://127.0.0.1:3001 , no login
+```
+
+Flask + Mongo screenshot seed remains: `python3 scripts/db/seed_demo.py` and
+`./scripts/start_ui_demo.sh` (legacy only).

@@ -8,6 +8,7 @@ import { timingSafeEqual } from "node:crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import { normalizeRecommendedBy } from "@tracker/core";
 import { prisma } from "@tracker/db/client";
+import { DEMO_BLOCKED_MESSAGE, isDemoMode } from "@/lib/demo";
 import { jsonError } from "@/lib/http";
 import { AGENT_JOBS_MAX, AGENTS, logAgentJobs, recordPushRun } from "@/server/agent";
 
@@ -20,6 +21,7 @@ function tokenMatches(given: string, expected: string): boolean {
 }
 
 export async function POST(req: NextRequest) {
+  if (isDemoMode()) return jsonError(DEMO_BLOCKED_MESSAGE, 503);
   const expected = (process.env.AGENT_API_TOKEN ?? "").trim();
   if (!expected) return jsonError("Agent API is disabled (AGENT_API_TOKEN not set)", 503);
   const auth = req.headers.get("authorization") ?? "";

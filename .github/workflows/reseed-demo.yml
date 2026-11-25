@@ -1,0 +1,59 @@
+# Nightly reset of the public demo Neon database (fictional data only).
+#
+# Secrets (repository):
+#   DEMO_DATABASE_URL        — Neon pooled or direct string for the *_demo database
+#   DEMO_DIRECT_DATABASE_URL — Neon direct string (migrations + seed truncate)
+#
+# The seed refuses any database whose name does not end in `_demo`.
+name: Reseed demo database
+
+on:
+  schedule:
+    # 03:41 UTC — after the daily API pipeline, before morning interviews.
+    - cron: "41 3 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: reseed-demo
+  cancel-in-progress: false
+
+jobs:
+  reseed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Europe/Berlin
+      DATABASE_URL: ${{ secrets.DEMO_DIRECT_DATABASE_URL }}
+      DIRECT_DATABASE_URL: ${{ secrets.DEMO_DIRECT_DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check demo secrets
+        run: |
+          missing=0
+          for v in DATABASE_URL DIRECT_DATABASE_URL; do
+            val="${!v}"
+            if [ -n "$val" ]; then echo "OK      $v (${#val} chars)"
+            else echo "MISSING $v (set DEMO_DIRECT_DATABASE_URL)"; missing=1; fi
+          done
+          exit $missing
+
+      - name: Migrate demo database
+        run: pnpm --filter @tracker/db exec prisma migrate deploy
+
+      - name: Seed fictional demo data
+        run: pnpm db demo:seed

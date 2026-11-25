@@ -4,6 +4,8 @@ AI-assisted job search pipeline for the German market, running daily in producti
 
 Public APIs and company ATS boards are collected on GitHub Actions and scored against my CV. Cursor and Claude run a second daily screen and push picks they already liked. Everything lands on a phone-friendly tracker plus Telegram.
 
+**Live demo** (separate subdomain, [setup](docs/deploy.md#7-public-demo-separate-subdomain)): fictional data, no login. Soft edits (status, notes, Log Job) work; the database resets every night. Production stays private. Put the public URL here and in the GitHub About once the demo Vercel domain is live.
+
 ![From a new match to a status change](docs/images/tracker-flow.gif)
 
 ## Why I built it
@@ -162,7 +164,7 @@ pnpm --filter @tracker/web dev                 # http://localhost:3000
 
 ## Limitations and next steps
 
-- **Single user.** Auth, CV, and weights are mine; this is not a multi-tenant product.
+- **Single user (production).** Auth, CV, and weights are mine; this is not a multi-tenant product. The public demo is a separate deployment with fictional data and a nightly reset.
 - **The eval set is small** and is my own Tracker decisions, so it will overfit my taste.
 - **Run AI on a single job is local only.** Lingua's Linux binary is larger than Vercel's function size limit, so the hosted button points you to your own machine. The daily pipeline on GitHub Actions is not affected.
 - **Coverage is APIs + an ATS watchlist + daily agent screens.** Jobs that never appear on a board I query, and that no agent picks that day, never enter.

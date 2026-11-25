@@ -5,6 +5,7 @@
  */
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@tracker/db/client";
+import { DEMO_BLOCKED_MESSAGE, isDemoMode } from "@/lib/demo";
 import { isRecordId, jsonError } from "@/lib/http";
 import { runAiOnCard } from "@/server/run-ai";
 
@@ -13,6 +14,7 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 300;
 
 export async function POST(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  if (isDemoMode()) return jsonError(DEMO_BLOCKED_MESSAGE, 503);
   const { id } = await params;
   if (!isRecordId(id)) return jsonError("Invalid id", 400);
   const result = await runAiOnCard(prisma, id);

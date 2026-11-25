@@ -116,6 +116,15 @@ export async function startManualLog(prisma: PrismaClient, body: Record<string, 
   }
   const appliedAt = parseAppliedDate(body.applied_date);
   if (appliedAt === "invalid") return bad("Invalid applied_date format, expected YYYY-MM-DD");
+  if (mode === "scrape" && process.env.TRACKER_DEMO === "1") {
+    return {
+      status: 503,
+      body: {
+        ok: false,
+        error: "Scrape is not available in the public demo. Use Save Link Only — the database resets daily.",
+      },
+    };
+  }
   if (mode === "scrape" && process.env.VERCEL && !deps.fetch) {
     return { status: 503, body: { ok: false, error: FETCH_DETAILS_LOCAL_ONLY } };
   }

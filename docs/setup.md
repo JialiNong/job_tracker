@@ -55,6 +55,7 @@ The pipeline also reads `apps/web/.env.local`; a variable already set in the she
 | `TELEGRAM_*` | Daily match digest |
 | `ADZUNA_APP_ID` / `ADZUNA_APP_KEY` | Optional, paid source |
 | `TRACKER_READ_ONLY` | `1` blocks every write in the web app |
+| `TRACKER_DEMO` | `1` on the public demo project only (login skipped; requires `*_demo` DB — [deploy.md §7](deploy.md)) |
 
 Generate the password hash (bcrypt, cost 12):
 
@@ -152,7 +153,8 @@ The Python app (`src/web`, `templates/`, `static/`) and its MongoDB scripts stay
 | Python unit tests | `python3 -m unittest discover -s tests` |
 | Flask E2E (throwaway `mongod`) | `./scripts/run_e2e.sh` |
 | Matcher eval against Tracker decisions | `python3 scripts/tools/eval_matcher.py` |
-| Demo database for screenshots | `python3 scripts/db/seed_demo.py`, then `DATABASE_NAME=job_scraper_demo ./scripts/start_ui_demo.sh` |
+| Demo database for screenshots (Flask + Mongo, legacy) | `python3 scripts/db/seed_demo.py`, then `DATABASE_NAME=job_scraper_demo ./scripts/start_ui_demo.sh` |
+| Public Next.js demo (Postgres `tracker_demo`) | `pnpm db demo:seed` against a `*_demo` URL, then `./scripts/start_web_demo.sh` — see [deploy.md §7](deploy.md) |
 
 The Claude Code Stop hook (`scripts/e2e_hook.sh`) runs Vitest, the Python page-scraper tests, and the Next.js e2e suite when `apps/web`, `packages/*`, `src/scrapers`, or `tests` change.
 

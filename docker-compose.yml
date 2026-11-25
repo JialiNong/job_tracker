@@ -1,7 +1,8 @@
 # Local Postgres for the rewrite. Not used by the Python app.
 #   pnpm db:up      start (data kept in the pgdata volume)
 #   pnpm db:down    stop
-# Databases: tracker_dev (migrated real data), tracker_test (contract / e2e fixtures).
+# Databases: tracker_dev (migrated real data), tracker_test (contract / e2e),
+# tracker_demo (public demo seed; created in docker-init.sql).
 services:
   postgres:
     image: postgres:16.9-alpine

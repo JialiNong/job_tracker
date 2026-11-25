@@ -9,6 +9,7 @@
     "migrate:deploy": "prisma migrate deploy",
     "from-mongo": "tsx src/cli/from-mongo.ts",
     "contract:seed": "tsx src/cli/seed-fixture.ts",
+    "demo:seed": "tsx src/cli/seed-demo.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },

@@ -187,6 +187,18 @@ class DemoDatasetTests(unittest.TestCase):
             keys = [j.get("posting_key") for j in self.data[name] if j.get("posting_key")]
             self.assertEqual(len(keys), len(set(keys)), f"duplicate posting_key in {name}")
 
+    def test_export_json_assigns_stable_oids(self):
+        from export_demo_json import assign_ids, demo_oid_hex  # noqa: WPS433
+
+        packed = assign_ids(self.data)
+        matched_ids = [j["_id"]["$oid"] for j in packed["matched_jobs"]]
+        unmatched_ids = [j["_id"]["$oid"] for j in packed["jobs"]]
+        self.assertEqual(len(matched_ids), len(set(matched_ids)))
+        self.assertEqual(len(unmatched_ids), len(set(unmatched_ids)))
+        self.assertTrue(all(len(i) == 24 for i in matched_ids + unmatched_ids))
+        self.assertEqual(demo_oid_hex("matched", 0), matched_ids[0])
+        self.assertNotEqual(demo_oid_hex("matched", 0), demo_oid_hex("unmatched", 0))
+
     def test_flow_sinks_include_upcoming_rounds(self):
         sinks = {classify_flow_sink(j, now=TODAY) for j in self.matched if _applied(j)}
         self.assertIn("round_1_upcoming", sinks)

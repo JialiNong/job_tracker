@@ -85,7 +85,8 @@ A third daily lane is **agent ingest**: Cursor and Claude scheduled screens `POS
 | `./scripts/run_jobs.sh [--days N] [--hours H] [--pages P]` | Indeed + LinkedIn lanes in parallel. Each source matches as soon as its scrape finishes, with Telegram pings; match-card digest after both lanes. Defaults: Indeed 1 day, LinkedIn 24h (or `days × 24` when `--days` is given), `FULL_MAX_PAGES` (3) pages per keyword on both platforms | 40–60 min at defaults |
 | `python3 src/sources/run_sources.py [--sources …] [--days N] [--dry-run]` | API sources: fetch → funnel → AI match → Telegram (same as the daily GitHub Actions run). See [`job_sources.md`](./job_sources.md) | 2–8 min |
 | `./scripts/start_ui.sh` | Start Job Tracker Web UI (default `:5050`); `--reload` restarts on `.py` or HTML saves; HTML is `Cache-Control: no-store` so a refresh shows template edits without a restart | — |
-| `./scripts/start_ui_demo.sh [port]` | Same UI against the fictional `job_scraper_demo` database (default `:5051`). Seed with `python3 scripts/db/seed_demo.py`. Refuses `DATABASE_NAME=job_scraper` | — |
+| `./scripts/start_ui_demo.sh [port]` | Flask UI against Mongo `job_scraper_demo` (default `:5051`). Seed with `python3 scripts/db/seed_demo.py`. Refuses `DATABASE_NAME=job_scraper` | — |
+| `./scripts/start_web_demo.sh [port]` | Next.js UI with `TRACKER_DEMO=1` against Postgres `tracker_demo` (default `:3001`). Seed with `pnpm db demo:seed`. Refuses non-`*_demo` URLs | — |
 
 Prefer `caffeinate -i` for manual runs so sleep does not interrupt Playwright:
 
@@ -149,8 +150,11 @@ A `goto` timeout no longer aborts the extract — the listing is often already o
 | `python3 scripts/tools/log_jobs.py <urls…>` | Manual job URLs → `matched_jobs` (default `status=pending`; `--status applied` optional). Already on Tracker with a full card: skip, or mark applied when requested. Link-only / `ai_pending` Tracker rows are scraped in place (notes / timeline kept). Chrome / Indeed / AI failure still saves a **new** URL stub (`ai_pending`). `--link-only` skips scrape/AI. |
 | `python3 scripts/tools/log_recommended_jobs.py <jobs.json \| ->` | Local twin of `POST /api/agent/jobs`. Batch log agent picks as link-only Tracker stubs: `pending`, `recommended_by` from `--recommended-by` (default `claude`; per-job `recommended_by` wins), per-job title / company / location. No browser / no AI; a job_id already in `matched_jobs` / `jobs` / `timeout_jobs` is skipped with no write. Skips on Unmatched are returned as `below_threshold` (title, score, `/unmatched?open=` path) and tagged `agent_recommended_by` on the `jobs` row so Overview and Unmatched can show the disagreement. Score later with Tracker **Select missing details** → **Run AI for selected**. |
 | `python3 scripts/db/cleanup_excluded_titles.py …` | Cleanup DB rows by title blacklist |
-| `python3 scripts/db/seed_demo.py` | Fictional screenshot dataset into `job_scraper_demo` (never copies production; refuses the `job_scraper` name unless `--force`) |
-| `./scripts/start_ui_demo.sh [port]` | Tracker UI against `job_scraper_demo` (default port 5051). Refuses `DATABASE_NAME=job_scraper` |
+| `python3 scripts/db/seed_demo.py` | Fictional screenshot dataset into Mongo `job_scraper_demo` (never copies production; refuses the `job_scraper` name unless `--force`) |
+| `python3 scripts/db/export_demo_json.py` | Same fictional dataset as Extended JSON for Postgres (`pnpm db demo:seed`) |
+| `pnpm db demo:seed` | Load fictional data into a Postgres DB whose name ends in `_demo` (nightly demo reset) |
+| `./scripts/start_ui_demo.sh [port]` | Flask UI against Mongo `job_scraper_demo` (default port 5051). Refuses `DATABASE_NAME=job_scraper` |
+| `./scripts/start_web_demo.sh [port]` | Next.js public-demo mode against Postgres `tracker_demo` (default `:3001`) |
 | `python3 scripts/tools/eval_matcher.py …` | Matcher evaluation |
 | `python3 scripts/tools/eval_matcher.py [--pos N --neg N --german N] [--job-model M]` | Check the matcher against Tracker decisions (applied vs unsuitable) and re-check old German rejects. `--unapplied [--limit N]` scores Tracker jobs she did not apply to. `--from-results <file>` re-scores a saved run with the current weights (no API calls). Read-only on MongoDB (company lookups cached in `evals/results/company_cache.json`); output in `evals/results/`. |
 
@@ -421,10 +425,11 @@ job_scraper/
 │       └── digest.py            # Today's match cards → Telegram (after run_jobs.sh / run_sources.py)
 └── scripts/
     ├── run_jobs.sh              # pipeline behind Telegram /jobs
-    ├── start_ui.sh              # Tracker web UI
-    ├── start_ui_demo.sh         # Tracker UI against `job_scraper_demo` (screenshots)
+    ├── start_ui.sh              # Flask Tracker web UI (fallback)
+    ├── start_ui_demo.sh         # Flask UI against Mongo `job_scraper_demo` (screenshots)
+    ├── start_web_demo.sh        # Next.js TRACKER_DEMO against Postgres `tracker_demo`
     ├── lib/pipeline_common.sh   # shared shell helpers (lanes, Telegram pings)
-    ├── db/                      # one-off DB maintenance + `seed_demo.py` (fictional screenshot data)
+    ├── db/                      # seed_demo.py / export_demo_json.py (fictional screenshot + demo data)
     └── tools/                   # log_jobs (Log Job CLI), log_recommended_jobs, eval_matcher, generate_password_hash
 ```
 
