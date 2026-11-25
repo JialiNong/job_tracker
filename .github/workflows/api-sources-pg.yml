@@ -1,6 +1,6 @@
 # API job sources on the Next.js + Postgres stack (packages/pipeline).
 #
-# The daily run since the cutover (the old api-sources.yml is manual only).
+# The daily API ingest (Neon). The old Mongo api-sources.yml was removed after cutover.
 name: API job sources (Postgres)
 
 on:

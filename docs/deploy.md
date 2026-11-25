@@ -149,9 +149,10 @@ Before you start: a backup of Atlas (snapshot or `mongodump`).
    then shut them down. Do not log in to the Flask app meanwhile: its
    writes go to Mongo and never reach Neon.
 
-The next day, check: the daily **API job sources (Postgres)** run passed
-and the old **API job sources** did not run; the agents' picks show up in
-the Vercel app; a `/jobs` run added postings and sent its Telegram digest.
+The next day, check: the daily **API job sources (Postgres)** run passed;
+the agents' picks show up in the Vercel app; a `/jobs` run added postings
+and sent its Telegram digest. (The old Mongo **API job sources** workflow
+was removed after cutover.)
 
 ## 7. Public demo (separate subdomain)
 

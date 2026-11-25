@@ -3,7 +3,7 @@
 # Building them reads every applied job's full JD, which made the tab wait
 # several seconds on Render. The web app serves the stored copy instead; the
 # tab's Recompute button rebuilds it on demand. Needs the MONGO_URI secret
-# (already set for api-sources.yml).
+# (MONGO_URI; Flask fallback only — Next.js refreshes Stacks itself).
 name: Stack stats cache
 
 #
