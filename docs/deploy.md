@@ -200,7 +200,9 @@ Environment variables (Production only):
 
 Do **not** set on the demo project: `AGENT_API_TOKEN`, `OPENAI_API_KEY`,
 `TELEGRAM_*`, or the production `DATABASE_URL`. Agent / Run AI / Fetch details
-APIs answer 503; Log Job link-only and status/notes/delete stay open.
+APIs answer 503; Log Job link-only and status/notes/delete stay open. The
+Tracker still shows a **fixed sample** agent-push banner (marked fictional)
+so visitors can see the daily digest UI without live ingest.
 
 ### GitHub Actions (nightly reseed)
 

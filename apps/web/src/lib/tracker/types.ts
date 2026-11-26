@@ -114,6 +114,8 @@ export interface StackStats {
 /** GET /api/stats/agent-pushes: today's (Berlin) agent pushes for the Tracker banner. */
 export interface AgentPushesToday {
   day: string;
+  /** True on the public demo: fixed sample, not live agent traffic. */
+  sample?: boolean;
   agents: { agent: string; runs: number; received: number; saved: number; skipped: number; failed: number; last_at: string }[];
   failures: { url: string; reason: string; message: string; title: string; company: string; agent: string; at: string }[];
   needs_link: { card_id: string; url: string; title: string; company: string; agent: string }[];

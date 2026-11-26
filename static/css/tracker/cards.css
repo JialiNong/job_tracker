@@ -1012,6 +1012,12 @@
 .apb-summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
 .apb-summary strong { color: var(--text); }
 .has-problems .apb-summary strong { color: var(--warning); }
+.agent-push-banner.is-sample .apb-summary strong { color: var(--muted); font-weight: 600; }
+.apb-sample {
+  flex: 1 1 100%;
+  font-size: .8rem;
+  color: var(--muted);
+}
 .apb-failed { color: var(--danger); font-weight: 600; }
 .apb-block { margin-top: 8px; color: var(--text); }
 .apb-block > summary { cursor: pointer; }

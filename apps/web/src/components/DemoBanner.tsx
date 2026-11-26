@@ -10,8 +10,9 @@ export function DemoBanner() {
     <div className="demo-banner" role="status">
       <strong>Public demo</strong>
       <span>
-        Fictional data. Soft edits (status, notes, Log Job) are rate-limited; the database resets every night.
-        Production stays private.
+        Virtual / fictional data only — not a live job search. Soft edits (status, notes, Log Job link-only)
+        are rate-limited; the database resets every night. Run AI, Fetch details, and live agent ingest are
+        disabled here (they need API tokens). Production stays private.
       </span>
     </div>
   );

@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
+import { demoAgentPushesToday } from "@/lib/demo-agent-pushes";
 import {
   dbNameFromUrl,
   demoDatabaseConfigured,
@@ -80,5 +81,22 @@ describe("demoDatabaseConfigured / isDemoModeSafe", () => {
     });
     expect(result.status).toBe(503);
     expect(String(result.body.error)).toMatch(/Save Link Only/i);
+  });
+});
+
+describe("demoAgentPushesToday", () => {
+  it("returns a fixed sample with agents, successes, and failures", () => {
+    const data = demoAgentPushesToday();
+    expect(data.sample).toBe(true);
+    expect(data.agents.length).toBeGreaterThanOrEqual(2);
+    expect(data.agents.reduce((n, a) => n + a.received, 0)).toBeGreaterThan(0);
+    expect(data.failures.length).toBeGreaterThan(0);
+    expect(data.items.some((i) => i.outcome === "saved")).toBe(true);
+    expect(data.items.every((i) => i.open_path === null)).toBe(true);
+    for (const a of data.agents) {
+      expect(a.received).toBe(a.saved + a.skipped + a.failed);
+    }
+    expect(data.failures.map((f) => f.reason).sort()).toEqual(["no_job_id", "save_failed"]);
+    expect(data.failures.every((f) => f.message.length > 0)).toBe(true);
   });
 });

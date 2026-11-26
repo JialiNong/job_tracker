@@ -32,29 +32,29 @@ export function BatchBar(p: Props) {
             Select all on page
           </button>
           <button
-            type="button" className="batch-fetch-btn" id="selectMissingBtn" onClick={() => p.onSelectMissing("missing")}
+            type="button" className="batch-fetch-btn demo-hide-ai" id="selectMissingBtn" onClick={() => p.onSelectMissing("missing")}
             title="Select jobs that still need details (all pages, current filters — including Applied)"
           >
             Select missing details
           </button>
           <button
-            type="button" className="batch-fetch-btn" id="selectMissingAiBtn" onClick={() => p.onSelectMissing("missing_ai")}
+            type="button" className="batch-fetch-btn demo-hide-ai" id="selectMissingAiBtn" onClick={() => p.onSelectMissing("missing_ai")}
             title="Select jobs with no AI result yet (all pages, current filters), then Run AI for selected"
           >
             Select missing AI result
           </button>
           <button type="button" className="batch-fetch-btn" id="clearFetchSelectBtn" onClick={p.onClear}>Clear selection</button>
         </div>
-        <span className="batch-sep" aria-hidden="true" />
+        <span className="batch-sep demo-hide-ai" aria-hidden="true" />
         <div className="bf-actions">
           <button
-            type="button" className="btn-fetch-details" id="fetchSelectedBtn" disabled={batchRunning || p.count === 0}
+            type="button" className="btn-fetch-details demo-hide-ai" id="fetchSelectedBtn" disabled={batchRunning || p.count === 0}
             onClick={p.onFetch} title="Scrape title, company, location, and description only (no AI) — runs on your computer"
           >
             Fetch details
           </button>
           <button
-            type="button" className="btn-run-ai" id="runAiSelectedBtn" disabled={batchRunning || p.count === 0}
+            type="button" className="btn-run-ai demo-hide-ai" id="runAiSelectedBtn" disabled={batchRunning || p.count === 0}
             onClick={p.onRunAi} title="Run AI matching on the stored job description of each selected job"
           >
             Run AI match

@@ -159,14 +159,17 @@ body[data-demo="1"] .side {
   align-self: stretch;
 }
 body[data-demo="1"] .side-logout { display: none; }
-/* Soft writes stay; scrape / Run AI / Fetch details are blocked server-side */
+/* Soft writes stay; scrape / Run AI / Fetch details are blocked server-side (and omitted in React) */
 body[data-demo="1"] #selectMissingBtn,
 body[data-demo="1"] #selectMissingAiBtn,
 body[data-demo="1"] #fetchSelectedBtn,
 body[data-demo="1"] #runAiSelectedBtn,
 body[data-demo="1"] .btn-run-ai,
 body[data-demo="1"] .btn-fetch-details,
-body[data-demo="1"] #submitBtn { display: none !important; }
+body[data-demo="1"] #submitBtn,
+body[data-demo="1"] .demo-hide-ai { display: none !important; }
+.demo-only { display: none !important; }
+body[data-demo="1"] .demo-only { display: list-item !important; }
 @media (max-width: 720px) {
   .demo-banner { padding: 8px 12px; font-size: 12px; }
   body[data-demo="1"] .side {

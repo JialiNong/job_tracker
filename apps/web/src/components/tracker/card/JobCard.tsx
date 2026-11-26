@@ -117,10 +117,11 @@ function PipelineButtons({ job }: { job: Job }) {
   const tracker = useTracker();
   const running = tracker.isRunningAi(job._id);
   const aiPending = needsAi(job);
+  // Public demo: hidden via body[data-demo] CSS; class keeps the intent explicit.
   return (
     <>
       <button
-        type="button" className={aiPending ? "btn-run-ai ai-pending-btn" : "btn-run-ai"}
+        type="button" className={aiPending ? "btn-run-ai ai-pending-btn demo-hide-ai" : "btn-run-ai demo-hide-ai"}
         disabled={running || tracker.batchRunning}
         onClick={(e) => { e.stopPropagation(); tracker.runAi(job._id); }}
         title="Run AI matching on the stored job description"
@@ -129,7 +130,7 @@ function PipelineButtons({ job }: { job: Job }) {
       </button>
       {job.details_missing || job.can_fetch_details ? (
         <button
-          type="button" className="btn-fetch-details" disabled={running || tracker.batchRunning}
+          type="button" className="btn-fetch-details demo-hide-ai" disabled={running || tracker.batchRunning}
           onClick={(e) => { e.stopPropagation(); tracker.fetchDetails(job._id); }}
           title="Scrape title, company, location, and description (no AI matching) — runs on your computer"
         >

@@ -21,8 +21,8 @@ const ORIGIN_LABEL: Record<string, string> = {
   pipeline: "found by the scraper", api: "found by an API source", manual: "logged by hand", agent: "pushed by an agent earlier",
 };
 
-const SECTIONS: { outcome: Item["outcome"]; title: string; hint: string }[] = [
-  { outcome: "saved", title: "Saved", hint: "New on the Tracker, AI pending" },
+const SECTIONS: { outcome: Item["outcome"]; title: string; hint: string; sampleHint?: string }[] = [
+  { outcome: "saved", title: "Saved", hint: "New on the Tracker, AI pending", sampleHint: "New on the Tracker (Run AI is off on this demo)" },
   { outcome: "tracker", title: "Already on the Tracker", hint: "Not saved again" },
   { outcome: "unmatched", title: "On Unmatched", hint: "The matcher scored it below the cut-off; the agent still liked it" },
   { outcome: "awaiting_match", title: "Waiting for the matcher", hint: "Scraped, not scored yet" },
@@ -76,11 +76,24 @@ export function AgentPushBanner() {
   }
   if (!data || !data.agents.length) return null;
   const problems = data.failures.length + data.needs_link.length;
+  const sample = !!data.sample;
 
   return (
-    <section className={`agent-push-banner${problems ? " has-problems" : ""}`} aria-label="Today's agent pushes">
+    <section
+      className={`agent-push-banner${problems ? " has-problems" : ""}${sample ? " is-sample" : ""}`}
+      aria-label={sample ? "Sample agent pushes (demo)" : "Today's agent pushes"}
+    >
       <div className="apb-summary">
-        <strong>{problems ? "Agent push needs a look" : "Agent pushes today"}</strong>
+        <strong>
+          {sample
+            ? "Sample agent pushes (demo)"
+            : problems
+              ? "Agent push needs a look"
+              : "Agent pushes today"}
+        </strong>
+        {sample ? (
+          <span className="apb-sample">Fictional summary — live agent ingest is off on this demo</span>
+        ) : null}
         {data.agents.map((a) => (
           <span key={a.agent} className="apb-agent" title={`Last push ${a.last_at}${a.runs > 1 ? ` · ${a.runs} pushes` : ""}`}>
             {agentLabel(a.agent)}: {a.received} sent · {a.saved} saved · {a.skipped} already stored
@@ -89,11 +102,18 @@ export function AgentPushBanner() {
         ))}
       </div>
       <Section
-        title="Fix the link" hint="Saved, but the Indeed link has no job id: paste the viewjob link on the card"
+        title="Fix the link"
+        hint={sample
+          ? "Sample row — fictional short link; no card to open on this demo"
+          : "Saved, but the Indeed link has no job id: paste the viewjob link on the card"}
         count={data.needs_link.length} warn
       >
         {data.needs_link.map((j) => (
-          <JobLine key={j.card_id} title={j.title} company={j.company} url={j.url} openPath={`/?open=${j.card_id}`} extra={agentLabel(j.agent)} />
+          // Sample rows have no real card in the demo DB — posting link only.
+          <JobLine
+            key={j.card_id} title={j.title} company={j.company} url={j.url}
+            openPath={sample ? null : `/?open=${j.card_id}`} extra={agentLabel(j.agent)}
+          />
         ))}
       </Section>
       <Section title="Not saved" hint="The tracker could not store these" count={data.failures.length} warn>
@@ -107,7 +127,7 @@ export function AgentPushBanner() {
       {SECTIONS.map((s) => {
         const items = data.items.filter((i) => i.outcome === s.outcome);
         return (
-          <Section key={s.outcome} title={s.title} hint={s.hint} count={items.length}>
+          <Section key={s.outcome} title={s.title} hint={sample && s.sampleHint ? s.sampleHint : s.hint} count={items.length}>
             {items.map((i) => (
               <JobLine
                 key={i.open_path || i.url} title={i.title} company={i.company} url={i.url} openPath={i.open_path}

@@ -351,11 +351,13 @@ export function ManualApplyApp() {
           <details className="tip">
             <summary>How logging works</summary>
             <ul>
-              <li><strong>Scrape &amp; Log</strong> opens the job page in debug Chrome, saves the details and runs AI. It needs the local scraper, so it only works on the app running on your computer.</li>
-              <li><strong>Save Link Only</strong> needs no Chrome. The card waits for AI until you click <strong>Run AI</strong> or <strong>Fetch job details</strong> on the Tracker.</li>
+              <li className="demo-hide-ai"><strong>Scrape &amp; Log</strong> opens the job page in debug Chrome, saves the details and runs AI. It needs the local scraper, so it only works on the app running on your computer.</li>
+              <li className="demo-hide-ai"><strong>Save Link Only</strong> needs no Chrome. The card waits for AI until you click <strong>Run AI</strong> or <strong>Fetch job details</strong> on the Tracker.</li>
+              <li className="demo-only"><strong>Save Link Only</strong> stores the URL on the Tracker. On this public demo, Scrape &amp; Log, Fetch details, and Run AI are disabled (they need tokens / a local browser).</li>
               <li>Default status is <strong>Not Applied</strong>. Switch to Applied when you already applied; notes and timeline on an existing card stay.</li>
               <li><strong>Job title / Company / Location</strong> are saved on the Tracker card (also with Save Link Only). A later scrape only fills fields you left blank.</li>
-              <li><strong>Recommended by AI agent</strong> tags the card (Claude, Cursor, Gemini, GPT). Agent-recommended cards get <strong>Fetch job details</strong> (scrape only, no AI).</li>
+              <li className="demo-hide-ai"><strong>Recommended by AI agent</strong> tags the card (Claude, Cursor, Gemini, GPT). Agent-recommended cards get <strong>Fetch job details</strong> (scrape only, no AI).</li>
+              <li className="demo-only"><strong>Recommended by AI agent</strong> tags the card (Claude, Cursor, Gemini, GPT). Live agent push is off on this demo — the Tracker banner shows a fictional sample.</li>
               <li>URL formats: LinkedIn <code>https://www.linkedin.com/jobs/view/JOB_ID/</code>, Indeed <code>https://de.indeed.com/viewjob?jk=JOB_KEY</code>, other sites: the job detail URL.</li>
             </ul>
           </details>
